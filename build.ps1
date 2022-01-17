@@ -95,10 +95,10 @@ DeleteFileIfExists $portableExeWithExtension
 
 $winRarExe = "c:\Program Files\WinRar\WinRAR.exe"
 
-#& $winRarExe a -sfx -z".\Installer\VidCoderRar.conf" -iicon".\VidCoder\VidCoder_icon.ico" -r -ep1 $portableExeWithoutExtension .\VidCoder\bin\publish-portable\** | Out-Null
-#ExitIfFailed
+& $winRarExe a -sfx -z".\Installer\VidCoderRar.conf" -iicon".\VidCoder\VidCoder_icon.ico" -r -ep1 $portableExeWithoutExtension .\VidCoder\bin\publish-portable\** | Out-Null
+ExitIfFailed
 
-#SignExe $portableExeWithExtension; ExitIfFailed
+SignExe $portableExeWithExtension; ExitIfFailed
 
 # Create zip file with binaries
 $zipFilePath = ".\Installer\BuiltInstallers\$binaryNameBase.zip"
