@@ -112,17 +112,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>Berezgaitasunezko audio hautapena ezgaitua dagoenean, hautaturiko azken bideari heusten zaio.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>Berezgaitasunezko azpidatzi hautapen ezgaituta dagoenean, hautaturiko azken azpidatziari heusten zaio.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>Orokorra</value>
   </data>
@@ -144,77 +138,14 @@
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
     <value>Berezgaitasunezko eguneraketak</value>
   </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Batu Beta eguneraketa bidea</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>Agiri Izendapena</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Berezko agiritegia:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>Agiri heuskarria:</value>
-  </data>
-  <data name="OutputToSourceDirCheckBox" xml:space="preserve">
-    <value>Irteera iturburu zuzenbidera ahal bada</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Berezko heuskarria</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Norbere heuskarria:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Aukera eskuragarriak: {0}</value>
-  </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>Agiri bat jadanik badagoenean...</value>
   </data>
   <data name="EncodingSingleFile" xml:space="preserve">
     <value>Agiri bakar kodeaketa:</value>
   </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Galdetu gainidaztea nahi duzun</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Gainidatzi agiria galdetu gabe</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Berezgaitasunez aldatu izen ezberdin batera</value>
-  </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
     <value>Agiri multzo kodeaketa:</value>
-  </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Gainidatzi</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Berezgaitasunez berrizendatu</value>
-  </data>
-  <data name="AutomaticAudioSelection" xml:space="preserve">
-    <value>Berezgaitasunezko audio hautapena</value>
-  </data>
-  <data name="AudioSubtitlesTab" xml:space="preserve">
-    <value>Audioa / Azpidatziak</value>
-  </data>
-  <data name="LanguageRadioButton" xml:space="preserve">
-    <value>Hizkuntza:</value>
-  </data>
-  <data name="IncludeAllTracksCheckBox" xml:space="preserve">
-    <value>Barneratu bide guztiak</value>
-  </data>
-  <data name="AutomaticSubtitleSelection" xml:space="preserve">
-    <value>Berezgaitasunezko azpidatzi hautapena</value>
-  </data>
-  <data name="ForeignAudioSearchRadioButton" xml:space="preserve">
-    <value>Beste Hizkuntza Audio Bilaketa</value>
-  </data>
-  <data name="BurnInCheckBox" xml:space="preserve">
-    <value>Erre</value>
-  </data>
-  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
-    <value>Audiotik hizkuntza ezberdina bada bakarrik</value>
   </data>
   <data name="AutoPauseLabel" xml:space="preserve">
     <value>Berezgaitasunez pausatu kodeaketa prozesu hauetako bat ekinean dagoenean:</value>
@@ -228,17 +159,11 @@
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
     <value>Gogoratu aurretik erabilitako agiriak eta agiritegiak</value>
   </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Ahalbidetu norbere izena ezartzea audio bideetan (irakurgailu sostengu mugatua)</value>
-  </data>
   <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Gaitu LibDVDNav (aldaketak programa berrabiaraztea behar du)</value>
-  </data>
-  <data name="KeepScansAfterCompletionCheckBox" xml:space="preserve">
-    <value>Heutsi mihaketei osatu ondoren (osatutako gaiak editatzea ahalbidetzen du)</value>
+    <value>Gaitu LibDVDNav (Aldatzeak programa berrabiaraztea behar du. Beharrezkoa angelu anitz sostengatzeko)</value>
   </data>
   <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Ezabatu iturburu agiriak ongi osatutako gaiak garbitu ondoren (baieztapenarekin)</value>
+    <value>Ezabatu iturburu agiriak ongi osatutako gaiak garbitu ondoren</value>
   </data>
   <data name="LoggingVerbosityLabel" xml:space="preserve">
     <value>Ohar Berritsukeria:</value>
@@ -255,8 +180,8 @@
   <data name="OptionsDialogTitle" xml:space="preserve">
     <value>Aukerak</value>
   </data>
-  <data name="ProcessesTab" xml:space="preserve">
-    <value>Garapenak</value>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Prozesua</value>
   </data>
   <data name="AdvancedTab" xml:space="preserve">
     <value>Aurreratua</value>
@@ -306,9 +231,6 @@
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
     <value>Kontuz: zihurragoa da bertsio honek akatsak eta matxurak izatea.</value>
   </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Hizkuntzak</value>
-  </data>
   <data name="PlayersSection" xml:space="preserve">
     <value>Irakurgailuak</value>
   </data>
@@ -320,9 +242,6 @@
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
     <value>Irteera agiritegia</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Izendapen heuskarria</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Aukera aurreratuak</value>
@@ -396,29 +315,73 @@
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
     <value>Erabili langile garapena kodeatzeko</value>
   </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Bideoa</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Gaitu DXVA Hardware Bizkorpen Dekodeaketa</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>Aukera hau sistema geldoenentzat bakarrik da baliagarria. Hardware dekodeatzaileak irakurketarako diseinatuak daude, ez bideo ber-kodeaketarako hortaz botilalepoa eragin dezake sistema azkarretan.</value>
-  </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
     <value>Heutsi Sortutako eta Aldatutako denbora agiriak bihurtzerakoan</value>
   </data>
-  <data name="DefaultCheckBox" xml:space="preserve">
-    <value>Berezkoa</value>
-    <comment>Label for the check box to mark an automatically chosen subtitle as "Default"</comment>
-  </data>
-  <data name="PreserveFolderStructureCheckBox" xml:space="preserve">
-    <value>Heutsi agiritegi egiturari multzo kodeaketan</value>
-  </data>
-  <data name="PreserveFolderStructureToolTip" xml:space="preserve">
-    <value>Agiritegi bateko agiri guztiak kodeatzen badituzu kodeatutako bertsioak azpiagiritegietan jarriko dira iturburu zuzenbide egiturarekin bat etortzeko.</value>
-  </data>
-	<data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
     <value>Norbere agiritegia aurreikuspenetarako:</value>
+  </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Prozesu aukerak</value>
+  </data>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>CPU itopena - Ahalbidetutako Nukleoak:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
+  </data>
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Erabili CPU itopena VidCoder-ek kodeatzerakoan erabili ditzakeen prozesagailu nukleo zenbatekoa mugatzeko.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Erabili barne-bildutako irakurgailua aurreikuspenetarako</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Gehienezko aldibereko kodeaketa lanak:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Hau aldibereko kodeaketa lanak nola ahalbidetzen diren da. Erabilgarria nukleo ugariko CPU-a duten makinentzat.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Orokorra</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Azalgaia</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Galdetu eguneraketak:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>Langile prozesua aukerak irten eta VidCoder berrabiarazi ondoren izango du eragina.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Kopiatu kodeaketa oharra norbere agiritegi batera</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Gorde huts egindako edo gelditutako kodeaketen agiriak</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Eragin "Egindakoan" ekintza huts egindako kodeaketa lanak daudenean</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Pausatu bateria agortzear badago</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Pausatu diskako tokia honen azpitik badago:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Berezgaitasunezko pausaketa</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Aukera eskuragarriak: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Diskako toki gutxiren muga gigabyte-tann</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Arrastatu eta askatu berrantolatzeko:</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Kodeaketa bersaiatze zenbatekoa:</value>
   </data>
 </root>

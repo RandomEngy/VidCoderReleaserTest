@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PlaySourceButton" xml:space="preserve">
     <value>Odtwórz źródło</value>
@@ -180,7 +180,26 @@
   <data name="BottomMargin" xml:space="preserve">
     <value>Margines dolny</value>
   </data>
-	<data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
+  <data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
     <value>Nie można znaleźć pliku źródłowego.</value>
+  </data>
+  <data name="CloseVideoButton" xml:space="preserve">
+    <value>Zamknij wideo</value>
+    <comment>Button to close the preview video clip.</comment>
+  </data>
+  <data name="OpenInSystemPlayerButton" xml:space="preserve">
+    <value>Otwórz w odtwarzaczu systemowym</value>
+  </data>
+  <data name="VolumeSliderLabel" xml:space="preserve">
+    <value>Głośność</value>
+  </data>
+  <data name="ReplayPreviewButton" xml:space="preserve">
+    <value>Odtwórz ponownie podgląd</value>
+  </data>
+  <data name="VideoErrorMessage" xml:space="preserve">
+    <value>Nie można odtworzyć wideo przy użyciu wbudowanego odtwarzacza. Czy chcesz otworzyć systemowy?</value>
+  </data>
+  <data name="VideoErrorTitle" xml:space="preserve">
+    <value>Błąd wideo</value>
   </data>
 </root>

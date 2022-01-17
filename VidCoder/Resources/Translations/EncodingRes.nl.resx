@@ -1,0 +1,841 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Save" xml:space="preserve">
+    <value>Opslaan</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Opslaan als...</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Ongedaan maken</value>
+  </data>
+  <data name="Audio_DrcToolTip" xml:space="preserve">
+    <value>Dynamisch bereik compressie. Geldige waarden zijn 0-4.
+
+Voor audio bronnen met een breek dynamisch bereik (erg luide en erg zachte gedeeltes) maakt DRC het mogelijk om het bereik te 'comprimeren' door luide gedeeltes wat zachter te maken en zachte gedeeltes wat luider.
+
+Dit werkt alleen als de audiobron van het type AC3 is.</value>
+  </data>
+  <data name="Audio_GainToolTip" xml:space="preserve">
+    <value>Versterk of verzacht de audio voor de encodering. Geldige waarden zijn -20 tot +20 dB.</value>
+  </data>
+  <data name="IncludeChapterMarkersToolTip" xml:space="preserve">
+    <value>Neem hoofdstukmarkering van de originele video over in de gecodeerde video.</value>
+  </data>
+  <data name="IPod5GSupportToolTip" xml:space="preserve">
+    <value>Voeg een markering aan het bestand toe die voor oudere iPods nodig is om H.264 video te kunnen synchroniseren.</value>
+  </data>
+  <data name="PixelAspectRatioToolTip" xml:space="preserve">
+    <value>Stel handmatig een Pixel Aspect Ratio in.</value>
+  </data>
+  <data name="Video_QualityTargetToolTip" xml:space="preserve">
+    <value>Stel de gewenste kwaliteit in. De schaal is verschillend voor elke video encoder.</value>
+  </data>
+  <data name="WebOptimizedToolTip" xml:space="preserve">
+    <value>Optimaliseer het bestand zodat het beter geschikt is voor streaming (progressive download).</value>
+  </data>
+  <data name="ProfileToolTip" xml:space="preserve">
+    <value>Beperk het video codec profiel van de resulterende video. Als je hier een profiel instelt, gaat deze instelling vóór alle andere instellingen, waardoor je zeker kunt zijn dat het resultaat compatibel gaat zijn voor jouw apparaat.
+
+Stel dit in als je weet dat een apparaat waarvoor je dit doet niet alle profielen aan kan.</value>
+  </data>
+  <data name="X264TuneToolTip" xml:space="preserve">
+    <value>Fijnafstemming opties ten behoeve van specifiek bronnen. Als je fijnafstemming instelt zullen de wijzigingen worden doorgevoerd na de Voorinstelling maar vóór alle andere instellingen.</value>
+  </data>
+  <data name="ContainerLabel" xml:space="preserve">
+    <value>Container:</value>
+  </data>
+  <data name="ExtensionLabel" xml:space="preserve">
+    <value>Extensie:</value>
+  </data>
+  <data name="WebOptimizedCheckBox" xml:space="preserve">
+    <value>Web-geoptimaliseerd</value>
+  </data>
+  <data name="Ipod5GSupportCheckBox" xml:space="preserve">
+    <value>iPod 5G-ondersteuning</value>
+  </data>
+  <data name="IncludeChapterMarkersCheckBox" xml:space="preserve">
+    <value>Hoofdstukmarkeringen meenemen</value>
+  </data>
+  <data name="TabHeader_Sizing" xml:space="preserve">
+    <value>Verschaling</value>
+  </data>
+  <data name="TabHeader_VideoFilters" xml:space="preserve">
+    <value>Videofilters</value>
+  </data>
+  <data name="TabHeader_VideoEncoding" xml:space="preserve">
+    <value>Videocodering</value>
+  </data>
+  <data name="TabHeader_AudioEncoding" xml:space="preserve">
+    <value>Audiocodering</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Hernoemen</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Invoer</value>
+  </data>
+  <data name="AutoCaption" xml:space="preserve">
+    <value>(auto)</value>
+  </data>
+  <data name="NoneCaption" xml:space="preserve">
+    <value>(geen)</value>
+  </data>
+  <data name="StorageResolutionLabel" xml:space="preserve">
+    <value>Opgeslagen resolutie:</value>
+  </data>
+  <data name="PixelAspectRatioLabel" xml:space="preserve">
+    <value>Pixel beeldverhouding:</value>
+  </data>
+  <data name="DisplayResolutionLabel" xml:space="preserve">
+    <value>Weergaveresolutie:</value>
+  </data>
+  <data name="SizingLabel" xml:space="preserve">
+    <value>Verschaling</value>
+  </data>
+  <data name="WidthLabel" xml:space="preserve">
+    <value>Breedte:</value>
+  </data>
+  <data name="HeightLabel" xml:space="preserve">
+    <value>Hoogte:</value>
+  </data>
+  <data name="MaxWidthLabel" xml:space="preserve">
+    <value>Max breedte:</value>
+  </data>
+  <data name="MaxHeightLabel" xml:space="preserve">
+    <value>Max hoogte:</value>
+  </data>
+  <data name="OutputLabel" xml:space="preserve">
+    <value>Uitvoer</value>
+  </data>
+  <data name="CroppingLabel" xml:space="preserve">
+    <value>Bijsnijden</value>
+  </data>
+  <data name="DetelecineLabel" xml:space="preserve">
+    <value>Detelecine:</value>
+  </data>
+  <data name="DeinterlaceLabel" xml:space="preserve">
+    <value>Deinterlace:</value>
+  </data>
+  <data name="DenoiseLabel" xml:space="preserve">
+    <value>Denoise:</value>
+  </data>
+  <data name="DeblockLabel" xml:space="preserve">
+    <value>Deblock:</value>
+  </data>
+  <data name="GrayscaleCheckBox" xml:space="preserve">
+    <value>Grijswaarden-codering</value>
+  </data>
+  <data name="TypeLabel" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="ShortFramerateLabel" xml:space="preserve">
+    <value>Framesnelheid:</value>
+  </data>
+  <data name="CodecLabel" xml:space="preserve">
+    <value>Codec:</value>
+  </data>
+  <data name="FramerateLabel" xml:space="preserve">
+    <value>Framesnelheid (FPS):</value>
+  </data>
+  <data name="ConstantFramerateRadioButton" xml:space="preserve">
+    <value>Constante Framesnelheid</value>
+  </data>
+  <data name="Quality" xml:space="preserve">
+    <value>Kwaliteit</value>
+  </data>
+  <data name="TwoPassEncodingCheckBox" xml:space="preserve">
+    <value>Codering in twee fasen</value>
+  </data>
+  <data name="TurboFirstPassCheckBox" xml:space="preserve">
+    <value>Turbo eerste fase</value>
+  </data>
+  <data name="TargetSizeRadioButton" xml:space="preserve">
+    <value>Doelgrootte (MB)</value>
+  </data>
+  <data name="AverageBitrateRadioButton" xml:space="preserve">
+    <value>Gem. bitsnelheid (kbps)</value>
+  </data>
+  <data name="ConstantQualityRadioButton" xml:space="preserve">
+    <value>Constante kwaliteit</value>
+  </data>
+  <data name="ProfileLabel" xml:space="preserve">
+    <value>Profiel:</value>
+  </data>
+  <data name="PresetLabel" xml:space="preserve">
+    <value>Voorkeursinstelling:</value>
+  </data>
+  <data name="TuneLabel" xml:space="preserve">
+    <value>Tuning:</value>
+  </data>
+  <data name="Profile_baseline" xml:space="preserve">
+    <value>Basis</value>
+  </data>
+  <data name="Profile_main" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="Profile_high" xml:space="preserve">
+    <value>Hoog</value>
+  </data>
+  <data name="Preset_UltraFast" xml:space="preserve">
+    <value>Ultrasnel</value>
+  </data>
+  <data name="Preset_SuperFast" xml:space="preserve">
+    <value>Supersnel</value>
+  </data>
+  <data name="Preset_VeryFast" xml:space="preserve">
+    <value>Zeer snel</value>
+  </data>
+  <data name="Preset_Faster" xml:space="preserve">
+    <value>Sneller</value>
+  </data>
+  <data name="Preset_Fast" xml:space="preserve">
+    <value>Snel</value>
+  </data>
+  <data name="Preset_Medium" xml:space="preserve">
+    <value>Gemiddeld</value>
+  </data>
+  <data name="Preset_Slow" xml:space="preserve">
+    <value>Langzaam</value>
+  </data>
+  <data name="Preset_Slower" xml:space="preserve">
+    <value>Langzamer</value>
+  </data>
+  <data name="Preset_VerySlow" xml:space="preserve">
+    <value>Zeer langzaam</value>
+  </data>
+  <data name="Preset_Placebo" xml:space="preserve">
+    <value>Placebo</value>
+  </data>
+  <data name="Tune_film" xml:space="preserve">
+    <value>Film</value>
+  </data>
+  <data name="Tune_animation" xml:space="preserve">
+    <value>Animatie</value>
+  </data>
+  <data name="Tune_grain" xml:space="preserve">
+    <value>Korrel</value>
+  </data>
+  <data name="Tune_stillimage" xml:space="preserve">
+    <value>Stilstaand beeld</value>
+  </data>
+  <data name="Tune_psnr" xml:space="preserve">
+    <value>PSNR</value>
+  </data>
+  <data name="Tune_ssim" xml:space="preserve">
+    <value>SSIM</value>
+  </data>
+  <data name="Tune_fastdecode" xml:space="preserve">
+    <value>Snel decoderen</value>
+  </data>
+  <data name="Tune_zerolatency" xml:space="preserve">
+    <value>Nul latentie</value>
+  </data>
+  <data name="FpsFormat" xml:space="preserve">
+    <value>{0:0.###} FPS</value>
+  </data>
+  <data name="CfrSameAsSourceToolTip" xml:space="preserve">
+    <value>Maakt gebruik van de genoemde framerate van de bron titel voor een constante framerate.</value>
+  </data>
+  <data name="CfrToolTip" xml:space="preserve">
+    <value>Gebruik een constante framesnelheid.</value>
+  </data>
+  <data name="VfrSameAsSourceToolTip" xml:space="preserve">
+    <value>Sta een variabele framesnelheid toe. Als de bron een variabele framesnelheid, zorgt deze instelling ervoor dat die behouden blijft. Merk op dat sommige spelers geen variabele framesnelheden ondersteunen.</value>
+  </data>
+  <data name="VfrPeakFramerateToolTip" xml:space="preserve">
+    <value>Sta toe dat een variabele framesnelheid wordt gebruikt en gebruik de opgegeven snelheid als een maximum. Als de bron een variabele framesnelheid heeft, zorgt deze instelling dat deze behouden blijft. Merk op dat sommige spelers geen variabele framesnelheden ondersteunen.</value>
+  </data>
+  <data name="VfrChoice" xml:space="preserve">
+    <value>Variabele framesnelheid</value>
+  </data>
+  <data name="VfrPeakChoice" xml:space="preserve">
+    <value>Max framesnelheid (VFR)</value>
+  </data>
+  <data name="HighQuality" xml:space="preserve">
+    <value>Hoge kwaliteit</value>
+  </data>
+  <data name="LowQuality" xml:space="preserve">
+    <value>Lage kwaliteit</value>
+  </data>
+  <data name="SameAsSource" xml:space="preserve">
+    <value>Gelijk aan de bron</value>
+  </data>
+  <data name="AddAudioEncodingButton" xml:space="preserve">
+    <value>Audiocodering toevoegen</value>
+  </data>
+  <data name="NoTracksPlaceholder" xml:space="preserve">
+    <value>(Geen sporen)</value>
+  </data>
+  <data name="TargetStream" xml:space="preserve">
+    <value>Doelstream</value>
+  </data>
+  <data name="MixdownLabel" xml:space="preserve">
+    <value>Mixdown:</value>
+  </data>
+  <data name="SampleRateLabel" xml:space="preserve">
+    <value>Sample-snelheid:</value>
+  </data>
+  <data name="BitrateLabel" xml:space="preserve">
+    <value>Bitsnelheid:</value>
+  </data>
+  <data name="CompressionLabel" xml:space="preserve">
+    <value>Compressie:</value>
+  </data>
+  <data name="GainLabel" xml:space="preserve">
+    <value>Versterking (dB):</value>
+  </data>
+  <data name="DrcLabel" xml:space="preserve">
+    <value>DRC:</value>
+  </data>
+  <data name="NameLabel" xml:space="preserve">
+    <value>Naam:</value>
+  </data>
+  <data name="AscendingQualityToolTip" xml:space="preserve">
+    <value>Hoge waarden betekenen hoge kwaliteit.</value>
+  </data>
+  <data name="DescendingQualityToolTip" xml:space="preserve">
+    <value>Lage waarden betekenen hoge kwaliteit.</value>
+  </data>
+  <data name="AudioQualityToolTip" xml:space="preserve">
+    <value>De gewenste audiokwaliteit. {0} Geldige waarden liggen tussen {1} en {2}.</value>
+  </data>
+  <data name="AscendingCompressionToolTip" xml:space="preserve">
+    <value>Hoge waarden betekenen hoge compressie: betere kwaliteit/kleiner maar het coderen duurt langer.</value>
+  </data>
+  <data name="DescendingCompressionToolTip" xml:space="preserve">
+    <value>Hoge waarden betekenen hoge compressie: betere kwaliteit/kleiner maar het coderen duurt langer.</value>
+  </data>
+  <data name="AudioCompressionToolTip" xml:space="preserve">
+    <value>De hoeveelheid gewenste compressie. {0} Geldige waarden liggen tussen {1} en {2}.</value>
+  </data>
+  <data name="AudioEncoder_faac" xml:space="preserve">
+    <value>AAC (FAAC)</value>
+    <comment>Leaving this blank will mean we rely on the friendly name from HandBrake. The short name is used for the key (: gets replaced by _)</comment>
+  </data>
+  <data name="AudioEncoder_av_aac" xml:space="preserve">
+    <value>AAC (avcodec)</value>
+  </data>
+  <data name="AudioEncoder_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="AudioEncoder_flac16" xml:space="preserve">
+    <value>FLAC 16-bit</value>
+  </data>
+  <data name="AudioEncoder_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="AudioEncoder_vorbis" xml:space="preserve">
+    <value>Vorbis</value>
+  </data>
+  <data name="Mixdown_5point1" xml:space="preserve">
+    <value>5.1 Kanalen</value>
+  </data>
+  <data name="Mixdown_5_2_lfe" xml:space="preserve">
+    <value>7.1 (5F/2R/LFE)</value>
+  </data>
+  <data name="Mixdown_dpl1" xml:space="preserve">
+    <value>Dolby Surround</value>
+  </data>
+  <data name="Mixdown_dpl2" xml:space="preserve">
+    <value>Dolby Pro Logic II</value>
+  </data>
+  <data name="Mixdown_left_only" xml:space="preserve">
+    <value>Mono (alleen links)</value>
+  </data>
+  <data name="Mixdown_mono" xml:space="preserve">
+    <value>Mono</value>
+  </data>
+  <data name="Mixdown_right_only" xml:space="preserve">
+    <value>Mono (alleen rechts)</value>
+  </data>
+  <data name="Mixdown_stereo" xml:space="preserve">
+    <value>Stereo</value>
+  </data>
+  <data name="Bitrate" xml:space="preserve">
+    <value>Bitsnelheid</value>
+  </data>
+  <data name="DefaultFormat" xml:space="preserve">
+    <value>{0} (Standaard)</value>
+  </data>
+  <data name="LevelToolTip" xml:space="preserve">
+    <value>Zorgt voor conformering aan het opgegeven H. 264 niveau.
+
+Vervangt alle andere instellingen.</value>
+  </data>
+  <data name="Profile_high444" xml:space="preserve">
+    <value>Hoge 4:4:4 voorspellende</value>
+  </data>
+  <data name="VideoCodecLabel" xml:space="preserve">
+    <value>Video-codec:</value>
+  </data>
+  <data name="VideoEncoder_ffmpeg2" xml:space="preserve">
+    <value>MPEG-2 (Libav)</value>
+  </data>
+  <data name="VideoEncoder_ffmpeg4" xml:space="preserve">
+    <value>MPEG-4 (Libav)</value>
+  </data>
+  <data name="VideoEncoder_x264" xml:space="preserve">
+    <value>H.264 (x264)</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="LevelLabel" xml:space="preserve">
+    <value>Niveau:</value>
+  </data>
+  <data name="MoreSettingsLabel" xml:space="preserve">
+    <value>Meer instellingen:</value>
+  </data>
+  <data name="Track" xml:space="preserve">
+    <value>Spoor</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Bron</value>
+  </data>
+  <data name="Encoder" xml:space="preserve">
+    <value>Encoder</value>
+  </data>
+  <data name="ChannelLayout" xml:space="preserve">
+    <value>Kanaal lay-out</value>
+  </data>
+  <data name="SampleRate" xml:space="preserve">
+    <value>Sample-snelheid</value>
+  </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="AudioEncoder_flac24" xml:space="preserve">
+    <value>FLAC 24-bit</value>
+  </data>
+  <data name="VideoEncoder_mpeg2" xml:space="preserve">
+    <value>MPEG-2</value>
+  </data>
+  <data name="VideoEncoder_mpeg4" xml:space="preserve">
+    <value>MPEG-4</value>
+  </data>
+  <data name="VideoEncoder_theora" xml:space="preserve">
+    <value>Theora</value>
+  </data>
+  <data name="RemoveAudioEncodingToolTip" xml:space="preserve">
+    <value>Audiocodering verwijderen</value>
+  </data>
+  <data name="AutoPassthroughFallbackLabel" xml:space="preserve">
+    <value>Terugvallen op:</value>
+  </data>
+  <data name="AutoPassthroughFallbackToolTip" xml:space="preserve">
+    <value>Overnemen (passthrough) werkt niet voor alle audio-codecs. Deze instelling geeft aan op welke encodering wordt teruggevallen als het spoor niet rechtstreeks kan worden overgenomen.</value>
+  </data>
+  <data name="EncoderSettings" xml:space="preserve">
+    <value>Encoder instellingen</value>
+  </data>
+  <data name="QsvDecodingLabel" xml:space="preserve">
+    <value>QSV decodering</value>
+  </data>
+  <data name="ScaleMethod_Lanczos" xml:space="preserve">
+    <value>Lanczos</value>
+  </data>
+  <data name="ScaleMethod_BicubicOpenCL" xml:space="preserve">
+    <value>Bikubisch (OpenCL)</value>
+  </data>
+  <data name="QsvPreset_Speed" xml:space="preserve">
+    <value>Snelheid</value>
+  </data>
+  <data name="QsvPreset_Balanced" xml:space="preserve">
+    <value>Gebalanceerd</value>
+  </data>
+  <data name="QsvPreset_Quality" xml:space="preserve">
+    <value>Kwaliteit</value>
+  </data>
+  <data name="PresetToolTip" xml:space="preserve">
+    <value>Verander opties die de balans beïnvloeden tussen betere compressie en codeersnelheid.</value>
+  </data>
+  <data name="AudioEncoder_Passthrough" xml:space="preserve">
+    <value>Overnemen</value>
+  </data>
+  <data name="Passthrough_auto" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="PassthroughScopeToolTip" xml:space="preserve">
+    <value>Bepaalt welke invoer codecs worden overgenomen.</value>
+  </data>
+  <data name="FlipHorizontalCheckBox" xml:space="preserve">
+    <value>Horizontaal spiegelen</value>
+  </data>
+  <data name="FlipVerticalCheckBox" xml:space="preserve">
+    <value>Verticaal spiegelen</value>
+  </data>
+  <data name="Rotation_Clockwise90" xml:space="preserve">
+    <value>90° met de klok mee</value>
+  </data>
+  <data name="Rotation_Counterclockwise90" xml:space="preserve">
+    <value>90° tegen de klok in</value>
+  </data>
+  <data name="Rotation_180" xml:space="preserve">
+    <value>180°</value>
+  </data>
+  <data name="RotationToolTip" xml:space="preserve">
+    <value>Draai de afbeelding. Dit wordt uitgevoerd na eventueel schalen en/of bijsnijden.</value>
+  </data>
+  <data name="FlipHorizontalToolTip" xml:space="preserve">
+    <value>Het beeld horizontaal spiegelen. Dit wordt uitgevoerd voor een eventuele rotatie.</value>
+  </data>
+  <data name="FlipVerticalToolTip" xml:space="preserve">
+    <value>Het beeld verticaal spiegelen. Dit wordt uitgevoerd vóór een eventuele rotatie.</value>
+  </data>
+  <data name="PassthroughIfPossibleCheckBox" xml:space="preserve">
+    <value>Overnemen indien mogelijk</value>
+  </data>
+  <data name="PassthroughIfPossibleToolTip" xml:space="preserve">
+    <value>Als de invoer track ondersteunt wordt door de codec wordt deze overgenomen in plaats van geencodeerd.</value>
+  </data>
+  <data name="RotationLabel" xml:space="preserve">
+    <value>Rotatie:</value>
+  </data>
+  <data name="ClosePresetsListToolTip" xml:space="preserve">
+    <value>Lijst met voorinstellingen sluiten</value>
+  </data>
+  <data name="OpenPresetsListToolTip" xml:space="preserve">
+    <value>Lijst met voorinstellingen openen</value>
+  </data>
+  <data name="DefaultChapterName" xml:space="preserve">
+    <value>Hoofdstuk {0}</value>
+    <comment>What a chapter will be named when not given a custom name. {0} is the chapter number.</comment>
+  </data>
+  <data name="PassthroughSettingsLabel" xml:space="preserve">
+    <value>Passthrough-instellingen</value>
+  </data>
+  <data name="PassthroughMaskLabel" xml:space="preserve">
+    <value>Passthrough toestaan voor:</value>
+  </data>
+  <data name="Passthrough_aac" xml:space="preserve">
+    <value>AAC</value>
+  </data>
+  <data name="Passthrough_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="Passthrough_dts" xml:space="preserve">
+    <value>DTS</value>
+  </data>
+  <data name="Passthrough_dtshd" xml:space="preserve">
+    <value>DTS-HD</value>
+  </data>
+  <data name="Passthrough_eac3" xml:space="preserve">
+    <value>E-AC3</value>
+  </data>
+  <data name="Passthrough_flac" xml:space="preserve">
+    <value>FLAC</value>
+  </data>
+  <data name="Passthrough_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="Passthrough_truehd" xml:space="preserve">
+    <value>TrueHD</value>
+  </data>
+  <data name="InterlaceDetectionLabel" xml:space="preserve">
+    <value>Interlacing-detectie:</value>
+  </data>
+  <data name="ModeLabel" xml:space="preserve">
+    <value>Modus:</value>
+    <comment>Label for the sizing or padding mode.</comment>
+  </data>
+  <data name="AnamorphicCheckbox" xml:space="preserve">
+    <value>Gebruik Anamorf</value>
+  </data>
+  <data name="SizingModeManual" xml:space="preserve">
+    <value>Handmatig</value>
+    <comment>Choice for the user to enter all sizing information manually.</comment>
+  </data>
+  <data name="UpscaleMaxFormat" xml:space="preserve">
+    <value>Max upscale {0}x</value>
+    <comment>Label for scaling option to allow upscaling, but only to a particular multiple of the source resolution. {0} is the multiple, e.g. 2, 3 or 4</comment>
+  </data>
+  <data name="ScalingMode_DownscaleOnly" xml:space="preserve">
+    <value>Alleen verkleinen</value>
+  </data>
+  <data name="ScalingMode_Fill" xml:space="preserve">
+    <value>Verschalen naar doelgrootte</value>
+  </data>
+  <data name="ScalingModeLabel" xml:space="preserve">
+    <value>Verschalingsmodus:</value>
+  </data>
+  <data name="PaddingMode_Fill" xml:space="preserve">
+    <value>Vullen</value>
+  </data>
+  <data name="PaddingMode_Width" xml:space="preserve">
+    <value>Breedte</value>
+  </data>
+  <data name="PaddingMode_Height" xml:space="preserve">
+    <value>Hoogte</value>
+  </data>
+  <data name="TargetWidthLabel" xml:space="preserve">
+    <value>Doelbreedte:</value>
+  </data>
+  <data name="TargetHeightLabel" xml:space="preserve">
+    <value>Doelhoogte:</value>
+  </data>
+  <data name="PadColorLabel" xml:space="preserve">
+    <value>Kleur:</value>
+  </data>
+  <data name="AnamorphicToolTip" xml:space="preserve">
+    <value>Met Anamorf zijn niet-vierkante pixels toegestaan. Dit kan leiden tot efficiëntere opslag, maar niet alle spelers ondersteunen dit.</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Resolutie:</value>
+    <comment>Label for a video resolution in pixels.</comment>
+  </data>
+  <data name="CustomFilterToolTipFormatPart" xml:space="preserve">
+    <value>Formaat: sleutel1=waarde1:sleutel2 = waarde2:...</value>
+    <comment>The "format" portion of the custom filter tooltip. When translating, keep the = and : the same and only replace "key1", "value2", etc.</comment>
+  </data>
+  <data name="CustomFilterToolTipKeysLabel" xml:space="preserve">
+    <value>Sleutels:</value>
+    <comment>The label for the "keys" portion of the custom filter tooltip.</comment>
+  </data>
+  <data name="PaddingLabel" xml:space="preserve">
+    <value>Opvulling</value>
+  </data>
+  <data name="AlignAVStartCheckBox" xml:space="preserve">
+    <value>A/V-start gelijkstellen</value>
+  </data>
+  <data name="AlignAVStartCheckBoxToolTip" xml:space="preserve">
+    <value>Hiermee kunt u de initiële tijdstempels van alle audio- en videostreams gelijkstellen door lege frames in te voegen of te verwijderen. Dit kan de audio/video sync verbeteren voor spelers die MP4 bewerkingslijsten niet ondersteunen.</value>
+  </data>
+  <data name="TabHeader_Container" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Coderingsvoorinstelling: {0}</value>
+    <comment>Label for the encoding settings window.</comment>
+  </data>
+  <data name="AudioEncoder_none" xml:space="preserve">
+    <value>Geen</value>
+    <comment>Label for the choice to use no audio encoder. Used in fallback selection.</comment>
+  </data>
+  <data name="SizingModeToolTip" xml:space="preserve">
+    <value>Automatisch zal de grootte kiezen op basis van de gegeven beperkingen. Handmatig laat u een specifieke grootte en pixel breedte-hoogteverhouding invoeren.</value>
+  </data>
+  <data name="SharpenLabel" xml:space="preserve">
+    <value>Verscherpen</value>
+  </data>
+  <data name="DeblockToolTip" xml:space="preserve">
+    <value>Deblock vermindert hoekige artefacten, veroorzaakt door videocompressie met lage kwaliteit.</value>
+  </data>
+  <data name="DeinterlaceToolTip" xml:space="preserve">
+    <value>Deinterlace verwijdert 'kam' artefacten uit de afbeelding.
+Yadif is een populaire en snelle deïnterlacer.
+Decomb schakelt tussen verschillende interpolatie-algoritmes voor snelheid en kwaliteit.</value>
+  </data>
+  <data name="DenoiseToolTip" xml:space="preserve">
+    <value>Denoise vermindert of verwijdert ruis en korreligheid. Dit kan de efficiëntie van de compressie verbeteren en video van hogere kwaliteit opleveren met een kleinere bestandsgrootte.
+Een al te sterke Denoise-instelling kan de beeldkwaliteit verminderen door detail te verwijderen.
+         
+NLMeans is een hoogwaardig maar langzaam denoise-filter. Kies het wanneer kwaliteit belangrijker is dan snelheid.
+         
+HQDN3D is een adaptief low-pass filter, sneller dan NLMeans, maar minder effectief in het behouden van de fijne details.</value>
+  </data>
+  <data name="DetelecineToolTip" xml:space="preserve">
+    <value>Dit filter verwijdert 'kam' artefacten die het resultaat zijn van telecining.
+
+Telecining is een proces dat film met een framesnelheid van 24fps aanpast voor NTSC video framesnelheden van 30fps.</value>
+  </data>
+  <data name="SharpenToolTip" xml:space="preserve">
+    <value>Verscherping verbetert de weergave van detail, met name van randen. Al te sterke verscherping kan de beeldkwaliteit verslechteren door het creëren van ring-artefacten en versterking van ruis, waardoor de compressie-efficiëntie kan verminderen.
+
+Unsharp is een algemene onscherpmasker. Het verscherpt door vervaging en dan het verschil te berekenen tussen het vervaagde beeld en het origineel.
+
+Lapsharp verscherpt middels plooikernen die Laplaciaanse randfilters benaderen en levert soms betere resultaten dan het gebruik van het onscherp masker.</value>
+  </data>
+  <data name="PresetFolder_Custom" xml:space="preserve">
+    <value>Aangepast</value>
+  </data>
+  <data name="PresetFolder_BuiltIn" xml:space="preserve">
+    <value>Ingebouwd</value>
+  </data>
+  <data name="PresetFolderCreateSubfolderMenuItem" xml:space="preserve">
+    <value>Submap aanmaken</value>
+  </data>
+  <data name="PrestFolderRenameFolderMenuItem" xml:space="preserve">
+    <value>Map hernoemen</value>
+  </data>
+  <data name="PresetFolderRemoveFolderMenuItem" xml:space="preserve">
+    <value>Map verwijderen</value>
+  </data>
+  <data name="DefaultPresetFolderName" xml:space="preserve">
+    <value>Nieuwe map</value>
+  </data>
+  <data name="ChooseNameSubfolder" xml:space="preserve">
+    <value>Kies een naam voor de submap:</value>
+  </data>
+  <data name="ChooseNewFolderName" xml:space="preserve">
+    <value>Kies een nieuwe naam voor de map:</value>
+  </data>
+  <data name="NVEncPreset_ll" xml:space="preserve">
+    <value>Lage latentie</value>
+  </data>
+  <data name="NVEncPreset_hq" xml:space="preserve">
+    <value>Hoge kwaliteit</value>
+  </data>
+  <data name="NVEncPreset_hp" xml:space="preserve">
+    <value>Hoge prestaties</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Onder</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Rechts</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Boven</value>
+  </data>
+  <data name="PixelAspectRatioNumeratorAutomationName" xml:space="preserve">
+    <value>Pixel beeldverhouding numerator</value>
+    <comment>Name for the pixel aspect ratio numerator box for screen readers</comment>
+  </data>
+  <data name="PixelAspectRatioDenominatorAutomationName" xml:space="preserve">
+    <value>Pixel beeldverhouding</value>
+    <comment>Name for the pixel aspect ratio denominator box for screen readers</comment>
+  </data>
+  <data name="ApplyToQueueButton" xml:space="preserve">
+    <value>Toepassen op wachtrij</value>
+  </data>
+  <data name="FullEncoderParameterLabel" xml:space="preserve">
+    <value>Volledige parameterlijst:</value>
+  </data>
+  <data name="MoreOptionsToolTip" xml:space="preserve">
+    <value>Extra geavanceerde argumenten om aan de video-encoder door te geven.</value>
+  </data>
+  <data name="CannotSwitchEncodingPresetDueToPicker" xml:space="preserve">
+    <value>Kan niet wisselen van coderingsvoorkeur, deze is vergrendeld in het keuzevenster.</value>
+    <comment>Message to show when the user is blocked from switching an encoding preset due to a Picker setting.</comment>
+  </data>
+  <data name="PadColorTextToolTip" xml:space="preserve">
+    <value>Formaat: FFFFFF</value>
+  </data>
+  <data name="ChromaSmoothLabel" xml:space="preserve">
+    <value>Chroma smooth:</value>
+  </data>
+  <data name="ColorspaceLabel" xml:space="preserve">
+    <value>Kleurruimte:</value>
+  </data>
+</root>

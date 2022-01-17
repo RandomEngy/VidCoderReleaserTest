@@ -1,37 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using System.Xml;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
+using Microsoft.AnyContainer;
 using VidCoder.Resources;
 using VidCoder.Services;
+using VidCoderCommon;
 using VidCoderCommon.Model;
 
 namespace VidCoder.Model
 {
 	public static class Database
 	{
+		private const string BackupFolderName = "Backups";
 		private const string ConfigDatabaseFileWithoutExtension = "VidCoder";
 		private const string ConfigDatabaseFileExtension = ".sqlite";
 		private const string ConfigDatabaseFile = ConfigDatabaseFileWithoutExtension + ConfigDatabaseFileExtension;
 
 		private static SQLiteConnection connection;
 
-		private static ThreadLocal<SQLiteConnection> threadLocalConnection = new ThreadLocal<SQLiteConnection>();
+		private static ThreadLocal<SQLiteConnection> threadLocalConnection = new ThreadLocal<SQLiteConnection>(trackAllValues: true);
 
 		private static long mainThreadId;
 
-		private static Lazy<string> lazyDatabaseFile = new Lazy<string>(GetDatabaseFilePath); 
+		private static Lazy<string> lazyDatabaseFile = new Lazy<string>(GetDatabaseFilePath);
 
-		static Database()
+		public static void Initialize()
 		{
 			mainThreadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -46,29 +48,43 @@ namespace VidCoder.Model
 				return;
 			}
 
+			BackupDatabaseFile(databaseVersion);
+
 			using (SQLiteTransaction transaction = Connection.BeginTransaction())
 			{
 				// Update DB schema
-				if (databaseVersion < 18)
+				if (databaseVersion < 35)
 				{
-					UpgradeDatabaseTo18();
+					string message = string.Format(CultureInfo.CurrentCulture, MainRes.DataTooOldRunVidCoderVersion, "3.15");
+					StaticResolver.Resolve<IMessageBoxService>().Show(message);
+					throw new InvalidOperationException("Database too old");
 				}
 
-                if (databaseVersion < 27)
-                {
-                    UpgradeDatabaseTo27();
-                }
-
-				if (databaseVersion < 28)
+				if (databaseVersion < 36)
 				{
-					UpgradeDatabaseTo28(oldDatabaseVersion: databaseVersion);
+					UpgradeDatabaseTo36();
+				}
+
+				if (databaseVersion < 39)
+				{
+					UpgradeDatabaseTo39();
+				}
+
+				if (databaseVersion < 46)
+				{
+					UpgradeDatabaseTo46();
 				}
 
 				// Update encoding profiles if we need to. Everything is at least 28 now from the JSON upgrade.
 				int oldDatabaseVersion = Math.Max(databaseVersion, 28);
-                if (oldDatabaseVersion < Utilities.LastUpdatedEncodingProfileDatabaseVersion)
+				if (oldDatabaseVersion < Utilities.LastUpdatedEncodingProfileDatabaseVersion)
 				{
 					UpgradeEncodingProfiles(oldDatabaseVersion);
+				}
+
+				if (oldDatabaseVersion < Utilities.LastUpdatedPickerDatabaseVersion)
+				{
+					UpgradePickers(oldDatabaseVersion);
 				}
 
 				SetDatabaseVersionToLatest();
@@ -82,221 +98,223 @@ namespace VidCoder.Model
 				CultureInfo.CurrentCulture,
 				MainRes.RenameDatabaseFileLine1,
 				databaseVersion,
-				Utilities.CurrentVersion,
+				Utilities.VersionString,
 				Utilities.CurrentDatabaseVersion);
 
-			string messageLine2 = MainRes.RenameDatabaseFileLine2;
-
-			string message = string.Format(
-				CultureInfo.CurrentCulture,
-				"{0}{1}{1}{2}",
-				messageLine1,
-				Environment.NewLine,
-				messageLine2);
-
-			var messageService = Ioc.Get<IMessageBoxService>();
-			messageService.Show(message, MainRes.IncompatibleDatabaseFileTitle, MessageBoxButton.YesNo);
-			if (messageService.Show(
-				message,
-				MainRes.IncompatibleDatabaseFileTitle,
-				MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+			// See if we have a backup with the correct version
+			int backupVersion = FindBackupDatabaseFile();
+			if (backupVersion >= 0)
 			{
-				Connection.Close();
+				string messageLine2 = string.Format(
+					CultureInfo.CurrentCulture,
+					MainRes.UseBackupDatabaseLine,
+					backupVersion);
 
-				try
-				{
-					string newFileName = ConfigDatabaseFileWithoutExtension + "-v" + databaseVersion + ConfigDatabaseFileExtension;
-					string newFilePath = FileUtilities.CreateUniqueFileName(newFileName, Utilities.AppFolder, new HashSet<string>());
+				string message = string.Format(
+					CultureInfo.CurrentCulture,
+					"{0}{1}{1}{2}",
+					messageLine1,
+					Environment.NewLine,
+					messageLine2);
 
-					File.Move(NonPortableDatabaseFile, newFilePath);
-					connection = null;
-					databaseVersion = DatabaseConfig.Version;
-				}
-				catch (IOException)
+				var messageService = StaticResolver.Resolve<IMessageBoxService>();
+				if (messageService.Show(
+					message,
+					MainRes.IncompatibleDatabaseFileTitle,
+					MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 				{
-					HandleCriticalFileError();
+					try
+					{
+						CloseAllConnections();
+
+						MoveCurrentDatabaseFile(databaseVersion);
+						string backupFilePath = GetBackupDatabaseFilePath(backupVersion);
+						File.Copy(backupFilePath, DatabaseFile);
+
+						databaseVersion = backupVersion;
+					}
+					catch (Exception exception)
+					{
+						HandleCriticalFileError(exception);
+					}
 				}
-				catch (UnauthorizedAccessException)
+				else
 				{
-					HandleCriticalFileError();
+					Environment.Exit(0);
 				}
 			}
 			else
 			{
-				Environment.Exit(0);
+				string messageLine2 = MainRes.RenameDatabaseFileLine2;
+
+				string message = string.Format(
+					CultureInfo.CurrentCulture,
+					"{0}{1}{1}{2}",
+					messageLine1,
+					Environment.NewLine,
+					messageLine2);
+
+				var messageService = StaticResolver.Resolve<IMessageBoxService>();
+				if (messageService.Show(
+					message,
+					MainRes.IncompatibleDatabaseFileTitle,
+					MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					CloseAllConnections();
+
+					try
+					{
+						MoveCurrentDatabaseFile(databaseVersion);
+						databaseVersion = DatabaseConfig.Version;
+					}
+					catch (Exception exception)
+					{
+						HandleCriticalFileError(exception);
+					}
+				}
+				else
+				{
+					Environment.Exit(0);
+				}
 			}
+
 			return databaseVersion;
 		}
 
-		private static void UpgradeDatabaseTo18()
+		private static void MoveCurrentDatabaseFile(int databaseVersion)
 		{
-			ExecuteNonQuery(
-				"CREATE TABLE workerLogs (" +
-				"workerGuid TEXT, " +
-				"message TEXT, " +
-				"level INTEGER, " +
-				"time TEXT)", connection);
+			string newFileName = GetBackupDatabaseFileName(databaseVersion);
+			string newFilePath = FileUtilities.CreateUniqueFileName(newFileName, BackupDatabaseFolder, new HashSet<string>());
+
+			File.Move(DatabaseFile, newFilePath);
 		}
 
-		private static void UpgradeDatabaseTo27()
+		private static void BackupDatabaseFile(int databaseVersion)
 		{
-			ExecuteNonQuery("CREATE TABLE pickersXml (" +
-			                "xml TEXT)", connection);
+			CloseAllConnections();
 
-			Config.EnsureInitialized(connection);
-
-			// If the user has chosen some auto audio or subtitle picker options, migrate them to a new picker
-			if (CustomConfig.AutoAudio != AudioSelectionMode.Disabled || CustomConfig.AutoSubtitle != SubtitleSelectionMode.Disabled)
+			try
 			{
-				using (var pickerInsertCommand = new SQLiteCommand("INSERT INTO pickersXml (xml) VALUES (?)", connection))
-				{
-					var pickerParameter = new SQLiteParameter();
-					pickerInsertCommand.Parameters.Add(pickerParameter);
+				string backupFilePath = GetBackupDatabaseFilePath(databaseVersion);
+				Directory.CreateDirectory(BackupDatabaseFolder);
 
-					var convertedPicker = new Picker
-					{
-						Name = string.Format(MainRes.PickerNameTemplate, 1),
-						AudioSelectionMode = CustomConfig.AutoAudio,
-						AudioLanguageCode = Config.AudioLanguageCode,
-						AudioLanguageAll = Config.AutoAudioAll,
-						SubtitleSelectionMode = CustomConfig.AutoSubtitle,
-						SubtitleForeignBurnIn = Config.AutoSubtitleBurnIn,
-						SubtitleLanguageCode = Config.SubtitleLanguageCode,
-						SubtitleLanguageAll = Config.AutoSubtitleAll,
-						SubtitleLanguageBurnIn = Config.AutoSubtitleLanguageBurnIn,
-						SubtitleLanguageDefault = Config.AutoSubtitleLanguageDefault,
-						SubtitleLanguageOnlyIfDifferent = Config.AutoSubtitleOnlyIfDifferent
-					};
-
-					pickerParameter.Value = PickerStorage.SerializePicker(convertedPicker);
-					pickerInsertCommand.ExecuteNonQuery();
-				}
-
-				Config.LastPickerIndex = 1;
+				File.Copy(DatabaseFile, backupFilePath, overwrite: true);
+			}
+			catch (Exception exception)
+			{
+				StaticResolver.Resolve<IAppLogger>().Log("Could not backup database file:" + Environment.NewLine + exception);
 			}
 		}
 
-		private static void UpgradeDatabaseTo28(int oldDatabaseVersion)
+		private static string BackupDatabaseFolder => Path.Combine(CommonUtilities.AppFolder, BackupFolderName);
+
+		/// <summary>
+		/// Returns the version number of highest version database file that is still compatible with this build of VidCoder.
+		/// </summary>
+		/// <returns>The best version match.</returns>
+		private static int FindBackupDatabaseFile()
 		{
-			// Upgrade from XML to JSON
-			Config.EnsureInitialized(connection);
-
-			// Presets
-			ExecuteNonQuery("CREATE TABLE presetsJson (json TEXT)", connection);
-
-			var selectPresetsCommand = new SQLiteCommand("SELECT * FROM presetsXml", connection);
-
-			using (SQLiteDataReader reader = selectPresetsCommand.ExecuteReader())
-			using (var presetInsertCommand = new SQLiteCommand("INSERT INTO presetsJson(json) VALUES (?)", connection))
+			DirectoryInfo backupDirectoryInfo = new DirectoryInfo(BackupDatabaseFolder);
+			if (!backupDirectoryInfo.Exists)
 			{
-				var presetParameter = new SQLiteParameter();
-				presetInsertCommand.Parameters.Add(presetParameter);
-
-				XmlSerializer presetSerializer = new XmlSerializer(typeof(Preset));
-				while (reader.Read())
-				{
-					string presetXml = reader.GetString("xml");
-					var preset = PresetStorage.ParsePresetXml(presetXml, presetSerializer);
-
-					// Bring them all up to 28. The preset upgrade will cover them after that.
-					PresetStorage.UpgradeEncodingProfile(preset.EncodingProfile, oldDatabaseVersion, 28);
-
-					presetParameter.Value = PresetStorage.SerializePreset(preset);
-					presetInsertCommand.ExecuteNonQuery();
-				}
+				return -1;
 			}
 
-			ExecuteNonQuery("DROP TABLE presetsXml", connection);
+			FileInfo[] backupFiles = backupDirectoryInfo.GetFiles();
+			Regex regex = new Regex(@"^VidCoder-v(?<version>\d+)\.sqlite$");
 
-			// Pickers
-			ExecuteNonQuery("CREATE TABLE pickersJson (json TEXT)", connection);
-
-			var selectPickersCommand = new SQLiteCommand("SELECT * FROM pickersXml", connection);
-
-			using (SQLiteDataReader reader = selectPickersCommand.ExecuteReader())
-			using (var pickerInsertCommand = new SQLiteCommand("INSERT INTO pickersJson(json) VALUES (?)", connection))
+			int bestCandidate = -1;
+			foreach (FileInfo backupFile in backupFiles)
 			{
-				var pickerParameter = new SQLiteParameter();
-				pickerInsertCommand.Parameters.Add(pickerParameter);
-
-				XmlSerializer pickerSerializer = new XmlSerializer(typeof(Picker));
-				while (reader.Read())
+				Match match = regex.Match(backupFile.Name);
+				if (match.Success)
 				{
-					string pickerXml = reader.GetString("xml");
-					var picker = PickerStorage.ParsePickerXml(pickerXml, pickerSerializer);
-
-					pickerParameter.Value = PickerStorage.SerializePicker(picker);
-					pickerInsertCommand.ExecuteNonQuery();
-				}
-			}
-
-			ExecuteNonQuery("DROP TABLE pickersXml", connection);
-
-			// Saved jobs on queue
-			string xmlEncodeJobs = Config.EncodeJobs2;
-			if (!string.IsNullOrEmpty(xmlEncodeJobs))
-			{
-				XmlSerializer encodeJobSerializer = new XmlSerializer(typeof(EncodeJobPersistGroup));
-
-				using (var stringReader = new StringReader(xmlEncodeJobs))
-				using (var xmlReader = new XmlTextReader(stringReader))
-				{
-					IList<EncodeJobWithMetadata> convertedJobs = new List<EncodeJobWithMetadata>();
-
-					var jobPersistGroup = encodeJobSerializer.Deserialize(xmlReader) as EncodeJobPersistGroup;
-					if (jobPersistGroup != null)
+					string versionString = match.Groups["version"].Captures[0].Value;
+					int version;
+					if (int.TryParse(versionString, out version))
 					{
-						foreach (var job in jobPersistGroup.EncodeJobs)
+						if (version <= Utilities.CurrentDatabaseVersion && version > bestCandidate)
 						{
-							convertedJobs.Add(job);
+							bestCandidate = version;
 						}
 					}
-
-					Config.EncodeJobs2 = EncodeJobStorage.SerializeJobs(convertedJobs);
 				}
 			}
 
-			// Window placement
-			var windowPlacementKeys = new []
-			{
-				"MainWindowPlacement", 
-				"SubtitlesDialogPlacement", 
-				"EncodingDialogPlacement", 
-				"ChapterMarkersDialogPlacement", 
-				"PreviewWindowPlacement", 
-				"QueueTitlesDialogPlacement2", 
-				"AddAutoPauseProcessDialogPlacement",
-				"OptionsDialogPlacement",
-				"EncodeDetailsWindowPlacement",
-				"PickerWindowPlacement",
-				"LogWindowPlacement"
-			};
-
-			Encoding encoding = new UTF8Encoding();
-			XmlSerializer serializer = new XmlSerializer(typeof(WINDOWPLACEMENT));
-			foreach (string key in windowPlacementKeys)
-			{
-				UpgradeWindowPlacementConfig(key, encoding, serializer);
-			}
-
-			Config.EnsureInitialized(connection);
+			return bestCandidate;
 		}
 
-		private static void UpgradeWindowPlacementConfig(string configKey, Encoding encoding, XmlSerializer serializer)
+		private static string GetBackupDatabaseFilePath(int databaseVersion)
 		{
-			string oldValue = DatabaseConfig.Get(configKey, string.Empty, connection);
-			if (!string.IsNullOrEmpty(oldValue))
+			string backupFileName = GetBackupDatabaseFileName(databaseVersion);
+			string backupFileFolder = BackupDatabaseFolder;
+			return Path.Combine(backupFileFolder, backupFileName);
+		}
+
+		private static string GetBackupDatabaseFileName(int databaseVersion)
+		{
+			return ConfigDatabaseFileWithoutExtension + "-v" + databaseVersion + ConfigDatabaseFileExtension;
+		}
+
+		private static void CloseAllConnections()
+		{
+			Connection.Close();
+			connection = null;
+
+			if (threadLocalConnection.Values != null && threadLocalConnection.Values.Count > 0)
 			{
-				WINDOWPLACEMENT placement;
-				byte[] xmlBytes = encoding.GetBytes(oldValue);
-				using (MemoryStream memoryStream = new MemoryStream(xmlBytes))
+				foreach (SQLiteConnection threadLocalConnectionValue in threadLocalConnection.Values)
 				{
-					placement = (WINDOWPLACEMENT)serializer.Deserialize(memoryStream);
+					threadLocalConnectionValue.Close();
 				}
 
-				Config.Set(configKey, JsonConvert.SerializeObject(placement));
+				threadLocalConnection = new ThreadLocal<SQLiteConnection>(trackAllValues: true);
 			}
 		}
+
+#pragma warning disable CS0618 // Type or member is obsolete
+		private static void UpgradeDatabaseTo36()
+		{
+			ExecuteNonQuery(
+				"CREATE TABLE presetFolders (" +
+				"id INTEGER PRIMARY KEY AUTOINCREMENT," +
+				"name TEXT, " +
+				"parentId INTEGER, " +
+				"isExpanded INTEGER)", connection);
+		}
+
+		private static void UpgradeDatabaseTo39()
+		{
+			// The "File naming" tab was removed, so the last index needs to be updated.
+			int optionsDialogLastTab = DatabaseConfig.Get<int>("OptionsDialogLastTab", 0, connection);
+			if (optionsDialogLastTab > 0)
+			{
+				DatabaseConfig.Set<int>("OptionsDialogLastTab", optionsDialogLastTab - 1, connection);
+			}
+		}
+
+		private static void UpgradeDatabaseTo46()
+		{
+			string updatePromptTiming = DatabaseConfig.Get<string>("UpdatePromptTiming", "OnExit", connection);
+			if (updatePromptTiming == "OnLaunch")
+			{
+				DatabaseConfig.Set<string>("UpdateMode", "PromptApplyImmediately", connection);
+			}
+
+			try
+			{
+				if (Directory.Exists(Utilities.UpdatesFolder))
+				{
+					Directory.Delete(Utilities.UpdatesFolder, true);
+				}
+			}
+			catch
+			{
+				// Eat exception, not critical that these are cleaned up
+			}
+		}
+
+#pragma warning restore CS0618 // Type or member is obsolete
 
 		private static void UpgradeEncodingProfiles(int databaseVersion)
 		{
@@ -314,10 +332,10 @@ namespace VidCoder.Model
 
 			// Upgrade encoding profiles on old queue items.
 			Config.EnsureInitialized(Connection);
-			string jobsXml = Config.EncodeJobs2;
-			if (!string.IsNullOrEmpty(jobsXml))
+			string jobsJson = Config.EncodeJobs2;
+			if (!string.IsNullOrEmpty(jobsJson))
 			{
-				IList<EncodeJobWithMetadata> jobs = EncodeJobStorage.ParseJobsJson(jobsXml);
+				IList<EncodeJobWithMetadata> jobs = EncodeJobStorage.ParseAndErrorCheckJobsJson(jobsJson);
 				foreach (EncodeJobWithMetadata job in jobs)
 				{
 					PresetStorage.UpgradeEncodingProfile(job.Job.EncodingProfile, databaseVersion);
@@ -327,11 +345,39 @@ namespace VidCoder.Model
 			}
 		}
 
-		private static void HandleCriticalFileError()
+		private static void UpgradePickers(int databaseVersion)
 		{
-			var messageService = Ioc.Get<IMessageBoxService>();
+			var pickers = PickerStorage.GetPickerListFromDb();
 
-			messageService.Show(CommonRes.FileFailureErrorMessage, CommonRes.FileFailureErrorTitle, MessageBoxButton.OK);
+			foreach (Picker picker in pickers)
+			{
+				PickerStorage.UpgradePickerUpTo37(picker, databaseVersion);
+			}
+
+			// This is a special version upgrade where we can auto-add a picker
+			if (databaseVersion < 39)
+			{
+				PickerStorage.UpgradePickersTo39(pickers);
+			}
+
+			foreach (Picker picker in pickers)
+			{
+				PickerStorage.UpgradePicker(picker, databaseVersion);
+
+				// As a precaution, null out the extension data. This doesn't work with our cloning library and is only needed for JSON deserialization.
+				picker.ExtensionData = null;
+			}
+
+			var pickerJsonList = pickers.Select(PickerStorage.SerializePicker).ToList();
+
+			PickerStorage.SavePickers(pickerJsonList, Connection);
+		}
+
+		private static void HandleCriticalFileError(Exception exception)
+		{
+			var messageService = StaticResolver.Resolve<IMessageBoxService>();
+
+			messageService.Show(CommonRes.FileFailureErrorMessage + Environment.NewLine + Environment.NewLine + exception.ToString(), CommonRes.FileFailureErrorTitle, MessageBoxButton.OK);
 			Environment.Exit(1);
 		}
 
@@ -350,7 +396,7 @@ namespace VidCoder.Model
 
 		private static string GetDatabaseFilePath()
 		{
-			if (Utilities.IsPortable)
+			if (Utilities.InstallType == VidCoderInstallType.Portable)
 			{
 				string portableExeFolder = GetPortableExeFolder();
 				if (FileUtilities.HasWriteAccessOnFolder(portableExeFolder))
@@ -393,7 +439,7 @@ namespace VidCoder.Model
 		/// <returns></returns>
 		private static string GetPortableExeFolder()
 		{
-			if (!Utilities.IsPortable)
+			if (Utilities.InstallType != VidCoderInstallType.Portable)
 			{
 				throw new InvalidOperationException("Called GetPortableExeFolder on a non-portable install.");
 			}
@@ -410,7 +456,7 @@ namespace VidCoder.Model
 		{
 			get
 			{
-				string appDataFolder = Utilities.AppFolder;
+				string appDataFolder = CommonUtilities.AppFolder;
 
 				if (!Directory.Exists(appDataFolder))
 				{
@@ -465,18 +511,24 @@ namespace VidCoder.Model
 
 		public static SQLiteConnection CreateConnection()
 		{
-			if (!Directory.Exists(Utilities.AppFolder))
+			if (!Directory.Exists(CommonUtilities.AppFolder))
 			{
-				if (Utilities.Beta && Directory.Exists(Utilities.GetAppFolder(beta: false)))
+				if (CommonUtilities.Beta && Directory.Exists(CommonUtilities.GetAppFolder(beta: false)))
 				{
 					// In beta mode if we don't have the appdata folder copy the stable appdata folder
-					FileUtilities.CopyDirectory(
-						Utilities.GetAppFolder(beta: false),
-						Utilities.GetAppFolder(beta: true));
+					try
+					{
+						FileUtilities.CopyDirectory(
+							CommonUtilities.GetAppFolder(beta: false),
+							CommonUtilities.GetAppFolder(beta: true));
+					}
+					catch (Exception)
+					{
+					}
 				}
 				else
 				{
-					Directory.CreateDirectory(Utilities.AppFolder);
+					Directory.CreateDirectory(CommonUtilities.AppFolder);
 				}
 			}
 
@@ -489,7 +541,7 @@ namespace VidCoder.Model
 			{
 				CreateTables(newConnection);
 
-				var settingsList = new Dictionary<string, string> {{"Version", Utilities.CurrentDatabaseVersion.ToString(CultureInfo.InvariantCulture)}};
+				var settingsList = new Dictionary<string, string> { { "Version", Utilities.CurrentDatabaseVersion.ToString(CultureInfo.InvariantCulture) } };
 				AddSettingsList(newConnection, settingsList);
 			}
 
@@ -498,22 +550,31 @@ namespace VidCoder.Model
 
 		public static void CreateTables(SQLiteConnection connection)
 		{
-			ExecuteNonQuery("CREATE TABLE presetsJson (" +
+			ExecuteNonQuery(
+				"CREATE TABLE presetsJson (" +
 				"json TEXT)", connection);
 
-			ExecuteNonQuery("CREATE TABLE pickersJson (" +
+			ExecuteNonQuery(
+				"CREATE TABLE presetFolders (" +
+				"id INTEGER PRIMARY KEY AUTOINCREMENT," +
+				"name TEXT, " +
+				"parentId INTEGER, " +
+				"isExpanded INTEGER)", connection);
+
+			ExecuteNonQuery(
+				"CREATE TABLE pickersJson (" +
 				"json TEXT)", connection);
 
 			ExecuteNonQuery(
 				"CREATE TABLE settings (" +
-				"name TEXT, " +
+				"name TEXT PRIMARY KEY, " +
 				"value TEXT)", connection);
 
 			ExecuteNonQuery(
 				"CREATE TABLE workerLogs (" +
 				"workerGuid TEXT, " +
 				"message TEXT, " +
-				"level INTEGER, " + 
+				"level INTEGER, " +
 				"time TEXT)", connection);
 		}
 

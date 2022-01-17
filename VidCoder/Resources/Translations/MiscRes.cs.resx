@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Přidat</value>
@@ -153,9 +153,7 @@
   <data name="FileConflictWarning" xml:space="preserve">
     <value>Soubor již existuje v {0}. Chcete soubor přepsat, automaticky najít novou výstupní cestu pro enkódování a nebo operaci zrušit?</value>
   </data>
-  <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Úloha fronty již má výstupní cestu na {0}. Chcete soubor přepsat, automaticky najít novou výstupní cestu pro enkódování a nebo operaci zrušit?</value>
-  </data>
+  
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Sloupce fronty</value>
   </data>
@@ -170,12 +168,6 @@
   </data>
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Načítání...</value>
-  </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Podařilo se</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder byl úspěšně aktualizován.</value>
   </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>O programu VidCoder</value>
@@ -192,18 +184,12 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder vývojový tým</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Název</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
-  </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Pojmenovat přednastavení</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
+  <data name="ChooseNamePreset" xml:space="preserve">
     <value>Zvolte název pro přednastavení:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
@@ -245,10 +231,22 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Enkódování bylo dokončeno.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Nelze najít video přehrávač pro {0}.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Při přehrávání zdroje došlo k chybě.</value>
   </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>Systém přejde do hibernace během {0} sekund.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Bezprostředně dojde k hibernaci</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Zvolte název pro selektor:</value>
+  </data>
+  
+  
+  
 </root>

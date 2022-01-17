@@ -1,25 +1,20 @@
 ﻿using System;
+using System.IO;
+using System.Reactive;
 using System.Text;
 using System.Windows.Input;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Model;
+using VidCoder.Resources;
 using VidCoder.Services;
 
 namespace VidCoder.ViewModel
 {
 	public class LogWindowViewModel : ReactiveObject
 	{
-		private MainViewModel mainViewModel = Ioc.Get<MainViewModel>();
-		private ILogger logger = Ioc.Get<ILogger>();
-
-		public LogWindowViewModel()
-		{
-			this.ClearLog = ReactiveCommand.Create();
-			this.ClearLog.Subscribe(_ => this.ClearLogImpl());
-
-			this.Copy = ReactiveCommand.Create();
-			this.Copy.Subscribe(_ => this.CopyImpl());
-		}
+		private MainViewModel mainViewModel = StaticResolver.Resolve<MainViewModel>();
+		private IAppLogger generalLogger = StaticResolver.Resolve<IAppLogger>();
 
 		public MainViewModel MainViewModel
 		{
@@ -29,25 +24,43 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public ReactiveCommand<object> ClearLog { get; }
-		private void ClearLogImpl()
+		public LogCoordinator LogCoordinator { get; } = StaticResolver.Resolve<LogCoordinator>();
+
+		private ReactiveCommand<Unit, Unit> copy;
+		public ICommand Copy
 		{
-			this.logger.ClearLog();
+			get
+			{
+				return this.copy ?? (this.copy = ReactiveCommand.Create(() =>
+				{
+					try
+					{
+						var selectedLogger = this.LogCoordinator.SelectedLog.Logger;
+						string logContents = GetLogContents(selectedLogger);
+						StaticResolver.Resolve<ClipboardService>().SetText(logContents);
+					}
+					catch (Exception exception)
+					{
+						this.generalLogger.LogError("Could not copy text." + Environment.NewLine + exception);
+					}
+				}));
+			}
 		}
 
-		public ReactiveCommand<object> Copy { get; }
-		private void CopyImpl()
+		private static string GetLogContents(IAppLogger fileLogger)
 		{
-			lock (this.logger.LogLock)
+			lock (fileLogger.LogLock)
 			{
-				var logTextBuilder = new StringBuilder();
+				fileLogger.SuspendWriter();
 
-				foreach (LogEntry entry in this.logger.LogEntries)
+				try
 				{
-					logTextBuilder.AppendLine(entry.Text);
+					return File.ReadAllText(fileLogger.LogPath);
 				}
-
-				Ioc.Get<ClipboardService>().SetText(logTextBuilder.ToString());
+				finally
+				{
+					fileLogger.ResumeWriter();
+				}
 			}
 		}
 	}

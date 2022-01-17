@@ -1,9 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using VidCoder.Resources;
 
 namespace VidCoder.Controls
 {
@@ -18,8 +22,10 @@ namespace VidCoder.Controls
 
 		private string noneCaption;
 		private bool hasFocus;
-		private DateTime lastFocusMouseDown;
-		private bool suppressRefresh;
+		private DateTimeOffset lastFocusMouseDown;
+		private bool suppressRefreshFromNumberChange;
+		private bool suppressUpdateFromTextChange;
+		private readonly char decimalSeparator = Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator[0];
 
 		public NumberBox()
 		{
@@ -28,7 +34,43 @@ namespace VidCoder.Controls
 			this.ShowIncrementButtons = true;
 			this.SelectAllOnClick = true;
 
-			InitializeComponent();
+			this.InitializeComponent();
+
+			var automationNameDescriptor = DependencyPropertyDescriptor.FromProperty(AutomationProperties.NameProperty, typeof(NumberBox));
+			automationNameDescriptor.AddValueChanged(this, (sender, args) =>
+			{
+				string newName = (string)this.GetValue(AutomationProperties.NameProperty);
+
+				if (!string.IsNullOrEmpty(newName))
+				{
+					this.numberBox.SetValue(AutomationProperties.NameProperty, newName);
+
+					this.increaseButton.SetValue(AutomationProperties.NameProperty, string.Format(CultureInfo.CurrentCulture, CommonRes.NumberBoxIncreaseButtonAutomationTextFormat, newName));
+					this.decreaseButton.SetValue(AutomationProperties.NameProperty, string.Format(CultureInfo.CurrentCulture, CommonRes.NumberBoxDecreaseButtonAutomationTextFormat, newName));
+				}
+			});
+
+			var automationLabeledByDescriptor = DependencyPropertyDescriptor.FromProperty(AutomationProperties.LabeledByProperty, typeof(NumberBox));
+			automationLabeledByDescriptor.AddValueChanged(this, (sender, args) =>
+			{
+				TextBlock newLabeledBy = (TextBlock)this.GetValue(AutomationProperties.LabeledByProperty);
+
+				if (newLabeledBy != null)
+				{
+					this.numberBox.SetValue(AutomationProperties.LabeledByProperty, newLabeledBy);
+				}
+			});
+
+			var automationHelpTextDescriptor = DependencyPropertyDescriptor.FromProperty(AutomationProperties.HelpTextProperty, typeof(NumberBox));
+			automationHelpTextDescriptor.AddValueChanged(this, (sender, args) =>
+			{
+				string newName = (string)this.GetValue(AutomationProperties.HelpTextProperty);
+
+				if (!string.IsNullOrEmpty(newName))
+				{
+					this.numberBox.SetValue(AutomationProperties.HelpTextProperty, newName);
+				}
+			});
 
 			this.RefreshNumberBox();
 		}
@@ -176,7 +218,7 @@ namespace VidCoder.Controls
 			{
 				var numBox = dependencyObject as NumberBox;
 
-				if (!numBox.suppressRefresh)
+				if (!numBox.suppressRefreshFromNumberChange)
 				{
 					numBox.RefreshNumberBox();
 				}
@@ -208,6 +250,7 @@ namespace VidCoder.Controls
 
 		private void RefreshNumberBox()
 		{
+			this.suppressUpdateFromTextChange = true;
 			if (this.AllowEmpty && this.Number == 0)
 			{
 				this.numberBox.Text = this.hasFocus ? string.Empty : this.NoneCaption;
@@ -217,6 +260,8 @@ namespace VidCoder.Controls
 				this.numberBox.Text = this.Number.ToString();
 			}
 
+			this.suppressUpdateFromTextChange = false;
+
 			this.RefreshNumberBoxColor();
 		}
 
@@ -224,7 +269,7 @@ namespace VidCoder.Controls
 		{
 			if (this.numberBox.Text == this.NoneCaption)
 			{
-				this.numberBox.Foreground = new SolidColorBrush(Colors.Gray);
+				this.numberBox.Foreground = SystemColors.GrayTextBrush;
 			}
 			else
 			{
@@ -234,7 +279,7 @@ namespace VidCoder.Controls
 				}
 				else
 				{
-					this.numberBox.Foreground = new SolidColorBrush(Colors.Black);
+					this.numberBox.SetResourceReference(Control.ForegroundProperty, "ControlTextBrush");
 				}
 			}
 		}
@@ -247,10 +292,7 @@ namespace VidCoder.Controls
 
 		private void UpButtonMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			if (this.refireControl != null)
-			{
-				this.refireControl.Stop();
-			}
+			this.refireControl?.Stop();
 		}
 
 		private void DownButtonMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -261,10 +303,7 @@ namespace VidCoder.Controls
 
 		private void DownButtonMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			if (this.refireControl != null)
-			{
-				this.refireControl.Stop();
-			}
+			this.refireControl?.Stop();
 		}
 
 		private void IncrementNumber()
@@ -338,7 +377,7 @@ namespace VidCoder.Controls
 				}
 				else
 				{
-					this.numberBox.Foreground = new SolidColorBrush(Colors.Black);
+					this.numberBox.SetResourceReference(Control.ForegroundProperty, "ControlTextBrush");
 				}
 			}
 		}
@@ -362,7 +401,7 @@ namespace VidCoder.Controls
 		{
 			foreach (char c in e.Text)
 			{
-				if (!char.IsNumber(c) && c != '.' && (this.Minimum >= 0 || c != '-'))
+				if (!char.IsNumber(c) && c != decimalSeparator && (this.Minimum >= 0 || c != '-'))
 				{
 					e.Handled = true;
 					return;
@@ -376,20 +415,28 @@ namespace VidCoder.Controls
 			{
 				e.Handled = true;
 			}
+			else if (e.Key == Key.Up)
+			{
+				this.IncrementNumber();
+			}
+			else if (e.Key == Key.Down)
+			{
+				this.DecrementNumber();
+			}
 		}
 
 		private void NumberBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (!this.hasFocus)
 			{
-				this.lastFocusMouseDown = DateTime.Now;
+				this.lastFocusMouseDown = DateTimeOffset.UtcNow;
 			}
 		}
 
 		private void NumberBoxPreviewMouseUp(object sender, MouseButtonEventArgs e)
 		{
 			// If this mouse up is soon enough after an initial click on the box, select all.
-			if (this.SelectAllOnClick && DateTime.Now - this.lastFocusMouseDown < SelectAllThreshold)
+			if (this.SelectAllOnClick && DateTimeOffset.UtcNow - this.lastFocusMouseDown < SelectAllThreshold)
 			{
 				this.Dispatcher.BeginInvoke(new Action(() => this.numberBox.SelectAll()));
 			}
@@ -397,6 +444,11 @@ namespace VidCoder.Controls
 
 		private void NumberBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
+			if (this.suppressUpdateFromTextChange)
+			{
+				return;
+			}
+
 			if (this.UpdateBindingOnTextChange)
 			{
 				if (this.AllowEmpty && this.numberBox.Text == string.Empty)
@@ -426,9 +478,9 @@ namespace VidCoder.Controls
 					if (newNumber != this.Number)
 					{
 						// While updating the binding we don't need to react to the change.
-						this.suppressRefresh = true;
+						this.suppressRefreshFromNumberChange = true;
 						this.Number = newNumber;
-						this.suppressRefresh = false;
+						this.suppressRefreshFromNumberChange = false;
 					}
 				}
 			}

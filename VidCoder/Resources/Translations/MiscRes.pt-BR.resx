@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Adicionar</value>
@@ -154,7 +154,7 @@
     <value>Já existe um arquivo em {0}. Deseja substituir o arquivo, renomear automaticamente ou cancelar a operação?</value>
   </data>
   <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Já existe uma tarefa com um caminho de saída em {0}. Deseja substituir o arquivo, renomear automaticamente  ou cancelar a operação?</value>
+    <value>Já existe uma tarefa na fila de saída em {0}. Deseja substituir a tarefa, procurar automaticamente um novo caminho para ela ou cancelar a operação?</value>
   </data>
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Colunas da lista de Tarefas</value>
@@ -171,12 +171,6 @@
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Verificando...</value>
   </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Êxito</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>O VidCoder foi atualizado com sucesso.</value>
-  </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>Sobre o VidCoder</value>
   </data>
@@ -192,19 +186,16 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} Programadores VidCoder</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0} Beta</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Nome</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Nome do pré-ajuste</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
-    <value>Escolha um nome para o pré-ajuste:</value>
+  <data name="ChooseNamePreset" xml:space="preserve">
+    <value>Escolha um nome para a predefinição:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
     <value>Instalar atualização?</value>
@@ -245,10 +236,28 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Codificação concluída.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Não foi possível encontrar o player de vídeo para {0}.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Erro ao reproduzir arquivo.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>O sistema irá hibernar em {0} segundos.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Hibernação iminente</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Escolha um nome para o seletor:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>O programa precisa ser fechado, mas o erro será automaticamente reportado.</value>
+  </data>
+  <data name="DownloadInstallerButton" xml:space="preserve">
+    <value>Baixar o instalador</value>
+  </data>
+  <data name="ReplaceJobButton" xml:space="preserve">
+    <value>Substituir tarefa</value>
   </data>
 </root>

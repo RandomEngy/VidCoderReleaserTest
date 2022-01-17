@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Model.WindowPlacer;
 using VidCoder.Resources;
 using VidCoder.ViewModel;
+using VidCoderCommon.Model;
 
 namespace VidCoder.Services.Windows
 {
@@ -29,7 +37,18 @@ namespace VidCoder.Services.Windows
 				new WindowDefinition
 				{
 					ViewModelType = typeof(MainViewModel), 
-					PlacementConfigKey = "MainWindowPlacement"
+					PlacementConfigKey = "MainWindowPlacement",
+					InitialSizeOverride = () =>
+					{
+						Rect workArea = SystemParameters.WorkArea;
+
+						double fillHeight = workArea.Height - 500;
+						double minHeight = 548;
+
+						double desiredHeight = Math.Max(fillHeight, minHeight);
+
+						return new Size(0, desiredHeight);
+					}
 				},
 
 				new WindowDefinition
@@ -80,13 +99,7 @@ namespace VidCoder.Services.Windows
 					PlacementConfigKey = "EncodeDetailsWindowPlacement",
 					IsOpenConfigKey = "EncodeDetailsWindowOpen", 
 					MenuLabel = MainRes.EncodeDetailsMenuItem,
-					CanOpen = () => Ioc.Get<ProcessingService>().WhenAnyValue(x => x.Encoding)
-				},
-
-				new WindowDefinition
-				{
-					ViewModelType = typeof(SubtitleDialogViewModel),
-					PlacementConfigKey = "SubtitlesDialogPlacement"
+					CanOpen = () => StaticResolver.Resolve<ProcessingService>().WhenAnyValue(x => x.Encoding)
 				},
 
 				new WindowDefinition
@@ -94,11 +107,19 @@ namespace VidCoder.Services.Windows
 					ViewModelType = typeof(ChapterMarkersDialogViewModel),
 					PlacementConfigKey = "ChapterMarkersDialogPlacement"
 				},
+
 				new WindowDefinition
 				{
 					ViewModelType = typeof(QueueTitlesWindowViewModel),
 					PlacementConfigKey = "QueueTitlesDialogPlacement2"
 				},
+
+				new WindowDefinition
+				{
+					ViewModelType = typeof(CompareWindowViewModel),
+					PlacementConfigKey = "CompareWindowPlacement"
+				},
+
 				new WindowDefinition
 				{
 					ViewModelType = typeof(AddAutoPauseProcessDialogViewModel),
@@ -135,7 +156,8 @@ namespace VidCoder.Services.Windows
 		/// </summary>
 		/// <param name="viewModel">The window's viewmodel.</param>
 		/// <param name="ownerViewModel">The viewmodel of the owner window.</param>
-		public void OpenWindow(object viewModel, object ownerViewModel = null)
+		/// <param name="userInitiated">True if the user explicitly opened the window.</param>
+		public Window OpenWindow(object viewModel, object ownerViewModel = null, bool userInitiated = true)
 		{
 			if (viewModel.GetType() == MainViewModelType)
 			{
@@ -146,8 +168,9 @@ namespace VidCoder.Services.Windows
 				ownerViewModel = this.mainViewModel;
 			}
 
-			Window windowToOpen = this.PrepareWindowForOpen(viewModel, ownerViewModel, userInitiated: true, isDialog: false);
+			Window windowToOpen = this.PrepareWindowForOpen(viewModel, ownerViewModel, userInitiated, isDialog: false);
 			windowToOpen.Show();
+			return windowToOpen;
 		}
 
 		/// <summary>
@@ -172,8 +195,9 @@ namespace VidCoder.Services.Windows
 		/// <typeparam name="T">The type of the viewmodel.</typeparam>
 		/// <param name="ownerViewModel">The viewmodel of the owner window.</param>
 		public void OpenDialog<T>(object ownerViewModel = null)
+			where T : class
 		{
-			this.OpenDialog(Ioc.Get<T>(), ownerViewModel);
+			this.OpenDialog(StaticResolver.Resolve<T>(), ownerViewModel);
 		}
 
 		/// <summary>
@@ -199,7 +223,7 @@ namespace VidCoder.Services.Windows
 
 				if (canOpen && Config.Get<bool>(definition.IsOpenConfigKey))
 				{
-					this.OpenWindow(Ioc.Get(definition.ViewModelType));
+					this.OpenWindow(StaticResolver.Resolve(definition.ViewModelType), userInitiated: false);
 					windowOpened = true;
 				}
 			}
@@ -242,7 +266,7 @@ namespace VidCoder.Services.Windows
 
 			if (viewModel == null)
 			{
-				viewModel = Ioc.Get(viewModelType);
+				viewModel = StaticResolver.Resolve(viewModelType);
 				if (ownerViewModel == null)
 				{
 					ownerViewModel = this.mainViewModel;
@@ -255,6 +279,35 @@ namespace VidCoder.Services.Windows
 			{
 				this.Focus(viewModel);
 			}
+		}
+
+		/// <summary>
+		/// Opens or focuses the viewmodel type's window.
+		/// </summary>
+		/// <typeparam name="T">The type of the window viewmodel.</typeparam>
+		/// <param name="ownerViewModel">The owner view model (main view model).</param>
+		/// <returns>The opened viewmodel.</returns>
+		public T OpenOrFocusWindow<T>(object ownerViewModel = null) where T : class
+		{
+			T viewModel = this.FindOpenWindowViewModel(typeof(T)) as T;
+
+			if (viewModel == null)
+			{
+				viewModel = StaticResolver.Resolve<T>();
+				if (ownerViewModel == null)
+				{
+					ownerViewModel = this.mainViewModel;
+				}
+
+				Window window = this.PrepareWindowForOpen(viewModel, ownerViewModel, userInitiated: true, isDialog: false);
+				window.Show();
+			}
+			else
+			{
+				this.Focus(viewModel);
+			}
+
+			return viewModel;
 		}
 
 		/// <summary>
@@ -271,10 +324,16 @@ namespace VidCoder.Services.Windows
 		/// Gets the view for the given viewmodel.
 		/// </summary>
 		/// <param name="viewModel">The viewmodel.</param>
-		/// <returns>The view for the given viewmodel.</returns>
+		/// <returns>The view for the given viewmodel, or null if the window could not be found.</returns>
 		public Window GetView(object viewModel)
 		{
-			return this.openWindows[viewModel];
+			Window window;
+			if (this.openWindows.TryGetValue(viewModel, out window))
+			{
+				return window;
+			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -285,12 +344,11 @@ namespace VidCoder.Services.Windows
 		/// <returns>The command.</returns>
 		public ICommand CreateOpenCommand(Type viewModelType, bool openAsDialog = false)
 		{
-			var command = ReactiveCommand.Create();
-			command.Subscribe(_ =>
+			var command = ReactiveCommand.Create(() =>
 			{
 				if (openAsDialog)
 				{
-					this.OpenDialog(Ioc.Get(viewModelType));
+					this.OpenDialog(StaticResolver.Resolve(viewModelType));
 				}
 				else
 				{
@@ -375,6 +433,28 @@ namespace VidCoder.Services.Windows
 		}
 
 		/// <summary>
+		/// Suspends the AllowDrop property on all windows (used when a smaller drag/drop operation is starting).
+		/// </summary>
+		public void SuspendDropOnWindows()
+		{
+			foreach (Window window in this.openWindows.Values)
+			{
+				window.AllowDrop = false;
+			}
+		}
+
+		/// <summary>
+		/// Resumes the AllowDrop property on all windows (used when a smaller drag/drop operation is finished).
+		/// </summary>
+		public void ResumeDropOnWindows()
+		{
+			foreach (Window window in this.openWindows.Values)
+			{
+				window.AllowDrop = true;
+			}
+		}
+
+		/// <summary>
 		/// Prepares a window for opening.
 		/// </summary>
 		/// <param name="viewModel">The window viewmodel to use.</param>
@@ -392,13 +472,22 @@ namespace VidCoder.Services.Windows
 				windowToOpen.Owner = this.openWindows[ownerViewModel];
 			}
 
+			if (LanguageUtilities.ShouldBeRightToLeft)
+			{
+				windowToOpen.FlowDirection = FlowDirection.RightToLeft;
+			}
+
 			windowToOpen.DataContext = viewModel;
 			windowToOpen.Closing += this.OnClosingHandler;
 
 			WindowDefinition windowDefinition = GetWindowDefinition(viewModel);
-			if (windowDefinition != null && !windowDefinition.ManualPlacementRestore && windowDefinition.PlacementConfigKey != null)
+			windowToOpen.SourceInitialized += (o, e) =>
 			{
-				windowToOpen.SourceInitialized += (o, e) =>
+				// Add hook for WndProc messages
+				((HwndSource)PresentationSource.FromVisual(windowToOpen)).AddHook(WindowPlacement.HookProc);
+
+				// Restore placement
+				if (windowDefinition != null && !windowDefinition.ManualPlacementRestore && windowDefinition.PlacementConfigKey != null)
 				{
 					string placementJson = Config.Get<string>(windowDefinition.PlacementConfigKey);
 					if (isDialog)
@@ -407,36 +496,81 @@ namespace VidCoder.Services.Windows
 					}
 					else
 					{
+						if (windowDefinition.InitialSizeOverride != null && string.IsNullOrEmpty(placementJson))
+						{
+							Size? initialSizeOverride = windowDefinition.InitialSizeOverride();
+							if (initialSizeOverride.Value.Width > 0)
+							{
+								windowToOpen.Width = initialSizeOverride.Value.Width;
+							}
+
+							if (initialSizeOverride.Value.Height > 0)
+							{
+								windowToOpen.Height = initialSizeOverride.Value.Height;
+							}
+						}
+
 						windowToOpen.PlaceDynamic(placementJson);
 					}
-				};
-			}
+				}
+			};
 
 			this.openWindows.Add(viewModel, windowToOpen);
 
 			if (userInitiated)
 			{
-				if (windowDefinition != null)
+				if (windowDefinition?.IsOpenConfigKey != null)
 				{
-					if (windowDefinition.IsOpenConfigKey != null)
-					{
-						Config.Set(windowDefinition.IsOpenConfigKey, true);
-					}
+					Config.Set(windowDefinition.IsOpenConfigKey, true);
 				}
 			}
 
-			var localWindowOpened = this.WindowOpened;
-			if (localWindowOpened != null)
-			{
-				localWindowOpened(this, new EventArgs<Type>(viewModel.GetType()));
-			}
+			this.WindowOpened?.Invoke(this, new EventArgs<Type>(viewModel.GetType()));
 
 			if (!isDialog)
 			{
 				windowToOpen.RegisterGlobalHotkeys();
+				windowToOpen.AllowDrop = true;
+				windowToOpen.PreviewDragOver += OnPreviewDragOver;
+				windowToOpen.PreviewDrop += OnPreviewDrop;
 			}
 
 			return windowToOpen;
+		}
+
+		private static void OnPreviewDragOver(object sender, DragEventArgs dragEventArgs)
+		{
+			if (StaticResolver.Resolve<MainViewModel>().VideoSourceState == VideoSourceState.Scanning)
+			{
+				var data = dragEventArgs.Data as DataObject;
+				if (data != null)
+				{
+					dragEventArgs.Effects = DragDropEffects.None;
+					dragEventArgs.Handled = true;
+				}
+
+				return;
+			}
+
+			Utilities.SetDragIcon(dragEventArgs);
+		}
+
+		private static void OnPreviewDrop(object sender, DragEventArgs dragEventArgs)
+		{
+			if (StaticResolver.Resolve<MainViewModel>().VideoSourceState == VideoSourceState.Scanning)
+			{
+				return;
+			}
+
+			var data = dragEventArgs.Data as DataObject;
+			if (data != null && data.ContainsFileDropList())
+			{
+				StringCollection itemList = data.GetFileDropList();
+				var listView = dragEventArgs.Source as ListView;
+				bool alwaysQueue = listView?.Name == "queueView";
+
+				StaticResolver.Resolve<MainViewModel>().HandlePaths(itemList.Cast<string>().ToList(), alwaysQueue);
+			}
 		}
 
 		/// <summary>
@@ -456,7 +590,10 @@ namespace VidCoder.Services.Windows
 			if (!userInitiated)
 			{
 				window.Closing -= this.OnClosingHandler;
-				this.OnClosing(window, userInitiated: false);
+				if (!this.OnClosing(window, userInitiated: false))
+				{
+					return;
+				}
 			}
 
 			window.Close();
@@ -472,7 +609,10 @@ namespace VidCoder.Services.Windows
 		private void OnClosingHandler(object sender, CancelEventArgs e)
 		{
 			var closingWindow = (Window)sender;
-			this.OnClosing(closingWindow, userInitiated: true);
+			if (!this.OnClosing(closingWindow, userInitiated: true))
+			{
+				e.Cancel = true;
+			}
 		}
 
 		/// <summary>
@@ -481,14 +621,17 @@ namespace VidCoder.Services.Windows
 		/// <param name="window">The window.</param>
 		/// <param name="userInitiated">True if the close was initated by the user, false if this
 		/// was initiated by the system as part of app shutdown.</param>
-		private void OnClosing(Window window, bool userInitiated)
+		/// <returns>True if the window closed, false if it was stopped by the user.</returns>
+		private bool OnClosing(Window window, bool userInitiated)
 		{
 			object viewModel = window.DataContext;
 			var closableWindow = viewModel as IClosableWindow;
 			if (closableWindow != null)
 			{
-				var dialogVM = closableWindow;
-				dialogVM.OnClosing();
+				if (!closableWindow.OnClosing())
+				{
+					return false;
+				}
 			}
 
 			WindowDefinition windowDefinition = GetWindowDefinition(viewModel);
@@ -507,16 +650,14 @@ namespace VidCoder.Services.Windows
 
 			this.openWindows.Remove(viewModel);
 
-			if (userInitiated && window.Owner != null)
+			if (userInitiated)
 			{
-				window.Owner.Activate();
+				window.Owner?.Activate();
 			}
 
-			var localWindowClosed = this.WindowClosed;
-			if (localWindowClosed != null)
-			{
-				localWindowClosed(this, new EventArgs<Type>(viewModel.GetType()));
-			}
+			this.WindowClosed?.Invoke(this, new EventArgs<Type>(viewModel.GetType()));
+
+			return true;
 		}
 
 		/// <summary>
@@ -554,6 +695,12 @@ namespace VidCoder.Services.Windows
 		private static Window CreateWindow(Type viewModelType)
 		{
 			string typeName = viewModelType.Name;
+			int backTickIndex = typeName.IndexOf('`');
+			if (backTickIndex > 0)
+			{
+				typeName = typeName.Substring(0, backTickIndex);
+			}
+
 			string baseName;
 			string suffix;
 

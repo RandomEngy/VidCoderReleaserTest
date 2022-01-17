@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>添加</value>
@@ -124,22 +124,22 @@
     <value>刷新</value>
   </data>
   <data name="ChooseFromProcessesLabel" xml:space="preserve">
-    <value>从现有的处理程序中选择：</value>
+    <value>从现有进程中选取：</value>
   </data>
   <data name="AddAutoPauseProcessDialogTitle" xml:space="preserve">
-    <value>添加自动暂停处理程序</value>
+    <value>添加自动暂停进程</value>
   </data>
   <data name="ProcessNameLabel" xml:space="preserve">
     <value>进程名称：</value>
   </data>
   <data name="ExceptionDialogMainText" xml:space="preserve">
-    <value>VidCoder 遇到意外的错误</value>
+    <value>VidCoder 发生意外错误。</value>
   </data>
   <data name="ExceptionDialogSubText" xml:space="preserve">
     <value>请发送出错误报告以便开发者修正。</value>
   </data>
   <data name="ExceptionWindowTitle" xml:space="preserve">
-    <value>异常</value>
+    <value>例外</value>
   </data>
   <data name="FileConflictDialogTitle" xml:space="preserve">
     <value>文件冲突</value>
@@ -151,66 +151,55 @@
     <value>自动重命名</value>
   </data>
   <data name="FileConflictWarning" xml:space="preserve">
-    <value>{0} 已有同名文件，您想要覆盖该文件、自动改变输出路径，还是取消编码作业?</value>
+    <value>{0} 已有同名文件，您想要覆盖该文件、自动变更编码作业输出路径，还是取消操作?</value>
   </data>
-  <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>队列中的作业在 {0} 已有同名的输出文件。你想要覆盖文件、 自动改变输出路径或取消操作？</value>
-  </data>
+  
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
-    <value>队列字段</value>
+    <value>队列栏目</value>
   </data>
   <data name="QueueColumnsDialogHeaderText" xml:space="preserve">
-    <value>拖动以新增、移除或移动字段。</value>
+    <value>拖拽以新增、移除或重排字段。</value>
   </data>
   <data name="UnusedColumns" xml:space="preserve">
     <value>未使用的列</value>
   </data>
   <data name="UsedColumns" xml:space="preserve">
-    <value>使用的列</value>
+    <value>已使用列</value>
   </data>
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>正在扫描...</value>
-  </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>成功</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder 已被成功更新。</value>
   </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>关于 VidCoder</value>
   </data>
   <data name="LicenseLabel" xml:space="preserve">
-    <value>授权</value>
+    <value>许可：</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>版本</value>
   </data>
   <data name="BasedOnHandBrake" xml:space="preserve">
-    <value>基于手动 ({0})</value>
+    <value>基于 HandBrake ({0})</value>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder 开发人员</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0} Beta</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>名称</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>命名预设值</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
-    <value>选择预设值的名称：</value>
+  <data name="ChooseNamePreset" xml:space="preserve">
+    <value>为预设取名：</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
-    <value>应用更新吗？</value>
+    <value>应用更新？</value>
   </data>
   <data name="ApplyUpdateDialogMessage" xml:space="preserve">
-    <value>更新文件已下载完成。您想要现在应用更新吗？</value>
+    <value>更新文件已下载。您想要现在应用更新吗？</value>
   </data>
   <data name="ViewFullChangelog" xml:space="preserve">
     <value>查看完整的更新日志</value>
@@ -222,10 +211,10 @@
     <value>通知</value>
   </data>
   <data name="UnsupportedOSError" xml:space="preserve">
-    <value>VidCoder 不支持您的操作系统。Windows XP 和 2003 服务器将不再支持。请安装 VidCoder 1.4 或升级您的操作系统。</value>
+    <value>VidCoder 不支持您的操作系统。不再支持 Windows XP 和 Server 2003。请安装 VidCoder 1.4 或升级您的操作系统。</value>
   </data>
   <data name="EncodeCompleteWarning_SleepTitle" xml:space="preserve">
-    <value>立即休眠</value>
+    <value>立即睡眠</value>
   </data>
   <data name="EncodeCompleteWarning_LogOffTitle" xml:space="preserve">
     <value>立即注销</value>
@@ -234,17 +223,35 @@
     <value>立即关机</value>
   </data>
   <data name="EncodeCompleteWarning_SleepMessage" xml:space="preserve">
-    <value>该系统将在 {0} 秒后休眠</value>
+    <value>系统将在 {0} 秒后睡眠。</value>
   </data>
   <data name="EncodeCompleteWarning_LogOffMessage" xml:space="preserve">
-    <value>您将被注销在 {0} 秒后。</value>
+    <value>您将在 {0} 秒后注销。</value>
   </data>
   <data name="EncodeCompleteWarning_ShutdownMessage" xml:space="preserve">
     <value>系统将在 {0} 秒后关闭。</value>
   </data>
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
-    <value>编码已完成。</value>
+    <value>编码完成。</value>
   </data>
-	
-	
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+    <value>找不到 {0} 的视频播放器。</value>
+  </data>
+  <data name="ErrorPlayingSource" xml:space="preserve">
+    <value>错误播放源。</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>系统将在 {0} 秒后休眠</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>立即休眠</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>为选择器取名：</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>本程序需关闭，错误将被自动报告。</value>
+  </data>
+  
+  
 </root>

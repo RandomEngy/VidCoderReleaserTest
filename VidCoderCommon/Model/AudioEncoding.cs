@@ -1,7 +1,7 @@
-﻿namespace VidCoderCommon.Model
-{
-	using System;
+﻿using System.Collections.Generic;
 
+namespace VidCoderCommon.Model
+{
 	public class AudioEncoding
 	{
 		public AudioEncoding()
@@ -50,12 +50,6 @@
 		/// Gets or sets the mixdown.
 		/// </summary>
 		public string Mixdown { get; set; }
-
-		/// <summary>
-		/// Gets or sets the sample rate. Obsolete. Use SampleRateRaw instead.
-		/// </summary>
-		[Obsolete("This property is ignored and only exists for backwards compatibility. Use SampleRateRaw instead.")]
-		public string SampleRate { get; set; }
 
 		/// <summary>
 		/// Gets or sets the sample rate in Hz.

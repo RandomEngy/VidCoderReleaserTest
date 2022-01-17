@@ -2,43 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using PipeMethodCalls;
+using VidCoderCommon;
+using VidCoderCommon.Services;
 
 namespace VidCoderWorker
 {
-	using System.Diagnostics;
-	using System.IO;
-
-	public class WorkerLogger
+	public class WorkerLogger<TCallback> : ILogger
+		where TCallback : class, IHandBrakeWorkerCallback
 	{
-		private static object logLock = new object();
-		private static bool initialized;
+		private readonly IPipeInvoker<TCallback> callbackInvoker;
 
-		public static void Log(string message, bool isError)
+		public WorkerLogger(IPipeInvoker<TCallback> callbackInvoker)
 		{
-			lock (logLock)
+			this.callbackInvoker = callbackInvoker;
+		}
+
+		public async void Log(string message)
+		{
+			try
 			{
-				var workerLogsDirectory = Path.Combine(Path.GetTempPath(), "VidCoderWorkerLogs");
-				if (!Directory.Exists(workerLogsDirectory))
-				{
-					Directory.CreateDirectory(workerLogsDirectory);
-				}
+				await this.callbackInvoker.InvokeAsync(c => c.OnMessageLogged(message));
+			}
+			catch (Exception)
+			{
+			}
+		}
 
-				var logFileName = Path.Combine(workerLogsDirectory, Process.GetCurrentProcess().Id + ".txt");
-
-				if (!initialized)
-				{
-					if (File.Exists(logFileName))
-					{
-						File.Delete(logFileName);
-					}
-
-					initialized = true;
-				}
-
-				using (var writer = new StreamWriter(logFileName, append: true))
-				{
-					writer.WriteLine("[" + DateTimeOffset.UtcNow.ToString("o") + "] " + message);
-				}
+		public async void LogError(string message)
+		{
+			try
+			{
+				await this.callbackInvoker.InvokeAsync(c => c.OnErrorLogged(message));
+			}
+			catch (Exception)
+			{
 			}
 		}
 	}

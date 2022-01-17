@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VidCoder.Model;
 
 namespace VidCoder.ViewModel
@@ -9,6 +10,20 @@ namespace VidCoder.ViewModel
 
 		void SaveQueueColumns();
 
+		void SaveCompletedColumnWidths();
+
 		void ApplyQueueColumns();
+
+		IList<EncodeJobViewModel> SelectedJobs { get; }
+
+		void RefreshDiscMenuItems();
+
+		void ResizeAudioColumns();
+
+		double SourceAreaHeight { get; }
+
+		void RefreshSummaryMaxSizes();
+
+		void BringExternalSubtitlesIntoView();
 	}
 }

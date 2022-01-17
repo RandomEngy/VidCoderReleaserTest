@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SubtitlesWindowTitle" xml:space="preserve">
-    <value>Subtitles</value>
-  </data>
-  <data name="RemoveSubtitleTrack" xml:space="preserve">
-    <value>Remove this track</value>
-  </data>
   <data name="SubtitlesFromSourceLabel" xml:space="preserve">
     <value>Subtitles from source:</value>
   </data>
@@ -136,10 +130,10 @@
     <value>Default</value>
   </data>
   <data name="ForcedOnlyColumn" xml:space="preserve">
-    <value>Forced Only</value>
+    <value>Forced only</value>
   </data>
   <data name="BurnedInColumn" xml:space="preserve">
-    <value>Burn In</value>
+    <value>Burn in</value>
   </data>
   <data name="ExternalSubtitlesLabel" xml:space="preserve">
     <value>External subtitles:</value>
@@ -156,22 +150,29 @@
   <data name="OffsetColumn" xml:space="preserve">
     <value>Offset (ms)</value>
   </data>
-  <data name="ImportSrtButton" xml:space="preserve">
-    <value>Import .srt File...</value>
-  </data>
   <data name="BurnedOverlapWarning" xml:space="preserve">
     <value>Other subtitle tracks will overlap burned subtitles.</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Foreign Audio Search</value>
+  <data name="ForeignAudioScan" xml:space="preserve">
+    <value>Foreign audio scan</value>
   </data>
-  <data name="AddSourceNoSubtitlesToolTip" xml:space="preserve">
-    <value>No subtitles on the source video.</value>
-  </data>
-  <data name="SrtFilePickerText" xml:space="preserve">
+  <data name="SubtitleFilePickerText" xml:space="preserve">
     <value>Add subtitles file</value>
   </data>
-	<data name="DuplicateSubtitleTrack" xml:space="preserve">
-    <value>Duplicate this track</value>
+  <data name="SubtitleCharsetDetectionFailedMessage" xml:space="preserve">
+    <value>Could not detect the encoding of the subtitle file. To make sure the subtitles show up correctly, re-save the file as UTF-8.</value>
+  </data>
+  <data name="NoSubtitlesText" xml:space="preserve">
+    <value>No subtitles found on source.</value>
+  </data>
+  <data name="ExternalSubtitlesSummaryFormat" xml:space="preserve">
+    <value>{0} external</value>
+    <comment>{0} is the number of external subtitle tracks included. e.g. "5 external"</comment>
+  </data>
+  <data name="ImportSubtitleButton" xml:space="preserve">
+    <value>Import from file...</value>
+  </data>
+  <data name="FilePickerDescription" xml:space="preserve">
+    <value>Subtitle files</value>
   </data>
 </root>

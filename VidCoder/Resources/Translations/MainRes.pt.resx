@@ -112,25 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TitleLabel" xml:space="preserve">
     <value>Título:</value>
-  </data>
-  <data name="SettingsLabel" xml:space="preserve">
-    <value>Definições</value>
   </data>
   <data name="AddToQueueLabel" xml:space="preserve">
     <value>Adicionar à lista de tarefas</value>
   </data>
   <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
     <value>Adicione vários títulos à lista de tarefas...</value>
-  </data>
-  <data name="FileMenu" xml:space="preserve">
-    <value>Ficheiro</value>
   </data>
   <data name="OpenVideoFile" xml:space="preserve">
     <value>Abrir ficheiro de vídeo...</value>
@@ -141,9 +135,6 @@
   <data name="EnqueueMultipleFiles" xml:space="preserve">
     <value>Adicionar vários ficheiros à lista de tarefas...</value>
   </data>
-  <data name="EnqueueMultipleTitles" xml:space="preserve">
-    <value>Adicionar vários títulos à lista de tarefas...</value>
-  </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>Ferramentas</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="ExportPreset" xml:space="preserve">
     <value>Exportar Pré-ajustes...</value>
-  </data>
-  <data name="OptionsMenuItem" xml:space="preserve">
-    <value>Opções...</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Reproduzir</value>
@@ -168,11 +156,9 @@
   <data name="ClearCompleted" xml:space="preserve">
     <value>Eliminar concluídos</value>
   </data>
-  <data name="ExitMenuItem" xml:space="preserve">
-    <value>Sair</value>
-  </data>
   <data name="WindowsMenu" xml:space="preserve">
-    <value>Windows</value>
+    <value>Janelas</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
   </data>
   <data name="EncodingSettingsMenuItem" xml:space="preserve">
     <value>Configurações de codificação</value>
@@ -195,15 +181,6 @@
   <data name="AboutVidCoderMenuItem" xml:space="preserve">
     <value>Acerca do VidCoder...</value>
   </data>
-  <data name="ChooseVideoSourceLabel" xml:space="preserve">
-    <value>Escolha uma fonte de vídeo:</value>
-  </data>
-  <data name="SourceLabel" xml:space="preserve">
-    <value>Fonte:</value>
-  </data>
-  <data name="ScanningSourceLabel" xml:space="preserve">
-    <value>Analisando a fonte...</value>
-  </data>
   <data name="Recent" xml:space="preserve">
     <value>Recentes</value>
   </data>
@@ -212,18 +189,6 @@
   </data>
   <data name="ScanErrorLabel" xml:space="preserve">
     <value>Ocorreu um erro durante a análise.</value>
-  </data>
-  <data name="AudioLabel" xml:space="preserve">
-    <value>Áudio:</value>
-  </data>
-  <data name="VideoLabel" xml:space="preserve">
-    <value>Vídeo:</value>
-  </data>
-  <data name="SubtitlesLabel" xml:space="preserve">
-    <value>Legendas:</value>
-  </data>
-  <data name="AddTrackButton" xml:space="preserve">
-    <value>Adicionar faixa</value>
   </data>
   <data name="ChapterMarkersLabel" xml:space="preserve">
     <value>Capítulos:</value>
@@ -236,12 +201,6 @@
   </data>
   <data name="DestinationToolTip" xml:space="preserve">
     <value>Clique para alterar o destino da codificação.</value>
-  </data>
-  <data name="SelectOutputPathButton" xml:space="preserve">
-    <value>Seleccione o destino...</value>
-  </data>
-  <data name="EncodingLabel" xml:space="preserve">
-    <value>Codificação:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Parar</value>
@@ -273,14 +232,8 @@
   <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
     <value>Codificação em andamento</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Pesquisa de áudio externo</value>
-  </data>
   <data name="NoneParen" xml:space="preserve">
     <value>(Nenhum)</value>
-  </data>
-  <data name="TracksSummaryMultiple" xml:space="preserve">
-    <value>{0} pistas</value>
   </data>
   <data name="SaveChangesPresetMessage" xml:space="preserve">
     <value>Deseja guardar as alterações do pré-ajuste actual?</value>
@@ -296,9 +249,6 @@
   </data>
   <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
     <value>Restaurado a partir de lista de concluídos</value>
-  </data>
-  <data name="PresetLabel" xml:space="preserve">
-    <value>Pré-ajuste:</value>
   </data>
   <data name="DestinationColumnHeader" xml:space="preserve">
     <value>Destino</value>
@@ -342,9 +292,6 @@
   <data name="CouldNotDeleteFile" xml:space="preserve">
     <value>Não foi possível eliminar {0} {1}</value>
   </data>
-  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
-    <value>Os seguinte(s) ficheiro(s) não é/são reconhecido(s) e não foi/foram adicionado(s) à lista de tarefas: {0}</value>
-  </data>
   <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
     <value>Erro ao analizar o(s) ficheiro(s) de vídeo</value>
   </data>
@@ -354,9 +301,6 @@
   <data name="DirectoryCreateErrorMessage" xml:space="preserve">
     <value>Não foi possível criar a pasta de destino. Detalhes do erro: {0}</value>
   </data>
-  <data name="DirectoryCreateErrorTitle" xml:space="preserve">
-    <value>Erro ao criar pasta</value>
-  </data>
   <data name="EncodeCompleted" xml:space="preserve">
     <value>Codificação concluída.</value>
   </data>
@@ -365,12 +309,6 @@
   </data>
   <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
     <value>VidCoder terminou todas as tarefas de codificação.</value>
-  </data>
-  <data name="OutputFolderRequiredMessage" xml:space="preserve">
-    <value>Não é possível adicionar tarefas de codificação sem ter uma pasta de destino padrão. Pressione OK para escolher uma.</value>
-  </data>
-  <data name="OutputFolderRequiredTitle" xml:space="preserve">
-    <value>Pasta de destino padrão exigida</value>
   </data>
   <data name="OutputPathNotValidMessage" xml:space="preserve">
     <value>Pasta de destino inválida.</value>
@@ -388,46 +326,7 @@
     <value>TRE:</value>
   </data>
   <data name="WhenDoneLabel" xml:space="preserve">
-    <value>Quando terminar:</value>
-  </data>
-  <data name="Preset_AndroidTablet" xml:space="preserve">
-    <value>Tablet Android</value>
-  </data>
-  <data name="Preset_Android" xml:space="preserve">
-    <value>Android</value>
-  </data>
-  <data name="Preset_AppleiPad" xml:space="preserve">
-    <value>Apple iPad</value>
-  </data>
-  <data name="Preset_AppleiPhone4" xml:space="preserve">
-    <value>Apple iPhone 4</value>
-  </data>
-  <data name="Preset_AppleiPhoneTouch" xml:space="preserve">
-    <value>Apple iPhone/Touch</value>
-  </data>
-  <data name="Preset_AppleiPod" xml:space="preserve">
-    <value>Apple iPod</value>
-  </data>
-  <data name="Preset_AppleTV" xml:space="preserve">
-    <value>AppleTV</value>
-  </data>
-  <data name="Preset_AppleTV2" xml:space="preserve">
-    <value>AppleTV 2</value>
-  </data>
-  <data name="Preset_AppleTV3" xml:space="preserve">
-    <value>AppleTV 3</value>
-  </data>
-  <data name="Preset_Universal" xml:space="preserve">
-    <value>Universal</value>
-  </data>
-  <data name="Preset_HighProfile" xml:space="preserve">
-    <value>Perfil Alto</value>
-  </data>
-  <data name="Preset_Normal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="Preset_WindowsPhone7" xml:space="preserve">
-    <value>Windows Phone 7</value>
+    <value>Quando terminar</value>
   </data>
   <data name="SourceOption_VideoFile" xml:space="preserve">
     <value>Ficheiro de vídeo...</value>
@@ -456,14 +355,8 @@
   <data name="LaunchUrlError" xml:space="preserve">
     <value>Erro ao iniciar o URL: {0}</value>
   </data>
-  <data name="UserConfigLoadError" xml:space="preserve">
-    <value>Não foi possível carregar um ficheiro necessário com as configurações do utilizador. Pode ter-se tornado corrupto. Deseja excluí-lo? Isto não afectará os pré-ajustes já guardados.</value>
-  </data>
-  <data name="UserConfigLoadErrorTitle" xml:space="preserve">
-    <value>Erro ao ler configurações</value>
-  </data>
   <data name="PresetImportErrorMessage" xml:space="preserve">
-    <value>Não foi possível importar o pré-ajuste. Formato não reconhecido.</value>
+    <value>Falha ao importar o pré-ajuste. Verifique o relatório para obter detalhes.</value>
   </data>
   <data name="ImportErrorTitle" xml:space="preserve">
     <value>Erro na importação</value>
@@ -477,26 +370,23 @@
   <data name="ExportPresetFilePickerText" xml:space="preserve">
     <value>Exportar Pré-ajustes</value>
   </data>
-  <data name="PresetSaveConfirmMessage" xml:space="preserve">
-    <value>Deseja guardar as alterações do pré-ajuste actual?</value>
+  <data name="SaveChangesPickerMessage" xml:space="preserve">
+    <value>Deseja guardar as alterações no selector actual?</value>
   </data>
-  <data name="PresetSaveConfirmTitle" xml:space="preserve">
-    <value>Guardar pré-ajuste actual?</value>
+  <data name="SaveChangesPickerTitle" xml:space="preserve">
+    <value>Guardar o selector actual?</value>
   </data>
-  <data name="PresetRevertConfirmMessage" xml:space="preserve">
-    <value>Tem certeza que deseja reverter todas as alterações não guardadas neste pré-ajuste?</value>
+  <data name="RevertConfirmMessage" xml:space="preserve">
+    <value>Tem certeza que deseja reverter todas as alterações?</value>
   </data>
-  <data name="PresetRevertConfirmTitle" xml:space="preserve">
-    <value>Reverter o pré-ajuste</value>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>Reverter alterações</value>
   </data>
-  <data name="PresetRemoveConfirmMessage" xml:space="preserve">
-    <value>Tem certeza que deseja remover este pré-ajuste?</value>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Tem certeza que deseja remover isto?</value>
   </data>
-  <data name="PresetRemoveConfirmTitle" xml:space="preserve">
-    <value>Remover o pré-ajuste</value>
-  </data>
-  <data name="UserConfigCorrupted" xml:space="preserve">
-    <value>Configuração está corrompida e não pode ser carregada. Algumas das suas configurações podem ter sido repostas.</value>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>Remover</value>
   </data>
   <data name="OutputDirectoryPickerText" xml:space="preserve">
     <value>Escolha a paste de destino para os ficheiros de vídeo codificados.</value>
@@ -516,9 +406,6 @@
   <data name="CloseVideoSourceToolTip" xml:space="preserve">
     <value>Fechar origem do vídeo</value>
   </data>
-  <data name="CloseVideoSourceMenuItem" xml:space="preserve">
-    <value>Fechar Origem do Vídeo</value>
-  </data>
   <data name="UpdatesMenuItem" xml:space="preserve">
     <value>Actualizações...</value>
   </data>
@@ -527,9 +414,6 @@
   </data>
   <data name="RangeBarToolTip" xml:space="preserve">
     <value>Botão esquerdo para definir o início e botão direito para definir o fim.</value>
-  </data>
-  <data name="Preset_WindowsPhone8" xml:space="preserve">
-    <value>Windows Phone 8</value>
   </data>
   <data name="QueueFormat_Chapters" xml:space="preserve">
     <value>Cap.: {0}</value>
@@ -555,12 +439,6 @@
   <data name="PresetDiscardConfirmTitle" xml:space="preserve">
     <value>Ignorar alterações?</value>
   </data>
-  <data name="RemoveAudioTrackToolTip" xml:space="preserve">
-    <value>Remover a pista de áudio</value>
-  </data>
-  <data name="Preset_Xbox360" xml:space="preserve">
-    <value>Xbox 360</value>
-  </data>
   <data name="RemoveFromQueueToolTip" xml:space="preserve">
     <value>Remover da lista de tarefas</value>
   </data>
@@ -574,7 +452,7 @@
     <value>Exportar lista de tarefas</value>
   </data>
   <data name="QueueImportErrorMessage" xml:space="preserve">
-    <value>Não foi possível importar a lista de tarefas. Formato não reconhecido.</value>
+    <value>Falha ao importar lista de tarefas. Verifique o relatório para obter detalhes.</value>
   </data>
   <data name="ImportPresetFilePickerTitle" xml:space="preserve">
     <value>Importar ficheiro de pré-ajustes</value>
@@ -603,21 +481,255 @@
   <data name="EncodeDetailsMenuItem" xml:space="preserve">
     <value>Detalhes da codificação</value>
   </data>
-	<data name="EncodingSettingsChangedMessage" xml:space="preserve">
-    <value>As configurações de codificação foram alteradas desde o último item adicionado à lista de tarefas. Quer aplicar as configurações de codificação actuais para todos os itens da lista de tarefas?</value>
-  </data>
-	<data name="EncodingSettingsChangedTitle" xml:space="preserve">
-    <value>As configurações foram alteradas</value>
-  </data>
-	<data name="RenameDatabaseFileLine2" xml:space="preserve">
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
     <value>Deseja renomear o ficheiro existente e começar com um novo?</value>
   </data>
-	<data name="RenameDatabaseFileLine1" xml:space="preserve">
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
     <value>Não é possível ler o ficheiro da base de dados versão {0}. A versão mais alta reconhecida pelo VidCoder {1} é {2}</value>
     <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
   </data>
-	<data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
     <value>Ficheiro da base de dados incompatível</value>
     <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
+  </data>
+  <data name="PickerMenuItem" xml:space="preserve">
+    <value>Selector</value>
+  </data>
+  <data name="CouldNotLoadPickerMessage" xml:space="preserve">
+    <value>Não foi possível carregar o selector: </value>
+  </data>
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>{0} outros títulos têm uma duração idêntica a este.</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>Tem um backup da versão {0} do ficheiro. Gostaria de usá-lo?</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>Erro a ler o vídeo.</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>Leitos de vídeo personalizado não foi encontrado em {0}.</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  <data name="EnqueueFolderOfVideoFiles" xml:space="preserve">
+    <value>Adicionar pasta ou ficheiros de vídeo...</value>
+  </data>
+  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
+    <value>Existem erros na leitura de alguns ficheiros. Os mesmos não foram adicionados à lista de tarefas:{0}</value>
+  </data>
+  <data name="FileSizeColumnHeader" xml:space="preserve">
+    <value>Tamanho</value>
+    <comment>Used on the "completed encodes" tab, to label the column that shows the final output file size.</comment>
+  </data>
+  <data name="OpenAppDataFolder" xml:space="preserve">
+    <value>Abrir Pasta de Dados</value>
+    <comment>Menu choice for opening the application data folder (that holds the VidCoder database file, logs, etc)</comment>
+  </data>
+  <data name="RibbonEncodingGroupLabel" xml:space="preserve">
+    <value>Codificação</value>
+  </data>
+  <data name="RibbonSettingsGroupLabel" xml:space="preserve">
+    <value>Definições</value>
+  </data>
+  <data name="GlobalOptionsLabel" xml:space="preserve">
+    <value>Opções Globais</value>
+  </data>
+  <data name="EncodingSettingsButton" xml:space="preserve">
+    <value>Definições de codificação: {0}</value>
+    <comment>{0} is a placeholder for the name of the encoding preset currently selected.</comment>
+  </data>
+  <data name="EncodingSettingsButtonToolTip" xml:space="preserve">
+    <value>Codecs de áudio e vídeo, dimensionamento, filtros, recipiente</value>
+  </data>
+  <data name="OpenSourceRibbonButton" xml:space="preserve">
+    <value>Abrir ficheiro ou pasta</value>
+  </data>
+  <data name="ImportExportRibbonButton" xml:space="preserve">
+    <value>Importar/Exportar</value>
+    <comment>Label for ribbon button to import or export presets or queues</comment>
+  </data>
+  <data name="AddedSubtitleFromFile" xml:space="preserve">
+    <value>Subtítulo adicionado com êxito do ficheiro {0}</value>
+  </data>
+  <data name="OpenFormat" xml:space="preserve">
+    <value>Abrir {0}</value>
+    <comment>Format for opening a source. For example: "Open E:\ - THE_INCREDIBLES"</comment>
+  </data>
+  <data name="NoAudioDescription" xml:space="preserve">
+    <value>Nenhum áudio encontrado na fonte.</value>
+  </data>
+  <data name="NoAudioSummary" xml:space="preserve">
+    <value>Sem áudio</value>
+    <comment>Summary text for when no audio tracks are found on the source</comment>
+  </data>
+  <data name="NoSubtitlesSummary" xml:space="preserve">
+    <value>Sem legendas</value>
+    <comment>Summary text for when no subtitle tracks are found on the source and no external subtitles have been added</comment>
+  </data>
+  <data name="DataTooOldRunVidCoderVersion" xml:space="preserve">
+    <value>Os seus dados são demasiado antigos para actualizar. Execute primeiro o VidCoder {0} para actualizá-lo para uma versão compatível e, depois, tente esta versão novamente.</value>
+    <comment>This is shown on app start when old data is detected.</comment>
+  </data>
+  <data name="BitrateColumn" xml:space="preserve">
+    <value>Taxa de Bits</value>
+  </data>
+  <data name="SampleRateColumn" xml:space="preserve">
+    <value>Frequência</value>
+  </data>
+  <data name="ClearRecentFilesButtonToolTip" xml:space="preserve">
+    <value>Apagar ficheiros recentes</value>
+  </data>
+  <data name="OpenSourceLabel" xml:space="preserve">
+    <value>Abrir</value>
+    <comment>Label on top of the different options for opening video source on the startup screen.</comment>
+  </data>
+  <data name="ScanningSourceLabelFormat" xml:space="preserve">
+    <value>A examinar {0}...</value>
+    <comment>{0} is the name of the source being scanned.</comment>
+  </data>
+  <data name="RetryFailedItemsMenuItem" xml:space="preserve">
+    <value>Voltar a tentar todos os itens de falhados</value>
+  </data>
+  <data name="StartChapterAutomationName" xml:space="preserve">
+    <value>Capítulo inicial</value>
+    <comment>Narrator label for the chapter start combo box</comment>
+  </data>
+  <data name="EndChapterAutomationName" xml:space="preserve">
+    <value>Capítulo final</value>
+    <comment>Narrator label for the end chapter combo box</comment>
+  </data>
+  <data name="EditChaptersButtonAutomationName" xml:space="preserve">
+    <value>Editar capítulos</value>
+    <comment>Help text for screen readers for the Edit chapters button</comment>
+  </data>
+  <data name="ApplyCurrentEncodingSettings" xml:space="preserve">
+    <value>Aplicar definições de codificação actuais</value>
+  </data>
+  <data name="OpenSourceFolderOption" xml:space="preserve">
+    <value>Pasta de código aberto</value>
+    <comment>Menu option to open the folder of the source file in the queue</comment>
+  </data>
+  <data name="WithCurrentJobsFormat" xml:space="preserve">
+    <value>com o(s) trabalho(s) atual (ais): {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger when currently encoding job(s) complete. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="WithQueueFormat" xml:space="preserve">
+    <value>com a fila: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger on queue completion. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="VideoEncodingOptionsToolTip" xml:space="preserve">
+    <value>Opções de codificação de vídeo</value>
+  </data>
+  <data name="AudioEncodingOptionsToolTip" xml:space="preserve">
+    <value>Opções de codificação de áudio</value>
+  </data>
+  <data name="NewVersionDownloadFinishedOnLaunchStatus" xml:space="preserve">
+    <value>A transferência da versão {0} terminou.</value>
+  </data>
+  <data name="RemoveFromQueueMenuItem" xml:space="preserve">
+    <value>Remover da lista de tarefas</value>
+  </data>
+  <data name="ClearSucceededMenuItem" xml:space="preserve">
+    <value>Removido com sucesso</value>
+  </data>
+  <data name="ClearFailedMenuItem" xml:space="preserve">
+    <value>A remoção falhou</value>
+  </data>
+  <data name="ClearQueueConfirmationMessage" xml:space="preserve">
+    <value>Tem a certeza que deseja remover todos as tarefas da lista?</value>
+  </data>
+  <data name="RemoveAllFomQueueMenuItem" xml:space="preserve">
+    <value>Remover todos da lista de tarefas</value>
+  </data>
+  <data name="EncodeCompleteActionAbortedDueToErrorsMessage" xml:space="preserve">
+    <value>A codificação não está completa devido a erros na lista de codificações.</value>
+  </data>
+  <data name="AudioPickerButtonToolTip" xml:space="preserve">
+    <value>Escolher faixas de áudio automaticamente...</value>
+  </data>
+  <data name="SubtitlePickerButtonToolTip" xml:space="preserve">
+    <value>Escolher faixas de legendas automaticamente...</value>
+  </data>
+  <data name="AudioSubtitleTrackColumnHeader" xml:space="preserve">
+    <value>Faixa</value>
+    <comment>Column header for the audio or subtitle track summary. This is an an auto-generated summary that includes language, format, etc.</comment>
+  </data>
+  <data name="AudioTrackNameAutomationName" xml:space="preserve">
+    <value>Nome da faixa de áudio</value>
+    <comment>Narrator label for the audio track name text box.</comment>
+  </data>
+  <data name="SubtitleNameAutomationName" xml:space="preserve">
+    <value>Nome da legenda</value>
+    <comment>Narrator label for the subtitle name text box.</comment>
+  </data>
+  <data name="CouldNotRecycleFile" xml:space="preserve">
+    <value>Erro ao enviar ficheiros para a Reciclagem.</value>
+  </data>
+  <data name="DestinationAutomaticToolTip" xml:space="preserve">
+    <value>O destino está definido automaticamente. Clique para editar as definições.</value>
+  </data>
+  <data name="DestinationManualToolTip" xml:space="preserve">
+    <value>O destino está definido manualmente. Clique para reverter para automático.</value>
+  </data>
+  <data name="CompareAgainstOriginal" xml:space="preserve">
+    <value>Comparar com o original</value>
+  </data>
+  <data name="CompareEncodedLabel" xml:space="preserve">
+    <value>Codificado</value>
+    <comment>Label for the encoded video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareOriginalLabel" xml:space="preserve">
+    <value>Original</value>
+    <comment>Label for the original video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareWindowHelpText" xml:space="preserve">
+    <value>Clique ou mantenha premida Ctrl para mostrar a versão codificada.</value>
+  </data>
+  <data name="CompareWindowTitleFormat" xml:space="preserve">
+    <value>Comparar vídeo: {0} - {1}</value>
+    <comment>Title for the Video compare window.
+{0} is a string indicating if it's original or encoded.
+{1} is the file name, e.g. MyFile.mkv</comment>
+  </data>
+  <data name="MuteAutomationName" xml:space="preserve">
+    <value>Sem som</value>
+    <comment>Text for screen readers for the mute button on video playback</comment>
+  </data>
+  <data name="UnmuteAutomationName" xml:space="preserve">
+    <value>Activar som</value>
+    <comment>Text for screen readers for the unmute button on video playback</comment>
+  </data>
+  <data name="AutoPauseLowBattery" xml:space="preserve">
+    <value>A pausar automaticamente devido a bateria fraca.</value>
+  </data>
+  <data name="AutoPauseLowDiskSpace" xml:space="preserve">
+    <value>A pausar automaticamente devido ao espaço livre em disco inferior a {0}GB.</value>
+    <comment>{0} is the disk space threshold for auto-pause in GB</comment>
+  </data>
+  <data name="AutoPauseProcessDetected" xml:space="preserve">
+    <value>A pausar automaticamente, processo detectado: {0}</value>
+    <comment>{0} is the name of the process we were waiting for to pause</comment>
+  </data>
+  <data name="AutoPauseResumeBattery" xml:space="preserve">
+    <value>A continuar automaticamente, ligado a energia AC.</value>
+  </data>
+  <data name="AutoPauseResumeDiskSpace" xml:space="preserve">
+    <value>A continuar automaticamente, o disco tem espaço livre.</value>
+  </data>
+  <data name="AutoPauseResumeProcess" xml:space="preserve">
+    <value>A continuar automaticamente, os processos desapareceram.</value>
+  </data>
+  <data name="Win7DeprecationWarning" xml:space="preserve">
+    <value>O VidCoder deixou de ser suportado no Windows 7 ou 8.
+
+Pode continuar a usar o VidCoder por sua conta e  risco. Determinados recursos não estão funcionais e podem ocorrer outros problemas desconhecidos. Não há suporte disponível quando esses problemas ocorrerem.
+
+A v5 foi a última versão testada para Windows 7/8.
+
+Este aviso só será exibido duas vezes.</value>
   </data>
 </root>

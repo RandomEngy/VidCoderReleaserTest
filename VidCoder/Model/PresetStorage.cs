@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -6,36 +7,42 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using HandBrake.ApplicationServices.Interop;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Windows.Markup.Localizer;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.HbLib;
+using HandBrake.Interop.Interop.Interfaces.Model.Encoders;
+using Microsoft.AnyContainer;
+using Omu.ValueInjecter;
 using VidCoder.Extensions;
 using VidCoder.Resources;
 using VidCoder.Services;
+using VidCoderCommon;
 using VidCoderCommon.Model;
+using VidCoderCommon.Utilities;
+using VidCoderCommon.Utilities.Injection;
 
 namespace VidCoder.Model
 {
 	public static class PresetStorage
 	{
-		private const int CurrentPresetVersion = 17;
+		private const int CurrentPresetVersion = 20;
 
-		private static readonly string UserPresetsFolder = Path.Combine(Utilities.AppFolder, "UserPresets");
+		private static readonly string UserPresetsFolder = Path.Combine(CommonUtilities.AppFolder, "UserPresets");
 		private static readonly string BuiltInPresetsPath = "BuiltInPresets.json";
 		private static object userPresetSync = new object();
 
 		// This field holds the copy of the preset list that has been most recently queued for saving.
-		private static volatile List<string> pendingSavePresetList;
+		private static volatile List<Preset> pendingSavePresetList;
 
 		public static IList<Preset> BuiltInPresets
 		{
 			get
 			{
 				string builtInPresetsPath = Path.Combine(Utilities.ProgramFolder, BuiltInPresetsPath);
-				return JsonConvert.DeserializeObject<IList<Preset>>(File.ReadAllText(builtInPresetsPath));
+				return JsonSerializer.Deserialize<IList<Preset>>(File.ReadAllText(builtInPresetsPath), JsonOptions.WithUpgraders);
 			}
 		}
 
@@ -55,12 +62,21 @@ namespace VidCoder.Model
 
 			set
 			{
-				var presetJsonList = value.Select(SerializePreset).ToList();
+				var clonedList = value.Select(p =>
+				{
+					Preset newPreset = new Preset();
+					newPreset.InjectFrom<CloneInjection>(p);
 
-				pendingSavePresetList = presetJsonList;
+					return newPreset;
+				}).ToList();
+
+				pendingSavePresetList = clonedList;
 
 				// Do the actual save asynchronously.
-				ThreadPool.QueueUserWorkItem(SaveUserPresetsBackground, presetJsonList);
+				Task.Run(() =>
+				{
+					SaveUserPresetsBackground(clonedList);
+				});
 			}
 		}
 
@@ -71,7 +87,7 @@ namespace VidCoder.Model
 		/// <returns>The serialized JSON of the preset.</returns>
 		public static string SerializePreset(Preset preset)
 		{
-			return JsonConvert.SerializeObject(preset);
+			return JsonSerializer.Serialize(preset, JsonOptions.WithUpgraders);
 		}
 
 		/// <summary>
@@ -86,7 +102,7 @@ namespace VidCoder.Model
 			{
 				var presetWrapper = new PresetWrapper { Version = CurrentPresetVersion, Preset = preset };
 
-				File.WriteAllText(filePath, JsonConvert.SerializeObject(presetWrapper));
+				File.WriteAllText(filePath, JsonSerializer.Serialize(presetWrapper, JsonOptions.WithUpgraders));
 
 				return true;
 			}
@@ -111,7 +127,12 @@ namespace VidCoder.Model
 				extension = extension.ToLowerInvariant();
 			}
 
-			if (extension != ".xml" && extension != ".vjpreset")
+			if (extension == ".xml")
+			{
+				throw new ArgumentException("Exported preset file is too old to open. Open with VidCoder 3.15 and export to upgrade it.");
+			}
+
+			if (extension != ".vjpreset")
 			{
 				throw new ArgumentException("File extension " + extension + " is not recognized.");
 			}
@@ -121,66 +142,15 @@ namespace VidCoder.Model
 				throw new ArgumentException("Preset file could not be found.");
 			}
 
-			if (extension == ".xml")
+			PresetWrapper presetWrapper = JsonSerializer.Deserialize<PresetWrapper>(File.ReadAllText(presetFile), JsonOptions.WithUpgraders);
+			if (presetWrapper.Version < 20)
 			{
-				XDocument doc = XDocument.Load(presetFile);
-				if (doc.Element("UserPreset") == null)
-				{
-					throw new ArgumentException("Preset file is malformed.");
-				}
-
-				XElement presetElement = doc.Element("UserPreset").Element("Preset");
-				int version = int.Parse(doc.Element("UserPreset").Attribute("Version").Value);
-
-				using (XmlReader reader = presetElement.CreateReader())
-				{
-					XmlSerializer presetSerializer = new XmlSerializer(typeof(Preset));
-					var preset = presetSerializer.Deserialize(reader) as Preset;
-					UpgradeEncodingProfile(preset.EncodingProfile, PresetToDbVersion(version));
-
-					return preset;
-				}
-			}
-			else
-			{
-				PresetWrapper presetWrapper = JsonConvert.DeserializeObject<PresetWrapper>(File.ReadAllText(presetFile));
-				UpgradeEncodingProfile(presetWrapper.Preset.EncodingProfile, PresetToDbVersion(presetWrapper.Version));
-
-				return presetWrapper.Preset;
-			}
-		}
-
-		/// <summary>
-		/// Load in a preset from an XML string.
-		/// </summary>
-		/// <param name="presetXml">The XML of the preset to load in (without wrapper XML).</param>
-		/// <param name="serializer">The XML serializer to use.</param>
-		/// <returns>The loaded Preset.</returns>
-		public static Preset ParsePresetXml(string presetXml, XmlSerializer serializer)
-		{
-			try
-			{
-				using (var stringReader = new StringReader(presetXml))
-				{
-					using (var xmlReader = new XmlTextReader(stringReader))
-					{
-						var preset = serializer.Deserialize(xmlReader) as Preset;
-
-						return preset;
-					}
-				}
-			}
-			catch (XmlException exception)
-			{
-				System.Windows.MessageBox.Show(
-					MainRes.CouldNotLoadPresetMessage +
-					exception +
-					Environment.NewLine +
-					Environment.NewLine +
-					presetXml);
+				throw new ArgumentException("Exported preset file is too old to open. Open with VidCoder 3.15 and export to upgrade it.");
 			}
 
-			return null;
+			UpgradeEncodingProfile(presetWrapper.Preset.EncodingProfile, PresetToDbVersion(presetWrapper.Version));
+
+			return presetWrapper.Preset;
 		}
 
 		/// <summary>
@@ -192,7 +162,7 @@ namespace VidCoder.Model
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<Preset>(presetJson);
+				return JsonSerializer.Deserialize<Preset>(presetJson, JsonOptions.WithUpgraders);
 			}
 			catch (Exception exception)
 			{
@@ -216,20 +186,7 @@ namespace VidCoder.Model
 
 			List<EncodingProfileUpgrade> upgrades = new List<EncodingProfileUpgrade>
 			{
-				new EncodingProfileUpgrade(13, UpgradeEncodingProfileTo13),
-				new EncodingProfileUpgrade(14, UpgradeEncodingProfileTo14),
-				new EncodingProfileUpgrade(15, UpgradeEncodingProfileTo15),
-				new EncodingProfileUpgrade(16, UpgradeEncodingProfileTo16),
-				new EncodingProfileUpgrade(17, UpgradeEncodingProfileTo17),
-				new EncodingProfileUpgrade(19, UpgradeEncodingProfileTo19),
-				new EncodingProfileUpgrade(20, UpgradeEncodingProfileTo20),
-				new EncodingProfileUpgrade(21, UpgradeEncodingProfileTo21),
-				new EncodingProfileUpgrade(22, UpgradeEncodingProfileTo22),
-				new EncodingProfileUpgrade(23, UpgradeEncodingProfileTo23),
-				new EncodingProfileUpgrade(24, UpgradeEncodingProfileTo24),
-				new EncodingProfileUpgrade(25, UpgradeEncodingProfileTo25),
-				new EncodingProfileUpgrade(26, UpgradeEncodingProfileTo26),
-				new EncodingProfileUpgrade(26, UpgradeEncodingProfileTo29),
+				new EncodingProfileUpgrade(44, UpgradeEncodingProfileTo44)
 			};
 
 			foreach (EncodingProfileUpgrade upgrade in upgrades)
@@ -246,268 +203,20 @@ namespace VidCoder.Model
 			}
 		}
 
-		public static void UpgradeEncodingProfileTo13(VCProfile profile)
+		private static void UpgradeEncodingProfileTo44(VCProfile profile)
 		{
-			// Upgrade preset: translate old Enum-based values to short name strings
-			if (!HandBrakeEncoderHelpers.VideoEncoders.Any(e => e.ShortName == profile.VideoEncoder))
-			{
-				string newVideoEncoder = "x264";
-				switch (profile.VideoEncoder)
-				{
-					case "X264":
-						newVideoEncoder = "x264";
-						break;
-					case "FFMpeg":
-						newVideoEncoder = "ffmpeg4";
-						break;
-					case "FFMpeg2":
-						newVideoEncoder = "ffmpeg2";
-						break;
-					case "Theora":
-						newVideoEncoder = "theora";
-						break;
-				}
-
-				profile.VideoEncoder = newVideoEncoder;
-			}
-
-			foreach (AudioEncoding encoding in profile.AudioEncodings)
-			{
-				if (!HandBrakeEncoderHelpers.AudioEncoders.Any(e => e.ShortName == encoding.Encoder))
-				{
-					string newAudioEncoder = UpgradeAudioEncoder(encoding.Encoder);
-					if (newAudioEncoder == null)
-					{
-						newAudioEncoder = "faac";
-					}
-
-					encoding.Encoder = newAudioEncoder;
-				}
-
-				if (!HandBrakeEncoderHelpers.Mixdowns.Any(m => m.ShortName == encoding.Mixdown))
-				{
-					string newMixdown = "dpl2";
-					switch (encoding.Mixdown)
-					{
-						case "Auto":
-							newMixdown = "none";
-							break;
-						case "None":
-							newMixdown = "none";
-							break;
-						case "Mono":
-							newMixdown = "mono";
-							break;
-						case "Stereo":
-							newMixdown = "stereo";
-							break;
-						case "DolbySurround":
-							newMixdown = "dpl1";
-							break;
-						case "DolbyProLogicII":
-							newMixdown = "dpl2";
-							break;
-						case "SixChannelDiscrete":
-							newMixdown = "6ch";
-							break;
-					}
-
-					encoding.Mixdown = newMixdown;
-				}
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo14(VCProfile profile)
-		{
-			profile.AudioEncoderFallback = UpgradeAudioEncoder(profile.AudioEncoderFallback);
-		}
-
-		private static void UpgradeEncodingProfileTo15(VCProfile profile)
-		{
-			if (profile.Framerate == 0)
-			{
-				// Profile had only VFR for Same as Source framerate before.
-				profile.ConstantFramerate = false;
-			}
-			else
-			{
-				// If Peak Framerate was checked under a specific framerate
-				// that meant we wanted VFR. Otherwise, CFR with the listed framerate
-#pragma warning disable 612,618
-				profile.ConstantFramerate = !profile.PeakFramerate;
-#pragma warning restore 612,618
-			}
-
-			foreach (AudioEncoding encoding in profile.AudioEncodings)
-			{
-				if (encoding.Mixdown == "6ch")
-				{
-					encoding.Mixdown = "5point1";
-				}
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo16(VCProfile profile)
-		{
-#pragma warning disable 612,618
-			if (profile.CustomCropping)
-#pragma warning restore 612,618
-			{
-				profile.CroppingType = VCCroppingType.Custom;
-			}
-			else
-			{
-                profile.CroppingType = VCCroppingType.Automatic;
-			}
-
-#pragma warning disable 612,618
-			if (string.IsNullOrWhiteSpace(profile.X264Tune))
-			{
-				profile.X264Tunes = new List<string> { profile.X264Tune };
-			}
-#pragma warning restore 612,618
-		}
-
-		private static void UpgradeEncodingProfileTo17(VCProfile profile)
-		{
-			if (profile.X264Profile == "high444")
-			{
-				profile.X264Profile = null;
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo19(VCProfile profile)
-		{
-			foreach (AudioEncoding encoding in profile.AudioEncodings)
-			{
-				if (!HandBrakeEncoderHelpers.AudioEncoders.Any(e => e.ShortName == encoding.Encoder))
-				{
-					string newAudioEncoder = UpgradeAudioEncoder2(encoding.Encoder);
-					if (newAudioEncoder == null)
-					{
-						newAudioEncoder = "av_aac";
-					}
-
-					encoding.Encoder = newAudioEncoder;
-				}
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo20(VCProfile profile)
-		{
-			if (!HandBrakeEncoderHelpers.VideoEncoders.Any(e => e.ShortName == profile.VideoEncoder))
-			{
-				string newVideoEncoder = UpgradeVideoEncoder(profile.VideoEncoder);
-				if (newVideoEncoder == null)
-				{
-					newVideoEncoder = "x264";
-				}
-
-				profile.VideoEncoder = newVideoEncoder;
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo21(VCProfile profile)
-		{
-#pragma warning disable 612,618
-			if (profile.OutputFormat == VCContainer.Mp4)
-			{
-				profile.ContainerName = "av_mp4";
-			}
-			else
-			{
-				profile.ContainerName = "av_mkv";
-			}
-#pragma warning restore 612,618
-		}
-
-		private static void UpgradeEncodingProfileTo22(VCProfile profile)
-		{
-			profile.QsvDecode = true;
-		}
-
-		private static void UpgradeEncodingProfileTo23(VCProfile profile)
-		{
-			if (profile.ContainerName == "mp4v2")
-			{
-				profile.ContainerName = "av_mp4";
-			}
-			else if (profile.ContainerName == "libmkv")
-			{
-				profile.ContainerName = "av_mkv";
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo24(VCProfile profile)
-		{
-			profile.VideoOptions = profile.X264Options;
-			profile.VideoTunes = profile.X264Tunes;
-			profile.VideoPreset = profile.X264Preset;
-			profile.VideoProfile = profile.X264Profile;
-			profile.VideoLevel = profile.H264Level;
-
-			// If QSV was the old encoder and QSV is available, use the QSV preset.
-			string videoEncoderName = profile.VideoEncoder;
-			if (HandBrakeEncoderHelpers.GetVideoEncoder(videoEncoderName) == null)
-			{
-				if (videoEncoderName == "qsv_h264")
-				{
-					profile.VideoPreset = profile.QsvPreset;
-				}
-			}
-		}
-
-		private static void UpgradeEncodingProfileTo25(VCProfile profile)
-		{
-#pragma warning disable 618
-			if (profile.Denoise == null || profile.Denoise == "Off")
+			profile.DeblockPreset = "off";
+			if (profile.DenoiseType == VCDenoise.ChromaSmooth)
 			{
 				profile.DenoiseType = VCDenoise.Off;
+				profile.ChromaSmoothPreset = profile.DenoisePreset;
 			}
 			else
 			{
-				profile.DenoiseType = VCDenoise.hqdn3d;
+				profile.ChromaSmoothPreset = "off";
 			}
 
-			switch (profile.Denoise)
-			{
-				case "Off":
-					break;
-				case "Weak":
-					profile.DenoisePreset = "light";
-					break;
-				case "Medium":
-					profile.DenoisePreset = "medium";
-					break;
-				case "Strong":
-					profile.DenoisePreset = "strong";
-					break;
-				case "Custom":
-					profile.DenoisePreset = null;
-					profile.UseCustomDenoise = true;
-					break;
-				default:
-					profile.DenoisePreset = "medium";
-					break;
-			}
-#pragma warning restore 618
-		}
-
-		private static void UpgradeEncodingProfileTo26(VCProfile profile)
-	    {
-            if (profile.DenoiseType == VCDenoise.NlMeans)
-	        {
-	            profile.DenoiseType = VCDenoise.NLMeans;
-	        }
-        }
-
-		private static void UpgradeEncodingProfileTo29(VCProfile profile)
-		{
-			// Earlier versions had an issue where they might wipe the container name.
-			if (profile.ContainerName == null)
-			{
-				profile.ContainerName = "av_mp4";
-			}
+			profile.ColorspacePreset = "off";
 		}
 
 		private static void ErrorCheckPresets(List<Preset> presets)
@@ -516,13 +225,11 @@ namespace VidCoder.Model
 			{
 				var preset = presets[i];
 
-				if (preset.EncodingProfile == null)
+				if (preset == null || preset.EncodingProfile == null)
 				{
 					presets.RemoveAt(i);
 
-					// Splash screen eats first dialog, need to show twice.
-					Ioc.Get<IMessageBoxService>().Show("Could not load corrupt preset '" + preset.GetDisplayName() + "'.");
-					Ioc.Get<IMessageBoxService>().Show("Could not load corrupt preset '" + preset.GetDisplayName() + "'.");
+					StaticResolver.Resolve<IMessageBoxService>().Show("Could not load corrupt preset '" + preset?.GetDisplayName() + "'.");
 				}
 				else
 				{
@@ -533,87 +240,44 @@ namespace VidCoder.Model
 
 		private static void ErrorCheckPreset(Preset preset)
 		{
+			ErrorCheckEncodingProfile(preset.EncodingProfile);
+		}
+
+		public static void ErrorCheckEncodingProfile(VCProfile profile)
+		{
 			// mp4v2 only available on x86
-			string containerName = preset.EncodingProfile.ContainerName;
+			string containerName = profile.ContainerName;
 			if (HandBrakeEncoderHelpers.GetContainer(containerName) == null)
 			{
 				if (containerName == "mp4v2")
 				{
-					preset.EncodingProfile.ContainerName = "av_mp4";
+					profile.ContainerName = "av_mp4";
 				}
 			}
 
 			// QSV H.264 only available on systems with the right hardware.
-			string videoEncoderName = preset.EncodingProfile.VideoEncoder;
+			string videoEncoderName = profile.VideoEncoder;
 			if (HandBrakeEncoderHelpers.GetVideoEncoder(videoEncoderName) == null)
 			{
 				if (videoEncoderName == "qsv_h264")
 				{
-					preset.EncodingProfile.VideoEncoder = "x264";
+					profile.VideoEncoder = "x264";
 				}
 			}
-		}
 
-		// For v13 upgrade
-		private static string UpgradeAudioEncoder(string oldEncoder)
-		{
-			switch (oldEncoder)
+			foreach (var audioEncoding in profile.AudioEncodings)
 			{
-				case "Faac":
-					return "faac";
-				case "Lame":
-					return "lame";
-				case "Ac3":
-					return "ffac3";
-				case "Passthrough":
-					return "copy";
-				case "Ac3Passthrough":
-					return "copy:ac3";
-				case "DtsPassthrough":
-					return "copy:dts";
-				case "Vorbis":
-					return "vorbis";
+				if (audioEncoding.Encoder == "fdk_aac")
+				{
+					// Make sure this version of VidCoder recognizes the encoder
+					HBAudioEncoder encoder = HandBrakeEncoderHelpers.GetAudioEncoder(audioEncoding.Encoder);
+					if (encoder == null)
+					{
+						audioEncoding.Encoder = "av_aac";
+						StaticResolver.Resolve<IAppLogger>().Log("Preset specified fdk_aac but it is not supported in this build of VidCoder. Fell back to av_aac.");
+					}
+				}
 			}
-
-			return oldEncoder;
-		}
-
-		// For v19 upgrade
-		private static string UpgradeAudioEncoder2(string oldEncoder)
-		{
-			switch (oldEncoder)
-			{
-				case "faac":
-				case "ffaac":
-					return "av_aac";
-				case "ffflac":
-					return "flac16";
-				case "ffflac24":
-					return "flac24";
-				case "ffac3":
-					return "ac3";
-				case "lame":
-					return "mp3";
-			}
-
-			return oldEncoder;
-		}
-
-		// For v20 upgrade
-		private static string UpgradeVideoEncoder(string oldEncoder)
-		{
-			switch (oldEncoder)
-			{
-				case "ffmpeg4":
-				case "ffmpeg":
-					return "mpeg4";
-				case "ffmpeg2":
-					return "mpeg2";
-				case "libtheora":
-					return "theora";
-			}
-
-			return oldEncoder;
 		}
 
 		private static int PresetToDbVersion(int presetVersion)
@@ -623,85 +287,20 @@ namespace VidCoder.Model
 				return Utilities.CurrentDatabaseVersion;
 			}
 
-			if (presetVersion < 4)
-			{
-				return 12;
-			}
-
-			if (presetVersion < 5)
-			{
-				return 13;
-			}
-
-			if (presetVersion < 6)
-			{
-				return 14;
-			}
-
-			if (presetVersion < 7)
-			{
-				return 15;
-			}
-
-			if (presetVersion < 9)
-			{
-				return 18;
-			}
-
-			if (presetVersion < 10)
-			{
-				return 19;
-			}
-
-			if (presetVersion < 11)
-			{
-				return 20;
-			}
-
-			if (presetVersion < 12)
-			{
-				return 21;
-			}
-
-			if (presetVersion < 13)
-			{
-				return 22;
-			}
-
-			if (presetVersion < 14)
-			{
-				return 23;
-			}
-
-			if (presetVersion < 15)
-			{
-				return 24;
-			}
-
-		    if (presetVersion < 16)
-		    {
-		        return 25;
-		    }
-
-			if (presetVersion < 17)
-			{
-				return 26;
-			}
-
 			return Utilities.CurrentDatabaseVersion;
 		}
 
 		/// <summary>
 		/// Saves the given preset data.
 		/// </summary>
-		/// <param name="presetJsonListObject">List&lt;Tuple&lt;string, string&gt;&gt; with the file name and JSON string to save.</param>
-		private static void SaveUserPresetsBackground(object presetJsonListObject)
+		/// <param name="presetList">List&lt;Preset&gt; to save.</param>
+		private static void SaveUserPresetsBackground(List<Preset> presetList)
 		{
 			lock (userPresetSync)
 			{
 				// If the pending save list is different from the one we've been passed, we abort.
 				// This means that another background task has been scheduled with a more recent save.
-				if (presetJsonListObject != pendingSavePresetList)
+				if (presetList != pendingSavePresetList)
 				{
 					return;
 				}
@@ -717,7 +316,7 @@ namespace VidCoder.Model
 					Directory.Delete(UserPresetsFolder);
 				}
 
-				var presetJsonList = presetJsonListObject as List<string>;
+				var presetJsonList = presetList.Select(SerializePreset).ToList();
 
 				SQLiteConnection connection = Database.CreateConnection();
 

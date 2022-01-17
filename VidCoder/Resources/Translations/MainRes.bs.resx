@@ -1,0 +1,677 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>Naslov:</value>
+  </data>
+  <data name="AddToQueueLabel" xml:space="preserve">
+    <value>Dodaj u Red</value>
+  </data>
+  <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
+    <value>Dodaj više naslova u Red...</value>
+  </data>
+  <data name="OpenVideoFile" xml:space="preserve">
+    <value>Otvorite video datoteku...</value>
+  </data>
+  <data name="OpenDiscFolder" xml:space="preserve">
+    <value>Otvori folder DVD/Blu-ray...</value>
+  </data>
+  <data name="EnqueueMultipleFiles" xml:space="preserve">
+    <value>Dodaj višestruke fajlove u red...</value>
+  </data>
+  <data name="ToolsMenu" xml:space="preserve">
+    <value>Alati</value>
+  </data>
+  <data name="ImportPreset" xml:space="preserve">
+    <value>Uvezi šablon...</value>
+  </data>
+  <data name="ExportPreset" xml:space="preserve">
+    <value>Izvezi šablon...</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Reproduciraj</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Uredi</value>
+  </data>
+  <data name="OpenContainingFolder" xml:space="preserve">
+    <value>Otvori sadržavajući folder</value>
+  </data>
+  <data name="ClearCompleted" xml:space="preserve">
+    <value>Ukloni završene</value>
+  </data>
+  <data name="WindowsMenu" xml:space="preserve">
+    <value>Prozori</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
+  </data>
+  <data name="EncodingSettingsMenuItem" xml:space="preserve">
+    <value>Postavke enkodiranja</value>
+  </data>
+  <data name="PreviewMenuItem" xml:space="preserve">
+    <value>Pregled</value>
+  </data>
+  <data name="LogMenuItem" xml:space="preserve">
+    <value>Zapisnik</value>
+  </data>
+  <data name="HelpMenu" xml:space="preserve">
+    <value>Pomoć</value>
+  </data>
+  <data name="VidCoderHomepageMenuItem" xml:space="preserve">
+    <value>Stranica VidCoder-a</value>
+  </data>
+  <data name="ReportABugMenuItem" xml:space="preserve">
+    <value>Prijavi Grešku</value>
+  </data>
+  <data name="AboutVidCoderMenuItem" xml:space="preserve">
+    <value>O VidCoder-u...</value>
+  </data>
+  <data name="Recent" xml:space="preserve">
+    <value>Nedavni</value>
+  </data>
+  <data name="DragFilesHereLabel" xml:space="preserve">
+    <value>(ili prevucite video fajlove ili foldere ovdje)</value>
+  </data>
+  <data name="ScanErrorLabel" xml:space="preserve">
+    <value>Tokom skeniranje došlo je do greške.</value>
+  </data>
+  <data name="ChapterMarkersLabel" xml:space="preserve">
+    <value>Oznake poglavlja:</value>
+  </data>
+  <data name="EditButton" xml:space="preserve">
+    <value>Uredi...</value>
+  </data>
+  <data name="DestinationLabel" xml:space="preserve">
+    <value>Odredište:</value>
+  </data>
+  <data name="DestinationToolTip" xml:space="preserve">
+    <value>Kliknite za uređivanje odredišta enkodiranja.</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Zaustavi</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pauziraj</value>
+  </data>
+  <data name="MoveToTopMenuItem" xml:space="preserve">
+    <value>Premjesti na vrh</value>
+  </data>
+  <data name="MoveToBottomMenuItem" xml:space="preserve">
+    <value>Premjesti na dno</value>
+  </data>
+  <data name="CustomizeColumnsMenuItem" xml:space="preserve">
+    <value>Uredi kolone...</value>
+  </data>
+  <data name="CurrentFpsLabel" xml:space="preserve">
+    <value>Trenutni FPS:</value>
+  </data>
+  <data name="AverageFpsLabel" xml:space="preserve">
+    <value>Prosječan FPS:</value>
+  </data>
+  <data name="PickDiscFolderHelpText" xml:space="preserve">
+    <value>Odaberite DVD ili Blu-Ray folder.</value>
+  </data>
+  <data name="EncodesInProgressExitWarning" xml:space="preserve">
+    <value>Imate enkodiranja u toku. Da li zbilja želite izaći?</value>
+  </data>
+  <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
+    <value>Enkodiranja u toku</value>
+  </data>
+  <data name="NoneParen" xml:space="preserve">
+    <value>(Ništa)</value>
+  </data>
+  <data name="SaveChangesPresetMessage" xml:space="preserve">
+    <value>Želite li spremiti promjene u vaš trenutni šablon?</value>
+  </data>
+  <data name="SaveChangesPresetTitle" xml:space="preserve">
+    <value>Spremiti trenutni šablon?</value>
+  </data>
+  <data name="DiscNotInDriveError" xml:space="preserve">
+    <value>Nije moguće učitati za uređivanje. Disk se više ne nalazi u drive-u.</value>
+  </data>
+  <data name="PresetNameRestoredFromQueue" xml:space="preserve">
+    <value>Vraćeno iz reda</value>
+  </data>
+  <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
+    <value>Vraćeno iz završenog</value>
+  </data>
+  <data name="DestinationColumnHeader" xml:space="preserve">
+    <value>Odredište</value>
+  </data>
+  <data name="StatusColumnHeader" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ElapsedTimeColumnHeader" xml:space="preserve">
+    <value>Proteklo vrijeme</value>
+  </data>
+  <data name="PlayingVideoMessage" xml:space="preserve">
+    <value>Reprodukcija videa...</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>{0} ne postoji.</value>
+  </data>
+  <data name="AngleLabel" xml:space="preserve">
+    <value>Ugao:</value>
+  </data>
+  <data name="ChaptersSummary" xml:space="preserve">
+    <value>od {0}</value>
+  </data>
+  <data name="Queued" xml:space="preserve">
+    <value>Dodano u red</value>
+  </data>
+  <data name="QueuedWithTotal" xml:space="preserve">
+    <value>Dodano u red ({0})</value>
+  </data>
+  <data name="CompletedWithTotal" xml:space="preserve">
+    <value>Završeno ({0})</value>
+  </data>
+  <data name="StoppedEncoding" xml:space="preserve">
+    <value>Enkodiranje zaustavljeno.</value>
+  </data>
+  <data name="DeleteSourceFilesConfirmationMessage" xml:space="preserve">
+    <value>Jeste li sigurni da želite izbrisati {0} izvorni(e) fajl(ove)/folder(e)?</value>
+  </data>
+  <data name="DeleteSourceFilesConfirmationTitle" xml:space="preserve">
+    <value>Potvrdite brisanje</value>
+  </data>
+  <data name="CouldNotDeleteFile" xml:space="preserve">
+    <value>Nije moguće obrisati {0}
+
+{1}</value>
+  </data>
+  <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
+    <value>Greška kod skeniranja video zapis(a)</value>
+  </data>
+  <data name="StartedEncoding" xml:space="preserve">
+    <value>Enkodiranje započeto.</value>
+  </data>
+  <data name="DirectoryCreateErrorMessage" xml:space="preserve">
+    <value>Nije moguće napraviti izlazni direktorij. Detalji greške: {0}</value>
+  </data>
+  <data name="EncodeCompleted" xml:space="preserve">
+    <value>Enkodiranje završeno.</value>
+  </data>
+  <data name="EncodeCompleteBalloonTitle" xml:space="preserve">
+    <value>Enkodiranje završeno</value>
+  </data>
+  <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
+    <value>VidCoder je završio sve poslove enkodiranja u redu.</value>
+  </data>
+  <data name="OutputPathNotValidMessage" xml:space="preserve">
+    <value>Izlazna putanja nije važeća.</value>
+  </data>
+  <data name="OutputPathNotValidTitle" xml:space="preserve">
+    <value>Putanja nije važeća</value>
+  </data>
+  <data name="Encode" xml:space="preserve">
+    <value>Enkodiraj</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Nastavi</value>
+  </data>
+  <data name="EtaLabel" xml:space="preserve">
+    <value>Preostalo vrijeme:</value>
+  </data>
+  <data name="WhenDoneLabel" xml:space="preserve">
+    <value>Kada završi</value>
+  </data>
+  <data name="SourceOption_VideoFile" xml:space="preserve">
+    <value>Video datoteka...</value>
+  </data>
+  <data name="SourceOption_DiscFolder" xml:space="preserve">
+    <value>DVD/Blu-Ray folder...</value>
+  </data>
+  <data name="NewVersionDownloadStartedStatus" xml:space="preserve">
+    <value>Verzija {0} je dostupna. Preuzimanje ažuriranja je započeto.</value>
+  </data>
+  <data name="NewVersionDownloadFinishedStatus" xml:space="preserve">
+    <value>Verzija {0} je preuzeta i biti će instalirana prilikom izlaska.</value>
+  </data>
+  <data name="UpdateNotAppliedError" xml:space="preserve">
+    <value>Ažuriranje nije uspješno primjenjeno. Ukoliko ga niste sami otkazali, pokušajte instalirati ručno.</value>
+  </data>
+  <data name="CouldNotLoadPresetMessage" xml:space="preserve">
+    <value>Nije moguće učitati šablon: </value>
+  </data>
+  <data name="CouldNotSavePresetMessage" xml:space="preserve">
+    <value>Nije moguće spremiti šablon '{0}':{1}{2}</value>
+  </data>
+  <data name="CouldNotCopyTextError" xml:space="preserve">
+    <value>Kopiranje tekst nije uspjelo.</value>
+  </data>
+  <data name="LaunchUrlError" xml:space="preserve">
+    <value>Greška pri pokretanju adrese: {0}</value>
+  </data>
+  <data name="PresetImportErrorMessage" xml:space="preserve">
+    <value>Uvoz šablona nije uspio. Provjerite zapisnik za detalje.</value>
+  </data>
+  <data name="ImportErrorTitle" xml:space="preserve">
+    <value>Greška kod uvoza</value>
+  </data>
+  <data name="PresetImportSuccessMessage" xml:space="preserve">
+    <value>Uspješno uvezen šablon {0}</value>
+  </data>
+  <data name="PresetExportSuccessMessage" xml:space="preserve">
+    <value>Uspješno izvezen šablon u {0}</value>
+  </data>
+  <data name="ExportPresetFilePickerText" xml:space="preserve">
+    <value>Izvezi šablon</value>
+  </data>
+  <data name="SaveChangesPickerMessage" xml:space="preserve">
+    <value>Želite li spremiti promjene u vaš trenutni izabirač?</value>
+  </data>
+  <data name="SaveChangesPickerTitle" xml:space="preserve">
+    <value>Spremiti trenutni izabirač?</value>
+  </data>
+  <data name="RevertConfirmMessage" xml:space="preserve">
+    <value>Jeste li sigurni da želite vratiti sve nespremljene promjene?</value>
+  </data>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>Vrati</value>
+  </data>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Jeste li sigurni da želite ukloniti ovo?</value>
+  </data>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>Ukloni</value>
+  </data>
+  <data name="OutputDirectoryPickerText" xml:space="preserve">
+    <value>Izaberite odredišni direktorij za enkodirane video fajlove.</value>
+  </data>
+  <data name="LengthPreviewLabel" xml:space="preserve">
+    <value>({0})</value>
+  </data>
+  <data name="ModifiedAffix" xml:space="preserve">
+    <value>(Izmjenjeno)</value>
+  </data>
+  <data name="PlayingVideoStatus" xml:space="preserve">
+    <value>Reprodukcija videa...</value>
+  </data>
+  <data name="OpeningFolderStatus" xml:space="preserve">
+    <value>Otvaranje foldera...</value>
+  </data>
+  <data name="CloseVideoSourceToolTip" xml:space="preserve">
+    <value>Zatvori izvor videa</value>
+  </data>
+  <data name="UpdatesMenuItem" xml:space="preserve">
+    <value>Ažuriranja...</value>
+  </data>
+  <data name="CbrAuto" xml:space="preserve">
+    <value>CBR Automatski</value>
+  </data>
+  <data name="RangeBarToolTip" xml:space="preserve">
+    <value>Kliknite lijevom tipkom da postavite početno vrijeme i desnom tipkom da postavite završno vrijeme.</value>
+  </data>
+  <data name="QueueFormat_Chapters" xml:space="preserve">
+    <value>Poglavlje {0}</value>
+  </data>
+  <data name="QueueFormat_Frames" xml:space="preserve">
+    <value>Frejm {0}-{1}</value>
+  </data>
+  <data name="QueueRangeAll" xml:space="preserve">
+    <value>Sve</value>
+  </data>
+  <data name="CouldNotCopyLogError" xml:space="preserve">
+    <value>Nije moguće kopirati zapisnik:{0}{0}{1}</value>
+  </data>
+  <data name="OpenLog" xml:space="preserve">
+    <value>Otvori zapisnik</value>
+  </data>
+  <data name="CopyLog" xml:space="preserve">
+    <value>Kopiraj zapisnik</value>
+  </data>
+  <data name="PresetDiscardConfirmMessage" xml:space="preserve">
+    <value>Imate nespremljene promjene. Jeste li sigurni da želite odbaciti ove promjene prebacivanjem na drugi šablon?</value>
+  </data>
+  <data name="PresetDiscardConfirmTitle" xml:space="preserve">
+    <value>Odbaciti promjene?</value>
+  </data>
+  <data name="RemoveFromQueueToolTip" xml:space="preserve">
+    <value>Ukloni iz reda</value>
+  </data>
+  <data name="CouldNotSaveQueueMessage" xml:space="preserve">
+    <value>Nije moguće spremiti red:{0}{1}</value>
+  </data>
+  <data name="ExportQueue" xml:space="preserve">
+    <value>Izvezi red...</value>
+  </data>
+  <data name="ExportQueueFilePickerText" xml:space="preserve">
+    <value>Izvezi red</value>
+  </data>
+  <data name="QueueImportErrorMessage" xml:space="preserve">
+    <value>Uvoz reda nije uspio. Provjerite zapisnik za detalje.</value>
+  </data>
+  <data name="ImportPresetFilePickerTitle" xml:space="preserve">
+    <value>Uvezi fajl sa šablonom</value>
+  </data>
+  <data name="ImportQueueFilePickerTitle" xml:space="preserve">
+    <value>Uvezi fajla sa redom</value>
+  </data>
+  <data name="ImportQueue" xml:space="preserve">
+    <value>Uvezi red...</value>
+  </data>
+  <data name="QueueExportSuccessMessage" xml:space="preserve">
+    <value>Red uspješno izvezen u {0}</value>
+  </data>
+  <data name="QueueImportSuccessMessage" xml:space="preserve">
+    <value>Red uspješno uvezen.</value>
+  </data>
+  <data name="StopEncodeConfirmationTitle" xml:space="preserve">
+    <value>Zaustavi enkodiranje?</value>
+  </data>
+  <data name="StopEncodeConfirmationMessage" xml:space="preserve">
+    <value>Jeste li sigurni za želite zaustaviti enkodiranje?</value>
+  </data>
+  <data name="AutoplayDiscConfirmationMessage" xml:space="preserve">
+    <value>Zatvori trenutni fajl i otvori disk?</value>
+  </data>
+  <data name="EncodeDetailsMenuItem" xml:space="preserve">
+    <value>Detalji enkodiranja</value>
+  </data>
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
+    <value>Želite li preimenovati postojeći fajl ili započeti sa novim?</value>
+  </data>
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
+    <value>Nije moguće čitati verziju {0} baze podataka. Najviša verzija koju VidCover {1} prepoznaje je {2}</value>
+    <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
+  </data>
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+    <value>Nekompatibilan fajl s bazom podataka</value>
+    <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
+  </data>
+  <data name="PickerMenuItem" xml:space="preserve">
+    <value>Izabirač</value>
+  </data>
+  <data name="CouldNotLoadPickerMessage" xml:space="preserve">
+    <value>Nije moguće učitati izabirač: </value>
+  </data>
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>{0} drugih zapisa ima dužina približnu ovoj.</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>Imate sigurnosnu kopiju verzije {0} fajla. Želite li je upotrijebiti?</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>Greška kod izvođenja videa.</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>Odabrani video plejer nije pronađen u {0}.</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  <data name="EnqueueFolderOfVideoFiles" xml:space="preserve">
+    <value>Dodaj folder sa video zapisima u red...</value>
+  </data>
+  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
+    <value>Pronađene su greške prilikom skeniranje nekih fajlove i oni nisu dodani u listu:
+
+{0}</value>
+  </data>
+  <data name="FileSizeColumnHeader" xml:space="preserve">
+    <value>Veličina</value>
+    <comment>Used on the "completed encodes" tab, to label the column that shows the final output file size.</comment>
+  </data>
+  <data name="OpenAppDataFolder" xml:space="preserve">
+    <value>Otvori mapu sa datotekama aplikacije</value>
+    <comment>Menu choice for opening the application data folder (that holds the VidCoder database file, logs, etc)</comment>
+  </data>
+  <data name="RibbonEncodingGroupLabel" xml:space="preserve">
+    <value>Enkodiranje</value>
+  </data>
+  <data name="RibbonSettingsGroupLabel" xml:space="preserve">
+    <value>Postavke</value>
+  </data>
+  <data name="GlobalOptionsLabel" xml:space="preserve">
+    <value>Globalne opcije</value>
+  </data>
+  <data name="EncodingSettingsButton" xml:space="preserve">
+    <value>Postavke enkodiranja: {0}</value>
+    <comment>{0} is a placeholder for the name of the encoding preset currently selected.</comment>
+  </data>
+  <data name="EncodingSettingsButtonToolTip" xml:space="preserve">
+    <value>Video i audio kodeci, veličina, filteri, kontejneri</value>
+  </data>
+  <data name="OpenSourceRibbonButton" xml:space="preserve">
+    <value>Otvori izvor</value>
+  </data>
+  <data name="ImportExportRibbonButton" xml:space="preserve">
+    <value>Uvoz/Izvoz</value>
+    <comment>Label for ribbon button to import or export presets or queues</comment>
+  </data>
+  <data name="AddedSubtitleFromFile" xml:space="preserve">
+    <value>Uspješno dodani podnaslovi iz datoteke {0}</value>
+  </data>
+  <data name="OpenFormat" xml:space="preserve">
+    <value>Otvori {0}</value>
+    <comment>Format for opening a source. For example: "Open E:\ - THE_INCREDIBLES"</comment>
+  </data>
+  <data name="NoAudioDescription" xml:space="preserve">
+    <value>Nije pronađen zvučni zapis u izvoru.</value>
+  </data>
+  <data name="NoAudioSummary" xml:space="preserve">
+    <value>Nema zvuka</value>
+    <comment>Summary text for when no audio tracks are found on the source</comment>
+  </data>
+  <data name="NoSubtitlesSummary" xml:space="preserve">
+    <value>Nema podnaslova</value>
+    <comment>Summary text for when no subtitle tracks are found on the source and no external subtitles have been added</comment>
+  </data>
+  <data name="DataTooOldRunVidCoderVersion" xml:space="preserve">
+    <value>Vaši podaci su prestari za ažuriranje. Pokrenite VidCoder {0} jednom da bi ažurirali na kompatibilnu verziju, nakon toga pokušajte ponovo sa ovom verzijom.</value>
+    <comment>This is shown on app start when old data is detected.</comment>
+  </data>
+  <data name="BitrateColumn" xml:space="preserve">
+    <value>Bitrate</value>
+  </data>
+  <data name="SampleRateColumn" xml:space="preserve">
+    <value>Frekvencija</value>
+  </data>
+  <data name="ClearRecentFilesButtonToolTip" xml:space="preserve">
+    <value>Očisti nedavne datoteke</value>
+  </data>
+  <data name="OpenSourceLabel" xml:space="preserve">
+    <value>Otvori</value>
+    <comment>Label on top of the different options for opening video source on the startup screen.</comment>
+  </data>
+  <data name="ScanningSourceLabelFormat" xml:space="preserve">
+    <value>Skeniranje {0}...</value>
+    <comment>{0} is the name of the source being scanned.</comment>
+  </data>
+  <data name="RetryFailedItemsMenuItem" xml:space="preserve">
+    <value>Ponovo pokušaj neuspjele zadatke</value>
+  </data>
+  <data name="StartChapterAutomationName" xml:space="preserve">
+    <value>Početak poglavlja</value>
+    <comment>Narrator label for the chapter start combo box</comment>
+  </data>
+  <data name="EndChapterAutomationName" xml:space="preserve">
+    <value>Kraj poglavlja</value>
+    <comment>Narrator label for the end chapter combo box</comment>
+  </data>
+  <data name="EditChaptersButtonAutomationName" xml:space="preserve">
+    <value>Izmjeni poglavlja</value>
+    <comment>Help text for screen readers for the Edit chapters button</comment>
+  </data>
+  <data name="ApplyCurrentEncodingSettings" xml:space="preserve">
+    <value>Primjeni trenutne postavke enkodiranja</value>
+  </data>
+  <data name="OpenSourceFolderOption" xml:space="preserve">
+    <value>Otvori izvornu mapu</value>
+    <comment>Menu option to open the folder of the source file in the queue</comment>
+  </data>
+  <data name="WithCurrentJobsFormat" xml:space="preserve">
+    <value>sa trenutnim zadatkom(cima): {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger when currently encoding job(s) complete. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="WithQueueFormat" xml:space="preserve">
+    <value>sa redom: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger on queue completion. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="VideoEncodingOptionsToolTip" xml:space="preserve">
+    <value>Opcije video enkodiranja</value>
+  </data>
+  <data name="AudioEncodingOptionsToolTip" xml:space="preserve">
+    <value>Opcije audio enkodiranja</value>
+  </data>
+  <data name="NewVersionDownloadFinishedOnLaunchStatus" xml:space="preserve">
+    <value>Verzija {0} je završila preuzimanje.</value>
+  </data>
+  <data name="RemoveFromQueueMenuItem" xml:space="preserve">
+    <value>Ukloni iz reda</value>
+  </data>
+  <data name="ClearSucceededMenuItem" xml:space="preserve">
+    <value>Očisti uspješne</value>
+  </data>
+  <data name="ClearFailedMenuItem" xml:space="preserve">
+    <value>Očisti neuspješne</value>
+  </data>
+  <data name="ClearQueueConfirmationMessage" xml:space="preserve">
+    <value>Jeste li sigurni da želite ukoloniti sve stavke iz reda?</value>
+  </data>
+  <data name="RemoveAllFomQueueMenuItem" xml:space="preserve">
+    <value>Ukloni sve iz reda</value>
+  </data>
+  <data name="EncodeCompleteActionAbortedDueToErrorsMessage" xml:space="preserve">
+    <value>Akcija završeno enkodiranje nije pokrenuta zbog greški u listi rezultata enkodiranja.</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</root>

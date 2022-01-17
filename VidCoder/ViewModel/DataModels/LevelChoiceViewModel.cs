@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Linq;
-using HandBrake.ApplicationServices.Interop;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Services;
 
@@ -8,9 +8,9 @@ namespace VidCoder.ViewModel
 {
 	public class LevelChoiceViewModel : ReactiveObject
 	{
-		private MainViewModel main = Ioc.Get<MainViewModel>();
-		private PresetsService presetsService = Ioc.Get<PresetsService>();
-		private OutputSizeService outputSizeService = Ioc.Get<OutputSizeService>();
+		private MainViewModel main = StaticResolver.Resolve<MainViewModel>();
+		private PresetsService presetsService = StaticResolver.Resolve<PresetsService>();
+		private OutputSizeService outputSizeService = StaticResolver.Resolve<OutputSizeService>();
 
 		public LevelChoiceViewModel(string value)
 		{
@@ -38,49 +38,52 @@ namespace VidCoder.ViewModel
 				this.outputSizeService.WhenAnyValue(x => x.Size),
 				(hasVideoSource, titleFramerate, profileFramerate, videoOptions, outputSize) =>
 				{
-					if (this.Value == null || !hasVideoSource || outputSize == null || outputSize.Width == 0 || outputSize.Height == 0)
-					{
-						return true;
-					}
+					// Checking H264 level is no longer possible in HB. It may come back in the future.
+					return true;
 
-					int fpsNumerator;
-					int fpsDenominator;
+					////if (this.Value == null || !hasVideoSource || outputSize == null || outputSize.Width == 0 || outputSize.Height == 0)
+					////{
+					////	return true;
+					////}
 
-					if (profileFramerate == 0)
-					{
-						fpsNumerator = titleFramerate.Num;
-						fpsDenominator = titleFramerate.Den;
-					}
-					else
-					{
-						fpsNumerator = 27000000;
-						fpsDenominator = HandBrakeUnitConversionHelpers.FramerateToVrate(profileFramerate);
-					}
+					////int fpsNumerator;
+					////int fpsDenominator;
 
-					bool interlaced = false;
-					bool fakeInterlaced = false;
+					////if (profileFramerate == 0)
+					////{
+					////	fpsNumerator = titleFramerate.Num;
+					////	fpsDenominator = titleFramerate.Den;
+					////}
+					////else
+					////{
+					////	fpsNumerator = 27000000;
+					////	fpsDenominator = HandBrakeUnitConversionHelpers.FramerateToVrate(profileFramerate);
+					////}
 
-					Dictionary<string, string> advancedOptions = AdvancedOptionsParsing.ParseOptions(videoOptions);
-					if (advancedOptions.ContainsKey("interlaced") && advancedOptions["interlaced"] == "1" ||
-						advancedOptions.ContainsKey("tff") && advancedOptions["tff"] == "1" ||
-						advancedOptions.ContainsKey("bff") && advancedOptions["bff"] == "1")
-					{
-						interlaced = true;
-					}
+					////bool interlaced = false;
+					////bool fakeInterlaced = false;
 
-					if (advancedOptions.ContainsKey("fake-interlaced") && advancedOptions["fake-interlaced"] == "1")
-					{
-						fakeInterlaced = true;
-					}
+					////Dictionary<string, string> advancedOptions = AdvancedOptionsParsing.ParseOptions(videoOptions);
+					////if (advancedOptions.ContainsKey("interlaced") && advancedOptions["interlaced"] == "1" ||
+					////	advancedOptions.ContainsKey("tff") && advancedOptions["tff"] == "1" ||
+					////	advancedOptions.ContainsKey("bff") && advancedOptions["bff"] == "1")
+					////{
+					////	interlaced = true;
+					////}
 
-					return HandBrakeUtils.IsH264LevelValid(
-						this.Value,
-						outputSize.Width,
-						outputSize.Height,
-						fpsNumerator,
-						fpsDenominator,
-						interlaced,
-						fakeInterlaced);
+					////if (advancedOptions.ContainsKey("fake-interlaced") && advancedOptions["fake-interlaced"] == "1")
+					////{
+					////	fakeInterlaced = true;
+					////}
+
+					////return HandBrakeUtils.IsH264LevelValid(
+					////	this.Value,
+					////	outputSize.Width,
+					////	outputSize.Height,
+					////	fpsNumerator,
+					////	fpsDenominator,
+					////	interlaced,
+					////	fakeInterlaced);
 				}).ToProperty(this, x => x.IsCompatible, out this.isCompatible);
 		}
 

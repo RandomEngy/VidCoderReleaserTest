@@ -112,25 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TitleLabel" xml:space="preserve">
     <value>タイトル:</value>
-  </data>
-  <data name="SettingsLabel" xml:space="preserve">
-    <value>設定</value>
   </data>
   <data name="AddToQueueLabel" xml:space="preserve">
     <value>キューへ追加</value>
   </data>
   <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
     <value>キューに複数のタイトルを追加</value>
-  </data>
-  <data name="FileMenu" xml:space="preserve">
-    <value>ファイル</value>
   </data>
   <data name="OpenVideoFile" xml:space="preserve">
     <value>動画ファイルを開く</value>
@@ -141,9 +135,6 @@
   <data name="EnqueueMultipleFiles" xml:space="preserve">
     <value>複数のファイルをキューに入れる</value>
   </data>
-  <data name="EnqueueMultipleTitles" xml:space="preserve">
-    <value>複数のタイトルをキューに入れる</value>
-  </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>ツール</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="ExportPreset" xml:space="preserve">
     <value>プリセットをエクスポート</value>
-  </data>
-  <data name="OptionsMenuItem" xml:space="preserve">
-    <value>オプション</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>再生</value>
@@ -168,11 +156,9 @@
   <data name="ClearCompleted" xml:space="preserve">
     <value>クリア完了</value>
   </data>
-  <data name="ExitMenuItem" xml:space="preserve">
-    <value>終了</value>
-  </data>
   <data name="WindowsMenu" xml:space="preserve">
     <value>ウィンドウ</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
   </data>
   <data name="EncodingSettingsMenuItem" xml:space="preserve">
     <value>エンコード設定</value>
@@ -195,15 +181,6 @@
   <data name="AboutVidCoderMenuItem" xml:space="preserve">
     <value>VidCoderについて</value>
   </data>
-  <data name="ChooseVideoSourceLabel" xml:space="preserve">
-    <value>ビデオ ソースを選択：</value>
-  </data>
-  <data name="SourceLabel" xml:space="preserve">
-    <value>入力元：</value>
-  </data>
-  <data name="ScanningSourceLabel" xml:space="preserve">
-    <value>ソースをスキャンしています...</value>
-  </data>
   <data name="Recent" xml:space="preserve">
     <value>最近利用したソース</value>
   </data>
@@ -212,18 +189,6 @@
   </data>
   <data name="ScanErrorLabel" xml:space="preserve">
     <value>スキャン中にエラーが発生しました。</value>
-  </data>
-  <data name="AudioLabel" xml:space="preserve">
-    <value>音声:</value>
-  </data>
-  <data name="VideoLabel" xml:space="preserve">
-    <value>ビデオ：</value>
-  </data>
-  <data name="SubtitlesLabel" xml:space="preserve">
-    <value>字幕：</value>
-  </data>
-  <data name="AddTrackButton" xml:space="preserve">
-    <value>トラック追加</value>
   </data>
   <data name="ChapterMarkersLabel" xml:space="preserve">
     <value>チャプターマーカー:</value>
@@ -236,12 +201,6 @@
   </data>
   <data name="DestinationToolTip" xml:space="preserve">
     <value>クリックして出力先を編集します</value>
-  </data>
-  <data name="SelectOutputPathButton" xml:space="preserve">
-    <value>出力パスを選択</value>
-  </data>
-  <data name="EncodingLabel" xml:space="preserve">
-    <value>エンコード:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>停止</value>
@@ -273,14 +232,8 @@
   <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
     <value>エンコード中</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>強制字幕検索</value>
-  </data>
   <data name="NoneParen" xml:space="preserve">
     <value>(なし)</value>
-  </data>
-  <data name="TracksSummaryMultiple" xml:space="preserve">
-    <value>{0} トラック</value>
   </data>
   <data name="SaveChangesPresetMessage" xml:space="preserve">
     <value>プリセットの変更を保存しますか？</value>
@@ -296,9 +249,6 @@
   </data>
   <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
     <value>完了したジョブから復元しました</value>
-  </data>
-  <data name="PresetLabel" xml:space="preserve">
-    <value>プリセット:</value>
   </data>
   <data name="DestinationColumnHeader" xml:space="preserve">
     <value>出力先:</value>
@@ -344,9 +294,6 @@
 
 {1}</value>
   </data>
-  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
-    <value>以下のフアイルは識別できなかったため、キューに追加されませんでした：{0}</value>
-  </data>
   <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
     <value>ビデオ ファイルのスキャン中にエラー</value>
   </data>
@@ -356,9 +303,6 @@
   <data name="DirectoryCreateErrorMessage" xml:space="preserve">
     <value>出力フォルダを作成できませんでした。エラーの詳細：{0}</value>
   </data>
-  <data name="DirectoryCreateErrorTitle" xml:space="preserve">
-    <value>ディレクトリの作成エラー</value>
-  </data>
   <data name="EncodeCompleted" xml:space="preserve">
     <value>エンコード完了</value>
   </data>
@@ -367,12 +311,6 @@
   </data>
   <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
     <value>キュー内のすべてのエンコードが完了しました</value>
-  </data>
-  <data name="OutputFolderRequiredMessage" xml:space="preserve">
-    <value>エンコードジョブを追加できません。[OK]を押して既定の出力先を指定してください。</value>
-  </data>
-  <data name="OutputFolderRequiredTitle" xml:space="preserve">
-    <value>既定の出力先を設定してください</value>
   </data>
   <data name="OutputPathNotValidMessage" xml:space="preserve">
     <value>出力先が無効です</value>
@@ -391,45 +329,6 @@
   </data>
   <data name="WhenDoneLabel" xml:space="preserve">
     <value>終了時の処理：</value>
-  </data>
-  <data name="Preset_AndroidTablet" xml:space="preserve">
-    <value>Android Tablet</value>
-  </data>
-  <data name="Preset_Android" xml:space="preserve">
-    <value>Android</value>
-  </data>
-  <data name="Preset_AppleiPad" xml:space="preserve">
-    <value>Apple iPad</value>
-  </data>
-  <data name="Preset_AppleiPhone4" xml:space="preserve">
-    <value>Apple iPhone 4</value>
-  </data>
-  <data name="Preset_AppleiPhoneTouch" xml:space="preserve">
-    <value>Apple iPhone/Touch</value>
-  </data>
-  <data name="Preset_AppleiPod" xml:space="preserve">
-    <value>Apple iPod</value>
-  </data>
-  <data name="Preset_AppleTV" xml:space="preserve">
-    <value>AppleTV</value>
-  </data>
-  <data name="Preset_AppleTV2" xml:space="preserve">
-    <value>AppleTV 2</value>
-  </data>
-  <data name="Preset_AppleTV3" xml:space="preserve">
-    <value>AppleTV 3</value>
-  </data>
-  <data name="Preset_Universal" xml:space="preserve">
-    <value>一般形式</value>
-  </data>
-  <data name="Preset_HighProfile" xml:space="preserve">
-    <value>High Profile</value>
-  </data>
-  <data name="Preset_Normal" xml:space="preserve">
-    <value>ノーマル</value>
-  </data>
-  <data name="Preset_WindowsPhone7" xml:space="preserve">
-    <value>Windows Phone 7</value>
   </data>
   <data name="SourceOption_VideoFile" xml:space="preserve">
     <value>動画ファイル...</value>
@@ -458,14 +357,8 @@
   <data name="LaunchUrlError" xml:space="preserve">
     <value>URL の起動エラー: {0}</value>
   </data>
-  <data name="UserConfigLoadError" xml:space="preserve">
-    <value>設定ファイルを読み込めません。ファイルが壊れている可能性があります。削除しますか？保存したプリセットには影響しません。</value>
-  </data>
-  <data name="UserConfigLoadErrorTitle" xml:space="preserve">
-    <value>設定読み込みエラー</value>
-  </data>
   <data name="PresetImportErrorMessage" xml:space="preserve">
-    <value>プリセットをインポートできません。不明なファイル形式です。</value>
+    <value>プリセットをインポートできませんでした。詳細についてはログを確認してください。</value>
   </data>
   <data name="ImportErrorTitle" xml:space="preserve">
     <value>インポートエラー</value>
@@ -479,26 +372,23 @@
   <data name="ExportPresetFilePickerText" xml:space="preserve">
     <value>プリセットをエクスポート</value>
   </data>
-  <data name="PresetSaveConfirmMessage" xml:space="preserve">
-    <value>プリセットの変更を保存しますか？</value>
+  <data name="SaveChangesPickerMessage" xml:space="preserve">
+    <value>ピッカーの変更を保存しますか？</value>
   </data>
-  <data name="PresetSaveConfirmTitle" xml:space="preserve">
-    <value>現在のプリセットを保存しますか？</value>
+  <data name="SaveChangesPickerTitle" xml:space="preserve">
+    <value>現在のピッカーを保存しますか？</value>
   </data>
-  <data name="PresetRevertConfirmMessage" xml:space="preserve">
-    <value>このプリセットは変更されています。変更を破棄しますか？</value>
+  <data name="RevertConfirmMessage" xml:space="preserve">
+    <value>未保存のすべての変更を元に戻しますか？</value>
   </data>
-  <data name="PresetRevertConfirmTitle" xml:space="preserve">
-    <value>プリセットを元に戻す</value>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>元に戻す</value>
   </data>
-  <data name="PresetRemoveConfirmMessage" xml:space="preserve">
-    <value>このプリセットを本当に消去しますか？</value>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>削除してもよろしいですか？</value>
   </data>
-  <data name="PresetRemoveConfirmTitle" xml:space="preserve">
-    <value>プリセットを削除</value>
-  </data>
-  <data name="UserConfigCorrupted" xml:space="preserve">
-    <value>設定ファイルが壊れているため読み込めません。一部の設定はリセットされています。</value>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>削除</value>
   </data>
   <data name="OutputDirectoryPickerText" xml:space="preserve">
     <value>エンコードしたビデオファイルの出力先を選択してください。</value>
@@ -518,9 +408,6 @@
   <data name="CloseVideoSourceToolTip" xml:space="preserve">
     <value>ソースファイルを閉じる</value>
   </data>
-  <data name="CloseVideoSourceMenuItem" xml:space="preserve">
-    <value>ソースファイルを閉じる</value>
-  </data>
   <data name="UpdatesMenuItem" xml:space="preserve">
     <value>アップデート...</value>
   </data>
@@ -529,9 +416,6 @@
   </data>
   <data name="RangeBarToolTip" xml:space="preserve">
     <value>左クリックで開始時間をセットし、右クリックで終了時間をセットします</value>
-  </data>
-  <data name="Preset_WindowsPhone8" xml:space="preserve">
-    <value>Windows Phone 8</value>
   </data>
   <data name="QueueFormat_Chapters" xml:space="preserve">
     <value>チャンネル {0}</value>
@@ -557,12 +441,6 @@
   <data name="PresetDiscardConfirmTitle" xml:space="preserve">
     <value>変更を破棄しますか？</value>
   </data>
-  <data name="RemoveAudioTrackToolTip" xml:space="preserve">
-    <value>オーディオ トラックを削除</value>
-  </data>
-  <data name="Preset_Xbox360" xml:space="preserve">
-    <value>Xbox 360</value>
-  </data>
   <data name="RemoveFromQueueToolTip" xml:space="preserve">
     <value>キューから削除</value>
   </data>
@@ -576,7 +454,7 @@
     <value>キューをエクスポート</value>
   </data>
   <data name="QueueImportErrorMessage" xml:space="preserve">
-    <value>プリセットをインポートできません。不明なファイル形式です。</value>
+    <value>キューのインポートに失敗しました。詳細についてはログを確認してください。</value>
   </data>
   <data name="ImportPresetFilePickerTitle" xml:space="preserve">
     <value>インポートするプリセットファイルを選択</value>
@@ -605,21 +483,257 @@
   <data name="EncodeDetailsMenuItem" xml:space="preserve">
     <value>エンコードの詳細</value>
   </data>
-	<data name="EncodingSettingsChangedMessage" xml:space="preserve">
-    <value>キューに追加後にエンコードの設定が変更されています。現在の設定をキュー内のすべてのアイテムに適用しますか？</value>
-  </data>
-	<data name="EncodingSettingsChangedTitle" xml:space="preserve">
-    <value>設定が変更されました</value>
-  </data>
-	<data name="RenameDatabaseFileLine2" xml:space="preserve">
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
     <value>既存のファイルの名前を変更し、新しいファイルを作成しますか？</value>
   </data>
-	<data name="RenameDatabaseFileLine1" xml:space="preserve">
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
     <value>バージョン {0} データベース ファイルを読み取ることができません。VidCoder {1} によって認識される最高のバージョンは {2}です。</value>
     <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
   </data>
-	<data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
     <value>対応していないデータベースファイル形式です</value>
     <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
+  </data>
+  <data name="PickerMenuItem" xml:space="preserve">
+    <value>ピッカー</value>
+  </data>
+  <data name="CouldNotLoadPickerMessage" xml:space="preserve">
+    <value>ピッカーを読み込めませんでした： </value>
+  </data>
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>これと似たような時間のタイトルが {0} 個あります</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>バージョン {0} のバックアップがあります。それを使用しますか？</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>ビデオの再生でエラーが発生しました。</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>カスタムのビデオ プレーヤーは、{0} に見つかりませんでした。</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  <data name="EnqueueFolderOfVideoFiles" xml:space="preserve">
+    <value>フォルダのファイルをキューに追加...</value>
+  </data>
+  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
+    <value>スキャン中にエラーが有ったためキューに追加されませんでした：
+
+{0}</value>
+  </data>
+  <data name="FileSizeColumnHeader" xml:space="preserve">
+    <value>サイズ</value>
+    <comment>Used on the "completed encodes" tab, to label the column that shows the final output file size.</comment>
+  </data>
+  <data name="OpenAppDataFolder" xml:space="preserve">
+    <value>アプリのデータフォルダを開く</value>
+    <comment>Menu choice for opening the application data folder (that holds the VidCoder database file, logs, etc)</comment>
+  </data>
+  <data name="RibbonEncodingGroupLabel" xml:space="preserve">
+    <value>エンコード</value>
+  </data>
+  <data name="RibbonSettingsGroupLabel" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="GlobalOptionsLabel" xml:space="preserve">
+    <value>全般の設定</value>
+  </data>
+  <data name="EncodingSettingsButton" xml:space="preserve">
+    <value>エンコード設定:{0}</value>
+    <comment>{0} is a placeholder for the name of the encoding preset currently selected.</comment>
+  </data>
+  <data name="EncodingSettingsButtonToolTip" xml:space="preserve">
+    <value>ビデオと音声のコーデック、サイズ、フィルター、形式</value>
+  </data>
+  <data name="OpenSourceRibbonButton" xml:space="preserve">
+    <value>ソースを開く</value>
+  </data>
+  <data name="ImportExportRibbonButton" xml:space="preserve">
+    <value>インポート/エクスポート</value>
+    <comment>Label for ribbon button to import or export presets or queues</comment>
+  </data>
+  <data name="AddedSubtitleFromFile" xml:space="preserve">
+    <value>ファイルから字幕を追加しました {0}</value>
+  </data>
+  <data name="OpenFormat" xml:space="preserve">
+    <value>開く {0}</value>
+    <comment>Format for opening a source. For example: "Open E:\ - THE_INCREDIBLES"</comment>
+  </data>
+  <data name="NoAudioDescription" xml:space="preserve">
+    <value>音声がありません</value>
+  </data>
+  <data name="NoAudioSummary" xml:space="preserve">
+    <value>音声なし</value>
+    <comment>Summary text for when no audio tracks are found on the source</comment>
+  </data>
+  <data name="NoSubtitlesSummary" xml:space="preserve">
+    <value>字幕なし</value>
+    <comment>Summary text for when no subtitle tracks are found on the source and no external subtitles have been added</comment>
+  </data>
+  <data name="DataTooOldRunVidCoderVersion" xml:space="preserve">
+    <value>データが古すぎるためアップグレードできません。VidCoder {0} を一度起動し互換性のあるバージョンにアップグレードし、このバージョンで再試行してください。</value>
+    <comment>This is shown on app start when old data is detected.</comment>
+  </data>
+  <data name="BitrateColumn" xml:space="preserve">
+    <value>ビットレート</value>
+  </data>
+  <data name="SampleRateColumn" xml:space="preserve">
+    <value>サンプリングレート</value>
+  </data>
+  <data name="ClearRecentFilesButtonToolTip" xml:space="preserve">
+    <value>最近使ったファイルをクリア</value>
+  </data>
+  <data name="OpenSourceLabel" xml:space="preserve">
+    <value>開く</value>
+    <comment>Label on top of the different options for opening video source on the startup screen.</comment>
+  </data>
+  <data name="ScanningSourceLabelFormat" xml:space="preserve">
+    <value>スキャン中 {0}…</value>
+    <comment>{0} is the name of the source being scanned.</comment>
+  </data>
+  <data name="RetryFailedItemsMenuItem" xml:space="preserve">
+    <value>失敗したジョブを再試行</value>
+  </data>
+  <data name="StartChapterAutomationName" xml:space="preserve">
+    <value>開始チャプター</value>
+    <comment>Narrator label for the chapter start combo box</comment>
+  </data>
+  <data name="EndChapterAutomationName" xml:space="preserve">
+    <value>終了チャプター</value>
+    <comment>Narrator label for the end chapter combo box</comment>
+  </data>
+  <data name="EditChaptersButtonAutomationName" xml:space="preserve">
+    <value>チャプター編集</value>
+    <comment>Help text for screen readers for the Edit chapters button</comment>
+  </data>
+  <data name="ApplyCurrentEncodingSettings" xml:space="preserve">
+    <value>現在のエンコード設定を適用</value>
+  </data>
+  <data name="OpenSourceFolderOption" xml:space="preserve">
+    <value>ソースフォルダを開く</value>
+    <comment>Menu option to open the folder of the source file in the queue</comment>
+  </data>
+  <data name="WithCurrentJobsFormat" xml:space="preserve">
+    <value>現在のジョブ：{0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger when currently encoding job(s) complete. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="WithQueueFormat" xml:space="preserve">
+    <value>現在のキュー：{0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger on queue completion. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="VideoEncodingOptionsToolTip" xml:space="preserve">
+    <value>ビデオエンコード設定</value>
+  </data>
+  <data name="AudioEncodingOptionsToolTip" xml:space="preserve">
+    <value>音声エンコード設定</value>
+  </data>
+  <data name="NewVersionDownloadFinishedOnLaunchStatus" xml:space="preserve">
+    <value>バージョン {0} のダウンロード完了</value>
+  </data>
+  <data name="RemoveFromQueueMenuItem" xml:space="preserve">
+    <value>キューから削除</value>
+  </data>
+  <data name="ClearSucceededMenuItem" xml:space="preserve">
+    <value>完了済みを削除</value>
+  </data>
+  <data name="ClearFailedMenuItem" xml:space="preserve">
+    <value>失敗を削除</value>
+  </data>
+  <data name="ClearQueueConfirmationMessage" xml:space="preserve">
+    <value>キューからすべての項目を削除しますか？</value>
+  </data>
+  <data name="RemoveAllFomQueueMenuItem" xml:space="preserve">
+    <value>すべてのキューを削除</value>
+  </data>
+  <data name="EncodeCompleteActionAbortedDueToErrorsMessage" xml:space="preserve">
+    <value>エラーが有ったためエンコード完了時の動作は実行されませんでした。</value>
+  </data>
+  <data name="AudioPickerButtonToolTip" xml:space="preserve">
+    <value>オーディオトラックを自動的に選択...</value>
+  </data>
+  <data name="SubtitlePickerButtonToolTip" xml:space="preserve">
+    <value>オーディオトラックを自動的に選択...</value>
+  </data>
+  <data name="AudioSubtitleTrackColumnHeader" xml:space="preserve">
+    <value>トラック</value>
+    <comment>Column header for the audio or subtitle track summary. This is an an auto-generated summary that includes language, format, etc.</comment>
+  </data>
+  <data name="AudioTrackNameAutomationName" xml:space="preserve">
+    <value>オーディオトラック名</value>
+    <comment>Narrator label for the audio track name text box.</comment>
+  </data>
+  <data name="SubtitleNameAutomationName" xml:space="preserve">
+    <value>字幕名</value>
+    <comment>Narrator label for the subtitle name text box.</comment>
+  </data>
+  <data name="CouldNotRecycleFile" xml:space="preserve">
+    <value>ごみ箱にファイルを送信中にエラーが発生しました。</value>
+  </data>
+  <data name="DestinationAutomaticToolTip" xml:space="preserve">
+    <value>保存先は自動的に設定されます。クリックして変更します。</value>
+  </data>
+  <data name="DestinationManualToolTip" xml:space="preserve">
+    <value>保存先は手動で設定されます。クリックすると自動に戻ります。</value>
+  </data>
+  <data name="CompareAgainstOriginal" xml:space="preserve">
+    <value>オリジナルと比較</value>
+  </data>
+  <data name="CompareEncodedLabel" xml:space="preserve">
+    <value>エンコード済み</value>
+    <comment>Label for the encoded video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareOriginalLabel" xml:space="preserve">
+    <value>オリジナル</value>
+    <comment>Label for the original video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareWindowHelpText" xml:space="preserve">
+    <value>エンコード版を表示するには、クリックかCtrlキーをホールドします。</value>
+  </data>
+  <data name="CompareWindowTitleFormat" xml:space="preserve">
+    <value>ビデオの比較: {0} - {1}</value>
+    <comment>Title for the Video compare window.
+{0} is a string indicating if it's original or encoded.
+{1} is the file name, e.g. MyFile.mkv</comment>
+  </data>
+  <data name="MuteAutomationName" xml:space="preserve">
+    <value>消音</value>
+    <comment>Text for screen readers for the mute button on video playback</comment>
+  </data>
+  <data name="UnmuteAutomationName" xml:space="preserve">
+    <value>ミュート解除</value>
+    <comment>Text for screen readers for the unmute button on video playback</comment>
+  </data>
+  <data name="AutoPauseLowBattery" xml:space="preserve">
+    <value>バッテリー残量が少なくなったため自動的に一時停止します</value>
+  </data>
+  <data name="AutoPauseLowDiskSpace" xml:space="preserve">
+    <value>{0}GB 以下の空き容量のため自動的に一時停止します。</value>
+    <comment>{0} is the disk space threshold for auto-pause in GB</comment>
+  </data>
+  <data name="AutoPauseProcessDetected" xml:space="preserve">
+    <value>自動的に一時停止、プロセス検出: {0}</value>
+    <comment>{0} is the name of the process we were waiting for to pause</comment>
+  </data>
+  <data name="AutoPauseResumeBattery" xml:space="preserve">
+    <value>AC 電源に接続したので、自動的に再開します。</value>
+  </data>
+  <data name="AutoPauseResumeDiskSpace" xml:space="preserve">
+    <value>ディ数領域に空き領域ができたので、自動的に再開します。</value>
+  </data>
+  <data name="AutoPauseResumeProcess" xml:space="preserve">
+    <value>プロセスが終了したので、自動的に再開します。</value>
+  </data>
+  <data name="Win7DeprecationWarning" xml:space="preserve">
+    <value>VidCoderは、Windows7あるいはWIndows8はもうサポートしません。
+
+自己責任で使い続けることができます。特定の機能は使えませんし未知の不具合がある可能性があります。その場合のサポートは一切受けることができません。
+
+バージョン5はWindows7/8で使える最新バージョンです。
+
+この警告は2回だけ表示されます。</value>
   </data>
 </root>

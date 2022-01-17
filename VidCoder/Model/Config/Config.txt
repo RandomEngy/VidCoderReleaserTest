@@ -1,35 +1,31 @@
 ﻿MigratedConfigs|bool|false
 
 EncodeJobs2|string|""
-UpdateInProgress|bool|false
-UpdateVersion|string|""
-UpdateInstallerLocation|string|""
-UpdateChangelogLocation|string|""
+UninstallerPath|string|""
 
 LastOutputFolder|string|""
 LastInputFileFolder|string|""
 LastVideoTSFolder|string|""
-LastSrtFolder|string|""
+LastSubtitleFolder|string|""
 LastCsvFolder|string|""
 LastPresetExportFolder|string|""
 
-AutoNameOutputFolder|string|""
-AutoNameCustomFormat|bool|false
-AutoNameCustomFormatString|string|"{source}-{title}"
 NativeLanguageCode|string|""
 DubAudio|bool|false
 
-LastPresetIndex|int|0
+LastPresetIndex|int|-1
 LastPickerIndex|int|0
 EncodingDialogLastTab|int|0
 OptionsDialogLastTab|int|0
 
+CollapsedBuiltInFolders|string|""
+
 MainWindowPlacement|string|""
-SubtitlesDialogPlacement|string|""
 EncodingDialogPlacement|string|""
 ChapterMarkersDialogPlacement|string|""
 PreviewWindowPlacement|string|""
 QueueTitlesDialogPlacement2|string|""
+CompareWindowPlacement|string|""
 AddAutoPauseProcessDialogPlacement|string|""
 OptionsDialogPlacement|string|""
 EncodeDetailsWindowPlacement|string|""
@@ -42,7 +38,14 @@ LogWindowOpen|bool|false
 EncodeDetailsWindowOpen|bool|false
 PickerWindowOpen|bool|false
 
+VideoExpanded|bool|true
+AudioExpanded|bool|true
+SubtitlesExpanded|bool|true
+
 UpdatesEnabled|bool|true
+UpdateMode|string|"SilentNextLaunch"
+UpdatesDisabled32BitOSWarningDisplayed|bool|false
+Win7WarningDisplayedTimes|int|0
 
 PreviewSeconds|int|10
 ApplicationVersion|string|""
@@ -52,29 +55,32 @@ QueueLastColumnWidth|double|75.0
 
 CompletedColumnWidths|string|""
 
+SourcePaneHeightStar|double|2.0
+QueuePaneHeightStar|double|1.0
 PickerListPaneWidth|double|135.0
 EncodingListPaneOpen|bool|true
 EncodingListPaneWidth|double|150.0
-
-ShowPickerWindowMessage|bool|true
+LogListPaneWidth|double|150.0
 
 WorkerProcessPriority|string|"BelowNormal"
 LogVerbosity|int|1
 CopyLogToOutputFolder|bool|false
+CopyLogToCustomFolder|bool|false
+LogCustomFolder|string|""
+AutoPauseLowBattery|bool|true
+AutoPauseLowDiskSpace|bool|true
+AutoPauseLowDiskSpaceGb|int|1
 AutoPauseProcesses|string|""
+MaxSimultaneousEncodes|int|1
 PreviewCount|int|10
 PreviewDisplay|string|"FitToWindow"
 UseCustomPreviewFolder|bool|false
 PreviewOutputFolder|string|""
+DragDropOrder|string|"Alphabetical"
 QueueTitlesUseTitleOverride|bool|false
 QueueTitlesTitleOverride|int|1
-ShowAudioTrackNameField|bool|false
 SourceHistory|string|""
 MinimizeToTray|bool|false
-OutputToSourceDirectory|bool|false
-PreserveFolderStructureInBatch|bool|false
-WhenFileExists|string|"Prompt"
-WhenFileExistsBatch|string|"AutoRename"
 UseCustomVideoPlayer|bool|false
 CustomVideoPlayer|string|""
 PlaySoundOnCompletion|bool|false
@@ -85,32 +91,21 @@ QueueTitlesUseDirectoryOverride|bool|false
 QueueTitlesDirectoryOverride|string|""
 QueueTitlesUseNameOverride|bool|false
 QueueTitlesNameOverride|string|""
-DxvaDecoding|bool|false
 EnableLibDvdNav|bool|true
 MinimumTitleLengthSeconds|int|10
-DeleteSourceFilesOnClearingCompleted|bool|false
 PreserveModifyTimeFiles|bool|false
 ResumeEncodingOnRestart|bool|false
+KeepFailedFiles|bool|false
 UseWorkerProcess|bool|true
 RememberPreviousFiles|bool|true
 VideoFileExtensions|string|"avi, mkv, mp4, m4v, mpg, mpeg, mov, wmv"
 PreferredPlayer|string|"vlc"
 BetaUpdates|bool|false
 InterfaceLanguageCode|string|""
+AppTheme|string|"Auto"
 CpuThrottlingFraction|double|1.0
 UseBuiltInPlayerForPreviews|bool|true
 PreviewVolume|double|0.5
-
-AudioLanguageCode|string|"und"
-SubtitleLanguageCode|string|"und"
-AutoAudio|string|"Disabled"
-AutoSubtitle|string|"Disabled"
-AutoAudioAll|bool|false
-AutoSubtitleAll|bool|false
-AutoSubtitleOnlyIfDifferent|bool|true
-AutoSubtitleBurnIn|bool|true
-AutoSubtitleLanguageDefault|bool|false
-AutoSubtitleLanguageBurnIn|bool|false
-QueueTitlesStartTime|int|40
-QueueTitlesEndTime|int|45
-QueueTitlesUseRange|bool|false
+CompareWindowIsMuted|bool|true
+TriggerEncodeCompleteActionWithErrors|bool|true
+EncodeRetries|int|0

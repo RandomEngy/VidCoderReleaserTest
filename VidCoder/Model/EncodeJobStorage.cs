@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Xml;
-using Newtonsoft.Json;
+using System.Text.Json;
 using VidCoder.Resources;
+using VidCoderCommon.Utilities;
 
 namespace VidCoder.Model
 {
@@ -20,7 +19,7 @@ namespace VidCoder.Model
 					return new List<EncodeJobWithMetadata>();
 				}
 
-				return ParseJobsJson(jobsJson);
+				return ParseAndErrorCheckJobsJson(jobsJson);
 			}
 
 			set
@@ -37,7 +36,12 @@ namespace VidCoder.Model
 				extension = extension.ToLowerInvariant();
 			}
 
-			if (extension != ".xml" && extension != ".vjqueue")
+			if (extension == ".xml")
+			{
+				throw new ArgumentException("Exported queue file is too old to open. Open with VidCoder 3.15 and export to upgrade it.");
+			}
+
+			if (extension != ".vjqueue")
 			{
 				throw new ArgumentException("File extension '" + extension + "' is not recognized.");
 			}
@@ -47,25 +51,7 @@ namespace VidCoder.Model
 				throw new ArgumentException("Queue file could not be found.");
 			}
 
-			if (extension == ".xml")
-			{
-				DataContractSerializer serializer = new DataContractSerializer(typeof(EncodeJobsXml));
-
-				using (var reader = XmlReader.Create(queueFile))
-				{
-					var jobsXmlObject = serializer.ReadObject(reader) as EncodeJobsXml;
-					if (jobsXmlObject == null)
-					{
-						throw new ArgumentException("Queue file is malformed.");
-					}
-
-					return jobsXmlObject.Jobs;
-				}
-			}
-			else
-			{
-				return ParseJobsJson(File.ReadAllText(queueFile));
-			}
+			return ParseAndErrorCheckJobsJson(File.ReadAllText(queueFile));
 		}
 
 		public static bool SaveQueueToFile(IList<EncodeJobWithMetadata> jobs, string filePath)
@@ -86,20 +72,25 @@ namespace VidCoder.Model
 
 		internal static string SerializeJobs(IList<EncodeJobWithMetadata> jobs)
 		{
-			return JsonConvert.SerializeObject(jobs);
+			return JsonSerializer.Serialize(jobs, JsonOptions.WithUpgraders);
 		}
 
-		internal static IList<EncodeJobWithMetadata> ParseJobsJson(string jobsJson)
+		internal static IList<EncodeJobWithMetadata> ParseAndErrorCheckJobsJson(string jobsJson)
 		{
 			try
 			{
-				var jobsList = JsonConvert.DeserializeObject<IList<EncodeJobWithMetadata>>(jobsJson);
+				var jobsList = JsonSerializer.Deserialize<IList<EncodeJobWithMetadata>>(jobsJson, JsonOptions.WithUpgraders);
 				if (jobsList == null)
 				{
 					return new List<EncodeJobWithMetadata>();
 				}
 				else
 				{
+					foreach (var encodeJobWithMetadata in jobsList)
+					{
+						PresetStorage.ErrorCheckEncodingProfile(encodeJobWithMetadata.Job.EncodingProfile);
+					}
+
 					return jobsList;
 				}
 			}

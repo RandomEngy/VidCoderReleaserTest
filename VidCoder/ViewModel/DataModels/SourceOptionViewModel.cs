@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows.Input;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Model;
 using VidCoder.Resources;
@@ -29,14 +32,14 @@ namespace VidCoder.ViewModel
 							}
 
 							return this.SourcePath;
-						case SourceType.VideoFolder:
+						case SourceType.DiscVideoFolder:
 							if (this.SourcePath == null)
 							{
 								return MainRes.SourceOption_DiscFolder;
 							}
 
 							return this.SourcePath;
-						case SourceType.Dvd:
+						case SourceType.Disc:
 							return this.sourceOption.DriveInfo.RootDirectory + " - " + volumeLabel;
 						default:
 							break;
@@ -44,9 +47,6 @@ namespace VidCoder.ViewModel
 
 					return string.Empty;
 				}).ToProperty(this, x => x.Text, out this.text);
-
-			this.ChooseSource = ReactiveCommand.Create();
-			this.ChooseSource.Subscribe(_ => this.ChooseSourceImpl());
 		}
 
 		public string Image
@@ -57,9 +57,9 @@ namespace VidCoder.ViewModel
 				{
 					case SourceType.File:
 						return "/Icons/video-file.png";
-					case SourceType.VideoFolder:
-						return "/Icons/folder.png";
-					case SourceType.Dvd:
+					case SourceType.DiscVideoFolder:
+						return "/Icons/dvd_folder.png";
+					case SourceType.Disc:
 						if (this.sourceOption.DriveInfo.DiscType == DiscType.Dvd)
 						{
 							return "/Icons/disc.png";
@@ -73,14 +73,6 @@ namespace VidCoder.ViewModel
 				}
 
 				return null;
-			}
-		}
-
-		public bool ImageVisible
-		{
-			get
-			{
-				return this.sourceOption.Type != SourceType.None;
 			}
 		}
 
@@ -108,38 +100,44 @@ namespace VidCoder.ViewModel
 			get { return this.sourceOption; }
 		}
 
-		public ReactiveCommand<object> ChooseSource { get; }
-		private void ChooseSourceImpl()
+		private ReactiveCommand<Unit, Unit> chooseSource;
+		public ICommand ChooseSource
 		{
-			var mainVM = Ioc.Get<MainViewModel>();
-
-			switch (this.SourceOption.Type)
+			get
 			{
-				case SourceType.File:
-					if (this.SourcePath == null)
+				return this.chooseSource ?? (this.chooseSource = ReactiveCommand.Create(() =>
+				{
+					var mainVM = StaticResolver.Resolve<MainViewModel>();
+
+					switch (this.SourceOption.Type)
 					{
-						mainVM.SetSourceFromFile();
+						case SourceType.File:
+							if (this.SourcePath == null)
+							{
+								mainVM.PickAndSetSourceFromFile();
+							}
+							else
+							{
+								mainVM.SetSourceFromFile(this.SourcePath);
+							}
+							break;
+						case SourceType.DiscVideoFolder:
+							if (this.SourcePath == null)
+							{
+								mainVM.PickAndHandleFolder();
+							}
+							else
+							{
+								mainVM.SetSourceFromFolder(this.SourcePath);
+							}
+							break;
+						case SourceType.Disc:
+							mainVM.SetSourceFromDvd(this.SourceOption.DriveInfo);
+							break;
+						default:
+							break;
 					}
-					else
-					{
-						mainVM.SetSourceFromFile(this.SourcePath);
-					}
-					break;
-				case SourceType.VideoFolder:
-					if (this.SourcePath == null)
-					{
-						mainVM.SetSourceFromFolder();
-					}
-					else
-					{
-						mainVM.SetSourceFromFolder(this.SourcePath);
-					}
-					break;
-				case SourceType.Dvd:
-					mainVM.SetSourceFromDvd(this.SourceOption.DriveInfo);
-					break;
-				default:
-					break;
+				}));
 			}
 		}
 	}

@@ -112,17 +112,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>When automatic audio selection is disabled, the last picked track is persisted.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>When automatic subtitle selection is disabled, the last picked subtitles are persisted.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>General</value>
   </data>
@@ -144,53 +138,17 @@
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
     <value>Automatic updates</value>
   </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Join the Beta update track</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>File Naming</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Default folder:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>File format:</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Default format</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Custom format:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Available options: {0}</value>
-  </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>When a file already exists...</value>
   </data>
   <data name="EncodingSingleFile" xml:space="preserve">
     <value>Encoding single file:</value>
   </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Ask if you want to overwrite it</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Overwrite the file without prompting</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Automatically switch to a different name</value>
-  </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
     <value>Encoding batch of files:</value>
   </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Overwrite</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Automatically rename</value>
-  </data>
   <data name="AutoPauseLabel" xml:space="preserve">
-    <value>Automatically pause encoding when any of these processes are running:</value>
+    <value>Pause encoding when any of these processes are running:</value>
   </data>
   <data name="AddEllipsesButton" xml:space="preserve">
     <value>Add...</value>
@@ -201,14 +159,8 @@
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
     <value>Remember previously used files and folders</value>
   </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Allow setting custom name on audio tracks (limited player support)</value>
-  </data>
   <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Enable LibDVDNav (change requires program restart)</value>
-  </data>
-  <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Delete source files after clearing successful completed items (with confirmation)</value>
+    <value>Enable LibDVDNav (Change requires program restart. Required to support multiple angles)</value>
   </data>
   <data name="LoggingVerbosityLabel" xml:space="preserve">
     <value>Logging Verbosity:</value>
@@ -238,16 +190,13 @@
     <value>Join the Beta track to get more frequent updates</value>
   </data>
   <data name="UpdateReadyStatus" xml:space="preserve">
-    <value>Update {0} ready. It will install when you exit the program.</value>
-  </data>
-  <data name="DownloadingStatus" xml:space="preserve">
-    <value>Downloading update {0}:</value>
+    <value>Update {0} ready.</value>
   </data>
   <data name="UpToDateStatus" xml:space="preserve">
     <value>VidCoder is up to date.</value>
   </data>
   <data name="ChooseDefaultOutputFolder" xml:space="preserve">
-    <value>Choose the default output directory for encoded video files.</value>
+    <value>Choose the default output folder for encoded video files.</value>
   </data>
   <data name="InterfaceLanguageLabel" xml:space="preserve">
     <value>Interface Language:</value>
@@ -261,9 +210,6 @@
   <data name="UpdatesTab" xml:space="preserve">
     <value>Updates</value>
   </data>
-  <data name="DownloadingInfoStatus" xml:space="preserve">
-    <value>Finding latest version...</value>
-  </data>
   <data name="UpdateFailedStatus" xml:space="preserve">
     <value>Update check failed.</value>
   </data>
@@ -276,9 +222,6 @@
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
     <value>Beware: this version is more likely to have bugs and crashes.</value>
   </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Languages</value>
-  </data>
   <data name="PlayersSection" xml:space="preserve">
     <value>Players</value>
   </data>
@@ -290,9 +233,6 @@
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
     <value>Output folder</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Naming format</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Advanced options</value>
@@ -355,7 +295,7 @@
     <value>Low</value>
   </data>
   <data name="CopyLogToOutputFolderLabel" xml:space="preserve">
-    <value>Copy the encode log to the same directory as the encoded video</value>
+    <value>Copy the encode log to the same folder as the encoded video</value>
   </data>
   <data name="OpenLogFolderButton" xml:space="preserve">
     <value>Open Log Folder</value>
@@ -365,15 +305,6 @@
   </data>
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
     <value>Use worker process to encode</value>
-  </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Video</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Enable DXVA Hardware Accelerated Decoding</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>This option is only suitable for slower systems. Hardware decoders are currently designed for playback, not for re-encoding video so will likely bottleneck on faster systems.</value>
   </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
     <value>Preserve Created and Modified time when converting files</value>
@@ -385,13 +316,70 @@
     <value>Process options</value>
   </data>
   <data name="CpuThrottlingLabel" xml:space="preserve">
-    <value>CPU throttling:</value>
-    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use.</comment>
+    <value>CPU throttling - Allowed Cores:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
   </data>
   <data name="CpuThrottlingToolTip" xml:space="preserve">
     <value>Use CPU throttling to limit the number of processor cores VidCoder can use when encoding.</value>
   </data>
   <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
     <value>Use built-in player for previews</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Maximum simultaneous encoding jobs:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>This is how many simultaneous encode jobs are allowed. Useful for machines with many CPU cores.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Theme</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>The worker process option will take effect after you exit and restart VidCoder.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Copy the encode log to a custom folder</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Keep files from failed or stopped encodes</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Trigger "When done" action when there are failed encode jobs</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Pause when battery is low</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Pause when disk space falls below:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Automatic pausing</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Available options: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Low disk space threshold in gigabytes</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Drag and drop scan order:</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Number of encode retries:</value>
+  </data>
+  <data name="ApplyUpdateButton" xml:space="preserve">
+    <value>Apply update</value>
+  </data>
+  <data name="CheckingForUpdateStatus" xml:space="preserve">
+    <value>Checking for update...</value>
+  </data>
+  <data name="UpdateModeLabel" xml:space="preserve">
+    <value>Update mode:</value>
+    <comment>Label for a dropdown to control whether app updates are applied immediately or delayed until next program launch.</comment>
   </data>
 </root>

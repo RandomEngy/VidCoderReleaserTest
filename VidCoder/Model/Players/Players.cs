@@ -12,10 +12,10 @@ namespace VidCoder.Model
 			get
 			{
 				return new List<IVideoPlayer>
-				       {
-						   new VlcPlayer(),
-						   new MpchcPlayer()
-				       };
+				{
+					new VlcPlayer(),
+					new MpchcPlayer()
+				};
 			}
 		}
 

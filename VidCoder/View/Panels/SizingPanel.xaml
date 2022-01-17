@@ -1,0 +1,547 @@
+﻿<UserControl
+	x:Class="VidCoder.View.SizingPanel"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:commonModel="clr-namespace:VidCoderCommon.Model;assembly=VidCoderCommon"
+	xmlns:controls="clr-namespace:VidCoder.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:dataModels="clr-namespace:VidCoder.ViewModel.DataModels"
+	xmlns:local="clr-namespace:VidCoder"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:res="clr-namespace:VidCoder.Resources"
+	xmlns:viewmodel="clr-namespace:VidCoder.ViewModel"
+	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	d:DataContext="{d:DesignInstance viewmodel:SizingPanelViewModel}"
+	d:DesignHeight="500"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+	<UserControl.Resources>
+		<local:EnumDisplayer x:Key="AnamorphicChoices" Type="{x:Type commonModel:VCAnamorphic}" />
+		<Style x:Key="SizingSectionStyle" TargetType="FrameworkElement">
+			<Setter Property="Margin" Value="7" />
+		</Style>
+	</UserControl.Resources>
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<WrapPanel>
+			<!--  Rotation section  -->
+			<StackPanel
+				MinWidth="180"
+				Orientation="Vertical"
+				Style="{StaticResource SizingSectionStyle}">
+				<TextBlock
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Style="{StaticResource SectionHeader}"
+					Text="{x:Static res:EncodingRes.RotationLabel}" />
+				<ComboBox
+					MinWidth="140"
+					Margin="3"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					ItemsSource="{Binding RotationChoices}"
+					SelectedValue="{Binding Rotation}"
+					SelectedValuePath="Rotation"
+					ToolTipService.ShowDuration="20000">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel d:DataContext="{d:DesignInstance dataModels:RotationViewModel}" Orientation="Horizontal">
+								<Image
+									Width="20"
+									Height="20"
+									Margin="0 0 6 0"
+									Source="{Binding Image}"
+									Visibility="{Binding ShowImage,
+									                     Converter={StaticResource VisibilityConverter}}" />
+								<TextBlock VerticalAlignment="Center" Text="{Binding Display}" />
+							</StackPanel>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+					<ComboBox.ToolTip>
+						<TextBlock Style="{StaticResource LongToolTip}" Text="{x:Static res:EncodingRes.RotationToolTip}" />
+					</ComboBox.ToolTip>
+				</ComboBox>
+				<CheckBox
+					Margin="3"
+					Content="{x:Static res:EncodingRes.FlipHorizontalCheckBox}"
+					IsChecked="{Binding FlipHorizontal}">
+					<CheckBox.ToolTip>
+						<TextBlock Style="{StaticResource LongToolTip}" Text="{x:Static res:EncodingRes.FlipHorizontalToolTip}" />
+					</CheckBox.ToolTip>
+				</CheckBox>
+				<CheckBox
+					Margin="3"
+					Content="{x:Static res:EncodingRes.FlipVerticalCheckBox}"
+					IsChecked="{Binding FlipVertical}">
+					<CheckBox.ToolTip>
+						<TextBlock Style="{StaticResource LongToolTip}" Text="{x:Static res:EncodingRes.FlipVerticalToolTip}" />
+					</CheckBox.ToolTip>
+				</CheckBox>
+			</StackPanel>
+
+			<!--  Cropping section  -->
+			<StackPanel Orientation="Vertical" Style="{StaticResource SizingSectionStyle}">
+				<TextBlock
+					Name="croppingLabel"
+					Margin="0 0 0 0"
+					Style="{StaticResource SectionHeader}"
+					Text="{x:Static res:EncodingRes.CroppingLabel}" />
+
+				<ComboBox
+					Margin="0 6 0 0"
+					AutomationProperties.LabeledBy="{Binding ElementName=croppingLabel}"
+					DisplayMemberPath="Display"
+					ItemsSource="{Binding CroppingTypeChoices}"
+					SelectedValue="{Binding CroppingType}"
+					SelectedValuePath="Value" />
+
+				<StackPanel
+					Margin="0 6 0 0"
+					Orientation="Horizontal"
+					Visibility="{Binding CroppingType,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCCroppingType.Automatic}}">
+					<StackPanel.ToolTip>
+						<TextBlock Style="{StaticResource LongToolTip}" Text="{x:Static res:EncodingRes.MinimumCroppingToolTip}" />
+					</StackPanel.ToolTip>
+					<TextBlock VerticalAlignment="Center" Text="{x:Static res:EncodingRes.MinimumCroppingLabel}" />
+					<controls:NumberBox
+						Height="23"
+						MinWidth="40"
+						Margin="6 0 0 0"
+						AllowEmpty="False"
+						Minimum="2"
+						Modulus="2"
+						Number="{Binding CroppingMinimum,
+						                 Mode=TwoWay}" />
+				</StackPanel>
+				<CheckBox
+					Margin="0 6 0 0"
+					Content="{x:Static res:EncodingRes.ConstrainToOneAxisCheckBox}"
+					IsChecked="{Binding CroppingConstrainToOneAxis}"
+					Visibility="{Binding CroppingType,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCCroppingType.Automatic}}">
+					<CheckBox.ToolTip>
+						<TextBlock Style="{StaticResource LongToolTip}" Text="{x:Static res:EncodingRes.ConstrainToOneAxisToolTip}" />
+					</CheckBox.ToolTip>
+				</CheckBox>
+
+				<Grid Width="121" Margin="0 10 0 0">
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 0 0 0"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.CroppingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Top}"
+						IsEnabled="{Binding CroppingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding CropTop,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 28 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.CroppingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Left}"
+						IsEnabled="{Binding CroppingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding CropLeft,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="22.96"
+						Margin="74 28 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.CroppingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Right}"
+						IsEnabled="{Binding CroppingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding CropRight,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 54 0 0"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.CroppingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Bottom}"
+						IsEnabled="{Binding CroppingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding CropBottom,
+						                 Mode=TwoWay}" />
+				</Grid>
+			</StackPanel>
+
+			<!--  Sizing section  -->
+			<StackPanel
+				MinWidth="290"
+				Orientation="Vertical"
+				Style="{StaticResource SizingSectionStyle}">
+				<TextBlock
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Style="{StaticResource SectionHeader}"
+					Text="{x:Static res:EncodingRes.SizingLabel}" />
+
+				<StackPanel
+					Margin="0 4 0 0"
+					Orientation="Horizontal"
+					ToolTip="{x:Static res:EncodingRes.SizingModeToolTip}">
+					<TextBlock
+						Name="modeLabel"
+						VerticalAlignment="Center"
+						Text="{x:Static res:EncodingRes.ModeLabel}" />
+
+					<ComboBox
+						Margin="6 0 0 0"
+						VerticalAlignment="Center"
+						AutomationProperties.LabeledBy="{Binding ElementName=modeLabel}"
+						ItemsSource="{Binding SizingModeChoices}"
+						SelectedValue="{Binding SizingMode}"
+						SelectedValuePath="Value" />
+				</StackPanel>
+
+				<StackPanel Margin="0 6 0 0" Orientation="Horizontal">
+					<TextBlock VerticalAlignment="Center" Text="{Binding WidthLabel}" />
+
+					<controls:NumberBox
+						Width="60"
+						Height="23"
+						Margin="6 0 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						AllowEmpty="{Binding AllowEmptyResolution}"
+						AutomationProperties.Name="{Binding WidthLabel}"
+						Maximum="8192"
+						Minimum="46"
+						Modulus="2"
+						NoneCaption="{x:Static res:EncodingRes.NoneCaption}"
+						Number="{Binding Width,
+						                 Mode=TwoWay}" />
+
+					<TextBlock
+						Margin="10 0 0 0"
+						VerticalAlignment="Center"
+						Text="{Binding HeightLabel}" />
+
+					<controls:NumberBox
+						Width="60"
+						Height="23"
+						Margin="6 0 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						AllowEmpty="{Binding AllowEmptyResolution}"
+						AutomationProperties.Name="{Binding HeightLabel}"
+						Maximum="4608"
+						Minimum="46"
+						Modulus="2"
+						NoneCaption="{x:Static res:EncodingRes.NoneCaption}"
+						Number="{Binding Height,
+						                 Mode=TwoWay}" />
+
+				</StackPanel>
+
+				<StackPanel
+					Margin="0 6 0 0"
+					Orientation="Horizontal"
+					ToolTip="{x:Static res:EncodingRes.PixelAspectRatioToolTip}"
+					Visibility="{Binding SizingMode,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCSizingMode.Manual}}">
+					<TextBlock VerticalAlignment="Center" Text="{x:Static res:EncodingRes.PixelAspectRatioLabel}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="8 0 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						AllowEmpty="False"
+						AutomationProperties.Name="{x:Static res:EncodingRes.PixelAspectRatioNumeratorAutomationName}"
+						IsEnabled="{Binding UseDisplayWidth,
+						                    Converter={StaticResource InverseBoolConverter}}"
+						Minimum="1"
+						Number="{Binding PixelAspectX,
+						                 Mode=TwoWay}"
+						ToolTip="{x:Static res:EncodingRes.PixelAspectRatioToolTip}" />
+					<TextBlock
+						Margin="6 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						Text="/" />
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						AllowEmpty="False"
+						AutomationProperties.Name="{x:Static res:EncodingRes.PixelAspectRatioDenominatorAutomationName}"
+						IsEnabled="{Binding UseDisplayWidth,
+						                    Converter={StaticResource InverseBoolConverter}}"
+						Minimum="1"
+						Number="{Binding PixelAspectY,
+						                 Mode=TwoWay}"
+						ToolTip="{x:Static res:EncodingRes.PixelAspectRatioToolTip}" />
+				</StackPanel>
+
+				<CheckBox
+					Margin="0 6 0 0"
+					Content="{x:Static res:EncodingRes.AnamorphicCheckbox}"
+					IsChecked="{Binding UseAnamorphic}"
+					ToolTip="{x:Static res:EncodingRes.AnamorphicToolTip}"
+					Visibility="{Binding SizingMode,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCSizingMode.Automatic}}" />
+
+				<StackPanel
+					Margin="0 6 0 0"
+					Orientation="Horizontal"
+					Visibility="{Binding SizingMode,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCSizingMode.Automatic}}">
+					<TextBlock
+						Name="scalingModeLabel"
+						VerticalAlignment="Center"
+						Text="{x:Static res:EncodingRes.ScalingModeLabel}" />
+
+					<ComboBox
+						Margin="6 0 0 0"
+						VerticalAlignment="Center"
+						AutomationProperties.LabeledBy="{Binding ElementName=scalingModeLabel}"
+						ItemsSource="{Binding ScalingModeChoices}"
+						SelectedValue="{Binding ScalingMode}"
+						SelectedValuePath="Value" />
+				</StackPanel>
+			</StackPanel>
+
+			<!--  Padding section  -->
+			<StackPanel Style="{StaticResource SizingSectionStyle}">
+				<TextBlock
+					Name="paddingLabel"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Style="{StaticResource SectionHeader}"
+					Text="{x:Static res:EncodingRes.PaddingLabel}" />
+
+				<ComboBox
+					Margin="0 4 0 0"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					AutomationProperties.LabeledBy="{Binding ElementName=paddingLabel}"
+					ItemsSource="{Binding PaddingModeChoices}"
+					SelectedValue="{Binding PaddingMode}"
+					SelectedValuePath="Value"
+					Visibility="{Binding SizingMode,
+					                     Converter={StaticResource EnumVisibilityConverter},
+					                     ConverterParameter={x:Static commonModel:VCSizingMode.Automatic}}" />
+
+				<Grid
+					Width="121"
+					Margin="0 6 0 0"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top">
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 0 0 0"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.PaddingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Top}"
+						IsEnabled="{Binding PaddingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding PadTop,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 28 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.PaddingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Left}"
+						IsEnabled="{Binding PaddingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding PadLeft,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="22.96"
+						Margin="74 28 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.PaddingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Right}"
+						IsEnabled="{Binding PaddingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding PadRight,
+						                 Mode=TwoWay}" />
+
+					<controls:NumberBox
+						Width="45"
+						Height="23"
+						Margin="0 54 0 0"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Top"
+						AllowEmpty="False"
+						AutomationProperties.HelpText="{x:Static res:EncodingRes.PaddingLabel}"
+						AutomationProperties.Name="{x:Static res:EncodingRes.Bottom}"
+						IsEnabled="{Binding PaddingUIEnabled}"
+						Minimum="0"
+						Modulus="2"
+						Number="{Binding PadBottom,
+						                 Mode=TwoWay}" />
+				</Grid>
+
+				<StackPanel
+					Margin="0 10 0 0"
+					VerticalAlignment="Center"
+					Orientation="Horizontal"
+					Visibility="{Binding PadColorEnabled,
+					                     Converter={StaticResource VisibilityConverter}}">
+					<TextBlock VerticalAlignment="Center" Text="{x:Static res:EncodingRes.PadColorLabel}" />
+					<Border
+						Margin="8 0 0 0"
+						BorderBrush="#888888"
+						BorderThickness="1">
+						<Grid
+							Width="20"
+							Height="20"
+							VerticalAlignment="Center"
+							Background="{Binding PadBrush}"
+							SnapsToDevicePixels="True" />
+					</Border>
+
+					<TextBox
+						Width="60"
+						VerticalContentAlignment="Center"
+						Text="{Binding PadColor,
+						               UpdateSourceTrigger=PropertyChanged}"
+						ToolTip="{x:Static res:EncodingRes.PadColorTextToolTip}" />
+				</StackPanel>
+			</StackPanel>
+
+			<!--  Input/Output blocks  -->
+			<StackPanel
+				Orientation="Vertical"
+				Style="{StaticResource SizingSectionStyle}"
+				Visibility="{Binding HasSourceData,
+				                     Converter={StaticResource VisibilityConverter}}">
+				<!--  Input Block  -->
+				<Grid>
+					<Border
+						MinWidth="230"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Background="{DynamicResource InputBrush}"
+						Effect="{StaticResource InfoBoxShadow}"
+						Style="{StaticResource InputOutputInfoSection}">
+						<Grid IsSharedSizeScope="True">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<TextBlock
+								Margin="2 0 10 0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Top"
+								Style="{StaticResource SectionHeader}"
+								Text="{x:Static res:EncodingRes.Input}" />
+							<ItemsControl
+								Grid.Column="1"
+								Focusable="False"
+								ItemsSource="{Binding InputPreview}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="*" SharedSizeGroup="InputLabel" />
+												<ColumnDefinition Width="4" />
+												<ColumnDefinition Width="*" SharedSizeGroup="InputValue" />
+											</Grid.ColumnDefinitions>
+
+											<TextBlock Grid.Column="0" Text="{Binding Label}" />
+
+											<TextBlock Grid.Column="2" Text="{Binding Value}" />
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Grid>
+					</Border>
+				</Grid>
+
+				<!--  Output block  -->
+				<Grid>
+					<Border
+						MinWidth="230"
+						Margin="0 10 0 0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Background="{DynamicResource OutputBrush}"
+						Effect="{StaticResource InfoBoxShadow}"
+						Style="{StaticResource InputOutputInfoSection}">
+						<Grid IsSharedSizeScope="True">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<TextBlock
+								Margin="2 0 10 0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Top"
+								Style="{StaticResource SectionHeader}"
+								Text="{x:Static res:EncodingRes.OutputLabel}" />
+
+							<ItemsControl
+								Grid.Column="1"
+								Focusable="False"
+								ItemsSource="{Binding OutputPreview}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="*" SharedSizeGroup="OutputLabel" />
+												<ColumnDefinition Width="4" />
+												<ColumnDefinition Width="*" SharedSizeGroup="OutputValue" />
+											</Grid.ColumnDefinitions>
+
+											<TextBlock Grid.Column="0" Text="{Binding Label}" />
+
+											<TextBlock Grid.Column="2" Text="{Binding Value}" />
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Grid>
+					</Border>
+				</Grid>
+			</StackPanel>
+		</WrapPanel>
+	</ScrollViewer>
+</UserControl>

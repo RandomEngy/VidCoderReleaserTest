@@ -2,43 +2,74 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data.SQLite;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Resources;
 using System.Text;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Hardcodet.Wpf.TaskbarNotification;
-using Microsoft.Practices.Unity;
+using System.Windows.Resources;
+using System.Windows.Shell;
+using DynamicData;
+using Fluent;
+using HandBrake.Interop.Interop.Json.Encode;
+using HandBrake.Interop.Interop.Json.Scan;
+using Microsoft.AnyContainer;
 using ReactiveUI;
+using Squirrel;
+using VidCoder.Controls;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Resources;
 using VidCoder.Services;
+using VidCoder.Services.Notifications;
 using VidCoder.Services.Windows;
 using VidCoder.ViewModel;
+using VidCoderCommon;
 using VidCoderCommon.Model;
+using VidCoderCommon.Utilities;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using ListViewItem = System.Windows.Controls.ListViewItem;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using Path = System.IO.Path;
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace VidCoder.View
 {
 	public partial class Main : Window, IMainView
 	{
+		private const string DiscMenuItemTag = "disc";
+
+		private readonly NotifyIcon notifyIcon;
+
 		private MainViewModel viewModel;
-		private ProcessingService processingService = Ioc.Get<ProcessingService>();
-		private OutputPathService outputVM = Ioc.Get<OutputPathService>();
-		private StatusService statusService = Ioc.Get<StatusService>();
+		private ProcessingService processingService = StaticResolver.Resolve<ProcessingService>();
+		private OutputPathService outputVM = StaticResolver.Resolve<OutputPathService>();
+		private StatusService statusService = StaticResolver.Resolve<StatusService>();
+		private IToastNotificationService toastNotificationService = StaticResolver.Resolve<IToastNotificationService>();
 
 		private bool tabsVisible = false;
 
-		private Storyboard presetGlowStoryboard;
-		private Storyboard pickerGlowStoryboard;
+		private readonly List<IDisposable> discOpenCommands = new List<IDisposable>();
 
 		public static System.Windows.Threading.Dispatcher TheDispatcher;
 
@@ -46,77 +77,205 @@ namespace VidCoder.View
 
 		public Main()
 		{
-			Ioc.Container.RegisterInstance(typeof(Main), this, new ContainerControlledLifetimeManager());
+			Ioc.Container.RegisterSingleton<Main>(() => this);
 			this.InitializeComponent();
+
+			if (Environment.OSVersion.Version.Major < 10 && Config.Win7WarningDisplayedTimes < 2)
+			{
+				DispatchUtilities.BeginInvoke(async () =>
+				{
+					await Task.Delay(TimeSpan.FromSeconds(1));
+					StaticResolver.Resolve<IMessageBoxService>().Show(MainRes.Win7DeprecationWarning);
+				});
+				Config.Win7WarningDisplayedTimes++;
+			}
+
+			try
+			{
+				var taskbarItemInfo = new TaskbarItemInfo();
+				BindingOperations.SetBinding(taskbarItemInfo, TaskbarItemInfo.ProgressStateProperty, new System.Windows.Data.Binding("TaskBarProgressTracker.ProgressState"));
+				BindingOperations.SetBinding(taskbarItemInfo, TaskbarItemInfo.ProgressValueProperty, new System.Windows.Data.Binding("TaskBarProgressTracker.ProgressFraction"));
+
+				this.TaskbarItemInfo = taskbarItemInfo;
+			}
+			catch (Exception exception)
+			{
+				StaticResolver.Resolve<IAppLogger>().Log("Could not set TaskbarItemInfo: " + exception);
+			}
+
+			if (LanguageUtilities.ShouldBeRightToLeft)
+			{
+				this.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+			}
+
+			this.sourceRow.Height = new GridLength(Config.SourcePaneHeightStar, GridUnitType.Star);
+			this.queueRow.Height = new GridLength(Config.QueuePaneHeightStar, GridUnitType.Star);
+
+			this.Activated += (sender, args) =>
+			{
+				DispatchUtilities.BeginInvoke(async () =>
+				{
+					// Need to yield here for some reason, otherwise the activation is blocked.
+					await Task.Yield();
+					this.toastNotificationService.Clear();
+				});
+			};
+
+			this.notifyIcon = new NotifyIcon
+			{
+				Visible = false
+			};
+			this.notifyIcon.Click += (sender, args) => { this.EnsureVisible(); };
+			this.notifyIcon.DoubleClick += (sender, args) => { this.EnsureVisible(); };
+
+			StreamResourceInfo streamResourceInfo = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/VidCoder_icon.ico"));
+			if (streamResourceInfo != null)
+			{
+				Stream iconStream = streamResourceInfo.Stream;
+				this.notifyIcon.Icon = new Icon(iconStream);
+			}
 
 			this.RefreshQueueColumns();
 			this.LoadCompletedColumnWidths();
 
+#if DEBUG
+			var debugDropDown = new DropDownButton { Header = "Debug" };
+
+			var loadScanFromJsonItem = new Fluent.MenuItem {Header = "Load scan from JSON..."};
+			loadScanFromJsonItem.Click += (sender, args) =>
+			{
+				DebugJsonDialog dialog = new DebugJsonDialog("Debug Scan JSON");
+				dialog.ShowDialog();
+				if (!string.IsNullOrWhiteSpace(dialog.Json))
+				{
+					try
+					{
+						var scanObject = JsonSerializer.Deserialize<JsonScanObject>(dialog.Json, JsonOptions.Plain);
+						this.viewModel.UpdateFromNewVideoSource(new VideoSource { Titles = scanObject.TitleList, FeatureTitle = scanObject.MainFeature });
+					}
+					catch (Exception exception)
+					{
+						MessageBox.Show(this, "Could not parse scan JSON:" + Environment.NewLine + Environment.NewLine + exception.ToString());
+					}
+				}
+			};
+			debugDropDown.Items.Add(loadScanFromJsonItem);
+
+			var queueFromJsonItem = new Fluent.MenuItem {Header = "Queue job from JSON..."};
+			queueFromJsonItem.Click += (sender, args) =>
+			{
+				if (!this.viewModel.HasVideoSource)
+				{
+					StaticResolver.Resolve<IMessageBoxService>().Show("Must open source before adding queue job from JSON");
+					return;
+				}
+
+				EncodeJobViewModel jobViewModel = this.viewModel.CreateEncodeJobVM();
+				DebugJsonDialog dialog = new DebugJsonDialog("Debug Encode JSON");
+				dialog.ShowDialog();
+
+				if (!string.IsNullOrWhiteSpace(dialog.Json))
+				{
+					try
+					{
+						JsonEncodeObject encodeObject = JsonSerializer.Deserialize<JsonEncodeObject>(dialog.Json, JsonOptions.Plain);
+
+						jobViewModel.DebugEncodeJsonOverride = dialog.Json;
+						jobViewModel.Job.FinalOutputPath = encodeObject.Destination.File;
+						jobViewModel.Job.SourcePath = encodeObject.Source.Path;
+
+						this.processingService.Queue(jobViewModel);
+					}
+					catch (Exception exception)
+					{
+						MessageBox.Show(this, "Could not parse encode JSON:" + Environment.NewLine + Environment.NewLine + exception.ToString());
+					}
+				}
+			};
+			debugDropDown.Items.Add(queueFromJsonItem);
+
+			var throwExceptionItem = new Fluent.MenuItem { Header = "Throw exception" };
+			throwExceptionItem.Click += (sender, args) =>
+			{
+				throw new InvalidOperationException("Rats.");
+			};
+			debugDropDown.Items.Add(throwExceptionItem);
+
+			var addLogItem = new Fluent.MenuItem { Header = "Add 1 log item" };
+			addLogItem.Click += (sender, args) =>
+			{
+				StaticResolver.Resolve<IAppLogger>().Log("This is a log item");
+			};
+			debugDropDown.Items.Add(addLogItem);
+
+			var addTenLogItems = new Fluent.MenuItem { Header = "Add 10 log items" };
+			addTenLogItems.Click += (sender, args) =>
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					StaticResolver.Resolve<IAppLogger>().Log("This is a log item");
+				}
+			};
+			debugDropDown.Items.Add(addTenLogItems);
+
+			var addLongLogItem = new Fluent.MenuItem { Header = "Add long log item" };
+			addLongLogItem.Click += (sender, args) =>
+			{
+				StaticResolver.Resolve<IAppLogger>().Log("This is a log item\r\nthat is split into multiple lines\r\nOh yes indeed");
+			};
+			debugDropDown.Items.Add(addLongLogItem);
+
+			var doAnActionItem = new Fluent.MenuItem { Header = "Perform action" };
+			doAnActionItem.Click += async (sender, args) =>
+			{
+				var updateManager = new UpdateManager(Utilities.SquirrelUpdateUrl);
+				await updateManager.CheckForUpdate();
+			};
+			debugDropDown.Items.Add(doAnActionItem);
+
+
+			var showDelayedStatusItem = new Fluent.MenuItem { Header = "Show a status message in 40 seconds" };
+			showDelayedStatusItem.Click += async (sender, args) =>
+			{
+				await Task.Delay(TimeSpan.FromSeconds(40));
+				StaticResolver.Resolve<StatusService>().Show("Some delayed message");
+			};
+			debugDropDown.Items.Add(showDelayedStatusItem);
+
+			this.toolsRibbonGroupBox.Items.Add(debugDropDown);
+#endif
+
 			this.DataContextChanged += this.OnDataContextChanged;
 			TheDispatcher = this.Dispatcher;
 
-			this.presetGlowEffect.Opacity = 0.0;
-			this.pickerGlowEffect.Opacity = 0.0;
 			this.statusText.Opacity = 0.0;
 
 			NameScope.SetNameScope(this, new NameScope());
-			this.RegisterName("PresetGlowEffect", this.presetGlowEffect);
-			this.RegisterName("PickerGlowEffect", this.pickerGlowEffect);
 			this.RegisterName("StatusText", this.statusText);
 
-			var storyboard = (Storyboard)this.FindResource("statusTextStoryboard");
+			var storyboard = (Storyboard)this.FindResource("StatusTextStoryboard");
 			storyboard.Completed += (sender, args) =>
 				{
 					this.statusText.Visibility = Visibility.Collapsed;
 				};
 
-			var presetGlowFadeUp = new DoubleAnimation
+			this.presetTreeViewContainer.PresetTreeView.OnHierarchyMouseUp += (sender, args) =>
 			{
-				From = 0.0,
-				To = 1.0,
-				Duration = new Duration(TimeSpan.FromSeconds(0.1))
+				this.presetButton.IsDropDownOpen = false;
 			};
 
-			var presetGlowFadeDown = new DoubleAnimation
+			this.presetButton.DropDownOpened += (sender, args) =>
 			{
-				From = 1.0,
-				To = 0.0,
-				BeginTime = TimeSpan.FromSeconds(0.1),
-				Duration = new Duration(TimeSpan.FromSeconds(1.6))
+				var item = UIUtilities.FindDescendant<TreeViewItem>(this.presetTreeViewContainer.PresetTreeView, viewItem =>
+				{
+					return viewItem.Header == this.viewModel.PresetsService.SelectedPreset;
+				});
+
+				if (item != null)
+				{
+					UIUtilities.BringIntoView(item);
+				}
 			};
-
-			this.presetGlowStoryboard = new Storyboard();
-			this.presetGlowStoryboard.Children.Add(presetGlowFadeUp);
-			this.presetGlowStoryboard.Children.Add(presetGlowFadeDown);
-
-			Storyboard.SetTargetName(presetGlowFadeUp, "PresetGlowEffect");
-			Storyboard.SetTargetProperty(presetGlowFadeUp, new PropertyPath("Opacity"));
-			Storyboard.SetTargetName(presetGlowFadeDown, "PresetGlowEffect");
-			Storyboard.SetTargetProperty(presetGlowFadeDown, new PropertyPath("Opacity"));
-
-			var pickerGlowFadeUp = new DoubleAnimation
-			{
-				From = 0.0,
-				To = 1.0,
-				Duration = new Duration(TimeSpan.FromSeconds(0.1))
-			};
-
-			var pickerGlowFadeDown = new DoubleAnimation
-			{
-				From = 1.0,
-				To = 0.0,
-				BeginTime = TimeSpan.FromSeconds(0.1),
-				Duration = new Duration(TimeSpan.FromSeconds(1.6))
-			};
-
-			this.pickerGlowStoryboard = new Storyboard();
-			this.pickerGlowStoryboard.Children.Add(pickerGlowFadeUp);
-			this.pickerGlowStoryboard.Children.Add(pickerGlowFadeDown);
-
-			Storyboard.SetTargetName(pickerGlowFadeUp, "PickerGlowEffect");
-			Storyboard.SetTargetProperty(pickerGlowFadeUp, new PropertyPath("Opacity"));
-			Storyboard.SetTargetName(pickerGlowFadeDown, "PickerGlowEffect");
-			Storyboard.SetTargetProperty(pickerGlowFadeDown, new PropertyPath("Opacity"));
 
 			this.Loaded += (e, o) =>
 			{
@@ -127,146 +286,98 @@ namespace VidCoder.View
 			{
 				this.ShowStatusMessage(e.Value);
 			};
+
+			this.queueView.SelectionChanged += this.QueueView_SelectionChanged;
+
+			this.RefreshMaximizeRestoreButton();
+		}
+
+		private void QueueView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			this.processingService.OnSelectedQueueItemsChanged();
+		}
+
+		public void RestoreWindow()
+		{
+			DispatchUtilities.BeginInvoke(() =>
+			{
+				this.Show();
+				this.WindowState = this.RestoredWindowState;
+			});
+		}
+
+		public void EnsureVisible()
+		{
+			DispatchUtilities.Invoke(() =>
+			{
+				this.RestoreWindow();
+				DispatchUtilities.BeginInvoke(() =>
+				{
+					this.Activate();
+				});
+			});
 		}
 
 		public WindowState RestoredWindowState { get; set; }
 
-		public void HandleDrop(object sender, DragEventArgs e)
+		public void ReadTextToScreenReader(string text)
 		{
-			var data = e.Data as DataObject;
-			if (data != null && data.ContainsFileDropList())
+			var peer = UIElementAutomationPeer.FromElement(this.screenReaderText);
+			if (peer != null)
 			{
-				StringCollection itemList = data.GetFileDropList();
-				if (itemList.Count > 0)
-				{
-					if (itemList.Count == 1)
-					{
-						string item = itemList[0];
-
-						string extension = Path.GetExtension(item);
-						if (extension != null)
-						{
-							extension = extension.ToLowerInvariant();
-						}
-
-						if (extension == ".xml" || extension == ".vjpreset")
-						{
-							// It's a preset
-							try
-							{
-								Preset preset = Ioc.Get<IPresetImportExport>().ImportPreset(itemList[0]);
-								Ioc.Get<IMessageBoxService>().Show(string.Format(MainRes.PresetImportSuccessMessage, preset.Name), CommonRes.Success, System.Windows.MessageBoxButton.OK);
-							}
-							catch (Exception)
-							{
-								Ioc.Get<IMessageBoxService>().Show(MainRes.PresetImportErrorMessage, MainRes.ImportErrorTitle, System.Windows.MessageBoxButton.OK);
-							}
-						}
-						else if (Utilities.IsDiscFolder(item))
-						{
-							// It's a disc folder or disc
-							this.viewModel.SetSource(item);
-						}
-						else
-						{
-							// It is a video file or folder full of video files
-							this.HandleDropAsPaths(itemList);
-						}
-					}
-					else
-					{
-						// With multiple items, treat it as a list video files/disc folders or folders full of those items
-						this.HandleDropAsPaths(itemList);
-					}
-				}
+				this.screenReaderText.Text = text;
+				peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
 			}
-		}
-
-		// Takes a list of files/directories and tries to scan/queue them as files/disc folders
-		private void HandleDropAsPaths(StringCollection itemList)
-		{
-			List<SourcePath> fileList = GetPathList(itemList);
-			if (fileList.Count > 0)
-			{
-				if (fileList.Count == 1)
-				{
-					this.viewModel.SetSourceFromFile(fileList[0].Path);
-				}
-				else
-				{
-					this.processingService.QueueMultiple(fileList);
-				}
-			}
-		}
-
-		// Gets a file/video folder list from a list of files/directories
-		private static List<SourcePath> GetPathList(StringCollection itemList)
-		{
-			var videoExtensions = new List<string>();
-			string extensionsString = Config.VideoFileExtensions;
-			string[] rawExtensions = extensionsString.Split(',', ';');
-			foreach (string rawExtension in rawExtensions)
-			{
-				string extension = rawExtension.Trim();
-				if (extension.Length > 0)
-				{
-					if (!extension.StartsWith("."))
-					{
-						extension = "." + extension;
-					}
-
-					videoExtensions.Add(extension);
-				}
-			}
-
-			var pathList = new List<SourcePath>();
-			foreach (string item in itemList)
-			{
-				var fileAttributes = File.GetAttributes(item);
-				if ((fileAttributes & FileAttributes.Directory) == FileAttributes.Directory)
-				{
-					// Path is a directory
-					if (Utilities.IsDiscFolder(item))
-					{
-						// If it's a disc folder, add it
-						pathList.Add(new SourcePath { Path = item, SourceType = SourceType.VideoFolder });
-					}
-					else
-					{
-						string parentFolder = Path.GetDirectoryName(item);
-						pathList.AddRange(
-							Utilities.GetFilesOrVideoFolders(item, videoExtensions)
-							.Select(p => new SourcePath
-								{
-									Path = p, 
-									ParentFolder = parentFolder, 
-									SourceType = SourceType.None
-								}));
-					}
-				}
-				else
-				{
-					// Path is a file
-					pathList.Add(new SourcePath { Path = item, SourceType = SourceType.File });
-				}
-			}
-
-			return pathList;
 		}
 
 		public void ShowBalloonMessage(string title, string message)
 		{
-			if (this.trayIcon.Visibility == Visibility.Visible)
+			if (this.notifyIcon.Visible)
 			{
-				this.trayIcon.ShowBalloonTip(title, message, BalloonIcon.Info);
+				this.notifyIcon.ShowBalloonTip(5000, title, message, ToolTipIcon.Info);
 			}
 		}
 
 		private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.viewModel = this.DataContext as MainViewModel;
-			this.viewModel.AnimationStarted += this.ViewModelAnimationStarted;
+			this.viewModel = (MainViewModel)this.DataContext;
 			this.viewModel.View = this;
+			this.viewModel.WhenAnyValue(x => x.SubtitlesExpanded).Subscribe(expanded =>
+			{
+				if (expanded)
+				{
+					ResizeGridViewColumn(this.sourceSelectedColumn);
+					ResizeGridViewColumn(this.sourceTrackSummaryColumn);
+					ResizeGridViewColumn(this.sourceDefaultColumn);
+					ResizeGridViewColumn(this.sourceForcedColumn);
+					ResizeGridViewColumn(this.sourceBurnedColumn);
+					ResizeGridViewColumn(this.sourceNameColumn);
+					ResizeGridViewColumn(this.sourceRemoveDuplicateColumn);
+					ResizeGridViewColumn(this.fileSubtitleFileColumn);
+					ResizeGridViewColumn(this.fileSubtitleNameColumn);
+					ResizeGridViewColumn(this.fileSubtitleDefaultColumn);
+					ResizeGridViewColumn(this.fileSubtitleBurnedInColumn);
+					ResizeGridViewColumn(this.fileSubtitleCharCodeColumn);
+					ResizeGridViewColumn(this.fileSubtitleLanguageColumn);
+				}
+			});
+
+			this.viewModel.WhenAnyValue(x => x.AudioExpanded).Subscribe(expanded =>
+			{
+				if (expanded)
+				{
+					this.ResizeAudioColumns();
+				}
+			});
+
+			this.RefreshDiscMenuItems();
+
+			this.notifyIcon.Text = this.viewModel.TrayIconToolTip;
+			this.viewModel.WhenAnyValue(x => x.ShowTrayIcon).Subscribe(showTrayIcon =>
+			{
+				this.notifyIcon.Visible = showTrayIcon;
+			});
+
 			this.processingService.PropertyChanged += (sender2, e2) =>
 			    {
 					if (e2.PropertyName == nameof(this.processingService.CompletedItemsCount))
@@ -276,20 +387,73 @@ namespace VidCoder.View
 			    };
 
 			this.RefreshQueueTabs();
-			this.SetupWindowsMenu();
+
+			this.sourceSubtitles = this.viewModel.SourceSubtitles;
+			this.fileSubtitles = this.viewModel.FileSubtitles;
+
+			var sourceSubtitlesObservable = this.sourceSubtitles.Connect();
+			sourceSubtitlesObservable
+				.WhenValueChanged(subtitle => subtitle.Selected)
+				.Subscribe(_ =>
+			{
+				this.ResizeSourceSubtitleColumns();
+			});
+
+			var fileSubtitlesObservable = this.fileSubtitles.Connect();
+			fileSubtitlesObservable
+				.WhenValueChanged(subtitle => subtitle.CharacterCode)
+				.Subscribe(_ =>
+				{
+					ResizeGridViewColumn(this.fileSubtitleCharCodeColumn);
+				});
+
+			fileSubtitlesObservable
+				.WhenValueChanged(subtitle => subtitle.LanguageCode)
+				.Subscribe(_ =>
+				{
+					ResizeGridViewColumn(this.fileSubtitleLanguageColumn);
+				});
+
+			sourceSubtitlesObservable.Subscribe(changeSet =>
+			{
+				ResizeGridViewColumn(this.sourceTrackSummaryColumn);
+				ResizeGridViewColumn(this.sourceNameColumn);
+			});
+
+			fileSubtitlesObservable.Subscribe(changeSet =>
+			{
+				ResizeGridViewColumn(this.fileSubtitleCharCodeColumn);
+				ResizeGridViewColumn(this.fileSubtitleLanguageColumn);
+			});
+
+			this.viewModel.OutputSizeService
+				.WhenAnyValue(x => x.Size)
+				.Subscribe(size =>
+				{
+					if (size != null)
+					{
+						// Update this.miniPreviewFrame width
+						double aspectRatio = size.OutputAspectRatio;
+						aspectRatio = Math.Min(aspectRatio, 3.0);
+
+						double desiredWidth = this.miniPreviewFrame.ActualHeight * aspectRatio;
+						this.miniPreviewFrame.Width = Math.Max(0, desiredWidth);
+					}
+				});
+
 		}
 
-		private void ViewModelAnimationStarted(object sender, EventArgs<string> e)
+		public void ResizeAudioColumns()
 		{
-			if (e.Value == "PresetGlowHighlight")
-			{
-				this.presetGlowStoryboard.Begin(this);
-			}
-			else if (e.Value == "PickerGlowHighlight")
-			{
-				this.pickerGlowStoryboard.Begin(this);
-			}
+			ResizeGridViewColumn(this.audioSelectedColumn);
+			ResizeGridViewColumn(this.audioTrackSummaryColumn);
+			ResizeGridViewColumn(this.audioBitrateColumn);
+			ResizeGridViewColumn(this.audioSampleRateColumn);
+			ResizeGridViewColumn(this.audioNameColumn);
+			ResizeGridViewColumn(this.audioRemoveDuplicateColumn);
 		}
+
+		public double SourceAreaHeight => this.sourceScrollViewer.ActualHeight;
 
 		void IMainView.SaveQueueColumns()
 		{
@@ -319,6 +483,8 @@ namespace VidCoder.View
 		{
 			this.RefreshQueueColumns();
 		}
+
+		public IList<EncodeJobViewModel> SelectedJobs => this.queueView.SelectedItems.Cast<EncodeJobViewModel>().ToList();
 
 		private void RefreshQueueColumns()
 		{
@@ -371,6 +537,11 @@ namespace VidCoder.View
 			}
 		}
 
+		void IMainView.SaveCompletedColumnWidths()
+		{
+			this.SaveCompletedColumnWidths();
+		}
+
 		private void SaveCompletedColumnWidths()
 		{
 			var completedColumnsBuilder = new StringBuilder();
@@ -395,7 +566,6 @@ namespace VidCoder.View
 				this.completedTab.Visibility = Visibility.Visible;
 				this.clearCompletedQueueItemsButton.Visibility = Visibility.Visible;
 				this.queueItemsTabControl.BorderThickness = new Thickness(1);
-				//this.tabsArea.Margin = new Thickness(6,6,6,0);
 
 				this.tabsVisible = true;
 				return;
@@ -407,7 +577,6 @@ namespace VidCoder.View
 				this.completedTab.Visibility = Visibility.Collapsed;
 				this.clearCompletedQueueItemsButton.Visibility = Visibility.Collapsed;
 				this.queueItemsTabControl.BorderThickness = new Thickness(0);
-				//this.tabsArea.Margin = new Thickness(0,6,0,0);
 
 				this.processingService.SelectedTabIndex = ProcessingService.QueuedTabIndex;
 
@@ -416,24 +585,57 @@ namespace VidCoder.View
 			}
 		}
 
-		private void SetupWindowsMenu()
+		public void RefreshDiscMenuItems()
 		{
-			foreach (WindowMenuItemViewModel itemViewModel in this.viewModel.WindowMenuItems)
+			// Clear previous discs
+			for (int i = this.openSourceButton.Items.Count - 1; i >= 0; i--)
 			{
-				MenuItem item = new MenuItem
+				var menuItem = this.openSourceButton.Items[i] as FrameworkElement;
+				if (menuItem != null && menuItem.Tag != null && (string)menuItem.Tag == DiscMenuItemTag)
 				{
-					IsCheckable = true,
-					Header = itemViewModel.Definition.MenuLabel,
-					InputGestureText = itemViewModel.Definition.InputGestureText,
-					Command = itemViewModel.Command
+					this.openSourceButton.Items.RemoveAt(i);
+				}
+			}
+
+			int insertionIndex = 2;
+
+			foreach (IDisposable oldCommand in this.discOpenCommands)
+			{
+				oldCommand.Dispose();
+			}
+
+			this.discOpenCommands.Clear();
+
+			// Add new discs
+			foreach (DriveInformation driveInfo in this.viewModel.DriveCollection)
+			{
+				var menuItem = new Fluent.MenuItem
+				{
+					Header = string.Format(MainRes.OpenFormat, driveInfo.DisplayText),
+					Tag = DiscMenuItemTag,
+					RecognizesAccessKey = false // We set this to stop Fluent Ribbon from removing underscores from the header text
 				};
 
-				item.DataContext = itemViewModel;
+				ReactiveCommand<Unit, Unit> command = ReactiveCommand.Create(
+					() =>
+					{
+						this.viewModel.SetSourceFromDvd(driveInfo);
+					},
+					this.viewModel.NotScanningObservable);
+				this.discOpenCommands.Add(command);
+				menuItem.Command = command;
 
-				item.SetBinding(MenuItem.IsCheckedProperty, nameof(itemViewModel.IsOpen));
-				item.SetBinding(UIElement.IsEnabledProperty, nameof(itemViewModel.CanOpen));
+				if (driveInfo.DiscType == DiscType.Dvd)
+				{
+					menuItem.Icon = "/Icons/disc.png";
+				}
+				else
+				{
+					menuItem.Icon = "/Icons/bludisc.png";
+				}
 
-				this.windowsMenu.Items.Add(item);
+				this.openSourceButton.Items.Insert(insertionIndex, menuItem);
+				insertionIndex++;
 			}
 		}
 
@@ -454,24 +656,6 @@ namespace VidCoder.View
 					MessageBox.Show(string.Format(MainRes.FileDoesNotExist, resultFile));
 				}
 			}
-		}
-
-		private void Window_Closing(object sender, CancelEventArgs e)
-		{
-			if (!this.viewModel.OnClosing())
-			{
-				e.Cancel = true;
-			}
-			else
-			{
-				this.SaveQueueColumns();
-				this.SaveCompletedColumnWidths();
-			}
-		}
-
-		private void Window_PreviewDragOver(object sender, DragEventArgs e)
-		{
-			Utilities.SetDragIcon(e);
 		}
 
 		private void ProgressMouseEnter(object sender, MouseEventArgs e)
@@ -516,26 +700,29 @@ namespace VidCoder.View
 			string path = this.outputVM.OutputPath;
 			string fileName = Path.GetFileName(path);
 
-			if (fileName == string.Empty)
+			if (fileName != null)
 			{
-				this.destinationEditBox.Select(path.Length, 0);
-			}
-			else
-			{
-				int selectStart = path.Length - fileName.Length;
-
-				string extension = Path.GetExtension(path);
-				if (extension == string.Empty)
+				if (fileName == string.Empty)
 				{
-					this.destinationEditBox.Select(selectStart, path.Length - selectStart);
+					this.destinationEditBox.Select(path.Length, 0);
 				}
 				else
 				{
-					this.destinationEditBox.Select(selectStart, path.Length - selectStart - extension.Length);
+					int selectStart = path.Length - fileName.Length;
+
+					string extension = Path.GetExtension(path);
+					if (extension == string.Empty)
+					{
+						this.destinationEditBox.Select(selectStart, path.Length - selectStart);
+					}
+					else
+					{
+						this.destinationEditBox.Select(selectStart, path.Length - selectStart - extension.Length);
+					}
 				}
 			}
 
-			this.outputVM.OldOutputPath = this.outputVM.OutputPath;
+			this.outputVM.OldOutputPath = path;
 		}
 
 		private void DestinationEditBoxLostFocus(object sender, RoutedEventArgs e)
@@ -546,6 +733,14 @@ namespace VidCoder.View
 		private void DestinationEditBoxPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
+			{
+				this.StopEditing();
+			}
+		}
+
+		private void OnWindowDeactivated(object sender, EventArgs e)
+		{
+			if (this.outputVM.EditingDestination)
 			{
 				this.StopEditing();
 			}
@@ -573,7 +768,7 @@ namespace VidCoder.View
 			    {
 			        this.statusTextBlock.Text = message;
 					this.statusText.Visibility = Visibility.Visible;
-			        var storyboard = (Storyboard) this.FindResource("statusTextStoryboard");
+			        var storyboard = (Storyboard) this.FindResource("StatusTextStoryboard");
 					storyboard.Stop();
 			        storyboard.Begin();
 			    });
@@ -587,11 +782,6 @@ namespace VidCoder.View
 			{
 				this.StopEditing();
 			}
-
-			if (this.viewModel.SourceSelectionExpanded && !this.HitElement(this.sourceSelectionMenu, hitPoint))
-			{
-				this.viewModel.SourceSelectionExpanded = false;
-			}
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
@@ -600,6 +790,8 @@ namespace VidCoder.View
 			{
 				this.RestoredWindowState = this.WindowState;
 			}
+
+			this.RefreshMaximizeRestoreButton();
 
 			if (this.viewModel != null)
 			{
@@ -618,6 +810,222 @@ namespace VidCoder.View
 			return
 				clickedPoint.X >= relativePoint.X && clickedPoint.X <= relativePoint.X + element.ActualWidth &&
 				clickedPoint.Y >= relativePoint.Y && clickedPoint.Y <= relativePoint.Y + element.ActualHeight;
+		}
+
+		private void OnPickerItemMouseUp(object sender, MouseEventArgs e)
+		{
+			this.pickerButton.IsDropDownOpen = false;
+		}
+
+		private void AudioMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var listItem = (ListViewItem)sender;
+			var audioTrackViewModel = (AudioTrackViewModel)listItem.DataContext;
+			audioTrackViewModel.LastMouseDownTime = DateTimeOffset.UtcNow;
+		}
+
+		private void AudioMouseUp(object sender, MouseButtonEventArgs e)
+		{
+			var listItem = (ListViewItem)sender;
+			var audioTrackViewModel = (AudioTrackViewModel)listItem.DataContext;
+
+			// Ensure we aren't just picking up a stray mouse up after a dialog closed
+			if (audioTrackViewModel.LastMouseDownTime != null && audioTrackViewModel.LastMouseDownTime > DateTimeOffset.UtcNow - TimeSpan.FromSeconds(3))
+			{
+				audioTrackViewModel.Selected = !audioTrackViewModel.Selected;
+			}
+		}
+
+		private void OnAudioItemKeyPress(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Space || e.Key == Key.Enter)
+			{
+				var listItem = (ListViewItem)sender;
+				var audioTrackViewModel = (AudioTrackViewModel)listItem.DataContext;
+				audioTrackViewModel.Selected = !audioTrackViewModel.Selected;
+
+				var audioCheckbox = UIUtilities.FindDescendant<System.Windows.Controls.CheckBox>(listItem);
+
+				var peer = UIElementAutomationPeer.FromElement(audioCheckbox);
+				peer?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+			}
+		}
+
+		private SourceList<SourceSubtitleViewModel> sourceSubtitles;
+		private SourceList<FileSubtitleViewModel> fileSubtitles;
+
+		private void SourceSubtitleMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var listItem = (ListViewItem)sender;
+			var subtitleVM = (SourceSubtitleViewModel)listItem.DataContext;
+			subtitleVM.LastMouseDownTime = DateTimeOffset.UtcNow;
+		}
+
+		private void SourceSubtitleMouseUp(object sender, MouseButtonEventArgs e)
+		{
+			var listItem = (ListViewItem)sender;
+			var subtitleVM = (SourceSubtitleViewModel)listItem.DataContext;
+
+			// Ensure we aren't just picking up a stray mouse up after a dialog closed
+			if (subtitleVM.LastMouseDownTime != null && subtitleVM.LastMouseDownTime >= DateTimeOffset.UtcNow - TimeSpan.FromSeconds(3))
+			{
+				subtitleVM.Selected = !subtitleVM.Selected;
+			}
+		}
+
+		private void OnSourceSubtitleKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Space || e.Key == Key.Enter)
+			{
+				var listItem = (ListViewItem)sender;
+				var subtitleViewModel = (SourceSubtitleViewModel)listItem.DataContext;
+				subtitleViewModel.Selected = !subtitleViewModel.Selected;
+
+				var subtitleCheckbox = UIUtilities.FindDescendant<System.Windows.Controls.CheckBox>(listItem);
+
+				var peer = UIElementAutomationPeer.FromElement(subtitleCheckbox);
+				peer?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+			}
+		}
+
+		private void ResizeSourceSubtitleColumns()
+		{
+			ResizeGridViewColumn(this.sourceTrackSummaryColumn);
+			ResizeGridViewColumn(this.sourceDefaultColumn);
+			ResizeGridViewColumn(this.sourceForcedColumn);
+			ResizeGridViewColumn(this.sourceBurnedColumn);
+			ResizeGridViewColumn(this.sourceNameColumn);
+		}
+
+		private static void ResizeGridViewColumn(GridViewColumn column)
+		{
+			if (double.IsNaN(column.Width))
+			{
+				column.Width = column.ActualWidth;
+			}
+
+			column.Width = double.NaN;
+		}
+
+		private void Main_OnClosing(object sender, CancelEventArgs e)
+		{
+			using (SQLiteTransaction transaction = Database.ThreadLocalConnection.BeginTransaction())
+			{
+				Config.SourcePaneHeightStar = this.sourceRow.Height.Value;
+				Config.QueuePaneHeightStar = this.queueRow.Height.Value;
+
+				transaction.Commit();
+			}
+		}
+
+		public void RefreshSummaryMaxSizes()
+		{
+			this.UpdateSourceTextMaxWidth();
+			this.UpdateAudioSummaryMaxWidth();
+			this.UpdateSubtitlesSummaryMaxWidth();
+		}
+
+		public void BringExternalSubtitlesIntoView()
+		{
+			this.fileSubtitleListView.BringIntoView();
+		}
+
+		private void Main_OnSizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			this.RefreshSummaryMaxSizes();
+
+			double totalHeightMinusQueue = 0;
+			foreach (RowDefinition rowDefinition in this.contentGrid.RowDefinitions)
+			{
+				if (rowDefinition != this.queueRow)
+				{
+					totalHeightMinusQueue += rowDefinition.ActualHeight;
+				}
+			}
+
+			double totalHeight = this.rootGrid.ActualHeight;
+
+			double queueRowOldHeight = this.queueRow.ActualHeight;
+			double queueRowDesiredHeight = totalHeight - totalHeightMinusQueue;
+
+			if (queueRowDesiredHeight < queueRowOldHeight)
+			{
+				this.sourceRow.Height = new GridLength(this.sourceRow.ActualHeight, GridUnitType.Star);
+				this.queueRow.Height = new GridLength(queueRowDesiredHeight, GridUnitType.Star);
+			}
+		}
+
+		private void VideoTitleAngle_OnSizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			this.UpdateSourceTextMaxWidth();
+		}
+
+		private void UpdateSourceTextMaxWidth()
+		{
+			double summaryWidth = this.videoSummaryColumn.ActualWidth;
+			double titleAngleWidth = this.videoTitleAngle.ActualWidth;
+
+			// 16 for image icon width, 8 for margin on path block.
+			double maxPathWidth = summaryWidth - titleAngleWidth - 24;
+
+			if (maxPathWidth > 0)
+			{
+				this.sourceText.SetManualMaxWidth(maxPathWidth); 
+			}
+		}
+
+		private void UpdateAudioSummaryMaxWidth()
+		{
+			double summaryWidth = this.audioSummaryColumn.ActualWidth;
+			if (summaryWidth > 40)
+			{
+				this.audioSummary.MaxWidth = summaryWidth - 40;
+			}
+		}
+
+		private void UpdateSubtitlesSummaryMaxWidth()
+		{
+			double summaryWidth = this.subtitlesSummaryColumn.ActualWidth;
+			if (summaryWidth > 40)
+			{
+				this.subtitlesSummary.MaxWidth = summaryWidth - 40;
+			}
+		}
+
+		private void OnMinimizeButtonClick(object sender, RoutedEventArgs e)
+		{
+			this.WindowState = WindowState.Minimized;
+		}
+
+		private void OnMaximizeRestoreButtonClick(object sender, RoutedEventArgs e)
+		{
+			if (this.WindowState == WindowState.Maximized)
+			{
+				this.WindowState = WindowState.Normal;
+			}
+			else
+			{
+				this.WindowState = WindowState.Maximized;
+			}
+		}
+
+		private void OnCloseButtonClick(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
+
+		private void RefreshMaximizeRestoreButton()
+		{
+			if (this.WindowState == WindowState.Maximized)
+			{
+				this.maximizeButton.Visibility = Visibility.Collapsed;
+				this.restoreButton.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				this.maximizeButton.Visibility = Visibility.Visible;
+				this.restoreButton.Visibility = Visibility.Collapsed;
+			}
 		}
 	}
 }

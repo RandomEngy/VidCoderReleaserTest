@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>新增</value>
@@ -154,7 +154,7 @@
     <value>{0} 已有同名檔案，您想要覆寫該檔、自動變更輸出路徑，還是取消編碼作業?</value>
   </data>
   <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>佇列工作於 {0} 已有同名的輸出檔案，您想要覆寫該檔、自動變更輸出路徑，還是取消編碼作業?</value>
+    <value>工作佇列中已有輸出路徑於 {0}，您想要為佇列的工作自動尋找新輸出路徑，或是取消作業？</value>
   </data>
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>佇列欄位</value>
@@ -171,12 +171,6 @@
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>掃描中...</value>
   </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>成功</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder 已成功更新。</value>
-  </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>關於 VidCoder</value>
   </data>
@@ -192,18 +186,15 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder 開發人員</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0} 測試版</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>名稱</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>命名設定值</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
+  <data name="ChooseNamePreset" xml:space="preserve">
     <value>選擇設定值的名稱:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
@@ -245,10 +236,28 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>編碼已完成。</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>無法找到相容 {0} 的播放器。</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>播放來源檔時發生錯誤。</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>系統將於 {0} 秒後休眠。</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>即將休眠</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>選擇選取器的名稱:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>程式需要關閉，但產生的錯誤將自動提報。</value>
+  </data>
+  <data name="DownloadInstallerButton" xml:space="preserve">
+    <value>下載安裝檔</value>
+  </data>
+  <data name="ReplaceJobButton" xml:space="preserve">
+    <value>更換工作</value>
   </data>
 </root>

@@ -1,882 +1,127 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F912FA33-DC57-4272-915A-EEDB212BB860}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VidCoder</RootNamespace>
-    <AssemblyName>VidCoder</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <CsWinRTWindowsMetadata>10.0.19041.0</CsWinRTWindowsMetadata>
     <ApplicationIcon>VidCoder_icon.ico</ApplicationIcon>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <AssemblyTitle>VidCoder</AssemblyTitle>
+    <Company>VidCoder</Company>
+    <Product>VidCoder</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Description>A DVD/Blu-Ray ripping and video conversion tool based on HandBrake.</Description>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>bin/$(Configuration)</OutputPath>
+    <Platforms>x64</Platforms>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Beta|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;BETA</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Beta|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;BETA</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-Beta|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;BETA</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-Beta|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;BETA</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\VidCoder.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FastMember.1.0.0.11\lib\net40\FastMember.dll</HintPath>
-    </Reference>
-    <Reference Include="HandBrake.ApplicationServices, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\HandBrake.ApplicationServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Omu.ValueInjecter, Version=3.0.1.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ValueInjecter.3.0.1.1\lib\net45\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
-    <Reference Include="Ookii.Dialogs.Wpf">
-      <HintPath>..\Lib\Ookii.Dialogs.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="ReactiveUI">
-      <HintPath>..\packages\reactiveui-core.6.5.0\lib\Net45\ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="Splat">
-      <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\Lib\$(Platform)\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    <PackageReference Include="Clowd.Squirrel" Version="2.7.79-pre" />
+    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AnyContainer" Version="1.0.0-beta201808141" />
+    <PackageReference Include="Microsoft.AnyContainer.DryIoc" Version="1.0.0-beta201808141" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.0-preview5" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+    <PackageReference Include="PipeMethodCalls" Version="3.0.2" />
+    <PackageReference Include="PipeMethodCalls.NetJson" Version="3.0.0" />
+    <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <PackageReference Include="UTF.Unknown" Version="2.3.0" />
+    <PackageReference Include="valueinjecter" Version="3.2.0" />
+    <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HandBrake.Interop">
+      <HintPath>..\Lib\HandBrake.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="Controls\RangeBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\InlineWarning.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\NumberBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\PathTextBlock.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SlotSeekBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SplitButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TimeBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\VideoSeekBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\AddAutoPauseProcessDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EncodeDetailsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\FileConflictDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Panels\AudioEncodingPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Panels\AudioPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Panels\AdvancedPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ApplyUpdateConfirmation.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\ChapterMarkersDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\ChooseName.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\EncodingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\ExceptionDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\LogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Main.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Panels\PicturePanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\PickerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewCorners.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewCreationControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewFit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewGeneratingControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewOneToOne.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Preview\PreviewPlaybackControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\QueueTitlesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\OptionsDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\PreviewWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\QueueColumnsDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ScanMultipleDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ShutdownWarningWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SubtitleDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Automation\AutomationHost.cs" />
-    <Compile Include="Automation\VidCoderAutomation.cs" />
-    <Compile Include="Controls\RangeBar.xaml.cs">
-      <DependentUpon>RangeBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PathSegmentSet.cs" />
-    <Compile Include="Controls\PathTextBlock.xaml.cs">
-      <DependentUpon>PathTextBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SlotSeekBar.xaml.cs">
-      <DependentUpon>SlotSeekBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SplitButton.xaml.cs">
-      <DependentUpon>SplitButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TimeBox.xaml.cs">
-      <DependentUpon>TimeBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\VideoSeekBar.xaml.cs">
-      <DependentUpon>VideoSeekBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\DoubleDisplayConverter.cs" />
-    <Compile Include="Converters\EnumVisibilityConverter.cs" />
-    <Compile Include="Converters\EnumVisibilityInverseConverter.cs" />
-    <Compile Include="Converters\IntVisibilityConverter.cs" />
-    <Compile Include="Converters\PercentDisplayConverter.cs" />
-    <Compile Include="Converters\SampleRateDisplayConverter.cs" />
-    <Compile Include="Converters\ChapterVMConverter.cs" />
-    <Compile Include="Converters\TitleDisplayConverter.cs" />
-    <Compile Include="DataReaderExtensions.cs" />
-    <Compile Include="EnumStringConverter.cs" />
-    <Compile Include="Extensions\JsonScanObjectExtensions.cs" />
-    <Compile Include="Extensions\PresetExtensions.cs" />
-    <Compile Include="Extensions\PreviewHolderExtensions.cs" />
-    <Compile Include="Extensions\RectExtensions.cs" />
-    <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Extensions\TitleExtensions.cs" />
-    <Compile Include="Extensions\VCCroppingExtensions.cs" />
-    <Compile Include="Extensions\VCProfileExtensions.cs" />
-    <Compile Include="Extensions\WindowExtensions.cs" />
-    <Compile Include="Model\Config\ConfigObservable.cs" />
-    <Compile Include="Model\EncodeJobsXml.cs" />
-    <Compile Include="Model\EncodeProgress.cs" />
-    <Compile Include="Model\EncodeResultStatus.cs" />
-    <Compile Include="Model\PresetWrapper.cs" />
-    <Compile Include="Model\PreviewControls.cs" />
-    <Compile Include="Model\PreviewEncodeState.cs" />
-    <Compile Include="Model\PreviewMainDisplay.cs" />
-    <Compile Include="Model\VideoSourceState.cs" />
-    <Compile Include="Model\TitleType.cs" />
-    <Compile Include="Model\Picker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\PickerStorage.cs" />
-    <Compile Include="Model\Players\VideoPlayerBase.cs" />
-    <Compile Include="Model\Side.cs" />
-    <Compile Include="Model\SourcePath.cs" />
-    <Compile Include="Model\UpdateInfo.cs" />
-    <Compile Include="Model\UpdateState.cs" />
-    <Compile Include="Model\WindowPlacer\WindowPlacerLocation.cs" />
-    <Compile Include="Model\WindowPlacer\WindowPosition.cs" />
-    <Compile Include="Resources\ChapterMarkersRes.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <None Update="Model\Config\Config.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Config.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Model\Config\Config.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Config.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ChapterMarkersRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>ChapterMarkersRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\EncodeDetailsRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EncodeDetailsRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\EncodingRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EncodingRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\EnumsRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EnumsRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\LogRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LogRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\MainRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MainRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\MiscRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MiscRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\OptionsRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OptionsRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\PickerRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PickerRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\PreviewRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PreviewRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\QueueTitlesRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QueueTitlesRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\SubtitleRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubtitleRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\RangeFocusEventArgs.cs" />
-    <Compile Include="Model\AudioSelectionMode.cs" />
-    <Compile Include="Model\SubtitleSelectionMode.cs" />
-    <Compile Include="Model\ComboChoice.cs" />
-    <Compile Include="Model\ComboChoiceT.cs" />
-    <Compile Include="Model\Config\CustomConfig.cs" />
-    <Compile Include="Model\Database.cs" />
-    <Compile Include="Model\DatabaseConfig.cs" />
-    <Compile Include="Model\EncodeCompleteAction.cs" />
-    <Compile Include="Model\EncodeCompleteActionType.cs" />
-    <Compile Include="Model\EncodeJobCollection.cs" />
-    <Compile Include="Model\EncodeJobPersistGroup.cs" />
-    <Compile Include="Model\EncodeJobWithMetadata.cs" />
-    <Compile Include="Model\EncodeResult.cs" />
-    <Compile Include="Model\FileConflictResolution.cs" />
-    <Compile Include="Model\Players\MpchcPlayer.cs" />
-    <Compile Include="Model\Players\IVideoPlayer.cs" />
-    <Compile Include="Model\LogEntry.cs" />
-    <Compile Include="Model\LogSource.cs" />
-    <Compile Include="Model\LogType.cs" />
-    <Compile Include="Model\PreviewImageJob.cs" />
-    <Compile Include="Model\PreviewDisplay.cs" />
-    <Compile Include="Model\SaveImageJob.cs" />
-    <Compile Include="Model\VideoSourceMetadata.cs" />
-    <Compile Include="Model\Players\VlcPlayer.cs" />
-    <Compile Include="Model\WhenFileExists.cs" />
-    <Compile Include="Services\ClipboardService.cs" />
-    <Compile Include="Services\EncodeProxy\LocalEncodeProxy.cs" />
-    <Compile Include="Services\OutputSizeService.cs" />
-    <Compile Include="Services\StatusService.cs" />
-    <Compile Include="Services\Windows\IClosableWindow.cs" />
-    <Compile Include="Services\Interfaces\ILogger.cs" />
-    <Compile Include="Services\Interfaces\IPresetImportExport.cs" />
-    <Compile Include="Services\Interfaces\IProcesses.cs" />
-    <Compile Include="Services\Interfaces\IProcessAutoPause.cs" />
-    <Compile Include="Services\Interfaces\ISystemOperations.cs" />
-    <Compile Include="Model\Players\Players.cs" />
-    <Compile Include="Services\Interfaces\IQueueImportExport.cs" />
-    <Compile Include="Services\PresetImportExport.cs" />
-    <Compile Include="Services\ProcessAutoPause.cs" />
-    <Compile Include="Services\Processes.cs" />
-    <Compile Include="Services\QueueImportExport.cs" />
-    <Compile Include="Services\SystemOperations.cs" />
-    <Compile Include="Services\TaskBarProgressTracker.cs" />
-    <Compile Include="Services\TrayService.cs" />
-    <Compile Include="Services\Windows\IWindowManager.cs" />
-    <Compile Include="Services\Windows\WindowDefinition.cs" />
-    <Compile Include="Services\Windows\WindowManager.cs" />
-    <Compile Include="Services\Windows\WindowMenuItemViewModel.cs" />
-    <Compile Include="Services\Windows\WindowPlacer.cs" />
-    <Compile Include="Utilities\AdvancedOptionsParsing.cs" />
-    <Compile Include="Utilities\CodecUtilities.cs" />
-    <Compile Include="Services\EncodeProxy\RemoteEncodeProxy.cs" />
-    <Compile Include="Utilities\EnumConverter.cs" />
-    <Compile Include="Utilities\FileCleanup.cs" />
-    <Compile Include="Services\EncodeProxy\IEncodeProxy.cs" />
-    <Compile Include="Utilities\FileUtilities.cs" />
-    <Compile Include="Utilities\ImageUtilities.cs" />
-    <Compile Include="Utilities\Ioc.cs" />
-    <Compile Include="Utilities\ListSynchronizer\IListItemConverter.cs" />
-    <Compile Include="Services\Logger.cs" />
-    <Compile Include="Utilities\ListSynchronizer\MultiSelectorBehaviors.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Utilities\ListSynchronizer\TwoListSynchronizer.cs" />
-    <Compile Include="Utilities\MathUtilities.cs" />
-    <Compile Include="Utilities\MvvmUtilities.cs" />
-    <Compile Include="Utilities\NativeMethods.cs" />
-    <Compile Include="Utilities\ParentProcessUtilities.cs" />
-    <Compile Include="Utilities\PseudoLocalizer.cs" />
-    <Compile Include="Utilities\RefireControl.cs" />
-    <Compile Include="Model\Config\Config.cs">
-      <DependentUpon>Config.tt</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Update="Resources\CommonRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Services\OutputPathService.cs" />
-    <Compile Include="Services\PickersService.cs" />
-    <Compile Include="Services\PresetsService.cs" />
-    <Compile Include="Services\ProcessingService.cs" />
-    <Compile Include="Services\WindowXamlHelper.cs" />
-    <Compile Include="ViewModel\DataModels\AdvancedChoices.cs" />
-    <Compile Include="ViewModel\DataModels\AudioTrackViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\BitrateChoiceViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\ChapterNameViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\ChapterViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\LevelChoiceViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\PickerViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\RotationViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\VideoEncoderViewModel.cs" />
-    <Compile Include="ViewModel\EncodeDetailsWindowViewModel.cs" />
-    <Compile Include="ViewModel\FileConflictDialogViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\InterfaceLanguage.cs" />
-    <Compile Include="ViewModel\IMainView.cs" />
-    <Compile Include="ViewModel\IPreviewView.cs" />
-    <Compile Include="ViewModel\PickerWindowViewModel.cs" />
-    <Compile Include="ViewModel\ProfileViewModelBase.cs" />
-    <Compile Include="ViewModel\ShutdownWarningWindowViewModel.cs" />
-    <Compile Include="View\EncodeDetailsWindow.xaml.cs">
-      <DependentUpon>EncodeDetailsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\FileConflictDialog.xaml.cs">
-      <DependentUpon>FileConflictDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Panels\AudioEncodingPanel.xaml.cs">
-      <DependentUpon>AudioEncodingPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\PickerWindow.xaml.cs">
-      <DependentUpon>PickerWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\IPreviewHolder.cs" />
-    <Compile Include="View\Preview\PreviewCorners.xaml.cs">
-      <DependentUpon>PreviewCorners.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Preview\PreviewCreationControls.xaml.cs">
-      <DependentUpon>PreviewCreationControls.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Preview\PreviewFit.xaml.cs">
-      <DependentUpon>PreviewFit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Preview\PreviewGeneratingControls.xaml.cs">
-      <DependentUpon>PreviewGeneratingControls.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Preview\PreviewOneToOne.xaml.cs">
-      <DependentUpon>PreviewOneToOne.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Preview\PreviewPlaybackControls.xaml.cs">
-      <DependentUpon>PreviewPlaybackControls.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\RestoreWindowCommand.cs" />
-    <Compile Include="Utilities\SourceHistory.cs" />
-    <Compile Include="Utilities\SystemSleepManagement.cs" />
-    <Compile Include="Utilities\UIUtilities.cs" />
-    <Compile Include="ViewModel\AboutDialogViewModel.cs" />
-    <Compile Include="ViewModel\AddAutoPauseProcessDialogViewModel.cs" />
-    <Compile Include="ViewModel\Panels\AudioPanelViewModel.cs" />
-    <Compile Include="ViewModel\Panels\AdvancedPanelViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\ColumnViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\EncodeResultViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\TitleSelectionViewModel.cs" />
-    <Compile Include="ViewModel\LogWindowViewModel.cs" />
-    <Compile Include="ViewModel\Panels\PanelViewModel.cs" />
-    <Compile Include="ViewModel\Panels\PicturePanelViewModel.cs" />
-    <Compile Include="ViewModel\QueueTitlesWindowViewModel.cs" />
-    <Compile Include="ViewModel\QueueColumnsDialogViewModel.cs" />
-    <Compile Include="ViewModel\ScanMultipleDialogViewModel.cs" />
-    <Compile Include="ViewModel\Panels\VideoFiltersPanelViewModel.cs" />
-    <Compile Include="ViewModel\Panels\VideoPanelViewModel.cs" />
-    <Compile Include="View\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\AddAutoPauseProcessDialog.xaml.cs">
-      <DependentUpon>AddAutoPauseProcessDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Panels\AudioPanel.xaml.cs">
-      <DependentUpon>AudioPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Panels\AdvancedPanel.xaml.cs">
-      <DependentUpon>AdvancedPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\LogWindow.xaml.cs">
-      <DependentUpon>LogWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Panels\PicturePanel.xaml.cs">
-      <DependentUpon>PicturePanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\QueueTitlesWindow.xaml.cs">
-      <DependentUpon>QueueTitlesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\QueueColumnsDialog.xaml.cs">
-      <DependentUpon>QueueColumnsDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ScanMultipleDialog.xaml.cs">
-      <DependentUpon>ScanMultipleDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utilities\WpfSystemIcons.cs" />
-    <Compile Include="View\ExceptionDialog.xaml.cs">
-      <DependentUpon>ExceptionDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Main.xaml.cs">
-      <DependentUpon>Main.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="View\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Panels\VideoFiltersPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Panels\VideoPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Controls\InlineWarning.xaml.cs">
-      <DependentUpon>InlineWarning.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\NumberBox.xaml.cs">
-      <DependentUpon>NumberBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\EnumBoolConverter.cs" />
-    <Compile Include="Converters\EnumBoolInverseConverter.cs" />
-    <Compile Include="Converters\FramerateDisplayConverter.cs" />
-    <Compile Include="Converters\InverseBoolConverter.cs" />
-    <Compile Include="Converters\VisibilityConverter.cs" />
-    <Compile Include="Utilities\DisplayConversions.cs" />
-    <Compile Include="DragDrop\DragDropHelper.cs" />
-    <Compile Include="DragDrop\DraggedAdorner.cs" />
-    <Compile Include="DragDrop\IDragItem.cs" />
-    <Compile Include="DragDrop\InsertionAdorner.cs" />
-    <Compile Include="DragDrop\DragDropUtilities.cs" />
-    <Compile Include="EnumDisplayer.cs" />
-    <Compile Include="EventArgs.cs" />
-    <Compile Include="Model\DriveInformation.cs" />
-    <Compile Include="Model\EncodeJobStorage.cs" />
-    <Compile Include="Model\PresetStorage.cs" />
-    <Compile Include="Utilities\DispatchUtilities.cs" />
-    <Compile Include="Services\DriveService.cs" />
-    <Compile Include="Services\Interfaces\IMessageBoxService.cs" />
-    <Compile Include="Services\Interfaces\IUpdateService.cs" />
-    <Compile Include="Services\MessageBoxService.cs" />
-    <Compile Include="Services\Interfaces\IDriveService.cs" />
-    <Compile Include="Services\Interfaces\IFileService.cs" />
-    <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\Updater.cs" />
-    <Compile Include="Utilities\Utilities.cs" />
-    <Compile Include="ViewModel\ChapterMarkersDialogViewModel.cs" />
-    <Compile Include="Model\CharCode.cs" />
-    <Compile Include="ViewModel\ChooseNameViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\AudioEncoderViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\AudioEncodingViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\AudioOutputPreview.cs" />
-    <Compile Include="ViewModel\DataModels\EncodeJobViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\MixdownViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\PresetViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\TargetStreamViewModel.cs" />
-    <Compile Include="ViewModel\EncodingWindowViewModel.cs" />
-    <Compile Include="Model\SourceOption.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Resources\CommonRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>CommonRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="Model\VideoSource.cs" />
-    <Compile Include="IDialog.cs" />
-    <Compile Include="ViewModel\DataModels\AudioChoiceViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\OkCancelDialogViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\SourceOptionViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\SourceSubtitleViewModel.cs" />
-    <Compile Include="ViewModel\DataModels\SrtSubtitleViewModel.cs" />
-    <Compile Include="ViewModel\OptionsDialogViewModel.cs" />
-    <Compile Include="ViewModel\PreviewWindowViewModel.cs" />
-    <Compile Include="ViewModel\SubtitleDialogViewModel.cs" />
-    <Compile Include="View\ApplyUpdateConfirmation.xaml.cs">
-      <DependentUpon>ApplyUpdateConfirmation.xaml</DependentUpon>
+    <Compile Update="Resources\EncodeDetailsRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EncodeDetailsRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\ChapterMarkersDialog.xaml.cs">
-      <DependentUpon>ChapterMarkersDialog.xaml</DependentUpon>
+    <Compile Update="Resources\EncodingRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EncodingRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\ChooseName.xaml.cs">
-      <DependentUpon>ChooseName.xaml</DependentUpon>
+    <Compile Update="Resources\EnumsRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumsRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\EncodingWindow.xaml.cs">
-      <DependentUpon>EncodingWindow.xaml</DependentUpon>
+    <Compile Update="Resources\LogRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LogRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\OptionsDialog.xaml.cs">
-      <DependentUpon>OptionsDialog.xaml</DependentUpon>
+    <Compile Update="Resources\MainRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MainRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\PreviewWindow.xaml.cs">
-      <DependentUpon>PreviewWindow.xaml</DependentUpon>
+    <Compile Update="Resources\MiscRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MiscRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\ShutdownWarningWindow.xaml.cs">
-      <DependentUpon>ShutdownWarningWindow.xaml</DependentUpon>
+    <Compile Update="Resources\OptionsRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OptionsRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\SubtitleDialog.xaml.cs">
-      <DependentUpon>SubtitleDialog.xaml</DependentUpon>
+    <Compile Update="Resources\PickerRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PickerRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\Panels\VideoFiltersPanel.xaml.cs">
-      <DependentUpon>VideoFiltersPanel.xaml</DependentUpon>
+    <Compile Update="Resources\PreviewRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PreviewRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\Panels\VideoPanel.xaml.cs">
-      <DependentUpon>VideoPanel.xaml</DependentUpon>
+    <Compile Update="Resources\QueueTitlesRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueueTitlesRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="WindowPlacement.cs" />
-    <Resource Include="Icons\redo.png" />
-    <Resource Include="Icons\Hammer.png" />
+    <Compile Update="Resources\SubtitleRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SubtitleRes.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Resources\ChapterMarkersRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ChapterMarkersRes.Designer.cs</LastGenOutput>
@@ -923,6 +168,7 @@
     <EmbeddedResource Include="Resources\PreviewRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PreviewRes.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\QueueTitlesRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -938,58 +184,74 @@
       <LastGenOutput>CommonRes.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="BuiltInPresets.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\Translations\*.*.resx">
+      <ManifestResourceName>$(TargetName).Resources.%(Filename)</ManifestResourceName>
+    </EmbeddedResource>
+    <None Remove="Icons\Splash.png" />
+    <None Remove="Icons\VidCoder_Shadow_Smoothed.png" />
+    <None Remove="Icons\VolumeMute.png" />
+    <None Remove="Icons\VolumeOn.png" />
     <None Include="Model\Config\Config.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Config.cs</LastGenOutput>
     </None>
-    <None Include="VidCoderWorker.exe.config">
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Lib\hb.dll">
+      <Link>hb.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <EmbeddedResource Include="Resources\Translations\*.*.resx">
-      <ManifestResourceName>$(TargetName).Resources.%(Filename)</ManifestResourceName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\disc.png" />
-    <Resource Include="Icons\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\warning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\downarrow_shadow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\pause2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\stop_shadow.png" />
-  </ItemGroup>
-  <ItemGroup>
+    </Content>
+    <Content Include="..\License.txt" Link="License.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\ThirdPartyLicenses.txt">
+      <Link>ThirdPartyLicenses.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Encode_Complete.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Icons\Splash.png" />
+    <Resource Include="Model\Config\Config.txt" />
+    <Resource Include="VidCoder_icon.ico" />
+    <Resource Include="Icons\dvd_folder.png" />
+    <Resource Include="Icons\video_files_folder.png" />
+    <Resource Include="Icons\Empty.png" />
+    <Resource Include="Icons\redo.png" />
+    <Resource Include="Icons\ClearFailed.png" />
+    <Resource Include="Icons\ClearSucceeded.png" />
+    <Resource Include="Icons\Clear.png" />
+    <Resource Include="Icons\Remove.png" />
+    <Resource Include="Icons\Reload.png" />
+    <Resource Include="Icons\ChapterMarkers.png" />
+    <Resource Include="Icons\Subtitles.png" />
+    <Resource Include="Icons\Audio.png" />
+    <Resource Include="Icons\ImportExport.png" />
+    <Resource Include="Icons\VidCoder32.png" />
+    <Resource Include="Icons\Help.png" />
+    <Resource Include="Icons\Preview64.png" />
+    <Resource Include="Icons\Disc64.png" />
+    <Resource Include="Icons\disc.png" />
+    <Resource Include="Icons\folder.png" />
+    <Resource Include="Icons\Windows.png" />
+    <Resource Include="Icons\Picker.png" />
+    <Resource Include="Icons\EncodingSettings.png" />
+    <Resource Include="Icons\Options.png" />
+    <Resource Include="Icons\Stop.png" />
+    <Resource Include="Icons\Pause.png" />
+    <Resource Include="Icons\Encode.png" />
+    <Resource Include="Icons\AddToQueue.png" />
+    <Resource Include="Icons\add_folder.png" />
+    <Resource Include="Icons\delete_folder.png" />
+    <Resource Include="Icons\rename_folder.png" />
     <Resource Include="Icons\rotate_180.png" />
     <Resource Include="Icons\rotate_90_ccw.png" />
     <Resource Include="Icons\rotate_90_cw.png" />
     <Resource Include="Icons\text_file_16x16.png" />
     <Resource Include="Icons\crop_bg_tile_12x12.png" />
-    <Resource Include="Model\Config\Config.txt" />
     <Resource Include="Icons\blue_play_80.png" />
     <Resource Include="Icons\edit_16x16.png" />
-    <SplashScreen Include="splash.png" />
     <Resource Include="Icons\video-file.png" />
-    <Resource Include="Icons\encode_160.png" />
     <Resource Include="Icons\bludisc.png" />
     <Resource Include="Icons\edit_2.png" />
     <Resource Include="Icons\play_clip.png" />
@@ -998,64 +260,23 @@
     <Resource Include="Icons\failed.png" />
     <Resource Include="Icons\succeeded.png" />
     <Resource Include="Icons\undo_16x16.png" />
-    <Resource Include="Icons\help_16.png" />
-    <Resource Include="Icons\VidCoder_small.png" />
-    <Resource Include="Icons\preview.png" />
+    <Resource Include="Icons\warning.png" />
     <Resource Include="Icons\VidCoder.png" />
-    <Resource Include="Icons\error.png" />
     <Resource Include="Icons\copy.png" />
     <Resource Include="Icons\save.png" />
-    <Resource Include="VidCoder_icon.ico" />
     <Resource Include="Icons\win7foldericon.png" />
+    <Resource Include="Icons\Compare.png" />
+    <Resource Include="Icons\VolumeMute.png" />
+    <Resource Include="Icons\VolumeOn.png" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <ProjectReference Include="..\VidCoderCLI\VidCoderCLI.csproj" />
+    <ProjectReference Include="..\VidCoderCommon\VidCoderCommon.csproj" />
+    <ProjectReference Include="..\VidCoderElevatedSetup\VidCoderElevatedSetup.csproj" />
+    <ProjectReference Include="..\VidCoderWindowlessCLI\VidCoderWindowlessCLI.csproj" />
+    <ProjectReference Include="..\VidCoderWorker\VidCoderWorker.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VidCoderCLI\VidCoderCLI.csproj">
-      <Project>{847f9e68-0ea8-4ab1-a1e6-9c327612a0ab}</Project>
-      <Name>VidCoderCLI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VidCoderCommon\VidCoderCommon.csproj">
-      <Project>{f7266c99-eeac-4334-be83-47ad13eb522c}</Project>
-      <Name>VidCoderCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VidCoderWindowlessCLI\VidCoderWindowlessCLI.csproj">
-      <Project>{4c1e1b61-6736-45b1-8700-4fc52f9a940f}</Project>
-      <Name>VidCoderWindowlessCLI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VidCoderWorker\VidCoderWorker.csproj">
-      <Project>{63452895-7aa1-45ec-a0d8-3f30ccfa6d0d}</Project>
-      <Name>VidCoderWorker</Name>
-    </ProjectReference>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target> -->
-  <Target Name="AfterBuild" DependsOnTargets="AssignTargetPaths;Compile;ResolveKeySource" Inputs="$(MSBuildAllProjects);@(IntermediateAssembly)" Outputs="$(OutputPath)$(_SGenDllName)">
-    <Copy SourceFiles="..\Lib\$(Platform)\hb.dll" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="..\Lib\HandBrake.ApplicationServices.pdb" DestinationFolder="$(OutDir)" />
-  </Target>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\fonts" "$(TargetDir)fonts" /e /y /i /r</PostBuildEvent>
-  </PropertyGroup>
 </Project>

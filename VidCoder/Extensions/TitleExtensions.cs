@@ -1,5 +1,6 @@
 ﻿using System;
-using HandBrake.ApplicationServices.Interop.Json.Scan;
+using System.Globalization;
+using HandBrake.Interop.Interop.Json.Scan;
 using VidCoder.Model;
 using VidCoderCommon.Extensions;
 
@@ -7,11 +8,6 @@ namespace VidCoder.Extensions
 {
 	public static class TitleExtensions
 	{
-		public static int GetEstimatedFrames(this SourceTitle title)
-		{
-			return (int)Math.Ceiling(title.Duration.ToSpan().TotalSeconds * title.FrameRate.ToDouble());
-		}
-
 		public static string GetDisplayString(this SourceTitle title)
 		{
 			if (title == null)
@@ -22,7 +18,7 @@ namespace VidCoder.Extensions
 			string playlistPortion = string.Empty;
 			if (title.Type == (int)TitleType.Bluray)
 			{
-				playlistPortion = $" {title.Playlist:d5}.MPLS";
+				playlistPortion = FormattableString.Invariant($" {title.Playlist:d5}.MPLS");
 			}
 
 			int hours, minutes, seconds;
@@ -40,12 +36,32 @@ namespace VidCoder.Extensions
 			}
 
 			return string.Format(
-				"{0}{1} ({2:00}:{3:00}:{4:00})",
+				CultureInfo.CurrentCulture,
+				"{0}{1} ({2:0}:{3:00}:{4:00})",
 				title.Index,
 				playlistPortion,
 				hours,
 				minutes,
 				seconds);
+		}
+
+		public static TimeSpan GetChapterRangeDuration(this SourceTitle title, int startChapter, int endChapter)
+		{
+			if (startChapter > endChapter ||
+				endChapter > title.ChapterList.Count ||
+				startChapter < 1)
+			{
+				return TimeSpan.Zero;
+			}
+
+			TimeSpan rangeTime = TimeSpan.Zero;
+
+			for (int i = startChapter; i <= endChapter; i++)
+			{
+				rangeTime += title.ChapterList[i - 1].Duration.ToSpan();
+			}
+
+			return rangeTime;
 		}
 	}
 }

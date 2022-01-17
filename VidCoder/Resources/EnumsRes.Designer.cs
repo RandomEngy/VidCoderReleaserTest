@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EnumsRes {
@@ -97,6 +97,51 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use OS theme.
+        /// </summary>
+        public static string AppThemeChoice_Auto {
+            get {
+                return ResourceManager.GetString("AppThemeChoice_Auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string AppThemeChoice_Dark {
+            get {
+                return ResourceManager.GetString("AppThemeChoice_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string AppThemeChoice_Light {
+            get {
+                return ResourceManager.GetString("AppThemeChoice_Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast.
+        /// </summary>
+        public static string CombDetect_fast {
+            get {
+                return ResourceManager.GetString("CombDetect_fast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Less Sensitive.
+        /// </summary>
+        public static string CombDetect_permissive {
+            get {
+                return ResourceManager.GetString("CombDetect_permissive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
         public static string Custom {
@@ -133,38 +178,65 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decomb.
+        /// </summary>
+        public static string Deinterlace_Decomb {
+            get {
+                return ResourceManager.GetString("Deinterlace_Decomb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yadif.
+        /// </summary>
+        public static string Deinterlace_Yadif {
+            get {
+                return ResourceManager.GetString("Deinterlace_Yadif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bob.
         /// </summary>
-        public static string Deinterlace_Bob {
+        public static string DeinterlacePreset_bob {
             get {
-                return ResourceManager.GetString("Deinterlace_Bob", resourceCulture);
+                return ResourceManager.GetString("DeinterlacePreset_bob", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fast.
+        ///   Looks up a localized string similar to EEDI2.
         /// </summary>
-        public static string Deinterlace_Fast {
+        public static string DeinterlacePreset_eedi2 {
             get {
-                return ResourceManager.GetString("Deinterlace_Fast", resourceCulture);
+                return ResourceManager.GetString("DeinterlacePreset_eedi2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Slow.
+        ///   Looks up a localized string similar to EEDI2 Bob.
         /// </summary>
-        public static string Deinterlace_Slow {
+        public static string DeinterlacePreset_eedi2bob {
             get {
-                return ResourceManager.GetString("Deinterlace_Slow", resourceCulture);
+                return ResourceManager.GetString("DeinterlacePreset_eedi2bob", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Slower.
+        ///   Looks up a localized string similar to Skip Spatial Check.
         /// </summary>
-        public static string Deinterlace_Slower {
+        public static string DeinterlacePreset_skipspatial {
             get {
-                return ResourceManager.GetString("Deinterlace_Slower", resourceCulture);
+                return ResourceManager.GetString("DeinterlacePreset_skipspatial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chroma smooth.
+        /// </summary>
+        public static string Denoise_ChromaSmooth {
+            get {
+                return ResourceManager.GetString("Denoise_ChromaSmooth", resourceCulture);
             }
         }
         
@@ -189,72 +261,153 @@ namespace VidCoder.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Light.
         /// </summary>
-        public static string DenoisePreset_Light {
+        public static string DenoisePreset_light {
             get {
-                return ResourceManager.GetString("DenoisePreset_Light", resourceCulture);
+                return ResourceManager.GetString("DenoisePreset_light", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
-        public static string DenoisePreset_Medium {
+        public static string DenoisePreset_medium {
             get {
-                return ResourceManager.GetString("DenoisePreset_Medium", resourceCulture);
+                return ResourceManager.GetString("DenoisePreset_medium", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Strong.
         /// </summary>
-        public static string DenoisePreset_Strong {
+        public static string DenoisePreset_strong {
             get {
-                return ResourceManager.GetString("DenoisePreset_Strong", resourceCulture);
+                return ResourceManager.GetString("DenoisePreset_strong", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ultralight.
         /// </summary>
-        public static string DenoisePreset_Ultralight {
+        public static string DenoisePreset_ultralight {
             get {
-                return ResourceManager.GetString("DenoisePreset_Ultralight", resourceCulture);
+                return ResourceManager.GetString("DenoisePreset_ultralight", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Animation.
         /// </summary>
-        public static string DenoiseTune_Animation {
+        public static string DenoiseTune_animation {
             get {
-                return ResourceManager.GetString("DenoiseTune_Animation", resourceCulture);
+                return ResourceManager.GetString("DenoiseTune_animation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Film.
         /// </summary>
-        public static string DenoiseTune_Film {
+        public static string DenoiseTune_film {
             get {
-                return ResourceManager.GetString("DenoiseTune_Film", resourceCulture);
+                return ResourceManager.GetString("DenoiseTune_film", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Grain.
         /// </summary>
-        public static string DenoiseTune_Grain {
+        public static string DenoiseTune_grain {
             get {
-                return ResourceManager.GetString("DenoiseTune_Grain", resourceCulture);
+                return ResourceManager.GetString("DenoiseTune_grain", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to High Motion.
         /// </summary>
-        public static string DenoiseTune_HighMotion {
+        public static string DenoiseTune_highmotion {
             get {
-                return ResourceManager.GetString("DenoiseTune_HighMotion", resourceCulture);
+                return ResourceManager.GetString("DenoiseTune_highmotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        public static string DenoiseTune_medium {
+            get {
+                return ResourceManager.GetString("DenoiseTune_medium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string DenoiseTune_none {
+            get {
+                return ResourceManager.GetString("DenoiseTune_none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        public static string DenoiseTune_small {
+            get {
+                return ResourceManager.GetString("DenoiseTune_small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tiny.
+        /// </summary>
+        public static string DenoiseTune_tiny {
+            get {
+                return ResourceManager.GetString("DenoiseTune_tiny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Very wide.
+        /// </summary>
+        public static string DenoiseTune_verywide {
+            get {
+                return ResourceManager.GetString("DenoiseTune_verywide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wide.
+        /// </summary>
+        public static string DenoiseTune_wide {
+            get {
+                return ResourceManager.GetString("DenoiseTune_wide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alphabetical.
+        /// </summary>
+        public static string DragDropOrder_Alphabetical {
+            get {
+                return ResourceManager.GetString("DragDropOrder_Alphabetical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected.
+        /// </summary>
+        public static string DragDropOrder_Selected {
+            get {
+                return ResourceManager.GetString("DragDropOrder_Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close VidCoder.
+        /// </summary>
+        public static string EncodeCompleteActionType_CloseProgram {
+            get {
+                return ResourceManager.GetString("EncodeCompleteActionType_CloseProgram", resourceCulture);
             }
         }
         
@@ -313,11 +466,164 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop encoding.
+        /// </summary>
+        public static string EncodeCompleteActionType_StopEncoding {
+            get {
+                return ResourceManager.GetString("EncodeCompleteActionType_StopEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encode.
+        /// </summary>
+        public static string LogOperationType_Encode {
+            get {
+                return ResourceManager.GetString("LogOperationType_Encode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan.
+        /// </summary>
+        public static string LogOperationType_Scan {
+            get {
+                return ResourceManager.GetString("LogOperationType_Scan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string Off {
             get {
                 return ResourceManager.GetString("Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chapters.
+        /// </summary>
+        public static string PickerTimeRangeMode_Chapters {
+            get {
+                return ResourceManager.GetString("PickerTimeRangeMode_Chapters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time range.
+        /// </summary>
+        public static string PickerTimeRangeMode_Time {
+            get {
+                return ResourceManager.GetString("PickerTimeRangeMode_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LapSharp.
+        /// </summary>
+        public static string Sharpen_LapSharp {
+            get {
+                return ResourceManager.GetString("Sharpen_LapSharp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnSharp.
+        /// </summary>
+        public static string Sharpen_UnSharp {
+            get {
+                return ResourceManager.GetString("Sharpen_UnSharp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Delete (IRREVERSIBLE) ⚠️.
+        /// </summary>
+        public static string SourceFileRemoval_Delete {
+            get {
+                return ResourceManager.GetString("SourceFileRemoval_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recycle.
+        /// </summary>
+        public static string SourceFileRemoval_Recycle {
+            get {
+                return ResourceManager.GetString("SourceFileRemoval_Recycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After clearing completed items.
+        /// </summary>
+        public static string SourceFileRemovalTiming_AfterClearingCompletedItems {
+            get {
+                return ResourceManager.GetString("SourceFileRemovalTiming_AfterClearingCompletedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Immediately after the encode completes.
+        /// </summary>
+        public static string SourceFileRemovalTiming_Immediately {
+            get {
+                return ResourceManager.GetString("SourceFileRemovalTiming_Immediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        public static string SubtitleBurnInSelection_First {
+            get {
+                return ResourceManager.GetString("SubtitleBurnInSelection_First", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foreign audio track.
+        /// </summary>
+        public static string SubtitleBurnInSelection_ForeignAudioTrack {
+            get {
+                return ResourceManager.GetString("SubtitleBurnInSelection_ForeignAudioTrack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foreign audio track, else First.
+        /// </summary>
+        public static string SubtitleBurnInSelection_ForeignAudioTrackElseFirst {
+            get {
+                return ResourceManager.GetString("SubtitleBurnInSelection_ForeignAudioTrackElseFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string SubtitleBurnInSelection_None {
+            get {
+                return ResourceManager.GetString("SubtitleBurnInSelection_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every Word.
+        /// </summary>
+        public static string TitleCapitalizationChoice_EveryWord {
+            get {
+                return ResourceManager.GetString("TitleCapitalizationChoice_EveryWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First word.
+        /// </summary>
+        public static string TitleCapitalizationChoice_FirstWord {
+            get {
+                return ResourceManager.GetString("TitleCapitalizationChoice_FirstWord", resourceCulture);
             }
         }
         
@@ -349,6 +655,42 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prompt to apply right away.
+        /// </summary>
+        public static string UpdateMode_PromptApplyImmediately {
+            get {
+                return ResourceManager.GetString("UpdateMode_PromptApplyImmediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silent (Apply on next launch).
+        /// </summary>
+        public static string UpdateMode_SilentNextLaunch {
+            get {
+                return ResourceManager.GetString("UpdateMode_SilentNextLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On exit.
+        /// </summary>
+        public static string UpdatePromptTiming_OnExit {
+            get {
+                return ResourceManager.GetString("UpdatePromptTiming_OnExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On launch.
+        /// </summary>
+        public static string UpdatePromptTiming_OnLaunch {
+            get {
+                return ResourceManager.GetString("UpdatePromptTiming_OnLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chapters.
         /// </summary>
         public static string VideoRangeType_Chapters {
@@ -372,6 +714,33 @@ namespace VidCoder.Resources {
         public static string VideoRangeType_Seconds {
             get {
                 return ResourceManager.GetString("VideoRangeType_Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically rename.
+        /// </summary>
+        public static string WhenFileExists_AutoRename {
+            get {
+                return ResourceManager.GetString("WhenFileExists_AutoRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite.
+        /// </summary>
+        public static string WhenFileExists_Overwrite {
+            get {
+                return ResourceManager.GetString("WhenFileExists_Overwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ask.
+        /// </summary>
+        public static string WhenFileExists_Prompt {
+            get {
+                return ResourceManager.GetString("WhenFileExists_Prompt", resourceCulture);
             }
         }
     }

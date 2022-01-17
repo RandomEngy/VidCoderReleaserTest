@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GeneralTab" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="MinimizeToTaskBarRadioButton" xml:space="preserve">
+    <value>Minimaliseren naar taakbalk</value>
+  </data>
+  <data name="MinimizeToSystemTrayRadioButton" xml:space="preserve">
+    <value>Minimaliseren naar systeemvak</value>
+  </data>
+  <data name="PlaySoundOnQueueCompletionCheckBox" xml:space="preserve">
+    <value>Speel geluid af bij voltooiing van de wachtrij</value>
+  </data>
+  <data name="PreferredDvdPlayerLabel" xml:space="preserve">
+    <value>Voorkeur DVD-speler:</value>
+  </data>
+  <data name="PreferredDvdPlayerToolTip" xml:space="preserve">
+    <value>Kies de speler die u wilt gebruiken voor DVD-bronnen.</value>
+  </data>
+  <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
+    <value>Automatische updates</value>
+  </data>
+  <data name="WhenFileAlreadyExists" xml:space="preserve">
+    <value>Als een bestand al bestaat...</value>
+  </data>
+  <data name="EncodingSingleFile" xml:space="preserve">
+    <value>Enkel bestand coderen:</value>
+  </data>
+  <data name="EncodingBatchOfFiles" xml:space="preserve">
+    <value>Een groep bestanden coderen:</value>
+  </data>
+  <data name="AutoPauseLabel" xml:space="preserve">
+    <value>Codering pauzeren als een van deze processen wordt uitgevoerd:</value>
+  </data>
+  <data name="AddEllipsesButton" xml:space="preserve">
+    <value>Toevoegen...</value>
+  </data>
+  <data name="PreviewCountLabel" xml:space="preserve">
+    <value>Aantal voorvertoningen om te scannen:</value>
+  </data>
+  <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
+    <value>Onthoud eerder gebruikte bestanden en mappen</value>
+  </data>
+  <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
+    <value>LibDVDNav inschakelen (nodig voor ondersteuning van meerdere kijkhoeken) (herstart van programma vereist)</value>
+  </data>
+  <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
+    <value>Bronbestanden verwijderen na succesvolle afronding van taken</value>
+  </data>
+  <data name="LoggingVerbosityLabel" xml:space="preserve">
+    <value>Hoe uitgebreid zijn de logs:</value>
+  </data>
+  <data name="MinScanLengthLabel" xml:space="preserve">
+    <value>Minimale duur van de te scannen titel (seconden):</value>
+  </data>
+  <data name="RecognizedExtensionsLabel" xml:space="preserve">
+    <value>Ondersteunde Extensies:</value>
+  </data>
+  <data name="RecognizedExtensionsToolTip" xml:space="preserve">
+    <value>Bij het scannen van mappen voor video bestanden, bestanden met deze extensies toevoegen. (Komma gescheiden)</value>
+  </data>
+  <data name="OptionsDialogTitle" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Verwerking</value>
+  </data>
+  <data name="AdvancedTab" xml:space="preserve">
+    <value>Geavanceerd</value>
+  </data>
+  <data name="BetaUpdatesInBeta" xml:space="preserve">
+    <value>U gebruikt de bèta-versie. Deze kan naast de stabiele versie gebruikt worden.</value>
+  </data>
+  <data name="BetaUpdatesNonBeta" xml:space="preserve">
+    <value>Neem deel aan het bèta-programma om vaker updates te krijgen</value>
+  </data>
+  <data name="UpdateReadyStatus" xml:space="preserve">
+    <value>Update {0} klaar. De update wordt geïnstalleerd wanneer u het programma afsluit.</value>
+  </data>
+  <data name="DownloadingStatus" xml:space="preserve">
+    <value>Update {0} downloaden:</value>
+  </data>
+  <data name="UpToDateStatus" xml:space="preserve">
+    <value>VidCoder is up-to-date.</value>
+  </data>
+  <data name="ChooseDefaultOutputFolder" xml:space="preserve">
+    <value>Kies de standaard uitvoermap voor gecodeerde videobestanden.</value>
+  </data>
+  <data name="InterfaceLanguageLabel" xml:space="preserve">
+    <value>Interfacetaal:</value>
+  </data>
+  <data name="NewLanguageRestartDialogMessage" xml:space="preserve">
+    <value>De nieuwe taal wordt van kracht na het afsluiten en herstarten van Video der.</value>
+  </data>
+  <data name="UseOSLanguage" xml:space="preserve">
+    <value>Systeemtaal gebruiken</value>
+  </data>
+  <data name="UpdatesTab" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="DownloadingInfoStatus" xml:space="preserve">
+    <value>Laatste versie zoeken...</value>
+  </data>
+  <data name="UpdateFailedStatus" xml:space="preserve">
+    <value>Update controle mislukt.</value>
+  </data>
+  <data name="CompletionWavFilePickTitle" xml:space="preserve">
+    <value>Kies het .wav-bestand dat u wilt gebruiken voor het geluid van de voltooiing.</value>
+  </data>
+  <data name="CurrentVersionLabel" xml:space="preserve">
+    <value>Huidige versie: {0}</value>
+  </data>
+  <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
+    <value>Let op: deze versie heeft waarschijnlijk meer bugs en crashes.</value>
+  </data>
+  <data name="PlayersSection" xml:space="preserve">
+    <value>Spelers</value>
+  </data>
+  <data name="SoundSection" xml:space="preserve">
+    <value>Geluid</value>
+  </data>
+  <data name="SystemTraySection" xml:space="preserve">
+    <value>Systeemvak</value>
+  </data>
+  <data name="OutputFolderSection" xml:space="preserve">
+    <value>Uitvoermap</value>
+  </data>
+  <data name="AdvancedOptionsSection" xml:space="preserve">
+    <value>Geavanceerde opties</value>
+  </data>
+  <data name="ScanningSection" xml:space="preserve">
+    <value>Scannen</value>
+  </data>
+  <data name="LoggingSection" xml:space="preserve">
+    <value>Logboekregistratie</value>
+  </data>
+  <data name="DvdReadingSection" xml:space="preserve">
+    <value>DVD lezen</value>
+  </data>
+  <data name="UpdatesSection" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="UpdateStatusSection" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="BetaSection" xml:space="preserve">
+    <value>Bèta</value>
+  </data>
+  <data name="UseCustomWavLabel" xml:space="preserve">
+    <value>Gebruik aangepast .wav-bestand:</value>
+  </data>
+  <data name="CheckNowButton" xml:space="preserve">
+    <value>Nu controleren</value>
+  </data>
+  <data name="UseSystemPlayer" xml:space="preserve">
+    <value>Gebruik systeemspeler</value>
+  </data>
+  <data name="VideoFilesLabel" xml:space="preserve">
+    <value>Videobestanden:</value>
+  </data>
+  <data name="CustomVideoPlayerToolTip" xml:space="preserve">
+    <value>Geef het pad op naar de videospeler die u wilt gebruiken voor bestanden.</value>
+  </data>
+  <data name="VideoPlayerFilePickTitle" xml:space="preserve">
+    <value>Kies de speler voor videobestanden.</value>
+  </data>
+  <data name="CustomPlayerLabel" xml:space="preserve">
+    <value>Aangepaste speler:</value>
+  </data>
+  <data name="Priority_High" xml:space="preserve">
+    <value>Hoog</value>
+  </data>
+  <data name="Priority_AboveNormal" xml:space="preserve">
+    <value>Boven normaal</value>
+  </data>
+  <data name="Priority_Normal" xml:space="preserve">
+    <value>Normaal</value>
+  </data>
+  <data name="Priority_BelowNormal" xml:space="preserve">
+    <value>Onder normaal</value>
+  </data>
+  <data name="WorkerProcessPriorityLabel" xml:space="preserve">
+    <value>Prioriteit werkproces:</value>
+  </data>
+  <data name="Priority_Idle" xml:space="preserve">
+    <value>Laag</value>
+  </data>
+  <data name="CopyLogToOutputFolderLabel" xml:space="preserve">
+    <value>De codeer-log kopiëren naar dezelfde map als de gecodeerde video</value>
+  </data>
+  <data name="OpenLogFolderButton" xml:space="preserve">
+    <value>De logboekmap openen</value>
+  </data>
+  <data name="ResumeEncodingOnRestartCheckBox" xml:space="preserve">
+    <value>Codering na herstart automatisch hervatten</value>
+  </data>
+  <data name="UseWorkerProcessCheckBox" xml:space="preserve">
+    <value>Werkproces gebruiken om te coderen</value>
+  </data>
+  <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
+    <value>Behoud Gemaakte en Aangepaste tijd wanneer u bestanden converteert</value>
+  </data>
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+    <value>Aangepaste map voor previews:</value>
+  </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Verwerkingsopties</value>
+  </data>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>CPU-beperking - Toegestane Cores:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
+  </data>
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Gebruik CPU-regulering om het aantal CPU-cores te beperken dat VidCoder's kan gebruiken in het coderingsproces.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Gebruik de ingebouwde mediaspeler</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Maximum gelijktijdige coderingstaken:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Dit is hoeveel gelijktijdige coderingstaken zijn toegestaan. Nuttig voor machines met veel CPU cores.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Thema</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Vragen om updates:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>De optie werkproces wordt van kracht nadat VidCoder opnieuw is gestart.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Kopieer de code-log naar een specifieke map</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Bestanden van mislukte of gestopte coderingen behouden</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Activeer de actie "Wanneer klaar" bij mislukte coderingstaken</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Pauzeer wanneer de batterij bijna leeg is</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Pauzeer wanneer schijfruimte hieronder valt:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Automatisch pauzeren</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Beschikbare opties: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Ondergrens schijfruimte in gigabytes</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Scanvolgorde slepen en neerzetten:</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Aantal coderingspogingen:</value>
+  </data>
+</root>

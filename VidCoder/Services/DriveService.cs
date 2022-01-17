@@ -6,24 +6,25 @@ using VidCoder.Model;
 using VidCoder.ViewModel;
 using System.IO;
 using System.Management;
+using Microsoft.AnyContainer;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace VidCoder.Services
 {
-	using System.Runtime.InteropServices;
-
 	public class DriveService : IDriveService
 	{
-		private MainViewModel mainViewModel = Ioc.Get<MainViewModel>();
+		private MainViewModel mainViewModel = StaticResolver.Resolve<MainViewModel>();
 		private ManagementEventWatcher watcher;
 
 		public DriveService()
 		{
-			// Bind to local machine
-			var options = new ConnectionOptions { EnablePrivileges = true };
-			var scope = new ManagementScope(@"root\CIMV2", options);
-
 			try
 			{
+				// Bind to local machine
+				var options = new ConnectionOptions { EnablePrivileges = true };
+				var scope = new ManagementScope(@"root\CIMV2", options);
+
 				var query = new WqlEventQuery
 				{
 					EventClassName = "__InstanceModificationEvent",
@@ -57,7 +58,8 @@ namespace VidCoder.Services
 			{
 				if (driveInfo.DriveType == DriveType.CDRom && driveInfo.IsReady)
 				{
-					if (File.Exists(driveInfo.RootDirectory + @"VIDEO_TS\VIDEO_TS.IFO"))
+					FolderType folderType = Utilities.GetFolderType(driveInfo.RootDirectory.ToString());
+					if (folderType == FolderType.Dvd)
 					{
 						driveList.Add(new DriveInformation
 						{
@@ -66,7 +68,7 @@ namespace VidCoder.Services
 							DiscType = DiscType.Dvd
 						});
 					}
-					else if (Directory.Exists(driveInfo.RootDirectory + "BDMV"))
+					else if (folderType == FolderType.BluRay)
 					{
 						driveList.Add(new DriveInformation
 						{
@@ -121,11 +123,11 @@ namespace VidCoder.Services
 			return new List<DriveInfo>(DriveInfo.GetDrives());
 		}
 
-		public void Close()
+		public void Dispose()
 		{
 			try
 			{
-				this.watcher.Stop();
+				this.watcher?.Dispose();
 			}
 			catch (COMException)
 			{

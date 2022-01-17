@@ -54,5 +54,27 @@ namespace VidCoder.Model
 				return charCodes;
 			}
 		}
+
+		public static string FromUtfUnknownCode(string charset)
+		{
+			switch (charset)
+			{
+				case "ascii":
+				case "utf-8":
+				case "iso-8859-2":
+				case "iso-8859-5":
+				case "iso-8859-7":
+				case "iso-8859-8":
+					return charset.ToUpperInvariant();
+				case "utf-16le":
+				case "utf-16be":
+					return "UTF-16";
+				case "utf-32le":
+				case "utf-32be":
+					return "UTF-32";
+				default:
+					return null;
+			}
+		}
 	}
 }

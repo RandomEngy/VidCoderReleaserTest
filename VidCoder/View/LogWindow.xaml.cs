@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
+using DynamicData;
+using Microsoft.AnyContainer;
+using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Services;
@@ -21,62 +29,151 @@ namespace VidCoder.View
 		// The maximum number of lines to add to log window in a single dispatcher call
 		private const int MaxLinesPerDispatch = 100;
 
-		private ILogger logger = Ioc.Get<ILogger>();
+		private readonly IAppThemeService appThemeService = StaticResolver.Resolve<IAppThemeService>();
+		private readonly LogCoordinator logCoordinator = StaticResolver.Resolve<LogCoordinator>();
 
-		private Queue<LogEntry> pendingEntries = new Queue<LogEntry>();
+		private readonly Queue<LogEntry> pendingEntries = new Queue<LogEntry>();
 		private bool workerRunning;
-		private object pendingEntriesLock = new object();
+		private readonly object pendingEntriesLock = new object();
+
+		private IAppLogger logger;
+
+		private readonly Dictionary<LogColor, Brush> logColorBrushMapping = new Dictionary<LogColor, Brush>();
 
 		public LogWindow()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
-			lock (this.logger.LogLock)
-			{
-				// Add all existing log entries
-				ColoredLogGroup currentGroup = null;
-				foreach (LogEntry entry in this.logger.LogEntries)
-				{
-					Color entryColor = GetEntryColor(entry);
-
-					// If we need to start a new group
-					if (currentGroup == null || entryColor != currentGroup.Color)
-					{
-						// Write out the last group (if it exists)
-						if (currentGroup != null)
-						{
-							this.AddLogGroup(currentGroup);
-						}
-
-						// Start the new group
-						currentGroup = new ColoredLogGroup(entryColor);
-					}
-
-					// Add the entry
-					currentGroup.Entries.Add(entry);
-				}
-
-				// Add any items in the last group
-				if (currentGroup != null)
-				{
-					this.AddLogGroup(currentGroup);
-				}
-			}
+			this.PopulateLogColorBrushMapping();
+			this.listColumn.Width = new GridLength(Config.LogListPaneWidth);
 
 			this.Loaded += (sender, e) =>
 			{
 				this.logTextBox.ScrollToEnd();
 			};
 
-			// Subscribe to events
-			this.logger.EntryLogged += this.OnEntryLogged;
-			this.logger.Cleared += this.OnCleared;
+			this.logCoordinator.Logs
+				.Connect()
+				.OnItemAdded(addedLogViewModel =>
+				{
+					DispatchUtilities.Invoke(() =>
+					{
+						this.logCoordinator.SelectedLog = addedLogViewModel;
+						this.logsListBox.ScrollIntoView(addedLogViewModel);
+					});
+				})
+				.Subscribe();
+
+			this.logCoordinator.WhenAnyValue(x => x.SelectedLog).Subscribe(selectedLog =>
+			{
+				if (selectedLog != null)
+				{
+					this.DisconnectFromLogger();
+					this.ConnectToLogger(selectedLog.Logger);
+				}
+			});
+
+			this.appThemeService.AppThemeObservable.Skip(1).Subscribe(_ =>
+			{
+				this.Dispatcher.BeginInvoke(new Action(() =>
+				{
+					this.PopulateLogColorBrushMapping();
+					this.logParagraph.Inlines.Clear();
+					this.AddExistingLogEntries();
+				}));
+			});
 		}
 
-		private void	Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		private void ConnectToLogger(IAppLogger newLogger)
+		{
+			this.logger = newLogger;
+			this.logParagraph.Inlines.Clear();
+			this.AddExistingLogEntries();
+			newLogger.EntryLogged += this.OnEntryLogged;
+			this.logTextBox.ScrollToEnd();
+		}
+
+		private void DisconnectFromLogger()
+		{
+			if (this.logger != null)
+			{
+				this.logger.EntryLogged -= this.OnEntryLogged;
+				this.logger = null;
+			}
+		}
+
+		private void PopulateLogColorBrushMapping()
+		{
+			this.logColorBrushMapping.Clear();
+			this.logColorBrushMapping.Add(LogColor.Error, GetBrush("LogErrorBrush"));
+			this.logColorBrushMapping.Add(LogColor.VidCoder, GetBrush("LogVidCoderBrush"));
+			this.logColorBrushMapping.Add(LogColor.VidCoderWorker, GetBrush("LogVidCoderWorkerBrush"));
+			this.logColorBrushMapping.Add(LogColor.Normal, GetBrush("WindowTextBrush"));
+		}
+
+		private static Brush GetBrush(string resourceName)
+		{
+			return (Brush)Application.Current.Resources[resourceName];
+		}
+
+		private void AddExistingLogEntries()
+		{
+			lock (this.logger.LogLock)
+			{
+				this.logger.SuspendWriter();
+
+				try
+				{
+					// Add all existing log entries
+					ColoredLogGroup currentGroup = null;
+					using (var reader = new StreamReader(new FileStream(this.logger.LogPath, FileMode.Open, FileAccess.Read)))
+					{
+						string line;
+						while ((line = reader.ReadLine()) != null)
+						{
+							LogColor color = LogEntryClassificationUtilities.GetLineColor(line);
+
+							// If we need to start a new group
+							if (currentGroup == null || color != currentGroup.Color)
+							{
+								// Write out the last group (if it exists)
+								if (currentGroup != null)
+								{
+									this.AddLogGroup(currentGroup);
+								}
+
+								// Start the new group
+								currentGroup = new ColoredLogGroup(color);
+							}
+
+							// Add the entry
+							currentGroup.Entries.Add(line);
+						}
+					}
+
+					// Add any items in the last group
+					if (currentGroup != null)
+					{
+						this.AddLogGroup(currentGroup);
+					}
+				}
+				catch (Exception exception)
+				{
+					var errorLogGroup = new ColoredLogGroup(LogColor.Error);
+					errorLogGroup.Entries.Add($"Could not load log file {this.logger.LogPath}" + Environment.NewLine + exception);
+					this.AddLogGroup(errorLogGroup);
+				}
+				finally
+				{
+					this.logger.ResumeWriter();
+				}
+			}
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			this.logger.EntryLogged -= this.OnEntryLogged;
-			this.logger.Cleared -= this.OnCleared;
+			Config.LogListPaneWidth = this.listColumn.ActualWidth;
 		}
 
 		private void OnEntryLogged(object sender, EventArgs<LogEntry> e)
@@ -87,7 +184,7 @@ namespace VidCoder.View
 				if (!this.workerRunning)
 				{
 					this.workerRunning = true;
-					Dispatcher.BeginInvoke(new Action(this.ProcessPendingEntries));
+					this.Dispatcher.BeginInvoke(new Action(this.ProcessPendingEntries));
 				}
 			}
 		}
@@ -101,11 +198,11 @@ namespace VidCoder.View
 			{
 				if (this.pendingEntries.Count == 0)
 				{
-					// if there are no items left, schedule a scroll to the end and bail
-					this.Dispatcher.BeginInvoke(new Action(() =>
+					// If we are already at the bottom, scroll to the end, which will fire after the entries have been added to the UI.
+					if (this.ScrolledToEnd()) 
 					{
 						this.logTextBox.ScrollToEnd();
-					}));
+					}
 
 					this.workerRunning = false;
 					return;
@@ -119,28 +216,25 @@ namespace VidCoder.View
 				while (this.pendingEntries.Count > 0 && entryGroups.Count < MaxRunsPerDispatch && currentLines < MaxLinesPerDispatch)
 				{
 					LogEntry entry = this.pendingEntries.Dequeue();
-					Color entryColor = GetEntryColor(entry);
+					LogColor entryColor = LogEntryClassificationUtilities.GetEntryColor(entry);
 					if (currentGroup == null || entryColor != currentGroup.Color)
 					{
 						currentGroup = new ColoredLogGroup(entryColor);
 						entryGroups.Add(currentGroup);
 					}
 
-					currentGroup.Entries.Add(entry);
+					currentGroup.Entries.Add(entry.Text);
 					currentLines++;
 				}
 			}
 
 			this.AddLogGroups(entryGroups);
-			this.Dispatcher.BeginInvoke(new Action(this.ProcessPendingEntries));
+			this.ProcessPendingEntries();
 		}
 
-		private void OnCleared(object sender, EventArgs e)
+		private bool ScrolledToEnd()
 		{
-			this.Dispatcher.BeginInvoke(new Action(() =>
-			{
-				this.logParagraph.Inlines.Clear();
-			}));
+			return this.logTextBox.VerticalOffset + this.logTextBox.ViewportHeight >= this.logTextBox.ExtentHeight;
 		}
 
 		private void AddLogGroups(IEnumerable<ColoredLogGroup> groups)
@@ -153,12 +247,12 @@ namespace VidCoder.View
 
 		private void AddLogGroup(ColoredLogGroup group)
 		{
-			Brush brush = new SolidColorBrush(group.Color);
+			Brush brush = this.logColorBrushMapping[group.Color];
 			StringBuilder runText = new StringBuilder();
 
-			foreach (LogEntry entry in group.Entries)
+			foreach (string entry in group.Entries)
 			{
-				runText.AppendLine(entry.Text);
+				runText.AppendLine(entry);
 			}
 
 			var run = new Run(runText.ToString());
@@ -167,35 +261,22 @@ namespace VidCoder.View
 			this.logParagraph.Inlines.Add(run);
 		}
 
-		private static Color GetEntryColor(LogEntry entry)
-		{
-			if (entry.LogType == LogType.Error)
-			{
-				return Colors.Red;
-			}
-			else if (entry.Source == LogSource.VidCoder)
-			{
-				return Colors.DarkBlue;
-			}
-			else if (entry.Source == LogSource.VidCoderWorker)
-			{
-				return Colors.DarkGreen;
-			}
-
-			return Colors.Black;
-		}
-
 		private class ColoredLogGroup
 		{
-			public ColoredLogGroup(Color color)
+			public ColoredLogGroup(LogColor color)
 			{
-				this.Entries = new List<LogEntry>();
+				this.Entries = new List<string>();
 				this.Color = color;
 			}
 
-			public IList<LogEntry> Entries { get; private set; }
+			public IList<string> Entries { get; }
 
-			public Color Color { get; private set; }
+			public LogColor Color { get; }
+		}
+
+		private void ToolBar_Loaded(object sender, RoutedEventArgs e)
+		{
+			UIUtilities.HideOverflowGrid(sender as ToolBar);
 		}
 	}
 }

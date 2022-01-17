@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
-using HandBrake.ApplicationServices.Interop;
-using HandBrake.ApplicationServices.Interop.Model.Encoding;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.Interfaces.Model;
+using HandBrake.Interop.Interop.Json.Scan;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
@@ -23,29 +27,11 @@ namespace VidCoder.Services
 	/// </summary>
 	public class OutputPathService : ReactiveObject
 	{
-		private MainViewModel main = Ioc.Get<MainViewModel>();
+		private Lazy<MainViewModel> mainViewModel = new Lazy<MainViewModel>(() => StaticResolver.Resolve<MainViewModel>());
 		private ProcessingService processingService;
 		private PresetsService presetsService;
 		private PickersService pickersService;
-		private IDriveService driveService = Ioc.Get<IDriveService>();
-
-		public OutputPathService()
-		{
-			this.defaultOutputFolder = Config.AutoNameOutputFolder;
-
-			// OutputFolderChosen
-			this.WhenAnyValue(x => x.DefaultOutputFolder)
-				.Select(defaultOutputFolder =>
-				{
-					return !string.IsNullOrEmpty(defaultOutputFolder);
-				}).ToProperty(this, x => x.OutputFolderChosen, out this.outputFolderChosen);
-
-			this.PickDefaultOutputFolder = ReactiveCommand.Create();
-			this.PickDefaultOutputFolder.Subscribe(_ => this.PickDefaultOutputFolderImpl());
-
-			this.PickOutputPath = ReactiveCommand.Create(this.WhenAnyValue(x => x.OutputFolderChosen));
-			this.PickOutputPath.Subscribe(_ => this.PickOutputPathImpl());
-		}
+		private IDriveService driveService = StaticResolver.Resolve<IDriveService>();
 
 		public ProcessingService ProcessingService
 		{
@@ -53,7 +39,7 @@ namespace VidCoder.Services
 			{
 				if (this.processingService == null)
 				{
-					this.processingService = Ioc.Get<ProcessingService>();
+					this.processingService = StaticResolver.Resolve<ProcessingService>();
 				}
 
 				return this.processingService;
@@ -66,7 +52,7 @@ namespace VidCoder.Services
 			{
 				if (this.presetsService == null)
 				{
-					this.presetsService = Ioc.Get<PresetsService>();
+					this.presetsService = StaticResolver.Resolve<PresetsService>();
 				}
 
 				return this.presetsService;
@@ -79,7 +65,7 @@ namespace VidCoder.Services
 			{
 				if (this.pickersService == null)
 				{
-					this.pickersService = Ioc.Get<PickersService>();
+					this.pickersService = StaticResolver.Resolve<PickersService>();
 				}
 
 				return this.pickersService;
@@ -89,15 +75,8 @@ namespace VidCoder.Services
 		private string outputPath;
 		public string OutputPath
 		{
-			get { return this.outputPath; }
-			set { this.RaiseAndSetIfChanged(ref this.outputPath, value); }
-		}
-
-		private string defaultOutputFolder;
-		private string DefaultOutputFolder
-		{
-			get { return this.defaultOutputFolder; }
-			set { this.RaiseAndSetIfChanged(ref this.defaultOutputFolder, value); }
+			get => this.outputPath;
+			set => this.RaiseAndSetIfChanged(ref this.outputPath, value);
 		}
 
 		// The parent folder for the item (if it was inside a folder of files added in a batch)
@@ -105,60 +84,108 @@ namespace VidCoder.Services
 
 		public string OldOutputPath { get; set; }
 
-		public bool ManualOutputPath { get; set; }
+		private bool manualOutputPath;
+		public bool ManualOutputPath
+		{
+			get => this.manualOutputPath;
+			set => this.RaiseAndSetIfChanged(ref this.manualOutputPath, value);
+		}
 
 		public string NameFormatOverride { get; set; }
 
 		private bool editingDestination;
 		public bool EditingDestination
 		{
-			get { return this.editingDestination; }
-			set { this.RaiseAndSetIfChanged(ref this.editingDestination, value); }
+			get => this.editingDestination;
+			set => this.RaiseAndSetIfChanged(ref this.editingDestination, value);
 		}
 
-		private ObservableAsPropertyHelper<bool> outputFolderChosen;
-		public bool OutputFolderChosen => this.outputFolderChosen.Value;
-
-		public ReactiveCommand<object> PickDefaultOutputFolder { get; }
-		public bool PickDefaultOutputFolderImpl()
+		private ReactiveCommand<Unit, Unit> pickOutputPath;
+		public ReactiveCommand<Unit, Unit> PickOutputPath
 		{
-			string newOutputFolder = FileService.Instance.GetFolderName(null, MainRes.OutputDirectoryPickerText);
-
-			if (newOutputFolder != null)
+			get
 			{
-				Config.AutoNameOutputFolder = newOutputFolder;
-				this.NotifyDefaultOutputFolderChanged();
-			}
+				return this.pickOutputPath ?? (this.pickOutputPath = ReactiveCommand.Create(
+					() =>
+					{
+						string extensionDot = this.GetOutputExtension();
+						string extension = this.GetOutputExtension(includeDot: false);
+						string extensionLabel = extension.ToUpperInvariant();
 
-			return newOutputFolder != null;
+						string initialFileName = null;
+						if (!string.IsNullOrWhiteSpace(this.OutputPath) && !this.OutputPath.EndsWith("\\", StringComparison.Ordinal))
+						{
+							initialFileName = Path.GetFileName(this.OutputPath);
+						}
+
+						string newOutputPath = FileService.Instance.GetFileNameSave(
+							Config.RememberPreviousFiles ? Config.LastOutputFolder : null,
+							"Encode output location",
+							initialFileName,
+							extension,
+							string.Format("{0} Files|*{1}", extensionLabel, extensionDot));
+						this.SetManualOutputPath(newOutputPath, this.OutputPath);
+					}));
+			}
 		}
 
-		public ReactiveCommand<object> PickOutputPath { get; }
-		private void PickOutputPathImpl()
+		private ReactiveCommand<Unit, Unit> changeToAutomatic;
+		public ReactiveCommand<Unit, Unit> ChangeToAutomatic
 		{
-			string extensionDot = this.GetOutputExtension();
-			string extension = this.GetOutputExtension(includeDot: false);
-			string extensionLabel = extension.ToUpperInvariant();
+			get
+			{
+				return this.changeToAutomatic ?? (this.changeToAutomatic = ReactiveCommand.Create(
+					() =>
+					{
+						this.ManualOutputPath = false;
+						this.NameFormatOverride = null;
+						this.SourceParentFolder = null;
+						this.GenerateOutputFileName();
+					}));
+			}
+		}
 
-			string newOutputPath = FileService.Instance.GetFileNameSave(
-				Config.RememberPreviousFiles ? Config.LastOutputFolder : null,
-				"Encode output location",
-				null,
-				extension,
-				string.Format("{0} Files|*{1}", extensionLabel, extensionDot));
-			this.SetManualOutputPath(newOutputPath, this.OutputPath);
+		private ReactiveCommand<Unit, Unit> openPickerToDestination;
+		public ReactiveCommand<Unit, Unit> OpenPickerToDestination
+		{
+			get
+			{
+				return this.openPickerToDestination ?? (this.openPickerToDestination = ReactiveCommand.Create(
+					() =>
+					{
+						var pickerWindowViewModel = StaticResolver.Resolve<IWindowManager>().OpenOrFocusWindow<PickerWindowViewModel>();
+						pickerWindowViewModel.View.ScrollDestinationSectionIntoView();
+					}));
+			}
 		}
 
 		// Resolves any conflicts for the given output path.
 		// Returns a non-conflicting output path.
 		// May return the same value if there are no conflicts.
 		// null means cancel.
-		public string ResolveOutputPathConflicts(string initialOutputPath, HashSet<string> excludedPaths, bool isBatch)
+		public string ResolveOutputPathConflicts(
+			string initialOutputPath,
+			string sourcePath,
+			HashSet<string> queuedInputFiles,
+			HashSet<string> queuedOutputFiles,
+			bool isBatch,
+			Picker picker,
+			bool allowConflictDialog,
+			bool allowQueueRemoval)
 		{
-			HashSet<string> queuedFiles = excludedPaths;
-			bool? conflict = Utilities.FileExists(initialOutputPath, queuedFiles);
+			// If the output is going to be the same as the source path, add (Encoded) to it if we aren't immediately removing the source file.
+			if (string.Compare(initialOutputPath, sourcePath, StringComparison.InvariantCultureIgnoreCase) == 0 && (picker.SourceFileRemoval == SourceFileRemoval.Disabled || picker.SourceFileRemovalTiming != SourceFileRemovalTiming.Immediately))
+			{
+				string outputFolder = Path.GetDirectoryName(initialOutputPath);
+				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(initialOutputPath);
+				string extension = Path.GetExtension(initialOutputPath);
 
-			if (conflict == null)
+				initialOutputPath = Path.Combine(outputFolder, fileNameWithoutExtension + " (Encoded)" + extension);
+			}
+
+			FileQueueCheckResult checkResult = Utilities.FileExistsOnDiskOrInQueue(initialOutputPath, queuedOutputFiles);
+
+			if (checkResult == FileQueueCheckResult.NotFound)
 			{
 				return initialOutputPath;
 			}
@@ -166,11 +193,16 @@ namespace VidCoder.Services
 			WhenFileExists preference;
 			if (isBatch)
 			{
-				preference = CustomConfig.WhenFileExistsBatch;
+				preference = picker.WhenFileExistsBatch;
 			}
 			else
 			{
-				preference = CustomConfig.WhenFileExists;
+				preference = picker.WhenFileExistsSingle;
+			}
+
+			if (!allowConflictDialog && preference == WhenFileExists.Prompt)
+			{
+				preference = WhenFileExists.Overwrite;
 			}
 
 			switch (preference)
@@ -178,34 +210,83 @@ namespace VidCoder.Services
 				case WhenFileExists.Prompt:
 					break;
 				case WhenFileExists.Overwrite:
+					if (checkResult == FileQueueCheckResult.InQueue && allowQueueRemoval)
+					{
+						this.RemoveQueuedJobWithOutputPath(initialOutputPath);
+					}
+
 					return initialOutputPath;
 				case WhenFileExists.AutoRename:
-					return FileUtilities.CreateUniqueFileName(initialOutputPath, queuedFiles);
+					HashSet<string> excludedFiles = new HashSet<string>(queuedInputFiles);
+					excludedFiles.UnionWith(queuedOutputFiles);
+
+					return FileUtilities.CreateUniqueFileName(initialOutputPath, excludedFiles);
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 
 			// Continue and prompt user for resolution
+			string dialogMessageTemplate;
+			string overwriteButtonText;
+			if (checkResult == FileQueueCheckResult.OnDisk || this.IsConflictingJobInProgress(initialOutputPath))
+			{
+				dialogMessageTemplate = MiscRes.FileConflictWarning;
+				overwriteButtonText = MiscRes.OverwriteButton;
+			}
+			else
+			{
+				dialogMessageTemplate = MiscRes.QueueFileConflictWarning;
+				overwriteButtonText = MiscRes.ReplaceJobButton;
+			}
 
-			var conflictDialog = new FileConflictDialogViewModel(initialOutputPath, (bool)conflict);
-			Ioc.Get<IWindowManager>().OpenDialog(conflictDialog);
+			string dialogMessage = string.Format(dialogMessageTemplate, initialOutputPath);
+			var conflictDialog = new CustomMessageDialogViewModel<FileConflictResolution>(
+				MiscRes.FileConflictDialogTitle,
+				dialogMessage,
+				new List<CustomDialogButton<FileConflictResolution>>
+				{
+					new CustomDialogButton<FileConflictResolution>(FileConflictResolution.Overwrite, overwriteButtonText, ButtonType.Default),
+					new CustomDialogButton<FileConflictResolution>(FileConflictResolution.AutoRename, MiscRes.AutoRenameButton),
+					new CustomDialogButton<FileConflictResolution>(FileConflictResolution.Cancel, CommonRes.Cancel, ButtonType.Cancel),
+				});
 
-			switch (conflictDialog.FileConflictResolution)
+			StaticResolver.Resolve<IWindowManager>().OpenDialog(conflictDialog);
+
+			switch (conflictDialog.Result)
 			{
 				case FileConflictResolution.Cancel:
 					return null;
 				case FileConflictResolution.Overwrite:
+					if (checkResult == FileQueueCheckResult.InQueue && allowQueueRemoval)
+					{
+						this.RemoveQueuedJobWithOutputPath(initialOutputPath);
+					}
+
 					return initialOutputPath;
 				case FileConflictResolution.AutoRename:
-					return FileUtilities.CreateUniqueFileName(initialOutputPath, queuedFiles);
+					return FileUtilities.CreateUniqueFileName(initialOutputPath, queuedOutputFiles);
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		public string ResolveOutputPathConflicts(string initialOutputPath, bool isBatch)
+		private bool IsConflictingJobInProgress(string outputPath)
 		{
-			return ResolveOutputPathConflicts(initialOutputPath, this.ProcessingService.GetQueuedFiles(), isBatch);
+			return this.ProcessingService.EncodingJobs.Any(j => string.Compare(j.Job.FinalOutputPath, outputPath, StringComparison.OrdinalIgnoreCase) == 0);
+		}
+
+		private void RemoveQueuedJobWithOutputPath(string outputPath)
+		{
+			EncodeJobViewModel jobToRemove = this.ProcessingService.EncodeQueue.Items.FirstOrDefault(j => string.Compare(j.Job.FinalOutputPath, outputPath, StringComparison.OrdinalIgnoreCase) == 0 && !j.Encoding);
+			if (jobToRemove != null)
+			{
+				this.ProcessingService.RemoveQueueJob(jobToRemove);
+			}
+		}
+
+		public string ResolveOutputPathConflicts(string initialOutputPath, string sourcePath, bool isBatch, Picker picker, bool allowConflictDialog, bool allowQueueRemoval)
+		{
+			return this.ResolveOutputPathConflicts(initialOutputPath, sourcePath, this.ProcessingService.GetQueuedInputFiles(), this.ProcessingService.GetQueuedOutputFiles(), isBatch, picker, allowConflictDialog, allowQueueRemoval);
 		}
 
 		/// <summary>
@@ -229,17 +310,13 @@ namespace VidCoder.Services
 
 			string extension;
 
-			if (container.DefaultExtension == "mkv")
+			if (container.DefaultExtension == "mp4" && profile.PreferredExtension == VCOutputExtension.M4v)
 			{
-				extension = "mkv";
-			}
-			else if (container.DefaultExtension == "mp4" && profile.PreferredExtension == VCOutputExtension.Mp4)
-			{
-				extension = "mp4";
+				extension = "m4v";
 			}
 			else
 			{
-				extension = "m4v";
+				extension = container.DefaultExtension;
 			}
 
 			return includeDot ? "." + extension : extension;
@@ -275,7 +352,7 @@ namespace VidCoder.Services
 			else
 			{
 				// If it's not a valid path, revert the change.
-				if (this.main.HasVideoSource && string.IsNullOrEmpty(Path.GetFileName(oldOutputPath)))
+				if (this.mainViewModel.Value.HasVideoSource && string.IsNullOrEmpty(Path.GetFileName(oldOutputPath)))
 				{
 					// If we've got a video source now and the old path was blank, generate a file name
 					this.GenerateOutputFileName();
@@ -288,15 +365,14 @@ namespace VidCoder.Services
 			}
 		}
 
-		public void NotifyDefaultOutputFolderChanged()
-		{
-			this.DefaultOutputFolder = Config.AutoNameOutputFolder;
-			this.GenerateOutputFileName();
-		}
-
+		/// <summary>
+		/// Generates an output file name for the "destination" text box.
+		/// </summary>
 		public void GenerateOutputFileName()
 		{
 			string fileName;
+
+			MainViewModel main = this.mainViewModel.Value;
 
 			// If our original path was empty and we're editing it at the moment, don't clobber
 			// whatever the user is typing.
@@ -313,9 +389,9 @@ namespace VidCoder.Services
 				return;
 			}
 
-			if (!this.main.HasVideoSource)
+			if (!main.HasVideoSource)
 			{
-				string outputFolder = this.PickerOutputFolder;
+				string outputFolder = this.SelectedPickerOutputFolder;
 				if (outputFolder != null)
 				{
 					this.OutputPath = outputFolder + (outputFolder.EndsWith(@"\", StringComparison.Ordinal) ? string.Empty : @"\");
@@ -324,43 +400,52 @@ namespace VidCoder.Services
 				return;
 			}
 
-			if (this.main.SourceName == null || this.main.SelectedStartChapter == null || this.main.SelectedEndChapter == null)
+			if (main.SourceName == null)
 			{
 				return;
 			}
 
-			if (string.IsNullOrEmpty(Config.AutoNameOutputFolder))
+			if (main.RangeType == VideoRangeType.Chapters && (main.SelectedStartChapter == null || main.SelectedEndChapter == null))
 			{
 				return;
 			}
-
-			// Change casing on DVD titles to be a little more friendly
-			string translatedSourceName = this.main.SourceName;
-			if ((this.main.SelectedSource.Type == SourceType.Dvd || this.main.SelectedSource.Type == SourceType.VideoFolder) && !string.IsNullOrWhiteSpace(this.main.SourceName))
+			
+			string nameFormat = null;
+			Picker picker = this.pickersService.SelectedPicker.Picker;
+			if (this.NameFormatOverride != null)
 			{
-				translatedSourceName = this.TranslateDvdSourceName(this.main.SourceName);
+				nameFormat = this.NameFormatOverride;
+			}
+			else
+			{
+				if (picker.UseCustomFileNameFormat)
+				{
+					nameFormat = picker.OutputFileNameFormat;
+				}
 			}
 
 			fileName = this.BuildOutputFileName(
-				this.main.SourcePath,
-				translatedSourceName,
-				this.main.SelectedTitle.Index,
-				this.main.SelectedTitle.Duration.ToSpan(),
-				this.main.RangeType,
-				this.main.SelectedStartChapter.ChapterNumber,
-				this.main.SelectedEndChapter.ChapterNumber,
-				this.main.SelectedTitle.ChapterList.Count,
-				this.main.TimeRangeStart,
-				this.main.TimeRangeEnd,
-				this.main.FramesRangeStart,
-				this.main.FramesRangeEnd,
-				this.NameFormatOverride,
-				multipleTitlesOnSource: this.main.ScanInstance.Titles.TitleList.Count > 1,
-				picker: null);
+				main.SourcePath,
+				// Change casing on DVD titles to be a little more friendly
+				this.CleanUpSourceName(picker),
+				main.SelectedTitle.Title.Index,
+				main.SelectedTitle.Duration,
+				main.RangeType,
+				main.SelectedStartChapter?.ChapterNumber ?? 0,
+				main.SelectedEndChapter?.ChapterNumber ?? 0,
+				main.SelectedTitle.ChapterList.Count,
+				main.TimeRangeStart,
+				main.TimeRangeEnd,
+				main.FramesRangeStart,
+				main.FramesRangeEnd,
+				nameFormat,
+				multipleTitlesOnSource: main.ScanInstance.Titles.TitleList.Count > 1,
+				picker: picker);
 
 			string extension = this.GetOutputExtension();
 
-			this.OutputPath = this.BuildOutputPath(fileName, extension, sourcePath: this.main.SourcePath);
+			string outputPathCandidate = this.BuildOutputPath(fileName, extension, sourcePath: main.SourcePath);
+			this.OutputPath = this.ResolveOutputPathConflicts(outputPathCandidate, main.SourcePath, false, picker, allowConflictDialog: false, allowQueueRemoval: false);
 
 			// If we've pushed a new name into the destination text box, we need to update the "baseline" name so the
 			// auto-generated name doesn't get mistakenly labeled as manual when focus leaves it
@@ -370,67 +455,30 @@ namespace VidCoder.Services
 			}
 		}
 
-		/// <summary>
-		/// Changes casing on DVD titles to be a little more friendly.
-		/// </summary>
-		/// <param name="dvdSourceName">The source name of the DVD.</param>
-		/// <returns>Cleaned up version of the source name.</returns>
-		public string TranslateDvdSourceName(string dvdSourceName)
-		{
-			if (dvdSourceName.Any(char.IsLower))
-			{
-				// If we find any lowercase letters, this is not a DVD/Blu-ray disc name and
-				// does not need any cleanup
-				return dvdSourceName;
-			}
-
-			string[] titleWords = dvdSourceName.Split('_');
-			var translatedTitleWords = new List<string>();
-			bool reachedModifiers = false;
-
-			foreach (string titleWord in titleWords)
-			{
-				// After the disc designator, stop changing capitalization.
-				if (!reachedModifiers && titleWord.Length == 2 && titleWord[0] == 'D' && char.IsDigit(titleWord[1]))
-				{
-					reachedModifiers = true;
-				}
-
-				if (reachedModifiers)
-				{
-					translatedTitleWords.Add(titleWord);
-				}
-				else
-				{
-					if (titleWord.Length > 0)
-					{
-						translatedTitleWords.Add(titleWord[0] + titleWord.Substring(1).ToLower());
-					}
-				}
-			}
-
-			return string.Join(" ", translatedTitleWords);
-		}
-
-		// Gets the default output folder, considering the picker and config
-		public string PickerOutputFolder
+		// Gets the output folder from the selected picker, falling back to My Videos if null.
+		private string SelectedPickerOutputFolder
 		{
 			get
 			{
-				Picker picker = this.PickersService.SelectedPicker.Picker;
-				if (picker.OutputDirectoryOverrideEnabled)
-				{
-					return picker.OutputDirectoryOverride;
-				}
-
-				return Config.AutoNameOutputFolder;
+				return GetOutputFolderForPicker(null);
 			}
+		}
+
+		// Gets the output folder from the picker, falling back to My Videos if null.
+		private string GetOutputFolderForPicker(Picker picker)
+		{
+			Picker nonNullPicker = picker ?? this.PickersService.SelectedPicker.Picker;
+
+			if (nonNullPicker.OutputDirectory != null)
+			{
+				return nonNullPicker.OutputDirectory;
+			}
+
+			return Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
 		}
 
 		public string GetOutputFolder(string sourcePath, string sourceParentFolder = null, Picker picker = null)
 		{
-			string outputFolder = this.PickerOutputFolder;
-
 			bool usedSourceDirectory = false;
 
 			if (picker == null)
@@ -438,7 +486,9 @@ namespace VidCoder.Services
 				picker = this.PickersService.SelectedPicker.Picker;
 			}
 
-			if (picker.OutputToSourceDirectory ?? Config.OutputToSourceDirectory)
+			string outputFolder = this.GetOutputFolderForPicker(picker);
+
+			if (picker.OutputToSourceDirectory)
 			{
 				// Use the source directory if we can
 				string sourceRoot = Path.GetPathRoot(sourcePath);
@@ -455,7 +505,7 @@ namespace VidCoder.Services
 				}
 			}
 
-			bool preserveFolderStructure = picker.PreserveFolderStructureInBatch ?? Config.PreserveFolderStructureInBatch;
+			bool preserveFolderStructure = picker.PreserveFolderStructureInBatch;
 			if (!usedSourceDirectory && sourceParentFolder != null && preserveFolderStructure)
 			{
 				// Tack on some subdirectories if we have a parent folder specified and it's enabled, and we didn't use the source directory
@@ -493,13 +543,7 @@ namespace VidCoder.Services
 
 			if (!string.IsNullOrEmpty(outputFolder))
 			{
-				string result = Path.Combine(outputFolder, fileName + extension);
-				if (result == sourcePath)
-				{
-					result = Path.Combine(outputFolder, fileName + " (Encoded)" + extension);
-				}
-
-				return result;
+				return Path.Combine(outputFolder, fileName + extension);
 			}
 
 			return null;
@@ -533,20 +577,189 @@ namespace VidCoder.Services
 				picker);
 		}
 
-		public string BuildOutputFileName(
-			string sourcePath, 
-			string sourceName, 
-			int title, 
-			TimeSpan titleDuration, 
-			VideoRangeType rangeType, 
-			int startChapter, 
-			int endChapter, 
-			int totalChapters, 
-			TimeSpan startTime, 
-			TimeSpan endTime, 
-			int startFrame, 
+		/// <summary>
+		///	Update the source name based on the picker settings.
+		/// </summary>
+		/// <param name="picker">The picker.</param>
+		/// <returns>The cleaned up source name</returns>
+		public string CleanUpSourceName(Picker picker)
+		{
+			MainViewModel main = this.mainViewModel.Value;
+			return this.CleanUpSourceName(picker, main.SourceName);
+		}
+
+		/// <summary>
+		/// Update the given source name based on the picker settings.
+		/// </summary>
+		/// <param name="picker">The picker.</param>
+		/// <param name="sourceName">The source name to convert.</param>
+		/// <returns>The cleaned up source name</returns>
+		public string CleanUpSourceName(Picker picker, string sourceName)
+		{
+			if (sourceName == null || !picker.ChangeWordSeparator && !picker.ChangeTitleCaptialization)
+			{
+				return sourceName;
+			}
+
+			var wordBreakCharacterSet = new HashSet<char>(picker.WordBreakCharacters.Select(character => character[0]));
+
+			// Make a pass to see if it's all uppercase or all lowercase
+			bool isAllLowercase = true;
+			bool isAllUppercase = true;
+
+			if (picker.ChangeTitleCaptialization && picker.OnlyChangeTitleCapitalizationWhenAllSame)
+			{
+				foreach (char c in sourceName)
+				{
+					if (char.IsUpper(c))
+					{
+						isAllLowercase = false;
+					}
+					else if (char.IsLower(c))
+					{
+						isAllUppercase = false;
+					}
+				}
+			}
+
+			bool isCasingAllSame = isAllLowercase || isAllUppercase;
+			bool isFirstWord = true;
+
+			// Build the output
+			var output = new StringBuilder();
+			var currentWord = new StringBuilder();
+			foreach (char c in sourceName)
+			{
+				if (wordBreakCharacterSet.Contains(c))
+				{
+					// Write out the current word
+					if (currentWord.Length > 0)
+					{
+						this.WriteTitleWord(output, currentWord, picker, isCasingAllSame, isFirstWord);
+						isFirstWord = false;
+						currentWord.Clear();
+					}
+
+					// Write out the word break character
+					char wordBreakCharacter = picker.ChangeWordSeparator ? picker.WordSeparator[0] : c;
+					output.Append(wordBreakCharacter);
+				}
+				else
+				{
+					currentWord.Append(c);
+				}
+			}
+
+			if (currentWord.Length > 0)
+			{
+				this.WriteTitleWord(output, currentWord, picker, isCasingAllSame, isFirstWord);
+			}
+
+			return output.ToString();
+		}
+
+		private void WriteTitleWord(StringBuilder output, StringBuilder word, Picker picker, bool isCasingAllSame, bool isFirstWord)
+		{
+			if (picker.ChangeTitleCaptialization && (isCasingAllSame || !picker.OnlyChangeTitleCapitalizationWhenAllSame))
+			{
+				string inputWord = word.ToString();
+				string outputWord;
+				if (picker.TitleCapitalization == TitleCapitalizationChoice.EveryWord || isFirstWord)
+				{
+					outputWord = char.ToUpper(inputWord[0]) + inputWord.Substring(1).ToLower();
+				}
+				else
+				{
+					outputWord = inputWord.ToLower();
+				}
+
+				output.Append(outputWord);
+			}
+			else
+			{
+				output.Append(word);
+			}
+		}
+
+		/// <summary>
+		/// Replace arguments with the currently loaded source.
+		/// </summary>
+		/// <param name="nameFormat">The name format to use.</param>
+		/// <param name="picker">The picker.</param>
+		/// <returns>The new name with arguments replaced.</returns>
+		public string ReplaceArguments(string nameFormat, Picker picker = null)
+		{
+			MainViewModel main = this.mainViewModel.Value;
+
+			return this.ReplaceArguments(
+				main.SourcePath,
+				this.CleanUpSourceName(picker),
+				main.SelectedTitle.Index,
+				main.SelectedTitle.Duration,
+				main.RangeType,
+				main.SelectedStartChapter.ChapterNumber,
+				main.SelectedEndChapter.ChapterNumber,
+				main.SelectedTitle.ChapterList.Count,
+				main.TimeRangeStart,
+				main.TimeRangeEnd,
+				main.FramesRangeStart,
+				main.FramesRangeEnd,
+				nameFormat,
+				multipleTitlesOnSource: main.ScanInstance.Titles.TitleList.Count > 1,
+				picker: picker);
+		}
+
+		/// <summary>
+		/// Replace arguments with the given job information.
+		/// </summary>
+		/// <param name="nameFormat">The name format to use.</param>
+		/// <param name="picker">The picker.</param>
+		/// <param name="jobViewModel">The job to pick information from.</param>
+		/// <returns>The string with arguments replaced.</returns>
+		public string ReplaceArguments(string nameFormat, Picker picker, EncodeJobViewModel jobViewModel)
+		{
+			// The jobViewModel might have null VideoSource and VideoSourceMetadata from an earlier version < 4.17.
+
+			VCJob job = jobViewModel.Job;
+			SourceTitle title = jobViewModel.VideoSource?.Titles.Single(t => t.Index == job.Title);
+
+			string sourceName = jobViewModel.SourceName ?? string.Empty;
+			TimeSpan titleDuration = title?.Duration.ToSpan() ?? TimeSpan.Zero;
+			int chapterCount = title?.ChapterList.Count ?? 0;
+			bool hasMultipleTitles = jobViewModel.VideoSource != null && jobViewModel.VideoSource.Titles.Count > 1;
+
+			return this.ReplaceArguments(
+				job.SourcePath,
+				sourceName,
+				job.Title,
+				titleDuration,
+				job.RangeType,
+				job.ChapterStart,
+				job.ChapterEnd,
+				chapterCount,
+				TimeSpan.FromSeconds(job.SecondsStart),
+				TimeSpan.FromSeconds(job.SecondsEnd),
+				job.FramesStart,
+				job.FramesEnd,
+				nameFormat,
+				hasMultipleTitles,
+				picker);
+		}
+
+		private string ReplaceArguments(
+			string sourcePath,
+			string sourceName,
+			int title,
+			TimeSpan titleDuration,
+			VideoRangeType rangeType,
+			int startChapter,
+			int endChapter,
+			int totalChapters,
+			TimeSpan startTime,
+			TimeSpan endTime,
+			int startFrame,
 			int endFrame,
-			string nameFormatOverride, 
+			string nameFormatOverride,
 			bool multipleTitlesOnSource,
 			Picker picker)
 		{
@@ -556,7 +769,7 @@ namespace VidCoder.Services
 				picker = this.PickersService.SelectedPicker.Picker;
 			}
 
-			if (Config.AutoNameCustomFormat || !string.IsNullOrWhiteSpace(nameFormatOverride))
+			if (!string.IsNullOrWhiteSpace(nameFormatOverride) || picker.UseCustomFileNameFormat)
 			{
 				string rangeString = string.Empty;
 				switch (rangeType)
@@ -584,13 +797,13 @@ namespace VidCoder.Services
 				{
 					fileName = nameFormatOverride;
 				}
-				else if (picker.NameFormatOverrideEnabled)
+				else if (!string.IsNullOrWhiteSpace(picker.OutputFileNameFormat))
 				{
-					fileName = picker.NameFormatOverride;
+					fileName = picker.OutputFileNameFormat;
 				}
 				else
 				{
-					fileName = Config.AutoNameCustomFormatString;
+					fileName = "{source}";
 				}
 
 				fileName = fileName.Replace("{source}", sourceName);
@@ -622,13 +835,13 @@ namespace VidCoder.Services
 					double quality = 0;
 					switch (profile.VideoEncodeRateType)
 					{
-                        case VCVideoEncodeRateType.ConstantQuality:
-							quality = profile.Quality;
+						case VCVideoEncodeRateType.ConstantQuality:
+							quality = (double)profile.Quality;
 							break;
-                        case VCVideoEncodeRateType.AverageBitrate:
+						case VCVideoEncodeRateType.AverageBitrate:
 							quality = profile.VideoBitrate;
 							break;
-                        case VCVideoEncodeRateType.TargetSize:
+						case VCVideoEncodeRateType.TargetSize:
 							quality = profile.TargetSize;
 							break;
 						default:
@@ -664,7 +877,7 @@ namespace VidCoder.Services
 
 						break;
 					case VideoRangeType.Seconds:
-						if (startTime > TimeSpan.Zero || endTime < titleDuration)
+						if (startTime > TimeSpan.Zero || (endTime < titleDuration && (titleDuration - endTime >= TimeSpan.FromSeconds(1) || endTime.Milliseconds != 0)))
 						{
 							rangeSection = " - " + startTime.ToFileName() + "-" + endTime.ToFileName();
 						}
@@ -677,8 +890,29 @@ namespace VidCoder.Services
 
 				fileName = sourceName + titleSection + rangeSection;
 			}
+			return fileName;
+		}
 
-			return FileUtilities.CleanFileName(fileName, allowBackslashes: true);
+		public string BuildOutputFileName(
+			string sourcePath,
+			string sourceName,
+			int title,
+			TimeSpan titleDuration,
+			VideoRangeType rangeType,
+			int startChapter,
+			int endChapter,
+			int totalChapters,
+			TimeSpan startTime,
+			TimeSpan endTime,
+			int startFrame,
+			int endFrame,
+			string nameFormatOverride, 
+			bool multipleTitlesOnSource,
+			Picker picker)
+		{
+			return FileUtilities.CleanFileName(
+				ReplaceArguments(sourcePath, sourceName, title, titleDuration, rangeType, startChapter,endChapter, totalChapters, startTime, endTime, startFrame, endFrame, nameFormatOverride, multipleTitlesOnSource, picker), 
+				allowBackslashes: true);
 		}
 
 		public bool PathIsValid()
@@ -698,7 +932,7 @@ namespace VidCoder.Services
 				int replaceIndex = capture.Index - 7;
 				int replaceLength = capture.Length + 8;
 
-				int digits = int.Parse(capture.Value);
+				int digits = int.Parse(capture.Value, CultureInfo.InvariantCulture);
 
 				if (digits > 0 && digits <= 10)
 				{
@@ -740,7 +974,7 @@ namespace VidCoder.Services
 				int replaceIndex = capture.Index - 8;
 				int replaceLength = capture.Length + 9;
 
-				inputString = inputString.Substring(0, replaceIndex) + FindParent(path, int.Parse(capture.Value)) + inputString.Substring(replaceIndex + replaceLength);
+				inputString = inputString.Substring(0, replaceIndex) + FindParent(path, int.Parse(capture.Value, CultureInfo.InvariantCulture)) + inputString.Substring(replaceIndex + replaceLength);
 			}
 
 			return inputString;

@@ -1,80 +1,88 @@
 ﻿using System;
-using System.ServiceModel;
+using System.Windows;
+using Microsoft.AnyContainer;
 using VidCoder.Resources;
 using VidCoder.Services;
 using VidCoder.Services.Windows;
+using VidCoder.View;
 using VidCoder.ViewModel;
-using VidCoderCLI;
 using VidCoderCommon.Model;
+using VidCoderCommon.Services;
 
 namespace VidCoder.Automation
 {
 	public class VidCoderAutomation : IVidCoderAutomation
 	{
+		private IAppLogger logger = StaticResolver.Resolve<IAppLogger>();
+
 		public void Encode(string source, string destination, string preset, string picker)
 		{
-			var processingService = Ioc.Get<ProcessingService>();
-
-			try
+			this.logger.Log("Processing Encode request");
+			var processingService = StaticResolver.Resolve<ProcessingService>();
+			DispatchUtilities.Invoke(() =>
 			{
 				processingService.Process(source, destination, preset, picker);
-			}
-			catch (Exception exception)
-			{
-				throw new FaultException<AutomationError>(new AutomationError { Message = exception.Message });
-			}
+			});
 		}
 
 		public void Scan(string source)
 		{
-			var mainVM = Ioc.Get<MainViewModel>();
-
-			try
+			this.logger.Log("Processing Scan request");
+			var mainVM = StaticResolver.Resolve<MainViewModel>();
+			DispatchUtilities.Invoke(() =>
 			{
 				mainVM.ScanFromAutoplay(source);
-			}
-			catch (Exception exception)
-			{
-				throw new FaultException<AutomationError>(new AutomationError { Message = exception.Message });
-			}
+			});
 		}
 
 		public void ImportPreset(string filePath)
 		{
-			var presetImporter = Ioc.Get<IPresetImportExport>();
-
-			try
+			this.logger.Log("Processing Import Preset request");
+			var presetImporter = StaticResolver.Resolve<IPresetImportExport>();
+			DispatchUtilities.Invoke(() =>
 			{
-				Preset preset = presetImporter.ImportPreset(filePath);
-				this.ShowMessage(string.Format(MainRes.PresetImportSuccessMessage, preset.Name));
-			}
-			catch (Exception exception)
-			{
-				this.ShowMessage(MainRes.PresetImportErrorMessage);
-				throw new FaultException<AutomationError>(new AutomationError { Message = exception.Message });
-			}
+				try
+				{
+					Preset preset = presetImporter.ImportPreset(filePath);
+					this.ShowMessage(string.Format(MainRes.PresetImportSuccessMessage, preset.Name));
+				}
+				catch (Exception)
+				{
+					this.ShowMessage(MainRes.PresetImportErrorMessage);
+					throw;
+				}
+			});
 		}
 
 		public void ImportQueue(string filePath)
 		{
-			var queueImporter = Ioc.Get<IQueueImportExport>();
+			this.logger.Log("Processing Import Queue request");
+			var queueImporter = StaticResolver.Resolve<IQueueImportExport>();
+			DispatchUtilities.Invoke(() =>
+			{
+				try
+				{
+					queueImporter.Import(filePath);
+					this.ShowMessage(MainRes.QueueImportSuccessMessage);
+				}
+				catch (Exception)
+				{
+					this.ShowMessage(MainRes.QueueImportErrorMessage);
+					throw;
+				}
+			});
+		}
 
-			try
-			{
-				queueImporter.Import(filePath);
-				this.ShowMessage(MainRes.QueueImportSuccessMessage);
-			}
-			catch (Exception exception)
-			{
-				this.ShowMessage(MainRes.QueueImportErrorMessage);
-				throw new FaultException<AutomationError>(new AutomationError { Message = exception.Message });
-			}
+		public void BringToForeground()
+		{
+			this.logger.Log("Processing Bring to Foreground request");
+			StaticResolver.Resolve<Main>().EnsureVisible();
 		}
 
 		private void ShowMessage(string message)
 		{
-			Ioc.Get<StatusService>().Show(message);
-			Ioc.Get<IWindowManager>().Activate(Ioc.Get<MainViewModel>());
+			StaticResolver.Resolve<StatusService>().Show(message);
+			StaticResolver.Resolve<IWindowManager>().Activate(StaticResolver.Resolve<MainViewModel>());
 		}
 	}
 }

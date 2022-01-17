@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
@@ -124,96 +124,40 @@
     <value>Сохранить как...</value>
   </data>
   <data name="Revert" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="Advanced_AdaptiveBFramesToolTip" xml:space="preserve">
-    <value>x 264 имеет целый ряд алгоритмов, чтобы решить, когда следует использовать B-кадров и сколько использовать.  Быстрый режим занимает примерно такое же количество времени, независимо от того, какое количество B-кадров, указать.  Однако при этом быстро, его решения часто являются неоптимальной.  Оптимальный режим замедляется как максимальное количество B-кадров увеличивает, но делает гораздо более точные решения, особенно когда она используется с B-пирамиды.</value>
-  </data>
-  <data name="Advanced_AdaptiveDirectModeToolTip" xml:space="preserve">
-    <value>H.264 позволяет для двух разных прогнозирования режимов, пространственных и временных, в B-кадрах.  Пространственные, по умолчанию, это почти всегда лучше, но временной иногда полезно тоже.  x 264 можно за счет небольшого количества скорости (и соответственно для малого сжатия получить), адаптивно выбрать, что лучше для каждого конкретного кадра.</value>
-  </data>
-  <data name="Advanced_AdaptiveQuantizationStrengthToolTip" xml:space="preserve">
-    <value>Адаптивное квантование контролирует, как кодировщик распределяет битов по всему кадру. Более высокие значения принимают больше битов от края и сложных областей для улучшения областях с чётким.</value>
-  </data>
-  <data name="Advanced_AnalysisToolTip" xml:space="preserve">
-    <value>Выбор способа из различных вариантов, чтобы сделать свое решение: этот параметр выбирает нужные варианты.   Меньше секций для проверки означает быстрое кодирование, ценой худшего результата.</value>
-  </data>
-  <data name="Advanced_BFramesToolTip" xml:space="preserve">
-    <value>Оптимальное значение  ~ 2-5.   Это определяет максимальное количество последовательных B-кадров, которые может использовать кодировщик.   Большое число обычно не поможет значительно если адаптивных B-кадров установлено оптимально.   Анимированные чел исходного материала и B-пирамида также значительно увеличит полезность больших значений.  Базовый профиль, как это требуется для iPod и аналогичных устройств, требует B-кадров равным 0 (выключено).</value>
-  </data>
-  <data name="Advanced_CabacToolTip" xml:space="preserve">
-    <value>После того, как кодировщик сделал свою работу, он имеет кучу данных для сжатия без потерь, аналогичных ZIP или RAR. H.264 обеспечивает два варианта для этого: CAVLC и CABAC.  CABAC декодирует намного медленнее, но компрессы значительно лучше (10-30%), особенно на более низкой скорости передачи. Если вы ищете для сведения к минимуму требования к Процессору для воспроизведения видео, отключите эту опцию. Базовый профиль, как это требуется для iPod и аналогичных устройств, требует отключения CABAC.</value>
-  </data>
-  <data name="Advanced_DeblockingToolTip" xml:space="preserve">
-    <value>H.264 имеет встроенный  фильтр деблокинга, который сглаживает блокирование артефакты после декодирования каждого кадра.  Это не только улучшает визуальное качество, но также  значительно помогает сжатию.  Фильтр деблокинга занимает много ресурсов процессора, так что если вы ищете для сведения к минимуму требования к Процессору для воспроизведения видео, отключите его.  Деблокинга фильтр имеет два настраиваемые параметры, «сила» и «порог».  Более низкие значения означают, что меньше деблокинга, более высокие значения означают больше деблокинга. Значение по умолчанию равно 0 (нормальная прочность) для обоих параметров.</value>
-  </data>
-  <data name="Advanced_EightByEightDctToolTip" xml:space="preserve">
-    <value>8 Х 8 transform является наиболее полезной функцией x 264 с точки зрения скорости сжатия.   Улучшает сжатие по меньшей мере на 5% с относительно небольшой скоростью и может предоставить необычно высокое визуальное качество по сравнению с выгодой сжатия.   Однако это требует Высокий Профиль, который многие устройства могут не поддерживать.</value>
-  </data>
-  <data name="Advanced_MotionEstimationMethodToolTip" xml:space="preserve">
-    <value>Управляет методом оценки движения. Оценка движения определяет, как двигается каждый блок пикселей в кадре.   Лучший метод поиска движения улучшает сжатие за счет скорости.  Алмаз: выполняет чрезвычайно быстрый и простой поиск с помощью шаблона алмазов.  Hexagon: выполняет поиск несколько более эффективно, но немного медленнее,  с использованием шаблона шестиугольника.  Uneven Multi-Hex: выполняет очень широкий поиск с использованием различных шаблонов более точного захвата сложных движений.  Exhaustive: выполняет «немой» поиск каждого пикселя в широкой области.  Значительно медленнее, для только небольшой выгоды сжатия.  Transformed Exhaustive: Как исчерпывающий, но делает еще более точные решения. Соответственно несколько медленнее, и  только для небольшого улучшения.</value>
-  </data>
-  <data name="Advanced_MotionEstimationRangeToolTip" xml:space="preserve">
-    <value>Этот x 264 Поиск для лучшего  определения движения блока для того, чтобы попытаться найти его фактическое движение.    Значение по умолчанию подходит для большинства контента, но чрезвычайно высокого движения видео, особенно в HD резолюции, могут извлечь выгоду из более высоких диапазонов, хотя и ценой высокой скорости.  Допустимыми значениями являются 4-16 для алмаза и шестигранные методов и 4-64 для других методов.</value>
-  </data>
-  <data name="Advanced_NoDctDecimateToolTip" xml:space="preserve">
-    <value>x 264 обычно обнуляет почти пустые блоки данных чтобы спасти биты, более используемые для других целей в видео.   Однако это может иногда иметь некоторое негативное воздействие на сохранение тонких зерен и сглаживания.   Не трогайте это, если вы испытываете проблемы  Кромки или других подобных случаях, где возникли проблемы, сохраняя прекрасный шум.</value>
-  </data>
-  <data name="Advanced_PsychovisualRateDistortionToolTip" xml:space="preserve">
-    <value>Психовизуальной уровень искажений средства x 264 пытается сохранить детали, для лучшего качества для человеческого глаза, а не пытается максимизировать качество способом, каким компьютер понимает его, через соотношения шума и мелкой детализации.</value>
-  </data>
-  <data name="Advanced_PsychovisualTrellisToolTip" xml:space="preserve">
-    <value>Психовизуальнаярешетка пытается сохранить больше четкости и детализации, но может вызвать артефакты. Это считается экспериментальным, вот почему он выключен по умолчанию. Хорошие значения являются 0,1 до 0,2.</value>
-  </data>
-  <data name="Advanced_PyramidalBFramesToolTip" xml:space="preserve">
-    <value>B-пирамида улучшает сжатие путем создания пирамидальной структуры (отсюда название) B-кадров, позволяя B-кадрам ссылаться друг на друга для улучшения сжатия.    Требует Max B-кадров больше 1; Оптимальная Адаптивная B-кадров настоятельно рекомендуется для более полного сжатия.</value>
-  </data>
-  <data name="Advanced_ReferenceFramesToolTip" xml:space="preserve">
-    <value>Разумными значениями являются ~ 1-6.  Чем больше вы добавляете, тем лучше сжатие, но тем медленнее кодирование.  Для анимации, как правило, выгода от более ссылочных кадров намного больше, чем содержание фильма.  Обратите внимание, что многие устройства не поддерживают отсчета количество кадров, так что если кодирование для автономного плеера, не трогайте это, если вы не уверены, что знаете, что делаете!</value>
-  </data>
-  <data name="Advanced_SubpixelMotionEstimationToolTip" xml:space="preserve">
-    <value>Этот параметр контролирует методы оценки и режим решения субпиксельной точности движения.  Оценки Субпиксельного движения используются для уточнения оценки движения за рамками простой пиксельной точности, улучшение сжатие.  Режим решение является метод, используемый для выбора как кодировать каждый блок кадра: очень важное решение.  SAD является самый быстрый метод, а затем SATD, RD, RD изысканности и медленным, QPRD. 6 или выше, настоятельно рекомендуется: Psy-RD, очень мощный Psy оптимизации, которая помогает сохранить деталь, требует 10 RD., наиболее мощным и медленный вариант, требует шпалеры = 2.</value>
-  </data>
-  <data name="Advanced_TrellisToolTip" xml:space="preserve">
-    <value>Треллис настраивает округления преобразования коэффициентов выдать 3-5% больше сжатия за счет некоторой скорости.  «Всегда» использует шпалеры не только во время процесса основного кодирования, но и во время анализа, который улучшает сжатие еще больше, хотя и на большой скорости.   Треллис дает больше скорости на более высоких битрейтах.</value>
-  </data>
-  <data name="Advanced_WeightPToolTip" xml:space="preserve">
-    <value>Выполняет дополнительный анализ решать весовые параметры для каждого кадра.   Это слегка улучшает общее сжатие а улучшение качества исчезает значительно.  Базовый профиль, как это требуется для iPod и аналогичных устройств, требует взвешенного предсказания P-кадр должен быть отключен.   Обратите внимание, что у некоторых устройств и плееров, даже тех, которые поддерживают основной профиль, могут возникнуть проблемы с взвешенным P-кадр предсказанием: Apple TV полностью совместим с ней, например.</value>
+    <value>Вернуть</value>
   </data>
   <data name="Audio_DrcToolTip" xml:space="preserve">
-    <value>Сжатие динамического диапазона. Допустимыми значениями являются 0-4.  Для аудио источника, который имеет широкий динамический диапазон (очень громко и очень мягко) ДРК позволяет «сжимать» диапазон, делая громкие разделы мягче и мягкие секции громче.</value>
+    <value>Сжатие динамического диапазона. Допустимыми значениями являются 0-4.
+
+Для источника аудио, который имеет широкий динамический диапазон (очень громко и очень мягко), DRC позволяет «сжимать» диапазон, делая громкие разделы мягче и мягкие секции громче.
+
+Работает только с исходниками AC3.</value>
   </data>
   <data name="Audio_GainToolTip" xml:space="preserve">
     <value>Усилить или ослабить аудио перед кодированием. Допустимыми являются значения от -20 до + 20 дБ.</value>
   </data>
   <data name="IncludeChapterMarkersToolTip" xml:space="preserve">
-    <value>Включать маркеры из входного видео в закодированное видео.</value>
+    <value>Переносить метки глав из входного видео в закодированное.</value>
   </data>
   <data name="IPod5GSupportToolTip" xml:space="preserve">
-    <value>Маркер применяется к файлу, что старые iPod требуют, прежде чем они обеспечат H.264 видео синхронизацию.</value>
-  </data>
-  <data name="LargeFileSizeToolTip" xml:space="preserve">
-    <value>Позволяет работать с файлами более 4 ГБ. Когда включен, использует 64-битных чисел в кодировке. Некоторые устройства, такие как iPod и PS3 несовместимы с этой опцией.</value>
+    <value>Применяет маркер к файлу, который требуется для старых iPod, прежде чем они разрешат синхронизацию видео H.264.</value>
   </data>
   <data name="PixelAspectRatioToolTip" xml:space="preserve">
-    <value>Вручную укажите форматное соотношение.</value>
+    <value>Ручное указание соотношения.</value>
   </data>
   <data name="Video_QualityTargetToolTip" xml:space="preserve">
-    <value>Задайте желаемое качество. Шкала, используемая каждым видео кодировщиком отличается.</value>
+    <value>Задайте желаемое качество. Шкала, используемая каждым кодировщиком видео, отличается.</value>
   </data>
   <data name="WebOptimizedToolTip" xml:space="preserve">
-    <value>Организовать файл играть лучше, как прогрессивную загрузку.</value>
+    <value>Упорядочить файл так, чтобы он лучше воспроизводился при постепенной загрузке.</value>
   </data>
   <data name="ProfileToolTip" xml:space="preserve">
     <value>Ограничение профиля в выходном потоке. Если указать профиль, он перекрывает все другие параметры, поэтому, если вы используете его, вам будет гарантирован совместимый поток.
 
-Вы должны установить это, если вы знаете, что ваше устройство воспроизведения поддерживает только определенный профиль.</value>
+Вы должны использовпет эту возможность, только если знаете, что ваше устройство воспроизведения поддерживает только определённый профиль.</value>
   </data>
   <data name="X264TuneToolTip" xml:space="preserve">
-    <value>Настройте опции для дальнейшей оптимизации их для ввода содержимого. Если указать настройки, изменения будут применены после пресета, но до всех остальных параметров.</value>
-  </data>
-  <data name="DisplayWidthToolTip" xml:space="preserve">
-    <value>Ширина желаемого отображения видео. Другие параметры, такие как соотношение пикселов будут изменены для достижения этой цели.</value>
+    <value>Настройте параметры для дальнейшей оптимизации их для ввода содержимого. Если указать настройки, изменения будут применены после предустановки, но до всех остальных параметров.</value>
   </data>
   <data name="ContainerLabel" xml:space="preserve">
     <value>Контейнер:</value>
@@ -221,32 +165,26 @@
   <data name="ExtensionLabel" xml:space="preserve">
     <value>Расширение:</value>
   </data>
-  <data name="LargeFileSizeCheckBox" xml:space="preserve">
-    <value>Большой размер файла</value>
-  </data>
   <data name="WebOptimizedCheckBox" xml:space="preserve">
-    <value>Web оптимизация</value>
+    <value>Web-оптимизация</value>
   </data>
   <data name="Ipod5GSupportCheckBox" xml:space="preserve">
     <value>Поддержка iPod 5G</value>
   </data>
   <data name="IncludeChapterMarkersCheckBox" xml:space="preserve">
-    <value>Включить маркеры</value>
+    <value>Добавлять метки глав</value>
   </data>
-  <data name="TabHeader_Picture" xml:space="preserve">
-    <value>Картинка</value>
+  <data name="TabHeader_Sizing" xml:space="preserve">
+    <value>Калибровка</value>
   </data>
   <data name="TabHeader_VideoFilters" xml:space="preserve">
-    <value>Видео фильтры</value>
+    <value>Фильтры видео</value>
   </data>
-  <data name="TabHeader_Video" xml:space="preserve">
-    <value>Видео</value>
+  <data name="TabHeader_VideoEncoding" xml:space="preserve">
+    <value>Кодирование видео</value>
   </data>
-  <data name="TabHeader_Audio" xml:space="preserve">
-    <value>Аудио</value>
-  </data>
-  <data name="TabHeader_Advanced" xml:space="preserve">
-    <value>Расширенный</value>
+  <data name="TabHeader_AudioEncoding" xml:space="preserve">
+    <value>Кодирование аудио</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Переименовать</value>
@@ -264,7 +202,7 @@
     <value>Разрешение хранения:</value>
   </data>
   <data name="PixelAspectRatioLabel" xml:space="preserve">
-    <value>Пиксельное форматное соотношение:</value>
+    <value>Соотношение сторон пикселя:</value>
   </data>
   <data name="DisplayResolutionLabel" xml:space="preserve">
     <value>Разрешение дисплея:</value>
@@ -284,41 +222,14 @@
   <data name="MaxHeightLabel" xml:space="preserve">
     <value>Макс. высота:</value>
   </data>
-  <data name="KeepAspectRatioCheckBox" xml:space="preserve">
-    <value>Сохранить пропорции</value>
-  </data>
-  <data name="AnamorphicLabel" xml:space="preserve">
-    <value>Анаморфное:</value>
-  </data>
-  <data name="ModulusLabel" xml:space="preserve">
-    <value>Модуль:</value>
-  </data>
-  <data name="DisplayWidthRadioButton" xml:space="preserve">
-    <value>Ширина дисплея:</value>
-  </data>
   <data name="OutputLabel" xml:space="preserve">
     <value>Вывод</value>
   </data>
   <data name="CroppingLabel" xml:space="preserve">
     <value>Обрезка</value>
   </data>
-  <data name="Top" xml:space="preserve">
-    <value>Вверх</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>Слева</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Внизу</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>Справа</value>
-  </data>
   <data name="DetelecineLabel" xml:space="preserve">
     <value>Detelecine:</value>
-  </data>
-  <data name="DecombLabel" xml:space="preserve">
-    <value>Decomb:</value>
   </data>
   <data name="DeinterlaceLabel" xml:space="preserve">
     <value>Деинтерлейс:</value>
@@ -327,10 +238,10 @@
     <value>Удаление шумов:</value>
   </data>
   <data name="DeblockLabel" xml:space="preserve">
-    <value>Разблок:</value>
+    <value>Удаление блочности:</value>
   </data>
   <data name="GrayscaleCheckBox" xml:space="preserve">
-    <value>'Оттенки серого' кодирование</value>
+    <value>Кодирование «оттенков серого»</value>
   </data>
   <data name="TypeLabel" xml:space="preserve">
     <value>Тип:</value>
@@ -351,22 +262,19 @@
     <value>Качество</value>
   </data>
   <data name="TwoPassEncodingCheckBox" xml:space="preserve">
-    <value>2-х проходное кодирование</value>
+    <value>2-проходное кодирование</value>
   </data>
   <data name="TurboFirstPassCheckBox" xml:space="preserve">
-    <value>Turbo первый проход</value>
+    <value>Быстрый первый проход</value>
   </data>
   <data name="TargetSizeRadioButton" xml:space="preserve">
-    <value>Целевой размер (MB)</value>
+    <value>Целевой размер (МБ)</value>
   </data>
   <data name="AverageBitrateRadioButton" xml:space="preserve">
-    <value>AVG битрейт (кбит/с)</value>
+    <value>Средний битрейт (кбит/с)</value>
   </data>
   <data name="ConstantQualityRadioButton" xml:space="preserve">
     <value>Постоянное качество</value>
-  </data>
-  <data name="X264BasicSettings" xml:space="preserve">
-    <value>x 264 базовые настройки</value>
   </data>
   <data name="ProfileLabel" xml:space="preserve">
     <value>Профиль:</value>
@@ -381,37 +289,37 @@
     <value>Исходный уровень</value>
   </data>
   <data name="Profile_main" xml:space="preserve">
-    <value>Основное</value>
+    <value>Основной</value>
   </data>
   <data name="Profile_high" xml:space="preserve">
     <value>Высокий</value>
   </data>
   <data name="Preset_UltraFast" xml:space="preserve">
-    <value>Сверхбыстро</value>
+    <value>Сверхбыстрая</value>
   </data>
   <data name="Preset_SuperFast" xml:space="preserve">
-    <value>Супер быстро</value>
+    <value>Супербыстрая</value>
   </data>
   <data name="Preset_VeryFast" xml:space="preserve">
-    <value>Очень быстро</value>
+    <value>Очень быстрая</value>
   </data>
   <data name="Preset_Faster" xml:space="preserve">
-    <value>Быстрее</value>
+    <value>Быстрая</value>
   </data>
   <data name="Preset_Fast" xml:space="preserve">
-    <value>Быстро</value>
+    <value>Быстрая</value>
   </data>
   <data name="Preset_Medium" xml:space="preserve">
-    <value>Средний (по умолчанию)</value>
+    <value>Средняя</value>
   </data>
   <data name="Preset_Slow" xml:space="preserve">
-    <value>Медленно</value>
+    <value>Медленная</value>
   </data>
   <data name="Preset_Slower" xml:space="preserve">
-    <value>Медленнее</value>
+    <value>Более медленная</value>
   </data>
   <data name="Preset_VerySlow" xml:space="preserve">
-    <value>Очень медленно</value>
+    <value>Очень медленная</value>
   </data>
   <data name="Preset_Placebo" xml:space="preserve">
     <value>Плацебо</value>
@@ -444,16 +352,16 @@
     <value>{0:0. ###} FPS</value>
   </data>
   <data name="CfrSameAsSourceToolTip" xml:space="preserve">
-    <value>Использовать указанных кадров из исходного названия для постоянной частоты кадров.</value>
+    <value>Использовать указанные кадры из исходного названия для постоянной частоты кадров.</value>
   </data>
   <data name="CfrToolTip" xml:space="preserve">
-    <value>Использовать постоянную частоту.</value>
+    <value>Использовать постоянную частоту кадров.</value>
   </data>
   <data name="VfrSameAsSourceToolTip" xml:space="preserve">
-    <value>Разрешить переменную частоту кадров. Если источник имеет переменную частоту, этот параметр будет сохранять его. Обратите внимание, что некоторые плееры не поддерживают переменную частоту кадров.</value>
+    <value>Разрешить переменную частоту кадров. Если исходник имеет переменную частоту, этот параметр будет сохранять его. Обратите внимание, что некоторые плееры не поддерживают переменную частоту кадров.</value>
   </data>
   <data name="VfrPeakFramerateToolTip" xml:space="preserve">
-    <value>Разрешить переменную частоту кадров и использовать указанный курс как пик. Если источник имеет переменную частоту, этот параметр будет сохранять его. Обратите внимание, что некоторые плееры не поддерживают переменную частоту кадров.</value>
+    <value>Разрешить переменную частоту кадров и использовать указанную частоту как пик. Если источник имеет переменную частоту, этот параметр будет сохранять его. Обратите внимание, что некоторые плееры не поддерживают переменную частоту кадров.</value>
   </data>
   <data name="VfrChoice" xml:space="preserve">
     <value>Переменная частота кадров</value>
@@ -468,10 +376,10 @@
     <value>Низкое качество</value>
   </data>
   <data name="SameAsSource" xml:space="preserve">
-    <value>Как источник</value>
+    <value>Как в исходнике</value>
   </data>
   <data name="AddAudioEncodingButton" xml:space="preserve">
-    <value>Добавить аудио кодирование</value>
+    <value>Добавить кодирование  аудио</value>
   </data>
   <data name="NoTracksPlaceholder" xml:space="preserve">
     <value>(Нет треков)</value>
@@ -501,19 +409,19 @@
     <value>Имя:</value>
   </data>
   <data name="AscendingQualityToolTip" xml:space="preserve">
-    <value>Высокие значения означает высокое качество.</value>
+    <value>Высокие значения означают высокое качество.</value>
   </data>
   <data name="DescendingQualityToolTip" xml:space="preserve">
-    <value>Низкие значения означает низкое качество.</value>
+    <value>Низкие значения означают низкое качество.</value>
   </data>
   <data name="AudioQualityToolTip" xml:space="preserve">
-    <value>Качество звука. {0} Допустимыми являются значения от {1} {2}.</value>
+    <value>Качество звука. {0} Допустимыми являются значения от {1} до {2}.</value>
   </data>
   <data name="AscendingCompressionToolTip" xml:space="preserve">
-    <value>Высокие значения означают высокую степень сжатия: лучше качество/меньше размер, но кодировать больше раз.</value>
+    <value>Высокие значения означают высокую степень сжатия: лучше качество/меньше размер, но дольше кодировать.</value>
   </data>
   <data name="DescendingCompressionToolTip" xml:space="preserve">
-    <value>Low values mean high compression: better quality/smaller size but longer encode times.</value>
+    <value>Низкие значения означают высокую степень сжатия: лучше качество/меньше размер, но дольше кодировать.</value>
   </data>
   <data name="AudioCompressionToolTip" xml:space="preserve">
     <value>Степень сжатия для применения. {0} Допустимыми являются значения от {1} до {2}.</value>
@@ -529,7 +437,7 @@
     <value>AC3</value>
   </data>
   <data name="AudioEncoder_flac16" xml:space="preserve">
-    <value>FLAC 16-бит</value>
+    <value>FLAC 16 бит</value>
   </data>
   <data name="AudioEncoder_mp3" xml:space="preserve">
     <value>MP3</value>
@@ -538,7 +446,7 @@
     <value>Vorbis</value>
   </data>
   <data name="Mixdown_5point1" xml:space="preserve">
-    <value>5.1 Каналы</value>
+    <value>5.1 каналов</value>
   </data>
   <data name="Mixdown_5_2_lfe" xml:space="preserve">
     <value>7.1 (5F/2R/LFE)</value>
@@ -550,13 +458,13 @@
     <value>Dolby Pro Logic II</value>
   </data>
   <data name="Mixdown_left_only" xml:space="preserve">
-    <value>Моно (слева только)</value>
+    <value>Моно (только левый)</value>
   </data>
   <data name="Mixdown_mono" xml:space="preserve">
     <value>Моно</value>
   </data>
   <data name="Mixdown_right_only" xml:space="preserve">
-    <value>Моно (справа только)</value>
+    <value>Моно (только правый)</value>
   </data>
   <data name="Mixdown_stereo" xml:space="preserve">
     <value>Стерео</value>
@@ -564,179 +472,11 @@
   <data name="Bitrate" xml:space="preserve">
     <value>Битрейт</value>
   </data>
-  <data name="Encoding" xml:space="preserve">
-    <value>Кодировка</value>
-  </data>
-  <data name="ReferenceFramesLabel" xml:space="preserve">
-    <value>Отсчет кадров:</value>
-  </data>
-  <data name="MaxBFramesLabel" xml:space="preserve">
-    <value>Макс. B-кадры:</value>
-  </data>
-  <data name="CabacLabel" xml:space="preserve">
-    <value>CABAC:</value>
-  </data>
-  <data name="EightByEightTransformLabel" xml:space="preserve">
-    <value>Преобразование 8 x 8:</value>
-  </data>
-  <data name="WeightedPFramesLabel" xml:space="preserve">
-    <value>Средневзвешенные P-кадры:</value>
-  </data>
-  <data name="PyramidalBFramesLabel" xml:space="preserve">
-    <value>Пирамидальные B-кадры:</value>
-  </data>
-  <data name="NoDctDecimateLabel" xml:space="preserve">
-    <value>No DCT-Decimate:</value>
-  </data>
-  <data name="Analysis" xml:space="preserve">
-    <value>Анализ</value>
-  </data>
-  <data name="AdaptiveBFramesLabel" xml:space="preserve">
-    <value>Адаптивные B-кадры:</value>
-  </data>
-  <data name="AdaptiveDirectModeLabel" xml:space="preserve">
-    <value>Адаптивный Direct Mode:</value>
-  </data>
-  <data name="MotionEstimationMethodLabel" xml:space="preserve">
-    <value>Метод оценки движения:</value>
-  </data>
-  <data name="SubpixelMotionEstimationLabel" xml:space="preserve">
-    <value>Оценка Субпиксельного движения:</value>
-  </data>
-  <data name="MotionEstimationRangeLabel" xml:space="preserve">
-    <value>Диапазон оценки движения:</value>
-  </data>
-  <data name="AdaptiveQuantizationStrengthLabel" xml:space="preserve">
-    <value>Прочность адаптивного квантования :</value>
-  </data>
-  <data name="PsychoVisualRateDistortionLabel" xml:space="preserve">
-    <value>Психовизуальной уровень искажений:</value>
-  </data>
-  <data name="PsychovisualTrellisLabel" xml:space="preserve">
-    <value>Психовизуальные решетки:</value>
-  </data>
-  <data name="DeblockingLabel" xml:space="preserve">
-    <value>Разблокирование:</value>
-  </data>
-  <data name="PartitionTypeLabel" xml:space="preserve">
-    <value>Тип раздела:</value>
-  </data>
-  <data name="TrellisLabel" xml:space="preserve">
-    <value>Решетки:</value>
-  </data>
-  <data name="OptionsString" xml:space="preserve">
-    <value>Строка параметров</value>
-  </data>
-  <data name="PyramidalBFrames_Off" xml:space="preserve">
-    <value>Выкл</value>
-  </data>
-  <data name="PyramidalBFrames_Normal" xml:space="preserve">
-    <value>Нормально</value>
-  </data>
-  <data name="PyramidalBFrames_Strict" xml:space="preserve">
-    <value>Точно</value>
-  </data>
-  <data name="AdaptiveBFrames_Off" xml:space="preserve">
-    <value>Выкл</value>
-  </data>
-  <data name="AdaptiveBFrames_Fast" xml:space="preserve">
-    <value>Быстро</value>
-  </data>
-  <data name="AdaptiveBFrames_Optimal" xml:space="preserve">
-    <value>Оптимально</value>
-  </data>
-  <data name="DirectPrediction_None" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="DirectPrediction_Spatial" xml:space="preserve">
-    <value>Пространственное</value>
-  </data>
-  <data name="DirectPrediction_Temporal" xml:space="preserve">
-    <value>Временный</value>
-  </data>
-  <data name="DirectPrediction_Automatic" xml:space="preserve">
-    <value>Автоматически</value>
-  </data>
-  <data name="MotionEstimationMethod_Diamond" xml:space="preserve">
-    <value>Алмаз</value>
-  </data>
-  <data name="MotionEstimationMethod_Hexagon" xml:space="preserve">
-    <value>Шестиугольник</value>
-  </data>
-  <data name="MotionEstimationMethod_UnevenMultiHexagon" xml:space="preserve">
-    <value>Неравномерный шестиугольник</value>
-  </data>
-  <data name="MotionEstimationMethod_Exhaustive" xml:space="preserve">
-    <value>Исчерпывающий</value>
-  </data>
-  <data name="MotionEstimationMethod_TransformedExhaustive" xml:space="preserve">
-    <value>Преобразован исчерпывающим</value>
-  </data>
-  <data name="SubpixelMotionEstimation_0" xml:space="preserve">
-    <value>0: SAD, no subpel (супер быстро!)</value>
-  </data>
-  <data name="SubpixelMotionEstimation_1" xml:space="preserve">
-    <value>1: SAD, qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_2" xml:space="preserve">
-    <value>2: SATD, qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_3" xml:space="preserve">
-    <value>3: SATD, multi-qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_4" xml:space="preserve">
-    <value>4: SATD, qpel on all</value>
-  </data>
-  <data name="SubpixelMotionEstimation_5" xml:space="preserve">
-    <value>5: SATD, multi-qpel on all</value>
-  </data>
-  <data name="SubpixelMotionEstimation_6" xml:space="preserve">
-    <value>6: RD in I/P-frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_7" xml:space="preserve">
-    <value>7: RD in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_8" xml:space="preserve">
-    <value>8: RD refine in I/P-frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_9" xml:space="preserve">
-    <value>9: RD refine in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_10" xml:space="preserve">
-    <value>10: QPRD in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_11" xml:space="preserve">
-    <value>11: Нет ранних окончаний в анализе</value>
-  </data>
-  <data name="Analysis_None" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="Analysis_Some" xml:space="preserve">
-    <value>Некоторые</value>
-  </data>
-  <data name="Analysis_All" xml:space="preserve">
-    <value>Все</value>
-  </data>
-  <data name="Trellis_Off" xml:space="preserve">
-    <value>Выкл</value>
-  </data>
-  <data name="Trellis_EncodeOnly" xml:space="preserve">
-    <value>Кодировать только</value>
-  </data>
-  <data name="Trellis_Always" xml:space="preserve">
-    <value>Всегда</value>
-  </data>
   <data name="DefaultFormat" xml:space="preserve">
     <value>{0} (По умолчанию)</value>
   </data>
-  <data name="EncodingWindowTitle" xml:space="preserve">
-    <value>Установка: {0}</value>
-  </data>
-  <data name="AdvancedOptionsStringLabel" xml:space="preserve">
-    <value>Дополнительные расширенные опции x 264:</value>
-  </data>
   <data name="LevelToolTip" xml:space="preserve">
-    <value>Задает выбранный уровень H.264 и устанавливает его совместимость.
+    <value>Задаёт выбранный уровень H.264 и устанавливает его совместимость.
 
 Перекрывает все другие параметры.</value>
   </data>
@@ -744,7 +484,7 @@
     <value>Высокий 4:4:4 интуитивный</value>
   </data>
   <data name="VideoCodecLabel" xml:space="preserve">
-    <value>Видео кодек:</value>
+    <value>Видеокодек:</value>
   </data>
   <data name="VideoEncoder_ffmpeg2" xml:space="preserve">
     <value>MPEG-2 (Libav)</value>
@@ -753,31 +493,22 @@
     <value>MPEG-4 (Libav)</value>
   </data>
   <data name="VideoEncoder_x264" xml:space="preserve">
-    <value>H.264 (x 264)</value>
-  </data>
-  <data name="Analysis_Most" xml:space="preserve">
-    <value>Больше</value>
-  </data>
-  <data name="AdvancedQuery" xml:space="preserve">
-    <value>Расширенный запрос</value>
+    <value>H.264 (x264)</value>
   </data>
   <data name="Video" xml:space="preserve">
     <value>Видео</value>
-  </data>
-  <data name="X264Settings" xml:space="preserve">
-    <value>x 264 параметры</value>
   </data>
   <data name="LevelLabel" xml:space="preserve">
     <value>Уровень:</value>
   </data>
   <data name="MoreSettingsLabel" xml:space="preserve">
-    <value>Больше настроек:</value>
+    <value>Другие настройки:</value>
   </data>
   <data name="Track" xml:space="preserve">
     <value>Трек</value>
   </data>
   <data name="Source" xml:space="preserve">
-    <value>Источник</value>
+    <value>Исходник</value>
   </data>
   <data name="Encoder" xml:space="preserve">
     <value>Кодировщик</value>
@@ -791,28 +522,8 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Модификаторы</value>
   </data>
-  <data name="DtsMp4Warning" xml:space="preserve">
-    <value>Некоторые плееры поддерживают воспроизведение звука DTS в MP4 контейнерах. MKV рекомендуется для звука DTS.</value>
-  </data>
   <data name="AudioEncoder_flac24" xml:space="preserve">
-    <value>FLAC 24-бит</value>
-  </data>
-  <data name="Advanced_PsychovisualLabel" xml:space="preserve">
-    <value>Психовизуально</value>
-  </data>
-  <data name="AudioEncoder_fdk_aac" xml:space="preserve">
-    <value>AAC (FDK)</value>
-  </data>
-  <data name="AudioEncoder_fdk_haac" xml:space="preserve">
-    <value>HE-AAC (FDK)</value>
-  </data>
-  <data name="X264SettingsRadioButtonBasic" xml:space="preserve">
-    <value>Основной</value>
-    <comment>Label for radio button to choose basic x264 settings: Preset, Profile, Tune, Level.</comment>
-  </data>
-  <data name="X264SettingsRadioButtonAdvanced" xml:space="preserve">
-    <value>Вкладка Дополнительно</value>
-    <comment>Label for radio button to choose advanced x264 settings on a separate tab.</comment>
+    <value>FLAC 24 бит</value>
   </data>
   <data name="VideoEncoder_mpeg2" xml:space="preserve">
     <value>MPEG-2</value>
@@ -824,31 +535,31 @@
     <value>Theora</value>
   </data>
   <data name="RemoveAudioEncodingToolTip" xml:space="preserve">
-    <value>Удаление аудио кодирования</value>
+    <value>Удаление кодирования аудио</value>
   </data>
   <data name="AutoPassthroughFallbackLabel" xml:space="preserve">
-    <value>Резервный:</value>
+    <value>Альтернатива:</value>
   </data>
   <data name="AutoPassthroughFallbackToolTip" xml:space="preserve">
-    <value>Зацикливание работает не на всех аудио кодеках. Это определяет кодировщик падать обратно, если трек не могут быть переданы через.</value>
+    <value>Сквозная передача работает не со всеми аудиокодеками. Здесь указывается кодировщик, который будет использоваться, если сквозная передача невозможна.</value>
   </data>
   <data name="EncoderSettings" xml:space="preserve">
     <value>Настройки кодировщика</value>
   </data>
   <data name="QsvDecodingLabel" xml:space="preserve">
-    <value>Расшифровка QSV</value>
+    <value>Декодирование QSV</value>
   </data>
   <data name="ScaleMethod_Lanczos" xml:space="preserve">
     <value>Lanczos</value>
   </data>
   <data name="ScaleMethod_BicubicOpenCL" xml:space="preserve">
-    <value>Бикубический (OpenCL)</value>
+    <value>Bicubic (OpenCL)</value>
   </data>
   <data name="QsvPreset_Speed" xml:space="preserve">
     <value>Скорость</value>
   </data>
   <data name="QsvPreset_Balanced" xml:space="preserve">
-    <value>Сбалансированный</value>
+    <value>Баланс</value>
   </data>
   <data name="QsvPreset_Quality" xml:space="preserve">
     <value>Качество</value>
@@ -856,36 +567,14 @@
   <data name="PresetToolTip" xml:space="preserve">
     <value>Изменение параметров для компромисса между эффективностью сжатия и скоростью кодирования.</value>
   </data>
-  <data name="ScaleMethodToolTip" xml:space="preserve">
-    <value>Метод Lanczos: Это по умолчанию скалер с лучшим качеством. Бикубической интерполяции: Этот OpenCL аппаратного ускорения масштабирования алгоритма.</value>
-  </data>
   <data name="AudioEncoder_Passthrough" xml:space="preserve">
-    <value>Зацикливание</value>
+    <value>Сквозная передача</value>
   </data>
-  <data name="Passthrough_aac" xml:space="preserve">
-    <value>AAC</value>
-  </data>
-  <data name="Passthrough_ac3" xml:space="preserve">
-    <value>AC3</value>
-  </data>
-  <data name="Passthrough_any" xml:space="preserve">
-    <value>Любое</value>
-    <comment>Choice for a passthrough which accepts any input codec.</comment>
-  </data>
-  <data name="Passthrough_dts" xml:space="preserve">
-    <value>DTS</value>
-  </data>
-  <data name="Passthrough_dtshd" xml:space="preserve">
-    <value>DTS-HD</value>
-  </data>
-  <data name="Passthrough_mp3" xml:space="preserve">
-    <value>MP3</value>
-  </data>
-  <data name="ScopeLabel" xml:space="preserve">
-    <value>Область применения:</value>
+  <data name="Passthrough_auto" xml:space="preserve">
+    <value>Автонастройка</value>
   </data>
   <data name="PassthroughScopeToolTip" xml:space="preserve">
-    <value>Определяет, какими ввода кодеки, проходящее будет применяться к.</value>
+    <value>Определяет, к каким входным кодекам будет применяться сквозная передача.</value>
   </data>
   <data name="FlipHorizontalCheckBox" xml:space="preserve">
     <value>Отразить по горизонтали</value>
@@ -903,24 +592,252 @@
     <value>180°</value>
   </data>
   <data name="RotationToolTip" xml:space="preserve">
-    <value>Поворот изображения. Применяется после всех размеров и обрезок.</value>
+    <value>Поворот изображения. Применяется после всех изменений размеров и обрезок.</value>
   </data>
   <data name="FlipHorizontalToolTip" xml:space="preserve">
-    <value>Отразите изображение по горизонтали. Это применяется перед любое вращение.</value>
+    <value>Отражение изображения по горизонтали. Применяется перед любыми поворотами.</value>
   </data>
   <data name="FlipVerticalToolTip" xml:space="preserve">
-    <value>Переверните изображение по вертикали. Это применяется перед любое вращение.</value>
+    <value>Отражение изображения по вертикали. Применяется перед любыми поворотами.</value>
   </data>
   <data name="PassthroughIfPossibleCheckBox" xml:space="preserve">
-    <value>Проходящее Зацикливание</value>
+    <value>Сквозная передача при возможности</value>
   </data>
   <data name="PassthroughIfPossibleToolTip" xml:space="preserve">
-    <value>Если вводу трека соответствует кодек, который будет передаваться через него вместо кодируемого.</value>
+    <value>Если входной трек соответствует кодеку, он будет передан напрямую вместо кодирования.</value>
   </data>
-	<data name="ScalingAlgorithmLabel" xml:space="preserve">
-    <value>Алгоритм масштабирования:</value>
+  <data name="RotationLabel" xml:space="preserve">
+    <value>Поворот</value>
   </data>
-	<data name="RotationLabel" xml:space="preserve">
-    <value>Поворот экрана:</value>
+  <data name="ClosePresetsListToolTip" xml:space="preserve">
+    <value>Закрывает список предустановок</value>
+  </data>
+  <data name="OpenPresetsListToolTip" xml:space="preserve">
+    <value>Открывает список предустановок</value>
+  </data>
+  <data name="DefaultChapterName" xml:space="preserve">
+    <value>Глава {0}</value>
+    <comment>What a chapter will be named when not given a custom name. {0} is the chapter number.</comment>
+  </data>
+  <data name="PassthroughSettingsLabel" xml:space="preserve">
+    <value>Настройки сквозной передачи</value>
+  </data>
+  <data name="PassthroughMaskLabel" xml:space="preserve">
+    <value>Разрешить сквозную передачу для:</value>
+  </data>
+  <data name="Passthrough_aac" xml:space="preserve">
+    <value>AAC</value>
+  </data>
+  <data name="Passthrough_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="Passthrough_dts" xml:space="preserve">
+    <value>DTS</value>
+  </data>
+  <data name="Passthrough_dtshd" xml:space="preserve">
+    <value>DTS-HD</value>
+  </data>
+  <data name="Passthrough_eac3" xml:space="preserve">
+    <value>E-AC3</value>
+  </data>
+  <data name="Passthrough_flac" xml:space="preserve">
+    <value>FLAC</value>
+  </data>
+  <data name="Passthrough_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="Passthrough_truehd" xml:space="preserve">
+    <value>TrueHD</value>
+  </data>
+  <data name="InterlaceDetectionLabel" xml:space="preserve">
+    <value>Обнаружение чередования:</value>
+  </data>
+  <data name="ModeLabel" xml:space="preserve">
+    <value>Режим:</value>
+    <comment>Label for the sizing or padding mode.</comment>
+  </data>
+  <data name="AnamorphicCheckbox" xml:space="preserve">
+    <value>Использовать анаморф</value>
+  </data>
+  <data name="SizingModeManual" xml:space="preserve">
+    <value>Руководство</value>
+    <comment>Choice for the user to enter all sizing information manually.</comment>
+  </data>
+  <data name="UpscaleMaxFormat" xml:space="preserve">
+    <value>Увеличение {0}x макс.</value>
+    <comment>Label for scaling option to allow upscaling, but only to a particular multiple of the source resolution. {0} is the multiple, e.g. 2, 3 or 4</comment>
+  </data>
+  <data name="ScalingMode_DownscaleOnly" xml:space="preserve">
+    <value>Только уменьшение</value>
+  </data>
+  <data name="ScalingMode_Fill" xml:space="preserve">
+    <value>Масштабирование +/- до целевого уровня</value>
+  </data>
+  <data name="ScalingModeLabel" xml:space="preserve">
+    <value>Режим масштабирования:</value>
+  </data>
+  <data name="PaddingMode_Fill" xml:space="preserve">
+    <value>Заполнение</value>
+  </data>
+  <data name="PaddingMode_Width" xml:space="preserve">
+    <value>По ширине</value>
+  </data>
+  <data name="PaddingMode_Height" xml:space="preserve">
+    <value>По высоте</value>
+  </data>
+  <data name="TargetWidthLabel" xml:space="preserve">
+    <value>Целевая ширина:</value>
+  </data>
+  <data name="TargetHeightLabel" xml:space="preserve">
+    <value>Целевая высота:</value>
+  </data>
+  <data name="PadColorLabel" xml:space="preserve">
+    <value>Цвет:</value>
+  </data>
+  <data name="AnamorphicToolTip" xml:space="preserve">
+    <value>При включённом анаморфе допускаются неквадратные пиксели. Это может привести к более эффективному хранению, но не все плееры поддерживают данную возможность.</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Разрешение:</value>
+    <comment>Label for a video resolution in pixels.</comment>
+  </data>
+  <data name="CustomFilterToolTipFormatPart" xml:space="preserve">
+    <value>Формат: ключ1= значение1:ключ2=значение2:...</value>
+    <comment>The "format" portion of the custom filter tooltip. When translating, keep the = and : the same and only replace "key1", "value2", etc.</comment>
+  </data>
+  <data name="CustomFilterToolTipKeysLabel" xml:space="preserve">
+    <value>Ключи:</value>
+    <comment>The label for the "keys" portion of the custom filter tooltip.</comment>
+  </data>
+  <data name="PaddingLabel" xml:space="preserve">
+    <value>Заполнение</value>
+  </data>
+  <data name="AlignAVStartCheckBox" xml:space="preserve">
+    <value>Выровнять начало аудио и видео</value>
+  </data>
+  <data name="AlignAVStartCheckBoxToolTip" xml:space="preserve">
+    <value>Выравнивает начальные временные метки всех аудио- и видеопотоков, удаляя или вставляя пустые кадры. Может улучшить синхронизацию аудио/видео для плееров, которые не соблюдают списки редактирования MP4.</value>
+  </data>
+  <data name="TabHeader_Container" xml:space="preserve">
+    <value>Контейнер</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Предустановка кодирования: {0}</value>
+    <comment>Label for the encoding settings window.</comment>
+  </data>
+  <data name="AudioEncoder_none" xml:space="preserve">
+    <value>Отсутствует</value>
+    <comment>Label for the choice to use no audio encoder. Used in fallback selection.</comment>
+  </data>
+  <data name="SizingModeToolTip" xml:space="preserve">
+    <value>Автоматический выбор размера на основе заданных ограничений. Вручную можно ввести определённый размер и соотношение сторон в пикселах.</value>
+  </data>
+  <data name="SharpenLabel" xml:space="preserve">
+    <value>Резкость</value>
+  </data>
+  <data name="DeblockToolTip" xml:space="preserve">
+    <value>Уменьшает блочные артефакты, вызванные низким качеством сжатия видео.</value>
+  </data>
+  <data name="DeinterlaceToolTip" xml:space="preserve">
+    <value>Деинтерлейс удаляет гребенчатые артефакты с изображения.
+
+Yadif — популярный и быстрый алгоритм.
+
+Decomb — переключается между несколькими алгоритмами интерполяции для скорости и качества.</value>
+  </data>
+  <data name="DenoiseToolTip" xml:space="preserve">
+    <value>Уменьшает или устраняет проявление шума и зернистости. Это может повысить эффективность сжатия и создать более качественное видео при меньших размерах файлов. 
+Чрезмерно высокие настройки могут повредить качество изображения из-за потери деталей.
+         
+NLMeans — высококачественный фильтр шумоподавления с высокой скоростью. Используйте там, где качество важнее скорости.
+         
+HQDN3D — адаптивный низкочастотный фильтр, более быстрый, чем NLMeans, но менее эффективный для сохранения мелких деталей.</value>
+  </data>
+  <data name="DetelecineToolTip" xml:space="preserve">
+    <value>Этот фильтр удаляет «гребенчатые» артефакты, являющиеся результатом телесинхронизации.
+
+Телесинхронизация — это процесс, который подстраивает частоту кадров фильма, которая составляет 24 кадра в секунду, к частоте кадров видео NTSC, которая составляет 30 кадров в секунду.</value>
+  </data>
+  <data name="SharpenToolTip" xml:space="preserve">
+    <value>Усиление резкости улучшает внешний вид объектов, особенно краев. Чрезмерно высокие настройки резкости могут повредить качество изображения, создавая артефакты «звона» и усиливая шум, что может снизить эффективность сжатия.
+
+Unsharp — универсальный нерезкий маскирующий фильтр. Он повышает резкость путем размытия, а затем вычисляет разницу между размытым изображением и оригиналом.
+
+Lapsharp — усиливает резкость, используя  ядра свертки, приближенные к краевым фильтрам Лапласа, иногда давая более качественные результаты, чем нерезкая маска.</value>
+  </data>
+  <data name="PresetFolder_Custom" xml:space="preserve">
+    <value>Пользовательская</value>
+  </data>
+  <data name="PresetFolder_BuiltIn" xml:space="preserve">
+    <value>Встроенная</value>
+  </data>
+  <data name="PresetFolderCreateSubfolderMenuItem" xml:space="preserve">
+    <value>Создать подпапку</value>
+  </data>
+  <data name="PrestFolderRenameFolderMenuItem" xml:space="preserve">
+    <value>Переименовать папку</value>
+  </data>
+  <data name="PresetFolderRemoveFolderMenuItem" xml:space="preserve">
+    <value>Удалить папку</value>
+  </data>
+  <data name="DefaultPresetFolderName" xml:space="preserve">
+    <value>Новая папка</value>
+  </data>
+  <data name="ChooseNameSubfolder" xml:space="preserve">
+    <value>Имя подпапки:</value>
+  </data>
+  <data name="ChooseNewFolderName" xml:space="preserve">
+    <value>Имя папки:</value>
+  </data>
+  <data name="NVEncPreset_ll" xml:space="preserve">
+    <value>Низкая задержка</value>
+  </data>
+  <data name="NVEncPreset_hq" xml:space="preserve">
+    <value>Высокое качество</value>
+  </data>
+  <data name="NVEncPreset_hp" xml:space="preserve">
+    <value>Высокая производительность</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Внизу</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Слева</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Справа</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Вверху</value>
+  </data>
+  <data name="PixelAspectRatioNumeratorAutomationName" xml:space="preserve">
+    <value>Числитель пропорции пикселя</value>
+    <comment>Name for the pixel aspect ratio numerator box for screen readers</comment>
+  </data>
+  <data name="PixelAspectRatioDenominatorAutomationName" xml:space="preserve">
+    <value>Знаменатель пропорции пикселя</value>
+    <comment>Name for the pixel aspect ratio denominator box for screen readers</comment>
+  </data>
+  <data name="ApplyToQueueButton" xml:space="preserve">
+    <value>Применить к очереди</value>
+  </data>
+  <data name="FullEncoderParameterLabel" xml:space="preserve">
+    <value>Полный список параметров:</value>
+  </data>
+  <data name="MoreOptionsToolTip" xml:space="preserve">
+    <value>Дополнительные аргументы для передачи видеокодировщику.</value>
+  </data>
+  <data name="CannotSwitchEncodingPresetDueToPicker" xml:space="preserve">
+    <value>Невозможно переключить предустановку кодирования, она заблокирована окном выбора.</value>
+    <comment>Message to show when the user is blocked from switching an encoding preset due to a Picker setting.</comment>
+  </data>
+  <data name="PadColorTextToolTip" xml:space="preserve">
+    <value>Формат: FFFFFF</value>
+  </data>
+  <data name="ChromaSmoothLabel" xml:space="preserve">
+    <value>Цветовое сглаживание:</value>
+  </data>
+  <data name="ColorspaceLabel" xml:space="preserve">
+    <value>Цветовое пространство:</value>
   </data>
 </root>

@@ -1,0 +1,833 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Save" xml:space="preserve">
+    <value>Simpan</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Simpan sebagai...</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Balikkan</value>
+  </data>
+  <data name="Audio_DrcToolTip" xml:space="preserve">
+    <value>Kisaran dinamis Kompresi Konten. Nilai-nilai yang sah 0-4. 
+
+Untuk audio sumber yang telah berbagai rentang dinamik (sangat keras dan urutan yang sangat halus), DRC memungkinkan anda untuk "memadatkan" kisaran dengan membuat bagian keras lembut dan bagian lunak lebih keras.
+
+Cara ini hanya dapat berfungsi dengan sumber-sumber AC3.</value>
+  </data>
+  <data name="Audio_GainToolTip" xml:space="preserve">
+    <value>Memperkuat atau melemahkan pengkodean sebelum audio. Nilai-nilai yang sah -20 untuk 20 dB.</value>
+  </data>
+  <data name="IncludeChapterMarkersToolTip" xml:space="preserve">
+    <value>Termasuk Penanda bab dari video input dalam video yang dikodekan.</value>
+  </data>
+  <data name="IPod5GSupportToolTip" xml:space="preserve">
+    <value>Akan menerapkan penanda untuk file Ipod yang lebih tua memerlukan sebelum mereka akan memungkinkan H.264 sync ke video.</value>
+  </data>
+  <data name="PixelAspectRatioToolTip" xml:space="preserve">
+    <value>Menetapkan sebuah aspek Piksel rasio.</value>
+  </data>
+  <data name="Video_QualityTargetToolTip" xml:space="preserve">
+    <value>Setel faktor kualitas yang diinginkan. Skala yang digunakan oleh masing-masing encoder video yang berbeda.</value>
+  </data>
+  <data name="WebOptimizedToolTip" xml:space="preserve">
+    <value>Mengatur file yang memainkan lebih baik sebagai sebuah progresif unduhan.</value>
+  </data>
+  <data name="ProfileToolTip" xml:space="preserve">
+    <value>Profil membatasi aliran output. Jika Anda menetapkan sebuah profil, ia akan mengesampingkan semua setelan lainnya, jadi jika anda menggunakannya, 
+
+Anda akan dijamin aliran yang kompatibel. Anda harus menyetel ini jika anda tahu pemutaran anda hanya perangkat mendukung profil tertentu.</value>
+  </data>
+  <data name="X264TuneToolTip" xml:space="preserve">
+    <value>Opsi lagu untuk mengoptimalkan mereka untuk konten input anda. Jika Anda menetapkan sebuah tuning, perubahan akan diterapkan setelah waktu preset tetapi sebelum semua parameter lainnya.</value>
+  </data>
+  <data name="ContainerLabel" xml:space="preserve">
+    <value>Wadah:</value>
+  </data>
+  <data name="ExtensionLabel" xml:space="preserve">
+    <value>Ekstensi:</value>
+  </data>
+  <data name="WebOptimizedCheckBox" xml:space="preserve">
+    <value>Dioptimalkan untuk web</value>
+  </data>
+  <data name="Ipod5GSupportCheckBox" xml:space="preserve">
+    <value>dukungan iPod 5G</value>
+  </data>
+  <data name="IncludeChapterMarkersCheckBox" xml:space="preserve">
+    <value>Termasuk penanda bab</value>
+  </data>
+  <data name="TabHeader_Sizing" xml:space="preserve">
+    <value>Ukuran</value>
+  </data>
+  <data name="TabHeader_VideoFilters" xml:space="preserve">
+    <value>Tampilan Efek Video</value>
+  </data>
+  <data name="TabHeader_VideoEncoding" xml:space="preserve">
+    <value>Video encoder</value>
+  </data>
+  <data name="TabHeader_AudioEncoding" xml:space="preserve">
+    <value>Audio encoder</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Ganti nama</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Masukan</value>
+  </data>
+  <data name="AutoCaption" xml:space="preserve">
+    <value>(otomatis)</value>
+  </data>
+  <data name="NoneCaption" xml:space="preserve">
+    <value>(tidak ada)</value>
+  </data>
+  <data name="StorageResolutionLabel" xml:space="preserve">
+    <value>Resolusi penyimpanan:</value>
+  </data>
+  <data name="PixelAspectRatioLabel" xml:space="preserve">
+    <value>Pixel Aspect Ratio:</value>
+  </data>
+  <data name="DisplayResolutionLabel" xml:space="preserve">
+    <value>Resolusi layar:</value>
+  </data>
+  <data name="SizingLabel" xml:space="preserve">
+    <value>Ukuran</value>
+  </data>
+  <data name="WidthLabel" xml:space="preserve">
+    <value>Lebar:</value>
+  </data>
+  <data name="HeightLabel" xml:space="preserve">
+    <value>Tinggi:</value>
+  </data>
+  <data name="MaxWidthLabel" xml:space="preserve">
+    <value>Lebar maksimum:</value>
+  </data>
+  <data name="MaxHeightLabel" xml:space="preserve">
+    <value>Ketinggian maksimal:</value>
+  </data>
+  <data name="OutputLabel" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="CroppingLabel" xml:space="preserve">
+    <value>Memotong</value>
+  </data>
+  <data name="DetelecineLabel" xml:space="preserve">
+    <value>Detelecine:</value>
+  </data>
+  <data name="DeinterlaceLabel" xml:space="preserve">
+    <value>Deinterlace:</value>
+  </data>
+  <data name="DenoiseLabel" xml:space="preserve">
+    <value>Denoise:</value>
+  </data>
+  <data name="DeblockLabel" xml:space="preserve">
+    <value>Deblock:</value>
+  </data>
+  <data name="GrayscaleCheckBox" xml:space="preserve">
+    <value>Grayscale encoding</value>
+  </data>
+  <data name="TypeLabel" xml:space="preserve">
+    <value>Jenis:</value>
+  </data>
+  <data name="ShortFramerateLabel" xml:space="preserve">
+    <value>Framerate:</value>
+  </data>
+  <data name="CodecLabel" xml:space="preserve">
+    <value>Codec:</value>
+  </data>
+  <data name="FramerateLabel" xml:space="preserve">
+    <value>Framerate (FPS):</value>
+  </data>
+  <data name="ConstantFramerateRadioButton" xml:space="preserve">
+    <value>Framerate Konstan</value>
+  </data>
+  <data name="Quality" xml:space="preserve">
+    <value>Kualitas</value>
+  </data>
+  <data name="TwoPassEncodingCheckBox" xml:space="preserve">
+    <value>2-pass Encoding</value>
+  </data>
+  <data name="TurboFirstPassCheckBox" xml:space="preserve">
+    <value>Turbo first Pass</value>
+  </data>
+  <data name="TargetSizeRadioButton" xml:space="preserve">
+    <value>Target ukuran (MB)</value>
+  </data>
+  <data name="AverageBitrateRadioButton" xml:space="preserve">
+    <value>Rata-rata Bitrate (kbps)</value>
+  </data>
+  <data name="ConstantQualityRadioButton" xml:space="preserve">
+    <value>Kualitas konstan</value>
+  </data>
+  <data name="ProfileLabel" xml:space="preserve">
+    <value>Profil:</value>
+  </data>
+  <data name="PresetLabel" xml:space="preserve">
+    <value>Preset:</value>
+  </data>
+  <data name="TuneLabel" xml:space="preserve">
+    <value>Tune:</value>
+  </data>
+  <data name="Profile_baseline" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="Profile_main" xml:space="preserve">
+    <value>Utama</value>
+  </data>
+  <data name="Profile_high" xml:space="preserve">
+    <value>Tinggi</value>
+  </data>
+  <data name="Preset_UltraFast" xml:space="preserve">
+    <value>Ultra cepat</value>
+  </data>
+  <data name="Preset_SuperFast" xml:space="preserve">
+    <value>Super cepat</value>
+  </data>
+  <data name="Preset_VeryFast" xml:space="preserve">
+    <value>Sangat cepat</value>
+  </data>
+  <data name="Preset_Faster" xml:space="preserve">
+    <value>Lebih cepat</value>
+  </data>
+  <data name="Preset_Fast" xml:space="preserve">
+    <value>Cepat</value>
+  </data>
+  <data name="Preset_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Preset_Slow" xml:space="preserve">
+    <value>Lamban</value>
+  </data>
+  <data name="Preset_Slower" xml:space="preserve">
+    <value>Lebih Lambat</value>
+  </data>
+  <data name="Preset_VerySlow" xml:space="preserve">
+    <value>Sangat lambat</value>
+  </data>
+  <data name="Preset_Placebo" xml:space="preserve">
+    <value>Placebo</value>
+  </data>
+  <data name="Tune_film" xml:space="preserve">
+    <value>Film</value>
+  </data>
+  <data name="Tune_animation" xml:space="preserve">
+    <value>Animasi</value>
+  </data>
+  <data name="Tune_grain" xml:space="preserve">
+    <value>Grain</value>
+  </data>
+  <data name="Tune_stillimage" xml:space="preserve">
+    <value>Gambar diam</value>
+  </data>
+  <data name="Tune_psnr" xml:space="preserve">
+    <value>PSNR</value>
+  </data>
+  <data name="Tune_ssim" xml:space="preserve">
+    <value>SSIM</value>
+  </data>
+  <data name="Tune_fastdecode" xml:space="preserve">
+    <value>Fast Decode</value>
+  </data>
+  <data name="Tune_zerolatency" xml:space="preserve">
+    <value>Zero Latency</value>
+  </data>
+  <data name="FpsFormat" xml:space="preserve">
+    <value>{0:0.###} FPS</value>
+  </data>
+  <data name="CfrSameAsSourceToolTip" xml:space="preserve">
+    <value>Menggunakan tercantum framerate dari sumber judul yang terus-menerus untuk framerate.</value>
+  </data>
+  <data name="CfrToolTip" xml:space="preserve">
+    <value>Gunakan kecepatan frame yang konstan.</value>
+  </data>
+  <data name="VfrSameAsSourceToolTip" xml:space="preserve">
+    <value>Izinkan variabel framerate. Jika sumber variabel frame rate, setelan ini, ia akan menyelamatkannya. Catatan bahwa beberapa pemain tidak mendukung frame rate variabel.</value>
+  </data>
+  <data name="VfrPeakFramerateToolTip" xml:space="preserve">
+    <value>Izinkan variabel framerate dan menggunakan spesifikasi yang ditetapkan sebagai puncak. Jika frame rate sumber ini variabel, setelan ini, ia akan menyelamatkannya. Catatan bahwa beberapa pemain tidak mendukung frame rate variabel.</value>
+  </data>
+  <data name="VfrChoice" xml:space="preserve">
+    <value>Variable Framerate</value>
+  </data>
+  <data name="VfrPeakChoice" xml:space="preserve">
+    <value>Puncak Framerate (VFR)</value>
+  </data>
+  <data name="HighQuality" xml:space="preserve">
+    <value>Kualitas tinggi</value>
+  </data>
+  <data name="LowQuality" xml:space="preserve">
+    <value>Kualitas rendah</value>
+  </data>
+  <data name="SameAsSource" xml:space="preserve">
+    <value>Sama dengan sumber</value>
+  </data>
+  <data name="AddAudioEncodingButton" xml:space="preserve">
+    <value>Tambahkan encoding audio</value>
+  </data>
+  <data name="NoTracksPlaceholder" xml:space="preserve">
+    <value>(tidak ada lagu)</value>
+  </data>
+  <data name="TargetStream" xml:space="preserve">
+    <value>Target aliran</value>
+  </data>
+  <data name="MixdownLabel" xml:space="preserve">
+    <value>Mixdown:</value>
+  </data>
+  <data name="SampleRateLabel" xml:space="preserve">
+    <value>Contoh data:</value>
+  </data>
+  <data name="BitrateLabel" xml:space="preserve">
+    <value>Bitrate:</value>
+  </data>
+  <data name="CompressionLabel" xml:space="preserve">
+    <value>Kompresi:</value>
+  </data>
+  <data name="GainLabel" xml:space="preserve">
+    <value>Gain (dB):</value>
+  </data>
+  <data name="DrcLabel" xml:space="preserve">
+    <value>DRC:</value>
+  </data>
+  <data name="NameLabel" xml:space="preserve">
+    <value>Nama:</value>
+  </data>
+  <data name="AscendingQualityToolTip" xml:space="preserve">
+    <value>Nilai-nilai yang tinggi berarti berkualitas tinggi.</value>
+  </data>
+  <data name="DescendingQualityToolTip" xml:space="preserve">
+    <value>Nilai-nilai rendah berarti berkualitas tinggi.</value>
+  </data>
+  <data name="AudioQualityToolTip" xml:space="preserve">
+    <value>Target kualitas audio. Nilai Valid {0} adalah dari {1} ke {2}.</value>
+  </data>
+  <data name="AscendingCompressionToolTip" xml:space="preserve">
+    <value>Nilai-nilai yang tinggi berarti kompresi tinggi: kualitas lebih baik/ukuran file kecil tapi butuh waktu lebih lama untuk menyandikan.</value>
+  </data>
+  <data name="DescendingCompressionToolTip" xml:space="preserve">
+    <value>Nilai-nilai yang rendah berarti kompresi tinggi: kualitas lebih baik kualitas/ukuraqn file kecil tapi butuh waktu lebih lama untuk menyandikan.</value>
+  </data>
+  <data name="AudioCompressionToolTip" xml:space="preserve">
+    <value>Jumlah kompresi yang diinginkan. Nilai valid {0} adalah dari {1} ke {2}.</value>
+  </data>
+  <data name="AudioEncoder_faac" xml:space="preserve">
+    <value>AAC (FAAC)</value>
+    <comment>Leaving this blank will mean we rely on the friendly name from HandBrake. The short name is used for the key (: gets replaced by _)</comment>
+  </data>
+  <data name="AudioEncoder_av_aac" xml:space="preserve">
+    <value>AAC (avcodec)</value>
+  </data>
+  <data name="AudioEncoder_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="AudioEncoder_flac16" xml:space="preserve">
+    <value>FLAC 16-bit</value>
+  </data>
+  <data name="AudioEncoder_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="AudioEncoder_vorbis" xml:space="preserve">
+    <value>Vorbis</value>
+  </data>
+  <data name="Mixdown_5point1" xml:space="preserve">
+    <value>5.1 Channels</value>
+  </data>
+  <data name="Mixdown_5_2_lfe" xml:space="preserve">
+    <value>7.1 (5F/2R/LFE)</value>
+  </data>
+  <data name="Mixdown_dpl1" xml:space="preserve">
+    <value>Dolby Surround</value>
+  </data>
+  <data name="Mixdown_dpl2" xml:space="preserve">
+    <value>Dolby Pro Logic II</value>
+  </data>
+  <data name="Mixdown_left_only" xml:space="preserve">
+    <value>Mono (hanya kiri)</value>
+  </data>
+  <data name="Mixdown_mono" xml:space="preserve">
+    <value>Mono</value>
+  </data>
+  <data name="Mixdown_right_only" xml:space="preserve">
+    <value>Mono (Hanya Kanan)</value>
+  </data>
+  <data name="Mixdown_stereo" xml:space="preserve">
+    <value>Stereo</value>
+  </data>
+  <data name="Bitrate" xml:space="preserve">
+    <value>Bitrate</value>
+  </data>
+  <data name="DefaultFormat" xml:space="preserve">
+    <value>{0} (Default)</value>
+  </data>
+  <data name="LevelToolTip" xml:space="preserve">
+    <value>Mengatur dan memastikan kepatuhan pada tingkat encoder yang ditetapkan. Akan mengesampingkan semua setelan lainnya.</value>
+  </data>
+  <data name="Profile_high444" xml:space="preserve">
+    <value>Tinggi 4:4:4 Prediksi</value>
+  </data>
+  <data name="VideoCodecLabel" xml:space="preserve">
+    <value>Codec Video:</value>
+  </data>
+  <data name="VideoEncoder_ffmpeg2" xml:space="preserve">
+    <value>MPEG-2 (Libav)</value>
+  </data>
+  <data name="VideoEncoder_ffmpeg4" xml:space="preserve">
+    <value>MPEG-4 (Libav)</value>
+  </data>
+  <data name="VideoEncoder_x264" xml:space="preserve">
+    <value>H.264 (x264)</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="LevelLabel" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="MoreSettingsLabel" xml:space="preserve">
+    <value>Pengaturan selanjutnya:</value>
+  </data>
+  <data name="Track" xml:space="preserve">
+    <value>Lagu</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Sumber</value>
+  </data>
+  <data name="Encoder" xml:space="preserve">
+    <value>Encoder</value>
+  </data>
+  <data name="ChannelLayout" xml:space="preserve">
+    <value>Tata letak saluran</value>
+  </data>
+  <data name="SampleRate" xml:space="preserve">
+    <value>Sample Rate</value>
+  </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Pengubah</value>
+  </data>
+  <data name="AudioEncoder_flac24" xml:space="preserve">
+    <value>FLAC 24-bit</value>
+  </data>
+  <data name="VideoEncoder_mpeg2" xml:space="preserve">
+    <value>MPEG-2</value>
+  </data>
+  <data name="VideoEncoder_mpeg4" xml:space="preserve">
+    <value>MPEG-4</value>
+  </data>
+  <data name="VideoEncoder_theora" xml:space="preserve">
+    <value>Theora</value>
+  </data>
+  <data name="RemoveAudioEncodingToolTip" xml:space="preserve">
+    <value>Hapus encoding audio</value>
+  </data>
+  <data name="AutoPassthroughFallbackLabel" xml:space="preserve">
+    <value>Mundur:</value>
+  </data>
+  <data name="AutoPassthroughFallbackToolTip" xml:space="preserve">
+    <value>Passthrough tidak bekerja pada semua audio codec pita lebar. Ini untuk menentukan encoder untuk kembali jika Trek tidak dapat berjalan melalui.</value>
+  </data>
+  <data name="EncoderSettings" xml:space="preserve">
+    <value>Pengaturan encoder</value>
+  </data>
+  <data name="QsvDecodingLabel" xml:space="preserve">
+    <value>QSV Decoding</value>
+  </data>
+  <data name="ScaleMethod_Lanczos" xml:space="preserve">
+    <value>Lanczos</value>
+  </data>
+  <data name="ScaleMethod_BicubicOpenCL" xml:space="preserve">
+    <value>Bicubic (OpenCL)</value>
+  </data>
+  <data name="QsvPreset_Speed" xml:space="preserve">
+    <value>Kecepatan</value>
+  </data>
+  <data name="QsvPreset_Balanced" xml:space="preserve">
+    <value>Keseimbangan</value>
+  </data>
+  <data name="QsvPreset_Quality" xml:space="preserve">
+    <value>Kualitas</value>
+  </data>
+  <data name="PresetToolTip" xml:space="preserve">
+    <value>Mengubah opsi untuk mengubah efisiensi kompresi terhadap kecepatan pengkodean.</value>
+  </data>
+  <data name="AudioEncoder_Passthrough" xml:space="preserve">
+    <value>Passthrough</value>
+  </data>
+  <data name="Passthrough_auto" xml:space="preserve">
+    <value>Otomatis</value>
+  </data>
+  <data name="PassthroughScopeToolTip" xml:space="preserve">
+    <value>Menentukan kodek passthrough input yang akan berlaku untuk.</value>
+  </data>
+  <data name="FlipHorizontalCheckBox" xml:space="preserve">
+    <value>Putar secara horizontal</value>
+  </data>
+  <data name="FlipVerticalCheckBox" xml:space="preserve">
+    <value>Putar secara vertikal</value>
+  </data>
+  <data name="Rotation_Clockwise90" xml:space="preserve">
+    <value>90° Searah jarum jam</value>
+  </data>
+  <data name="Rotation_Counterclockwise90" xml:space="preserve">
+    <value>90° berlawanan jarum jam</value>
+  </data>
+  <data name="Rotation_180" xml:space="preserve">
+    <value>180°</value>
+  </data>
+  <data name="RotationToolTip" xml:space="preserve">
+    <value>Putar gambar. Ini diterapkan setelah semua penyesuaian ukuran dan pemotongan gambar.</value>
+  </data>
+  <data name="FlipHorizontalToolTip" xml:space="preserve">
+    <value>Flip gambar secara horizontal. Ini diterapkan sebelum rotasi apa pun.</value>
+  </data>
+  <data name="FlipVerticalToolTip" xml:space="preserve">
+    <value>Flip gambar secara vertikal. Ini diterapkan sebelum rotasi apa pun.</value>
+  </data>
+  <data name="PassthroughIfPossibleCheckBox" xml:space="preserve">
+    <value>Lewati jika memungkinkan</value>
+  </data>
+  <data name="PassthroughIfPossibleToolTip" xml:space="preserve">
+    <value>Jika input lagu cocok dengan codec akan berjalan melalui encode.</value>
+  </data>
+  <data name="RotationLabel" xml:space="preserve">
+    <value>Rotasi:</value>
+  </data>
+  <data name="ClosePresetsListToolTip" xml:space="preserve">
+    <value>Menutup daftar preset</value>
+  </data>
+  <data name="OpenPresetsListToolTip" xml:space="preserve">
+    <value>Membuka daftar preset</value>
+  </data>
+  <data name="DefaultChapterName" xml:space="preserve">
+    <value>Bab {0}</value>
+    <comment>What a chapter will be named when not given a custom name. {0} is the chapter number.</comment>
+  </data>
+  <data name="PassthroughSettingsLabel" xml:space="preserve">
+    <value>Lewati pengaturan</value>
+  </data>
+  <data name="PassthroughMaskLabel" xml:space="preserve">
+    <value>Izinkan passthrough untuk:</value>
+  </data>
+  <data name="Passthrough_aac" xml:space="preserve">
+    <value>AAC</value>
+  </data>
+  <data name="Passthrough_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="Passthrough_dts" xml:space="preserve">
+    <value>DTS</value>
+  </data>
+  <data name="Passthrough_dtshd" xml:space="preserve">
+    <value>DTS-HD</value>
+  </data>
+  <data name="Passthrough_eac3" xml:space="preserve">
+    <value>E-AC3</value>
+  </data>
+  <data name="Passthrough_flac" xml:space="preserve">
+    <value>FLAC</value>
+  </data>
+  <data name="Passthrough_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="Passthrough_truehd" xml:space="preserve">
+    <value>TrueHD</value>
+  </data>
+  <data name="InterlaceDetectionLabel" xml:space="preserve">
+    <value>Deteksi Interlace:</value>
+  </data>
+  <data name="ModeLabel" xml:space="preserve">
+    <value>Mode:</value>
+    <comment>Label for the sizing or padding mode.</comment>
+  </data>
+  <data name="AnamorphicCheckbox" xml:space="preserve">
+    <value>Gunakan Anamorphic</value>
+  </data>
+  <data name="SizingModeManual" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Choice for the user to enter all sizing information manually.</comment>
+  </data>
+  <data name="UpscaleMaxFormat" xml:space="preserve">
+    <value>Upscale {0}x max</value>
+    <comment>Label for scaling option to allow upscaling, but only to a particular multiple of the source resolution. {0} is the multiple, e.g. 2, 3 or 4</comment>
+  </data>
+  <data name="ScalingMode_DownscaleOnly" xml:space="preserve">
+    <value>Hanya Downscale</value>
+  </data>
+  <data name="ScalingMode_Fill" xml:space="preserve">
+    <value>Skala ke atas/bawah pada target</value>
+  </data>
+  <data name="ScalingModeLabel" xml:space="preserve">
+    <value>Skala mode:</value>
+  </data>
+  <data name="PaddingMode_Fill" xml:space="preserve">
+    <value>Mengisi</value>
+  </data>
+  <data name="PaddingMode_Width" xml:space="preserve">
+    <value>Lebar</value>
+  </data>
+  <data name="PaddingMode_Height" xml:space="preserve">
+    <value>Tinggi</value>
+  </data>
+  <data name="TargetWidthLabel" xml:space="preserve">
+    <value>Lebar target:</value>
+  </data>
+  <data name="TargetHeightLabel" xml:space="preserve">
+    <value>Tinggi target:</value>
+  </data>
+  <data name="PadColorLabel" xml:space="preserve">
+    <value>Warna:</value>
+  </data>
+  <data name="AnamorphicToolTip" xml:space="preserve">
+    <value>Dengan Anamorphic diaktifkan, non-piksel persegi yang diizinkan. Hal ini dapat mengakibatkan penyimpanan yang lebih efisien, tetapi tidak semua pemain yang mendukung fitur ini.</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Resolusi:</value>
+    <comment>Label for a video resolution in pixels.</comment>
+  </data>
+  <data name="CustomFilterToolTipFormatPart" xml:space="preserve">
+    <value>Format: key1=value1:key2=value2:...</value>
+    <comment>The "format" portion of the custom filter tooltip. When translating, keep the = and : the same and only replace "key1", "value2", etc.</comment>
+  </data>
+  <data name="CustomFilterToolTipKeysLabel" xml:space="preserve">
+    <value>Kunci:</value>
+    <comment>The label for the "keys" portion of the custom filter tooltip.</comment>
+  </data>
+  <data name="PaddingLabel" xml:space="preserve">
+    <value>Lapisan</value>
+  </data>
+  <data name="AlignAVStartCheckBox" xml:space="preserve">
+    <value>Sesuaikan awal suara-gambar</value>
+  </data>
+  <data name="AlignAVStartCheckBoxToolTip" xml:space="preserve">
+    <value>Sesuaikan waktu mulai semua suara dan gambar dengan memasukkan kerangka kosong atau membuang kerangka. Dapat memperbaiki kesesuaian suara/gambar untuk pemain yang buta akan daftar suntingan MP4.</value>
+  </data>
+  <data name="TabHeader_Container" xml:space="preserve">
+    <value>Wadah</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Encoding preset: {0}</value>
+    <comment>Label for the encoding settings window.</comment>
+  </data>
+  <data name="AudioEncoder_none" xml:space="preserve">
+    <value>Tidak satupun</value>
+    <comment>Label for the choice to use no audio encoder. Used in fallback selection.</comment>
+  </data>
+  <data name="SizingModeToolTip" xml:space="preserve">
+    <value>Otomatis akan memilihkan ukuran berdasarkan batasan yang ditentukan. Manual akan membolehkan Anda memasukkan ukuran tertentu dan rasio aspek pixel.</value>
+  </data>
+  <data name="SharpenLabel" xml:space="preserve">
+    <value>Tajamkan</value>
+  </data>
+  <data name="DeblockToolTip" xml:space="preserve">
+    <value>Deblock mengurangi artifak yang membuat blok yang disebabkan oleh kompresi gambar kualitas rendah.</value>
+  </data>
+  <data name="DeinterlaceToolTip" xml:space="preserve">
+    <value>Deinterlace membuang artifak garis - garis dari gambar.</value>
+  </data>
+  <data name="DenoiseToolTip" xml:space="preserve">
+    <value>Denoise mengurangi atau membuang tampilan kotor dan bertitik-titik. Ini akan memperbaiki efisiensi kompresi dan membuat gambar dengan kualitas lebih tinggi pada ukuran berkas lebih kecil.
+Terlalu banyak pada pengaturan denoise akan merusak kualitas gambar karena banyak detail hilang.
+
+NLMeans adalah filter denoise kualitas tinggi dengan membayar pada kecepatan. Gunakan di mana kualitas lebih penting daripada kecepatan.
+
+HQDN3D adalah filter low-pass adaptif, lebih cepat daripada NLMeans tapi lebih kurang efektif dalam menjaga detail halus.</value>
+  </data>
+  <data name="DetelecineToolTip" xml:space="preserve">
+    <value>Filter ini membuang artifak 'combing' sebagai hasil dari telecining.
+
+Telecining adalah proses yang menyesuaikan frame rate dari 24 fps ke NTSC yang 30 fps.</value>
+  </data>
+  <data name="SharpenToolTip" xml:space="preserve">
+    <value>Sharpening memperbaiki tampilan detail, terutama pinggiran. Jika terlalu kuat akan merusak kualitas gambar dan membuat artifak cincin dan menambah noise, yang akan mengurangi efisiensi kompresi.
+
+Unsharp adalah filter masking penggunaan umum. Ini menajamkan dengan membuat buram, kemudian menghitung perbedaan antara gambar yang diburamkan dan aslinya.
+
+Lapsharp menajamkan menggunakan kernel konvolusi dengan mengaproksimasi filter pinggir Laplacian, kadang menghasilkan hasil dengan kualitas lebih tinggi daripada unsharp.</value>
+  </data>
+  <data name="PresetFolder_Custom" xml:space="preserve">
+    <value>Khusus</value>
+  </data>
+  <data name="PresetFolder_BuiltIn" xml:space="preserve">
+    <value>Bawaan</value>
+  </data>
+  <data name="PresetFolderCreateSubfolderMenuItem" xml:space="preserve">
+    <value>Buat sub-berkas</value>
+  </data>
+  <data name="PrestFolderRenameFolderMenuItem" xml:space="preserve">
+    <value>Ganti nama berkas</value>
+  </data>
+  <data name="PresetFolderRemoveFolderMenuItem" xml:space="preserve">
+    <value>Hilangkan berkas</value>
+  </data>
+  <data name="DefaultPresetFolderName" xml:space="preserve">
+    <value>Berkas baru</value>
+  </data>
+  <data name="ChooseNameSubfolder" xml:space="preserve">
+    <value>Pilih nama untuk sub-berkas:</value>
+  </data>
+  <data name="ChooseNewFolderName" xml:space="preserve">
+    <value>Pilih nama untuk berkas:</value>
+  </data>
+  <data name="NVEncPreset_ll" xml:space="preserve">
+    <value>Low Latency</value>
+  </data>
+  <data name="NVEncPreset_hq" xml:space="preserve">
+    <value>Kualitas tinggi</value>
+  </data>
+  <data name="NVEncPreset_hp" xml:space="preserve">
+    <value>Kinerja tinggi</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bawah</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Kiri</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Kanan</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Atas</value>
+  </data>
+  <data name="PixelAspectRatioNumeratorAutomationName" xml:space="preserve">
+    <value>Pixel rasio aspek pembilang</value>
+    <comment>Name for the pixel aspect ratio numerator box for screen readers</comment>
+  </data>
+  <data name="PixelAspectRatioDenominatorAutomationName" xml:space="preserve">
+    <value>Pixel rasio aspek penyebut</value>
+    <comment>Name for the pixel aspect ratio denominator box for screen readers</comment>
+  </data>
+  <data name="ApplyToQueueButton" xml:space="preserve">
+    <value>Tambahkan ke antrian</value>
+  </data>
+  <data name="FullEncoderParameterLabel" xml:space="preserve">
+    <value>Daftar parameter lengkap:</value>
+  </data>
+  <data name="MoreOptionsToolTip" xml:space="preserve">
+    <value>Argumen lanjutan tambahan untuk diteruskan ke encoder video.</value>
+  </data>
+  <data name="CannotSwitchEncodingPresetDueToPicker" xml:space="preserve">
+    <value>Tidak bisa berpindah preset enkoding, sudah dikunci di Pemilihan</value>
+    <comment>Message to show when the user is blocked from switching an encoding preset due to a Picker setting.</comment>
+  </data>
+  <data name="PadColorTextToolTip" xml:space="preserve">
+    <value>Format: FFFFFF</value>
+  </data>
+  
+  
+</root>

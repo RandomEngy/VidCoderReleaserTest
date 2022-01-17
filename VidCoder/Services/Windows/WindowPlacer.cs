@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using Microsoft.AnyContainer;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Model.WindowPlacer;
@@ -18,7 +19,7 @@ namespace VidCoder.Services.Windows
 	{
 		private const double Spacing = 4;
 
-		private IWindowManager windowManager = Ioc.Get<IWindowManager>();
+		private IWindowManager windowManager = StaticResolver.Resolve<IWindowManager>();
 
 		public Rect? PlaceWindow(Window window)
 		{
@@ -215,11 +216,18 @@ namespace VidCoder.Services.Windows
 				string placementJson = Config.Get<string>(definition.PlacementConfigKey);
 				if (!string.IsNullOrEmpty(placementJson))
 				{
-					result.Add(new WindowPosition
+					try
 					{
-						Position = WindowPlacement.ParsePlacementJson(placementJson).ToRect(),
-						ViewModelType = definition.ViewModelType
-					});
+						result.Add(new WindowPosition
+						{
+							Position = WindowPlacement.ParsePlacementJson(placementJson).ToRect(),
+							ViewModelType = definition.ViewModelType
+						});
+					}
+					catch (Exception)
+					{
+						// Parsing the placement JSON failed. Skip adding this to the list.
+					}
 				}
 			}
 

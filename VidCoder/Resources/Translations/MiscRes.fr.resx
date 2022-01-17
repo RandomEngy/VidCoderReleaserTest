@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Ajouter</value>
@@ -153,9 +153,7 @@
   <data name="FileConflictWarning" xml:space="preserve">
     <value>Il existe déjà un fichier à {0}. Voulez-vous remplacer le fichier, trouver automatiquement un nouveau répertoire de sortie pour le travail d'encodage ou annuler l'opération ?</value>
   </data>
-  <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Un travail de file d'attente a déjà un chemin de sortie à {0}. Voulez-vous remplacer le fichier, trouver automatiquement un nouveau répertoire de sortie pour le travail d'encodage ou annuler l'opération ?</value>
-  </data>
+  
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Colonnes de la file d'attente</value>
   </data>
@@ -170,12 +168,6 @@
   </data>
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Analyse en cours...</value>
-  </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Succès</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder a été mis à jour avec succès.</value>
   </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>A propos de VidCoder</value>
@@ -192,19 +184,13 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} Développeurs VidCoder</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Nom</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Béta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
-  </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Nom du préréglage</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
-    <value>Choisissez un nom pour le préréglage :</value>
+  <data name="ChooseNamePreset" xml:space="preserve">
+    <value>Choisir un nom pour le préréglage :</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
     <value>Appliquer la mise à jour ?</value>
@@ -245,10 +231,22 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Encodage terminé.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Lecteur vidéo introuvable pour {0}.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Erreur de lecture de la source.</value>
   </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>Mise en veille du système dans {0} secondes.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Mise en veille prolongée imminente</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Choisir un nom pour le préréglage :</value>
+  </data>
+  
+  
+  
 </root>

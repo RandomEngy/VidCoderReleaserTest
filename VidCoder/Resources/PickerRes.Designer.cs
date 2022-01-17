@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class PickerRes {
@@ -61,11 +61,60 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio selection.
+        ///   Looks up a localized string similar to Add audio track name.
         /// </summary>
-        public static string AudioSelection {
+        public static string AddAudioTrackNameButton {
             get {
-                return ResourceManager.GetString("AudioSelection", resourceCulture);
+                return ResourceManager.GetString("AddAudioTrackNameButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Language.
+        /// </summary>
+        public static string AddLanguageButton {
+            get {
+                return ResourceManager.GetString("AddLanguageButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add subtitle track name.
+        /// </summary>
+        public static string AddSubtitleTrackNameButton {
+            get {
+                return ResourceManager.GetString("AddSubtitleTrackNameButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All tracks for these languages.
+        /// </summary>
+        public static string AllTracksForTheseLanguagesRadioButton {
+            get {
+                return ResourceManager.GetString("AllTracksForTheseLanguagesRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All tracks for this language.
+        /// </summary>
+        public static string AllTracksForThisLanguageRadioButton {
+            get {
+                return ResourceManager.GetString("AllTracksForThisLanguageRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last selected - Picks the last selected audio track if a match is found, otherwise picks the first.
+        ///First - Include only the first audio track.
+        ///By index - Pick by track index (1-based)
+        ///Language(s) - Pick by language
+        ///All - Include all audio tracks..
+        /// </summary>
+        public static string AudioSelectionModeToolTip {
+            get {
+                return ResourceManager.GetString("AudioSelectionModeToolTip", resourceCulture);
             }
         }
         
@@ -97,11 +146,119 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Burn in:.
+        /// </summary>
+        public static string BurnInLabel {
+            get {
+                return ResourceManager.GetString("BurnInLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By index.
+        /// </summary>
+        public static string ByIndexRadioButton {
+            get {
+                return ResourceManager.GetString("ByIndexRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change capitalization to.
+        /// </summary>
+        public static string ChangeCaptializationLabel {
+            get {
+                return ResourceManager.GetString("ChangeCaptializationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change word separator to.
+        /// </summary>
+        public static string ChangeWordSeparatorLabel {
+            get {
+                return ResourceManager.GetString("ChangeWordSeparatorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chapter range end.
+        /// </summary>
+        public static string ChapterRangeEndAutomationName {
+            get {
+                return ResourceManager.GetString("ChapterRangeEndAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chapter range start.
+        /// </summary>
+        public static string ChapterRangeStartAutomationName {
+            get {
+                return ResourceManager.GetString("ChapterRangeStartAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom {0}.
+        /// </summary>
+        public static string CustomPickerNameTemplate {
+            get {
+                return ResourceManager.GetString("CustomPickerNameTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom track names.
+        /// </summary>
+        public static string CustomTrackNamesCheckBox {
+            get {
+                return ResourceManager.GetString("CustomTrackNamesCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string DefaultCheckBox {
             get {
                 return ResourceManager.GetString("DefaultCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string DestinationSection {
+            get {
+                return ResourceManager.GetString("DestinationSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter titles by duration.
+        /// </summary>
+        public static string DurationFilterCheckBoxAutomationName {
+            get {
+                return ResourceManager.GetString("DurationFilterCheckBoxAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration filter end minutes.
+        /// </summary>
+        public static string DurationFilterEndAutomationName {
+            get {
+                return ResourceManager.GetString("DurationFilterEndAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration filter start minutes.
+        /// </summary>
+        public static string DurationFilterStartAutomationName {
+            get {
+                return ResourceManager.GetString("DurationFilterStartAutomationName", resourceCulture);
             }
         }
         
@@ -115,29 +272,110 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Foreign Audio Search.
+        ///   Looks up a localized string similar to Add external subtitle files ({0}) with same name as input video file.
         /// </summary>
-        public static string ForeignAudioSearchRadioButton {
+        public static string ExternalSubtitleImportCheckBox {
             get {
-                return ResourceManager.GetString("ForeignAudioSearchRadioButton", resourceCulture);
+                return ResourceManager.GetString("ExternalSubtitleImportCheckBox", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Include all tracks.
+        ///   Looks up a localized string similar to Mark first as default.
         /// </summary>
-        public static string IncludeAllTracksCheckBox {
+        public static string FirstAsDefaultCheckBox {
             get {
-                return ResourceManager.GetString("IncludeAllTracksCheckBox", resourceCulture);
+                return ResourceManager.GetString("FirstAsDefaultCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First track of each language.
+        /// </summary>
+        public static string FirstTrackOfEachLanguageRadioButton {
+            get {
+                return ResourceManager.GetString("FirstTrackOfEachLanguageRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First track.
+        /// </summary>
+        public static string FirstTrackRadioButton {
+            get {
+                return ResourceManager.GetString("FirstTrackRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forced only.
+        /// </summary>
+        public static string ForcedOnlyCheckBox {
+            get {
+                return ResourceManager.GetString("ForcedOnlyCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore files below.
+        /// </summary>
+        public static string IgnoreFilesBelowCheckBox {
+            get {
+                return ResourceManager.GetString("IgnoreFilesBelowCheckBox", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Language:.
         /// </summary>
-        public static string LanguageRadioButton {
+        public static string LanguageLabel {
             get {
-                return ResourceManager.GetString("LanguageRadioButton", resourceCulture);
+                return ResourceManager.GetString("LanguageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language(s).
+        /// </summary>
+        public static string LanguagesRadioButton {
+            get {
+                return ResourceManager.GetString("LanguagesRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last selected.
+        /// </summary>
+        public static string LastSelectedRadioButton {
+            get {
+                return ResourceManager.GetString("LastSelectedRadioButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata.
+        /// </summary>
+        public static string MetadataSection {
+            get {
+                return ResourceManager.GetString("MetadataSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark the first subtitle track as default, so it shows up automatically when playing the video..
+        /// </summary>
+        public static string MultipleSubtitleDefaultToolTip {
+            get {
+                return ResourceManager.GetString("MultipleSubtitleDefaultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only change capitalization if all lowercase or all uppercase.
+        /// </summary>
+        public static string OnlyChangeCapitalizationIfAllSameLabel {
+            get {
+                return ResourceManager.GetString("OnlyChangeCapitalizationIfAllSameLabel", resourceCulture);
             }
         }
         
@@ -151,6 +389,24 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File name format.
+        /// </summary>
+        public static string OutputFileNameFormatAutomationName {
+            get {
+                return ResourceManager.GetString("OutputFileNameFormatAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output folder:.
+        /// </summary>
+        public static string OutputFolder {
+            get {
+                return ResourceManager.GetString("OutputFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output location.
         /// </summary>
         public static string OutputLocation {
@@ -160,11 +416,38 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Override directory:.
+        ///   Looks up a localized string similar to Override folder:.
         /// </summary>
         public static string OverrideDirectoryCheckBox {
             get {
                 return ResourceManager.GetString("OverrideDirectoryCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available options: {0}.
+        /// </summary>
+        public static string OverrideNameFormatLabel {
+            get {
+                return ResourceManager.GetString("OverrideNameFormatLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pass through video metadata (director, release date, actors, etc).
+        /// </summary>
+        public static string PassThroughMetadataCheckBox {
+            get {
+                return ResourceManager.GetString("PassThroughMetadataCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio.
+        /// </summary>
+        public static string PickerAudioSectionName {
+            get {
+                return ResourceManager.GetString("PickerAudioSectionName", resourceCulture);
             }
         }
         
@@ -178,11 +461,29 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add &apos;Foreign audio scan&apos; track.
+        /// </summary>
+        public static string PickerForeignAudioCheckBox {
+            get {
+                return ResourceManager.GetString("PickerForeignAudioCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically pick titles, audio, subtitles and destination.
         /// </summary>
         public static string PickerHelpText {
             get {
                 return ResourceManager.GetString("PickerHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subtitles.
+        /// </summary>
+        public static string PickerSubtitleSectionName {
+            get {
+                return ResourceManager.GetString("PickerSubtitleSectionName", resourceCulture);
             }
         }
         
@@ -196,7 +497,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The arguments to pass to the program. Use {file} for the file output path..
+        ///   Looks up a localized string similar to The arguments to pass to the program. Use {file} for the file output path, {folder} as containing folder path or other path options like {title} and {date} (see Naming Format)..
         /// </summary>
         public static string PostEncodeArgumentsToolTip {
             get {
@@ -214,11 +515,56 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Picker has specified the encoding preset..
+        /// </summary>
+        public static string PresetDisabledForPickerToolTip {
+            get {
+                return ResourceManager.GetString("PresetDisabledForPickerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use preset:.
+        /// </summary>
+        public static string PresetLabel {
+            get {
+                return ResourceManager.GetString("PresetLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will override any preset picked in the main window..
         /// </summary>
         public static string PresetOverrideToolTip {
             get {
                 return ResourceManager.GetString("PresetOverrideToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this language..
+        /// </summary>
+        public static string RemoveLanguageToolTip {
+            get {
+                return ResourceManager.GetString("RemoveLanguageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comma separated - ex. 2,5.
+        /// </summary>
+        public static string SelectTracksHelpText {
+            get {
+                return ResourceManager.GetString("SelectTracksHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select tracks:.
+        /// </summary>
+        public static string SelectTracksLabel {
+            get {
+                return ResourceManager.GetString("SelectTracksLabel", resourceCulture);
             }
         }
         
@@ -232,20 +578,133 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subtitle selection.
+        ///   Looks up a localized string similar to Mark the subtitle track as default, so it will show up automatically when playing the video..
         /// </summary>
-        public static string SubtitleSelection {
+        public static string SingleSubtitleDefaultToolTip {
             get {
-                return ResourceManager.GetString("SubtitleSelection", resourceCulture);
+                return ResourceManager.GetString("SingleSubtitleDefaultToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title selection.
+        ///   Looks up a localized string similar to Sort language(s) to top:.
         /// </summary>
-        public static string TitleSelection {
+        public static string SortLanguagesLabel {
             get {
-                return ResourceManager.GetString("TitleSelection", resourceCulture);
+                return ResourceManager.GetString("SortLanguagesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview:.
+        /// </summary>
+        public static string SourceCleanupPreviewLabel {
+            get {
+                return ResourceManager.GetString("SourceCleanupPreviewLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm before removing.
+        /// </summary>
+        public static string SourceFileRemovalConfirmationCheckBox {
+            get {
+                return ResourceManager.GetString("SourceFileRemovalConfirmationCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source file removal after successful encode:.
+        /// </summary>
+        public static string SourceFileRemovalLabel {
+            get {
+                return ResourceManager.GetString("SourceFileRemovalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source name cleanup.
+        /// </summary>
+        public static string SourceNameCleanupSection {
+            get {
+                return ResourceManager.GetString("SourceNameCleanupSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foreign audio scan.
+        /// </summary>
+        public static string SubtitleSelectionMode_ForeignAudioSearch {
+            get {
+                return ResourceManager.GetString("SubtitleSelectionMode_ForeignAudioSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last selected - Picks the last selected subtitle track if a match is found, otherwise pick no tracks.
+        ///None - No subtitles are included.
+        ///First - Include only the first subtitle.
+        ///By index - Pick by track index (1-based)
+        ///Language(s) - Pick by language
+        ///All - Include all subtitles..
+        /// </summary>
+        public static string SubtitleSelectionModeToolTip {
+            get {
+                return ResourceManager.GetString("SubtitleSelectionModeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time range end.
+        /// </summary>
+        public static string TimeRangeEndAutomationName {
+            get {
+                return ResourceManager.GetString("TimeRangeEndAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time range:.
+        /// </summary>
+        public static string TimeRangeLabel {
+            get {
+                return ResourceManager.GetString("TimeRangeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time range start.
+        /// </summary>
+        public static string TimeRangeStartAutomationName {
+            get {
+                return ResourceManager.GetString("TimeRangeStartAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track {0}.
+        /// </summary>
+        public static string TrackAutomationFormat {
+            get {
+                return ResourceManager.GetString("TrackAutomationFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track selection:.
+        /// </summary>
+        public static string TrackSelectionLabel {
+            get {
+                return ResourceManager.GetString("TrackSelectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use custom file naming format:.
+        /// </summary>
+        public static string UseCustomFileNameFormatCheckBox {
+            get {
+                return ResourceManager.GetString("UseCustomFileNameFormatCheckBox", resourceCulture);
             }
         }
         
@@ -259,11 +718,83 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video selection.
+        /// </summary>
+        public static string VideoSelectionSection {
+            get {
+                return ResourceManager.GetString("VideoSelectionSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When file already exists (Batch):.
+        /// </summary>
+        public static string WhenFileExistsBatch {
+            get {
+                return ResourceManager.GetString("WhenFileExistsBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When file already exists (Single):.
+        /// </summary>
+        public static string WhenFileExistsSingle {
+            get {
+                return ResourceManager.GetString("WhenFileExistsSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picker: {0}.
         /// </summary>
         public static string WindowTitle {
             get {
                 return ResourceManager.GetString("WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dot.
+        /// </summary>
+        public static string WordBreakCharacter_Dot {
+            get {
+                return ResourceManager.GetString("WordBreakCharacter_Dot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Space.
+        /// </summary>
+        public static string WordBreakCharacter_Space {
+            get {
+                return ResourceManager.GetString("WordBreakCharacter_Space", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Underscore.
+        /// </summary>
+        public static string WordBreakCharacter_Underscore {
+            get {
+                return ResourceManager.GetString("WordBreakCharacter_Underscore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Word break character - {0}.
+        /// </summary>
+        public static string WordBreakCharacterAutomationNameFormat {
+            get {
+                return ResourceManager.GetString("WordBreakCharacterAutomationNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recognized word break characters:.
+        /// </summary>
+        public static string WordBreakCharactersLabel {
+            get {
+                return ResourceManager.GetString("WordBreakCharactersLabel", resourceCulture);
             }
         }
     }

@@ -13,18 +13,21 @@ namespace VidCoder.Model
 		{
 			get
 			{
-				if (RegKey == null)
+				using (RegistryKey regKey = RegKey)
 				{
-					return null;
+					return regKey?.GetValue(string.Empty) as string;
 				}
-
-				return RegKey.GetValue(string.Empty) as string;
 			}
 		}
 
 		public override void PlayTitleInternal(string executablePath, string discPath, int title)
 		{
-			string version = RegKey.GetValue("Version") as string;
+			string version;
+
+			using (RegistryKey regKey = RegKey)
+			{
+				version = regKey.GetValue("Version") as string;
+			}
 
 			string arguments;
 			if (version.StartsWith("1"))
@@ -47,28 +50,20 @@ namespace VidCoder.Model
 			process.Start();
 		}
 
-		public override string Id
-		{
-			get
-			{
-				return "vlc";
-			}
-		}
+		public override string Id => "vlc";
 
-		public override string Display
-		{
-			get
-			{
-				return "VLC";
-			}
-		}
+		public override string Display => "VLC";
 
 		private static RegistryKey RegKey
 		{
 			get
 			{
-				return Registry.LocalMachine.OpenSubKey(Utilities.Wow64RegistryKey + @"\VideoLAN\VLC");
+				return RegKey64 ?? RegKey32;
 			}
 		}
+
+		private static RegistryKey RegKey32 => Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\VideoLAN\VLC");
+
+		private static RegistryKey RegKey64 => Registry.LocalMachine.OpenSubKey(@"SOFTWARE\VideoLAN\VLC");
 	}
 }

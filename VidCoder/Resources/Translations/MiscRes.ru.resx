@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Добавить</value>
@@ -127,7 +127,7 @@
     <value>Выбрать из существующих процессов:</value>
   </data>
   <data name="AddAutoPauseProcessDialogTitle" xml:space="preserve">
-    <value>Добавить авто паузу процесса</value>
+    <value>Добавить автопаузу процесса</value>
   </data>
   <data name="ProcessNameLabel" xml:space="preserve">
     <value>Имя процесса:</value>
@@ -148,16 +148,16 @@
     <value>Перезаписать</value>
   </data>
   <data name="AutoRenameButton" xml:space="preserve">
-    <value>Авто-переименование</value>
+    <value>Автопереименование</value>
   </data>
   <data name="FileConflictWarning" xml:space="preserve">
     <value>Файл уже существует в {0}. Вы хотите перезаписать файл, автоматически найти новый путь вывода для работы кодирования или отменить операцию?</value>
   </data>
   <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>заданию в очереди уже есть путь вывода на {0}. Вы хотите перезаписать файл, автоматически найти новый путь вывода для работы кодирования или отменить операцию?</value>
+    <value>У задания в очереди уже есть путь вывода в {0}. Вы хотите изменить запланированное задание, автоматически найти новый путь вывода для работы кодирования или отменить операцию?</value>
   </data>
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
-    <value>Очередь столбцов</value>
+    <value>Столбцы очереди</value>
   </data>
   <data name="QueueColumnsDialogHeaderText" xml:space="preserve">
     <value>Перетащите, чтобы добавить, удалить или изменить порядок столбцов.</value>
@@ -171,12 +171,6 @@
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Сканирование...</value>
   </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Успешно</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder обновлен успешно.</value>
-  </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>О VidCoder</value>
   </data>
@@ -187,30 +181,27 @@
     <value>Версия</value>
   </data>
   <data name="BasedOnHandBrake" xml:space="preserve">
-    <value>На основе HandBrake (svn {0})</value>
+    <value>На основе HandBrake ({0})</value>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder Entwickler</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0}-бета</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Имя</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Имя Конфигурации</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
-    <value>Выбирать имя для конфигурации:</value>
+  <data name="ChooseNamePreset" xml:space="preserve">
+    <value>Выбор имени предустановки:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
     <value>Применить обновление?</value>
   </data>
   <data name="ApplyUpdateDialogMessage" xml:space="preserve">
-    <value>Обновление было загружено. Хотите установить его сейчас?</value>
+    <value>Обновление загружено. Установить его сейчас?</value>
   </data>
   <data name="ViewFullChangelog" xml:space="preserve">
     <value>Показать все изменения</value>
@@ -222,33 +213,51 @@
     <value>Уведомление</value>
   </data>
   <data name="UnsupportedOSError" xml:space="preserve">
-    <value>VidCoder не поддерживается в операционной системе. Windows XP и Server 2003 больше не работают. Установите VidCoder 1.4 или обновить операционную систему.</value>
+    <value>VidCoder не поддерживает вашу операционную систему. Windows XP и Server 2003 больше не поддерживаются. Установите VidCoder 1.4 или обновите операционную систему.</value>
   </data>
   <data name="EncodeCompleteWarning_SleepTitle" xml:space="preserve">
-    <value>Приближается сонный режим</value>
+    <value>Неизбежный сон системы</value>
   </data>
   <data name="EncodeCompleteWarning_LogOffTitle" xml:space="preserve">
-    <value>Выход неизбежен</value>
+    <value>Неизбежный выход</value>
   </data>
   <data name="EncodeCompleteWarning_ShutdownTitle" xml:space="preserve">
-    <value>Предстоящее завершение работы</value>
+    <value>Неизбежное завершение работы</value>
   </data>
   <data name="EncodeCompleteWarning_SleepMessage" xml:space="preserve">
-    <value>Система Войдет в спящий режим через {0} секунд.</value>
+    <value>Система уйдёт в спящий режим через {0} сек.</value>
   </data>
   <data name="EncodeCompleteWarning_LogOffMessage" xml:space="preserve">
-    <value>Вы выйдетесь в {0}.</value>
+    <value>Выход произойдёт через {0} сек.</value>
   </data>
   <data name="EncodeCompleteWarning_ShutdownMessage" xml:space="preserve">
-    <value>Система будет выключена в {0} секунд.</value>
+    <value>Система будет выключена через {0} сек.</value>
   </data>
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Кодирование завершено.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
-    <value>Не удалось найти видео плеер для {0}.</value>
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+    <value>Невозможно найти видеоплеер для {0}.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
-    <value>Ошибка проигрывания источника.</value>
+  <data name="ErrorPlayingSource" xml:space="preserve">
+    <value>Ошибка проигрывания исходника.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>Система уйдёт в режим гибернации через {0} сек.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Неизбежный режим гибернации</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Имя для выбора:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>Программа вынужденно будет закрыта, отчёт об ошибке будет отправлен автоматически.</value>
+  </data>
+  <data name="DownloadInstallerButton" xml:space="preserve">
+    <value>Скачать инсталлятор</value>
+  </data>
+  <data name="ReplaceJobButton" xml:space="preserve">
+    <value>Заменить задание</value>
   </data>
 </root>

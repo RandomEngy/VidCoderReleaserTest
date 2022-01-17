@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SubtitlesWindowTitle" xml:space="preserve">
-    <value>Titulky</value>
-  </data>
-  <data name="RemoveSubtitleTrack" xml:space="preserve">
-    <value>Odstranit tuto stopu</value>
-  </data>
   <data name="SubtitlesFromSourceLabel" xml:space="preserve">
     <value>Titulky ze zdroje:</value>
   </data>
@@ -156,22 +150,16 @@
   <data name="OffsetColumn" xml:space="preserve">
     <value>Časový posun (ms)</value>
   </data>
-  <data name="ImportSrtButton" xml:space="preserve">
-    <value>Importovat .srt soubor...</value>
-  </data>
   <data name="BurnedOverlapWarning" xml:space="preserve">
     <value>Ostatní titulky budou překrývat vypálené titulky.</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Hledání cizí audio stopy</value>
+  
+  
+  <data name="SubtitleCharsetDetectionFailedMessage" xml:space="preserve">
+    <value>Nelze rozpoznat kódování souboru titulků. Aby se titulky zobrazovaly správně, znovu uložte soubor jako UTF-8.</value>
   </data>
-  <data name="AddSourceNoSubtitlesToolTip" xml:space="preserve">
-    <value>Video soubor neobsahuje žádné titulky.</value>
-  </data>
-  <data name="SrtFilePickerText" xml:space="preserve">
-    <value>Přidat soubor s titulky</value>
-  </data>
-	<data name="DuplicateSubtitleTrack" xml:space="preserve">
-    <value>Duplikovat tuto stopu</value>
-  </data>
+  
+  
+  
+  
 </root>

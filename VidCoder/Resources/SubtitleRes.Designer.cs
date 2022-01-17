@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SubtitleRes {
@@ -61,16 +61,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No subtitles on the source video..
-        /// </summary>
-        public static string AddSourceNoSubtitlesToolTip {
-            get {
-                return ResourceManager.GetString("AddSourceNoSubtitlesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Burn In.
+        ///   Looks up a localized string similar to Burn in.
         /// </summary>
         public static string BurnedInColumn {
             get {
@@ -106,20 +97,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate this track.
-        /// </summary>
-        public static string DuplicateSubtitleTrack {
-            get {
-                return ResourceManager.GetString("DuplicateSubtitleTrack", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to External subtitles:.
         /// </summary>
         public static string ExternalSubtitlesLabel {
             get {
                 return ResourceManager.GetString("ExternalSubtitlesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} external.
+        /// </summary>
+        public static string ExternalSubtitlesSummaryFormat {
+            get {
+                return ResourceManager.GetString("ExternalSubtitlesSummaryFormat", resourceCulture);
             }
         }
         
@@ -133,7 +124,16 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forced Only.
+        ///   Looks up a localized string similar to Subtitle files.
+        /// </summary>
+        public static string FilePickerDescription {
+            get {
+                return ResourceManager.GetString("FilePickerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forced only.
         /// </summary>
         public static string ForcedOnlyColumn {
             get {
@@ -142,20 +142,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Foreign Audio Search.
+        ///   Looks up a localized string similar to Foreign audio scan.
         /// </summary>
-        public static string ForeignAudioSearch {
+        public static string ForeignAudioScan {
             get {
-                return ResourceManager.GetString("ForeignAudioSearch", resourceCulture);
+                return ResourceManager.GetString("ForeignAudioScan", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import .srt File....
+        ///   Looks up a localized string similar to Import from file....
         /// </summary>
-        public static string ImportSrtButton {
+        public static string ImportSubtitleButton {
             get {
-                return ResourceManager.GetString("ImportSrtButton", resourceCulture);
+                return ResourceManager.GetString("ImportSubtitleButton", resourceCulture);
             }
         }
         
@@ -178,6 +178,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No subtitles found on source..
+        /// </summary>
+        public static string NoSubtitlesText {
+            get {
+                return ResourceManager.GetString("NoSubtitlesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset (ms).
         /// </summary>
         public static string OffsetColumn {
@@ -196,20 +205,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove this track.
+        ///   Looks up a localized string similar to Could not detect the encoding of the subtitle file. To make sure the subtitles show up correctly, re-save the file as UTF-8..
         /// </summary>
-        public static string RemoveSubtitleTrack {
+        public static string SubtitleCharsetDetectionFailedMessage {
             get {
-                return ResourceManager.GetString("RemoveSubtitleTrack", resourceCulture);
+                return ResourceManager.GetString("SubtitleCharsetDetectionFailedMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add subtitles file.
         /// </summary>
-        public static string SrtFilePickerText {
+        public static string SubtitleFilePickerText {
             get {
-                return ResourceManager.GetString("SrtFilePickerText", resourceCulture);
+                return ResourceManager.GetString("SubtitleFilePickerText", resourceCulture);
             }
         }
         
@@ -219,15 +228,6 @@ namespace VidCoder.Resources {
         public static string SubtitlesFromSourceLabel {
             get {
                 return ResourceManager.GetString("SubtitlesFromSourceLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subtitles.
-        /// </summary>
-        public static string SubtitlesWindowTitle {
-            get {
-                return ResourceManager.GetString("SubtitlesWindowTitle", resourceCulture);
             }
         }
     }

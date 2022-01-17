@@ -4,14 +4,13 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 using ReactiveUI;
 using VidCoder.Resources;
+using VidCoderCommon.Model;
 
 namespace VidCoder.Model
 {
-	[JsonObject]
     public class Picker : ReactiveObject
     {
 		public Picker()
@@ -19,9 +18,9 @@ namespace VidCoder.Model
 			this.WhenAnyValue(x => x.Name)
 				.Select(name =>
 				{
-					if (this.IsNone)
+					if (this.IsDefault)
 					{
-						return CommonRes.None;
+						return CommonRes.Default;
 					}
 
 					return name;
@@ -32,131 +31,241 @@ namespace VidCoder.Model
         /// <summary>
         /// Gets or sets a value indicating whether this preset is the special "None" preset
         /// </summary>
-		[JsonProperty]
-		public bool IsNone { get; set; }
+		public bool IsDefault { get; set; }
 
 	    private bool isModified;
 
-		[JsonProperty]
 		public bool IsModified
-	    {
-		    get { return this.isModified; }
-			set { this.RaiseAndSetIfChanged(ref this.isModified, value); }
-	    }
+		{
+			get => this.isModified;
+			set => this.RaiseAndSetIfChanged(ref this.isModified, value);
+		}
 
 		private string name;
 
-		[JsonProperty]
 		public string Name
 		{
-			get { return this.name; }
-			set { this.RaiseAndSetIfChanged(ref this.name, value); }
+			get => this.name;
+			set => this.RaiseAndSetIfChanged(ref this.name, value);
 		}
 
-		[JsonProperty]
-		public bool OutputDirectoryOverrideEnabled { get; set; }
+		public string OutputDirectory { get; set; }
 
-		[JsonProperty]
-		public string OutputDirectoryOverride { get; set; }
+		public bool UseCustomFileNameFormat { get; set; }
 
-		[JsonProperty]
-		public bool NameFormatOverrideEnabled { get; set; }
+		public string OutputFileNameFormat { get; set; } 
 
-		[JsonProperty]
-		public string NameFormatOverride { get; set; }
+		// Used to be nullable
+		[JsonPropertyName("OutputToSourceDirectory2")]
+		public bool OutputToSourceDirectory { get; set; }
 
-		[JsonProperty]
-		public bool? OutputToSourceDirectory { get; set; }
+		// Used to be nullable
+		[JsonPropertyName("PreserveFolderStructureInBatch2")]
+		public bool PreserveFolderStructureInBatch { get; set; }
 
-		[JsonProperty]
-		public bool? PreserveFolderStructureInBatch { get; set; }
+		public WhenFileExists WhenFileExistsSingle { get; set; } = WhenFileExists.Prompt;
+
+		public WhenFileExists WhenFileExistsBatch { get; set; } = WhenFileExists.AutoRename;
+
+		/// <summary>
+		/// True if we want to update the word separator character in the title.
+		/// </summary>
+		public bool ChangeWordSeparator { get; set; } = true;
+
+		/// <summary>
+		/// The character to insert between words in titles.
+		/// </summary>
+		public string WordSeparator { get; set; } = " ";
+
+		private List<string> wordBreakCharacters = new List<string> { " ", "_" };
+
+		/// <summary>
+		/// The characters to use to separate words in titles.
+		/// </summary>
+		public List<string> WordBreakCharacters
+		{
+			get => this.wordBreakCharacters;
+			set => this.RaiseAndSetIfChanged(ref this.wordBreakCharacters, value);
+		}
+
+		/// <summary>
+		/// True to update the title capitalization.
+		/// </summary>
+		public bool ChangeTitleCaptialization { get; set; } = true;
+
+		/// <summary>
+		/// True if we should only change the title capitalization if it is ALL UPPERCASE or all lowercase.
+		/// </summary>
+		public bool OnlyChangeTitleCapitalizationWhenAllSame { get; set; } = true;
+
+		public TitleCapitalizationChoice TitleCapitalization { get; set; } = TitleCapitalizationChoice.EveryWord;
+
+		public bool IgnoreFilesBelowMbEnabled { get; set; }
+
+		public int IgnoreFilesBelowMb { get; set; } = 30;
 
 		private bool titleRangeSelectEnabled;
-		[JsonProperty]
 		public bool TitleRangeSelectEnabled
 		{
-			get { return this.titleRangeSelectEnabled; }
-			set { this.RaiseAndSetIfChanged(ref this.titleRangeSelectEnabled, value); }
+			get => this.titleRangeSelectEnabled;
+			set => this.RaiseAndSetIfChanged(ref this.titleRangeSelectEnabled, value);
 		}
 
 		private int titleRangeSelectStartMinutes = 40;
-		[JsonProperty]
 		public int TitleRangeSelectStartMinutes
 		{
-			get { return this.titleRangeSelectStartMinutes; }
-			set { this.RaiseAndSetIfChanged(ref this.titleRangeSelectStartMinutes, value); }
+			get => this.titleRangeSelectStartMinutes;
+			set => this.RaiseAndSetIfChanged(ref this.titleRangeSelectStartMinutes, value);
 		}
 
 		private int titleRangeSelectEndMinutes = 50;
-		[JsonProperty]
 		public int TitleRangeSelectEndMinutes
 		{
-			get { return this.titleRangeSelectEndMinutes; }
-			set { this.RaiseAndSetIfChanged(ref this.titleRangeSelectEndMinutes, value); }
+			get => this.titleRangeSelectEndMinutes;
+			set => this.RaiseAndSetIfChanged(ref this.titleRangeSelectEndMinutes, value);
 		}
 
-		[JsonProperty]
+		private PickerTimeRangeMode pickerTimeRangeMode;
+		public PickerTimeRangeMode PickerTimeRangeMode
+		{
+			get => this.pickerTimeRangeMode;
+			set => this.RaiseAndSetIfChanged(ref this.pickerTimeRangeMode, value);
+		}
+
+		private int? chapterRangeStart;
+		public int? ChapterRangeStart
+		{
+			get => this.chapterRangeStart;
+			set => this.RaiseAndSetIfChanged(ref this.chapterRangeStart, value);
+		}
+
+		private int? chapterRangeEnd;
+		public int? ChapterRangeEnd
+		{
+			get => this.chapterRangeEnd;
+			set => this.RaiseAndSetIfChanged(ref this.chapterRangeEnd, value);
+		}
+
+		private TimeSpan timeRangeStart;
+	    public TimeSpan TimeRangeStart
+		{
+			get => this.timeRangeStart;
+			set => this.RaiseAndSetIfChanged(ref this.timeRangeStart, value);
+		}
+
+		private TimeSpan timeRangeEnd = TimeSpan.FromMinutes(10);
+	    public TimeSpan TimeRangeEnd
+		{
+			get => this.timeRangeEnd;
+			set => this.RaiseAndSetIfChanged(ref this.timeRangeEnd, value);
+		}
+
 		public AudioSelectionMode AudioSelectionMode { get; set; } = AudioSelectionMode.Disabled;
 
-        // Default "und"
-		[JsonProperty]
-		public string AudioLanguageCode { get; set; } = "und";
+	    public string AudioIndices { get; set; } = "1";
 
-        // Applies only with AutoAudioType.Language
-		[JsonProperty]
+		// Applies only with AutoAudioType.Language
+		private List<string> audioLanguageCodes;
+		public List<string> AudioLanguageCodes
+		{
+			get => this.audioLanguageCodes;
+			set => this.RaiseAndSetIfChanged(ref this.audioLanguageCodes, value);
+		}
+
+		// Applies only with AutoAudioType.Language
 		public bool AudioLanguageAll { get; set; }
 
-		[JsonProperty]
+		public bool UseCustomAudioTrackNames { get; set; }
+
+		public List<string> AudioTrackNames { get; set; }
+
 		public SubtitleSelectionMode SubtitleSelectionMode { get; set; } = SubtitleSelectionMode.Disabled;
 
-		// Applies only with AutoSubtitleType.ForeignAudioSearch
-		[JsonProperty]
-		public bool SubtitleForeignBurnIn { get; set; }
+		public bool SubtitleAddForeignAudioScan { get; set; } = true;
 
-        // Applies only with AutoSubtitleType.Language
-        // Default "und"
-		[JsonProperty]
-		public string SubtitleLanguageCode { get; set; } = "und";
+	    public string SubtitleIndices { get; set; } = "1";
 
-        // Applies only with AutoSubtitleType.Language
-		[JsonProperty]
+		public int? SubtitleDefaultIndex { get; set; }
+
+		// Applies only with AutoSubtitleType.Language
+		private List<string> subtitleLanguageCodes;
+		public List<string> SubtitleLanguageCodes
+		{
+			get => this.subtitleLanguageCodes;
+			set => this.RaiseAndSetIfChanged(ref this.subtitleLanguageCodes, value);
+		}
+
+		// Applies only with AutoSubtitleType.Language
 		public bool SubtitleLanguageAll { get; set; }
 
         // Applies only with AutoSubtitleType.Language
         // Default true
-		[JsonProperty]
 		public bool SubtitleLanguageOnlyIfDifferent { get; set; } = true;
 
-        // Applies only with AutoSubtitleType.Language
-		[JsonProperty]
-		public bool SubtitleLanguageDefault { get; set; }
+		// Applies when at least 1 subtitle can be picked.
+		public bool SubtitleDefault { get; set; }
 
-        // Applies only with AutoSubtitleType.Language
-		[JsonProperty]
-		public bool SubtitleLanguageBurnIn { get; set; }
+        // Applies when any subtitles can be picked.
+        public bool SubtitleForcedOnly { get; set; }
 
-		[JsonProperty]
-		public bool UseEncodingPreset { get; set; }
+		public SubtitleBurnInSelection SubtitleBurnInSelection { get; set; } = SubtitleBurnInSelection.ForeignAudioTrack;
 
-		[JsonProperty]
-		public string EncodingPreset { get; set; }
+		public bool UseCustomSubtitleTrackNames { get; set; }
 
-		[JsonProperty]
+		public List<string> SubtitleTrackNames { get; set; }
+
+		public bool EnableExternalSubtitleImport { get; set; }
+
+		public string ExternalSubtitleImportLanguage { get; set; } = "eng";
+
+		public bool ExternalSubtitleImportDefault { get; set; }
+
+		public bool ExternalSubtitleImportBurnIn { get; set; }
+
+		/// <summary>
+		/// True to pass through video metadata like actors, release date, director.
+		/// </summary>
+		public bool PassThroughMetadata { get; set; } = true;
+
+		private bool useEncodingPreset;
+		public bool UseEncodingPreset
+		{
+			get => this.useEncodingPreset;
+			set => this.RaiseAndSetIfChanged(ref this.useEncodingPreset, value);
+		}
+
+		private string encodingPreset;
+		public string EncodingPreset
+		{
+			get => this.encodingPreset;
+			set => this.RaiseAndSetIfChanged(ref this.encodingPreset, value);
+		}
+
 		public bool AutoQueueOnScan { get; set; }
 
-		[JsonProperty]
 		public bool AutoEncodeOnScan { get; set; }
 
-		[JsonProperty]
 		public bool PostEncodeActionEnabled { get; set; }
 
-		[JsonProperty]
 		public string PostEncodeExecutable { get; set; }
 
-		[JsonProperty]
 		public string PostEncodeArguments { get; set; } = "\"{file}\"";
 
+		public SourceFileRemoval SourceFileRemoval { get; set; } = SourceFileRemoval.Disabled;
+
+		public SourceFileRemovalTiming SourceFileRemovalTiming { get; set; } = SourceFileRemovalTiming.AfterClearingCompletedItems;
+
+		public bool SourceFileRemovalConfirmation { get; set; } = true;
+
 		private ObservableAsPropertyHelper<string> displayName;
+
+		[JsonIgnore]
 		public string DisplayName => this.displayName.Value;
-    }
+
+		/// <summary>
+		/// Obsolete properties will be put in here.
+		/// </summary>
+		[JsonExtensionData]
+		public Dictionary<string, object> ExtensionData { get; set; }
+	}
 }

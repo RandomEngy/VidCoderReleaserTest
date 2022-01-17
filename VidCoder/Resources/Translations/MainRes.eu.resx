@@ -112,25 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TitleLabel" xml:space="preserve">
     <value>Izenburua:</value>
-  </data>
-  <data name="SettingsLabel" xml:space="preserve">
-    <value>Ezarpenak</value>
   </data>
   <data name="AddToQueueLabel" xml:space="preserve">
     <value>Gehitu Lerrora</value>
   </data>
   <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
     <value>Gehitu Izenburu Anitz Lerrora...</value>
-  </data>
-  <data name="FileMenu" xml:space="preserve">
-    <value>Agiria</value>
   </data>
   <data name="OpenVideoFile" xml:space="preserve">
     <value>Ireki Bideo Agiria...</value>
@@ -141,9 +135,6 @@
   <data name="EnqueueMultipleFiles" xml:space="preserve">
     <value>Lerrokatu Agiri Anitz...</value>
   </data>
-  <data name="EnqueueMultipleTitles" xml:space="preserve">
-    <value>Lerrokatu Izenburu Anitz...</value>
-  </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>Tresnak</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="ExportPreset" xml:space="preserve">
     <value>Esportatu Aurrezarpena...</value>
-  </data>
-  <data name="OptionsMenuItem" xml:space="preserve">
-    <value>Aukerak...</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Irakurri</value>
@@ -168,11 +156,9 @@
   <data name="ClearCompleted" xml:space="preserve">
     <value>Garbitu Osatutakoa</value>
   </data>
-  <data name="ExitMenuItem" xml:space="preserve">
-    <value>Irten</value>
-  </data>
   <data name="WindowsMenu" xml:space="preserve">
     <value>Leihoak</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
   </data>
   <data name="EncodingSettingsMenuItem" xml:space="preserve">
     <value>Kodeaketa Ezarpenak</value>
@@ -195,15 +181,6 @@
   <data name="AboutVidCoderMenuItem" xml:space="preserve">
     <value>VidCoder Buruz...</value>
   </data>
-  <data name="ChooseVideoSourceLabel" xml:space="preserve">
-    <value>Hautatu bideo iturburu bat:</value>
-  </data>
-  <data name="SourceLabel" xml:space="preserve">
-    <value>Iturburua:</value>
-  </data>
-  <data name="ScanningSourceLabel" xml:space="preserve">
-    <value>Iturburua mihatzen...</value>
-  </data>
   <data name="Recent" xml:space="preserve">
     <value>Berrikikoak</value>
   </data>
@@ -212,18 +189,6 @@
   </data>
   <data name="ScanErrorLabel" xml:space="preserve">
     <value>Akats bat gertatu da mihaketan.</value>
-  </data>
-  <data name="AudioLabel" xml:space="preserve">
-    <value>Audioa:</value>
-  </data>
-  <data name="VideoLabel" xml:space="preserve">
-    <value>Bideoa:</value>
-  </data>
-  <data name="SubtitlesLabel" xml:space="preserve">
-    <value>Azpidatziak:</value>
-  </data>
-  <data name="AddTrackButton" xml:space="preserve">
-    <value>Gehitu Bidea</value>
   </data>
   <data name="ChapterMarkersLabel" xml:space="preserve">
     <value>Atal Markatzaileak:</value>
@@ -236,12 +201,6 @@
   </data>
   <data name="DestinationToolTip" xml:space="preserve">
     <value>Klikatu kodeaketa helmuga editatzeko.</value>
-  </data>
-  <data name="SelectOutputPathButton" xml:space="preserve">
-    <value>Hautatu irteera helburua...</value>
-  </data>
-  <data name="EncodingLabel" xml:space="preserve">
-    <value>Kodeaketa:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Gelditu</value>
@@ -273,14 +232,8 @@
   <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
     <value>Kodeaketak garatzen</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Beste hizkuntzako Audio Bilaketa</value>
-  </data>
   <data name="NoneParen" xml:space="preserve">
     <value>(Ezer ez)</value>
-  </data>
-  <data name="TracksSummaryMultiple" xml:space="preserve">
-    <value>{0} bide</value>
   </data>
   <data name="SaveChangesPresetMessage" xml:space="preserve">
     <value>Aldaketak zure oraingo aurrezarpenean gordetzea nahi dituzu?</value>
@@ -296,9 +249,6 @@
   </data>
   <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
     <value>Osatutatik Leheneratuta</value>
-  </data>
-  <data name="PresetLabel" xml:space="preserve">
-    <value>Aurrezarpena:</value>
   </data>
   <data name="DestinationColumnHeader" xml:space="preserve">
     <value>Helmuga</value>
@@ -344,11 +294,6 @@
 
 {1}</value>
   </data>
-  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
-    <value>Hurrengo agiria(k) ezin d(ir)a ezagutu eta ez dira lerrora gehitu:
-
-{0}</value>
-  </data>
   <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
     <value>Akatsa bideo agiria(k) mihatzerakoan</value>
   </data>
@@ -360,9 +305,6 @@
 
 {0}</value>
   </data>
-  <data name="DirectoryCreateErrorTitle" xml:space="preserve">
-    <value>Akatsa zuzenbidea sortzerakoan</value>
-  </data>
   <data name="EncodeCompleted" xml:space="preserve">
     <value>Kodeaketa osatuta.</value>
   </data>
@@ -371,12 +313,6 @@
   </data>
   <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
     <value>VidCoder-ek amaitu du lerroko lan guztiak kodeatzeaz.</value>
-  </data>
-  <data name="OutputFolderRequiredMessage" xml:space="preserve">
-    <value>Ezin dira kodeaketa lanak gehitu berezko irteera agiritegi bat gabe. Sakatu Ongi bat hautatzeko.</value>
-  </data>
-  <data name="OutputFolderRequiredTitle" xml:space="preserve">
-    <value>Berezko Irteera Agiritegia Beharrezkoa</value>
   </data>
   <data name="OutputPathNotValidMessage" xml:space="preserve">
     <value>Irteera helburua ez da baliozkoa.</value>
@@ -394,46 +330,7 @@
     <value>UED:</value>
   </data>
   <data name="WhenDoneLabel" xml:space="preserve">
-    <value>Egindakoan:</value>
-  </data>
-  <data name="Preset_AndroidTablet" xml:space="preserve">
-    <value>Android Tableta</value>
-  </data>
-  <data name="Preset_Android" xml:space="preserve">
-    <value>Android</value>
-  </data>
-  <data name="Preset_AppleiPad" xml:space="preserve">
-    <value>Apple iPad</value>
-  </data>
-  <data name="Preset_AppleiPhone4" xml:space="preserve">
-    <value>Apple iPhone 4</value>
-  </data>
-  <data name="Preset_AppleiPhoneTouch" xml:space="preserve">
-    <value>Apple iPhone/Touch</value>
-  </data>
-  <data name="Preset_AppleiPod" xml:space="preserve">
-    <value>Apple iPod</value>
-  </data>
-  <data name="Preset_AppleTV" xml:space="preserve">
-    <value>AppleTV</value>
-  </data>
-  <data name="Preset_AppleTV2" xml:space="preserve">
-    <value>AppleTV 2</value>
-  </data>
-  <data name="Preset_AppleTV3" xml:space="preserve">
-    <value>AppleTV 3</value>
-  </data>
-  <data name="Preset_Universal" xml:space="preserve">
-    <value>Unibertsala</value>
-  </data>
-  <data name="Preset_HighProfile" xml:space="preserve">
-    <value>Goi Profila</value>
-  </data>
-  <data name="Preset_Normal" xml:space="preserve">
-    <value>Arrunta</value>
-  </data>
-  <data name="Preset_WindowsPhone7" xml:space="preserve">
-    <value>Windows Phone 7</value>
+    <value>Egindakoan</value>
   </data>
   <data name="SourceOption_VideoFile" xml:space="preserve">
     <value>Bideo Agiria...</value>
@@ -462,14 +359,8 @@
   <data name="LaunchUrlError" xml:space="preserve">
     <value>Akatsa URL-a abiarazterakoan: {0}</value>
   </data>
-  <data name="UserConfigLoadError" xml:space="preserve">
-    <value>Ezinezkoa beharrezko erabiltzaile ezarpenen agiria gertatzea; badaiteke hondatuta egotea. Ezabatzea nahi duzu? Honek ez die eragingo gordetako zure aurrezarpenei.</value>
-  </data>
-  <data name="UserConfigLoadErrorTitle" xml:space="preserve">
-    <value>Akatsa ezarpenak gertatzerakoan</value>
-  </data>
   <data name="PresetImportErrorMessage" xml:space="preserve">
-    <value>Ezinezkoa aurrezarpena inporatzea. Heuskarria ez da ezagutzen.</value>
+    <value>Hutsegitea aurrezarpena inportatzerakoan. Ikusi oharra xehetasunetarako.</value>
   </data>
   <data name="ImportErrorTitle" xml:space="preserve">
     <value>Inportazio Akatsa</value>
@@ -483,26 +374,23 @@
   <data name="ExportPresetFilePickerText" xml:space="preserve">
     <value>Esportatu Aurrezarpena</value>
   </data>
-  <data name="PresetSaveConfirmMessage" xml:space="preserve">
-    <value>Aldaketak zure oraingo aurrezarpenean gordetzea nahi dituzu?</value>
+  <data name="SaveChangesPickerMessage" xml:space="preserve">
+    <value>Aldaketak zure oraingo hautatzailean gordetzea nahi dituzu?</value>
   </data>
-  <data name="PresetSaveConfirmTitle" xml:space="preserve">
-    <value>Gorde oraingo aurrezarpena?</value>
+  <data name="SaveChangesPickerTitle" xml:space="preserve">
+    <value>Gorde oraingo hautatzailea?</value>
   </data>
-  <data name="PresetRevertConfirmMessage" xml:space="preserve">
-    <value>Zihur zaude gorde gabeko aldaketa guztiak aurrezarpen honetara leheneratzea nahi dituzula?</value>
+  <data name="RevertConfirmMessage" xml:space="preserve">
+    <value>Zihur zaude gorde gabeko aldaketa guztiak leheneratzea nahi dituzula?</value>
   </data>
-  <data name="PresetRevertConfirmTitle" xml:space="preserve">
-    <value>Leheneratu Aurrezarpena</value>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>Leheneratu</value>
   </data>
-  <data name="PresetRemoveConfirmMessage" xml:space="preserve">
-    <value>Zihur zaude aurrezarpen hau kentzea nahi duzula?</value>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Ziur zaude hau kendu nahi duzula?</value>
   </data>
-  <data name="PresetRemoveConfirmTitle" xml:space="preserve">
-    <value>Kendu Aurrezarpena</value>
-  </data>
-  <data name="UserConfigCorrupted" xml:space="preserve">
-    <value>Itxurapena hondatuta zegoen eta ezin izan da gertatu. Badaiteke zure zenbait ezarpen berrezarriak izana.</value>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>Kendu</value>
   </data>
   <data name="OutputDirectoryPickerText" xml:space="preserve">
     <value>Hautatu kodeatutako bideo agirientzako irteera zuzenbidea.</value>
@@ -522,9 +410,6 @@
   <data name="CloseVideoSourceToolTip" xml:space="preserve">
     <value>Itxi bideo iturburua</value>
   </data>
-  <data name="CloseVideoSourceMenuItem" xml:space="preserve">
-    <value>Itxi Bideo Iturburua</value>
-  </data>
   <data name="UpdatesMenuItem" xml:space="preserve">
     <value>Eguneraketak...</value>
   </data>
@@ -533,9 +418,6 @@
   </data>
   <data name="RangeBarToolTip" xml:space="preserve">
     <value>Ezker-klikatu hasiera denbora ezartzeko eta eskuin-klikatu amaiera denbora ezartzeko.</value>
-  </data>
-  <data name="Preset_WindowsPhone8" xml:space="preserve">
-    <value>Windows Phone 8</value>
   </data>
   <data name="QueueFormat_Chapters" xml:space="preserve">
     <value>Bd {0}</value>
@@ -561,12 +443,6 @@
   <data name="PresetDiscardConfirmTitle" xml:space="preserve">
     <value>Baztertu Aldaketak?</value>
   </data>
-  <data name="RemoveAudioTrackToolTip" xml:space="preserve">
-    <value>Kendu audio bidea</value>
-  </data>
-  <data name="Preset_Xbox360" xml:space="preserve">
-    <value>Xbox 360</value>
-  </data>
   <data name="RemoveFromQueueToolTip" xml:space="preserve">
     <value>Kendu lerrotik</value>
   </data>
@@ -580,7 +456,7 @@
     <value>Esportatu lerroa</value>
   </data>
   <data name="QueueImportErrorMessage" xml:space="preserve">
-    <value>Ezinezkoa aurrezarpena inporatzea. Heuskarria ez da ezagutzen.</value>
+    <value>Hutsegitea lerroa inportatzerakoan. Ikusi oharra xehetasunetarako.</value>
   </data>
   <data name="ImportPresetFilePickerTitle" xml:space="preserve">
     <value>Inportatu aurrezarpen agiria</value>
@@ -609,21 +485,257 @@
   <data name="EncodeDetailsMenuItem" xml:space="preserve">
     <value>Kodeaketa Xehetasunak</value>
   </data>
-	<data name="EncodingSettingsChangedMessage" xml:space="preserve">
-    <value>Kodeaketa ezarpenak aldatu egin dira lerrora gai bat gehitu zenuenetik. Nahi duzu oraingo kodeaketa ezarpenak ezartzea lerroko gai guztiei?</value>
-  </data>
-	<data name="EncodingSettingsChangedTitle" xml:space="preserve">
-    <value>Ezarpenak aldatu egin dira</value>
-  </data>
-	<data name="RenameDatabaseFileLine2" xml:space="preserve">
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
     <value>Dagoen agiria berrizendatzea eta berri batekin nahi duzu?</value>
   </data>
-	<data name="RenameDatabaseFileLine1" xml:space="preserve">
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
     <value>Ezin da datubase agiria {0} bertsioa irakurri. VidCoder {1}-ek ezagutzen duen bertsio handiena {2} da</value>
     <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
   </data>
-	<data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
     <value>Datubase agiri bateraezina</value>
     <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
+  </data>
+  <data name="PickerMenuItem" xml:space="preserve">
+    <value>Hautatzailea</value>
+  </data>
+  <data name="CouldNotLoadPickerMessage" xml:space="preserve">
+    <value>Ezinezkoa hautatzailea gertatzea: </value>
+  </data>
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>beste {0} izenburuk honen antzeko iraupena dute.</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>{0} babeskopia agiri bat duzu. Erabiltzea nahi duzu?</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>Akatsa bideoa irakurtzerakoan.</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>Norbere bideo irakurgailua ezin da aurkitu hemen: {0}.</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  <data name="EnqueueFolderOfVideoFiles" xml:space="preserve">
+    <value>Lerrokatu Bideo Agirien Agiritegia...</value>
+  </data>
+  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
+    <value>Akatsak egon dira zenbait agiri eskaneatzerakoan eta ezin dira lerrora gehitu:
+
+{0}</value>
+  </data>
+  <data name="FileSizeColumnHeader" xml:space="preserve">
+    <value>Neurria</value>
+    <comment>Used on the "completed encodes" tab, to label the column that shows the final output file size.</comment>
+  </data>
+  <data name="OpenAppDataFolder" xml:space="preserve">
+    <value>Ireki Aplikazioaren Datu Agiritegia</value>
+    <comment>Menu choice for opening the application data folder (that holds the VidCoder database file, logs, etc)</comment>
+  </data>
+  <data name="RibbonEncodingGroupLabel" xml:space="preserve">
+    <value>Kodeaketa</value>
+  </data>
+  <data name="RibbonSettingsGroupLabel" xml:space="preserve">
+    <value>Ezarpenak</value>
+  </data>
+  <data name="GlobalOptionsLabel" xml:space="preserve">
+    <value>Aukera orokorrak</value>
+  </data>
+  <data name="EncodingSettingsButton" xml:space="preserve">
+    <value>Kodeaketa ezarpenak: {0}</value>
+    <comment>{0} is a placeholder for the name of the encoding preset currently selected.</comment>
+  </data>
+  <data name="EncodingSettingsButtonToolTip" xml:space="preserve">
+    <value>Bideo eta audiko kodekak, neurriratzea, iragazkiak, edukiontzia</value>
+  </data>
+  <data name="OpenSourceRibbonButton" xml:space="preserve">
+    <value>Ireki iturburua</value>
+  </data>
+  <data name="ImportExportRibbonButton" xml:space="preserve">
+    <value>Inportatu/Esportatu</value>
+    <comment>Label for ribbon button to import or export presets or queues</comment>
+  </data>
+  <data name="AddedSubtitleFromFile" xml:space="preserve">
+    <value>Azpidatzia ongi gehitu da {0} agiritik</value>
+  </data>
+  <data name="OpenFormat" xml:space="preserve">
+    <value>Ireki {0}</value>
+    <comment>Format for opening a source. For example: "Open E:\ - THE_INCREDIBLES"</comment>
+  </data>
+  <data name="NoAudioDescription" xml:space="preserve">
+    <value>Ez da audiorik aurkitu iturburuan.</value>
+  </data>
+  <data name="NoAudioSummary" xml:space="preserve">
+    <value>Audiorik ez</value>
+    <comment>Summary text for when no audio tracks are found on the source</comment>
+  </data>
+  <data name="NoSubtitlesSummary" xml:space="preserve">
+    <value>Azpidatzirik ez</value>
+    <comment>Summary text for when no subtitle tracks are found on the source and no external subtitles have been added</comment>
+  </data>
+  <data name="DataTooOldRunVidCoderVersion" xml:space="preserve">
+    <value>Zure datuak oso zaharrak dira eguneratzeko. Ekin VidCoder {0} behin eguneratzeko bertsio bateragarri batera, orduan saiatu bertsio honekin berriro.</value>
+    <comment>This is shown on app start when old data is detected.</comment>
+  </data>
+  <data name="BitrateColumn" xml:space="preserve">
+    <value>Bitneurria</value>
+  </data>
+  <data name="SampleRateColumn" xml:space="preserve">
+    <value>Laginketa Neurria</value>
+  </data>
+  <data name="ClearRecentFilesButtonToolTip" xml:space="preserve">
+    <value>Garbitu azken agiriak</value>
+  </data>
+  <data name="OpenSourceLabel" xml:space="preserve">
+    <value>Ireki</value>
+    <comment>Label on top of the different options for opening video source on the startup screen.</comment>
+  </data>
+  <data name="ScanningSourceLabelFormat" xml:space="preserve">
+    <value>Mihatzen {0}...</value>
+    <comment>{0} is the name of the source being scanned.</comment>
+  </data>
+  <data name="RetryFailedItemsMenuItem" xml:space="preserve">
+    <value>Saiatu berriro huts egindako gai guztiekin</value>
+  </data>
+  <data name="StartChapterAutomationName" xml:space="preserve">
+    <value>Atal hasiera</value>
+    <comment>Narrator label for the chapter start combo box</comment>
+  </data>
+  <data name="EndChapterAutomationName" xml:space="preserve">
+    <value>Atal amaiera</value>
+    <comment>Narrator label for the end chapter combo box</comment>
+  </data>
+  <data name="EditChaptersButtonAutomationName" xml:space="preserve">
+    <value>Ediatatu atalak</value>
+    <comment>Help text for screen readers for the Edit chapters button</comment>
+  </data>
+  <data name="ApplyCurrentEncodingSettings" xml:space="preserve">
+    <value>Ezarri uneko kodeaketa ezarpenak</value>
+  </data>
+  <data name="OpenSourceFolderOption" xml:space="preserve">
+    <value>Ireki iturburu agiritegia</value>
+    <comment>Menu option to open the folder of the source file in the queue</comment>
+  </data>
+  <data name="WithCurrentJobsFormat" xml:space="preserve">
+    <value>uneko lan(ar)ekin: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger when currently encoding job(s) complete. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="WithQueueFormat" xml:space="preserve">
+    <value>lerroarekin: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger on queue completion. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="VideoEncodingOptionsToolTip" xml:space="preserve">
+    <value>Bideo kodeaketa aukerak</value>
+  </data>
+  <data name="AudioEncodingOptionsToolTip" xml:space="preserve">
+    <value>Audio kodeaketa aukerak</value>
+  </data>
+  <data name="NewVersionDownloadFinishedOnLaunchStatus" xml:space="preserve">
+    <value>{0} bertsio amaitu da jeisteaz.</value>
+  </data>
+  <data name="RemoveFromQueueMenuItem" xml:space="preserve">
+    <value>Kendu lerrotik</value>
+  </data>
+  <data name="ClearSucceededMenuItem" xml:space="preserve">
+    <value>Garbitu arrakastatsuak</value>
+  </data>
+  <data name="ClearFailedMenuItem" xml:space="preserve">
+    <value>Garbitu huts eginak</value>
+  </data>
+  <data name="ClearQueueConfirmationMessage" xml:space="preserve">
+    <value>Zihur zaude gai guztiak kentzea nahi dituzula lerrotik?</value>
+  </data>
+  <data name="RemoveAllFomQueueMenuItem" xml:space="preserve">
+    <value>Kendu guztiak lerrotik</value>
+  </data>
+  <data name="EncodeCompleteActionAbortedDueToErrorsMessage" xml:space="preserve">
+    <value>Kodeaketa osatze ekintza ez da ekin akatsak daudelako kodeaketa emaitza zerrendan.</value>
+  </data>
+  <data name="AudioPickerButtonToolTip" xml:space="preserve">
+    <value>Berezgaitasunez hautatu audio bideak...</value>
+  </data>
+  <data name="SubtitlePickerButtonToolTip" xml:space="preserve">
+    <value>Berezgaitasunez hautatu azpidatzi bideak...</value>
+  </data>
+  <data name="AudioSubtitleTrackColumnHeader" xml:space="preserve">
+    <value>Bidea</value>
+    <comment>Column header for the audio or subtitle track summary. This is an an auto-generated summary that includes language, format, etc.</comment>
+  </data>
+  <data name="AudioTrackNameAutomationName" xml:space="preserve">
+    <value>Audio bidearen izena</value>
+    <comment>Narrator label for the audio track name text box.</comment>
+  </data>
+  <data name="SubtitleNameAutomationName" xml:space="preserve">
+    <value>Azpidatziaren izena</value>
+    <comment>Narrator label for the subtitle name text box.</comment>
+  </data>
+  <data name="CouldNotRecycleFile" xml:space="preserve">
+    <value>Akatsa agiriak Birziklapen-ontzira bidaltzean.</value>
+  </data>
+  <data name="DestinationAutomaticToolTip" xml:space="preserve">
+    <value>Helmuga berezgaitasunez ezartzen da. Klikatu ezarpenak editatzeko.</value>
+  </data>
+  <data name="DestinationManualToolTip" xml:space="preserve">
+    <value>Helmuga eskuz ezartzen da. Klikatu ezarpenak editatzeko.</value>
+  </data>
+  <data name="CompareAgainstOriginal" xml:space="preserve">
+    <value>Alderatu jatorrizkoarekin</value>
+  </data>
+  <data name="CompareEncodedLabel" xml:space="preserve">
+    <value>Kodeatua</value>
+    <comment>Label for the encoded video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareOriginalLabel" xml:space="preserve">
+    <value>Jatorrizkoa</value>
+    <comment>Label for the original video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareWindowHelpText" xml:space="preserve">
+    <value>Klikatu edo sakatu Ktrl kodeaketa bertsioa erakusteko.</value>
+  </data>
+  <data name="CompareWindowTitleFormat" xml:space="preserve">
+    <value>Bideo alderaketa: {0} - {1}</value>
+    <comment>Title for the Video compare window.
+{0} is a string indicating if it's original or encoded.
+{1} is the file name, e.g. MyFile.mkv</comment>
+  </data>
+  <data name="MuteAutomationName" xml:space="preserve">
+    <value>Mututu</value>
+    <comment>Text for screen readers for the mute button on video playback</comment>
+  </data>
+  <data name="UnmuteAutomationName" xml:space="preserve">
+    <value>Desmututu</value>
+    <comment>Text for screen readers for the unmute button on video playback</comment>
+  </data>
+  <data name="AutoPauseLowBattery" xml:space="preserve">
+    <value>Beresgaitasunez pausatzen bateria agortzen ari delako. </value>
+  </data>
+  <data name="AutoPauseLowDiskSpace" xml:space="preserve">
+    <value>Beresgaitasunez pausatzen diskako toki askea {0} GB-tik behera dagoelako.</value>
+    <comment>{0} is the disk space threshold for auto-pause in GB</comment>
+  </data>
+  <data name="AutoPauseProcessDetected" xml:space="preserve">
+    <value>Beresgaitasunez pausatzen, prozesua atzemanda: {0}</value>
+    <comment>{0} is the name of the process we were waiting for to pause</comment>
+  </data>
+  <data name="AutoPauseResumeBattery" xml:space="preserve">
+    <value>Beresgaitasunez berrekiten, AC argindarrera konektatuta.</value>
+  </data>
+  <data name="AutoPauseResumeDiskSpace" xml:space="preserve">
+    <value>Beresgaitasunez berrekiten, tokia askea dago diska gogorrean.</value>
+  </data>
+  <data name="AutoPauseResumeProcess" xml:space="preserve">
+    <value>Berezgaitasunez berrekiten, prozesua amaitu da.</value>
+  </data>
+  <data name="Win7DeprecationWarning" xml:space="preserve">
+    <value>VidCoder-ek ez du sostengurik jadanik Windows 7 edo 8-an.
+
+VidCoder zeure arriskupena erabiltzen jarrai dezakezu. Zenbait ezaugarrik ez dute jardungo eta beste arazo ezezgun batzuk egon daitezke.  Ez dago sostengu eskuragarririk arazo horiek gertatzean.
+
+v5 da Windows 7/8-rako dagoen azken bertsioa.
+
+Kontuz-ohar hau bi aldiz bakarrik erakutsiko da.</value>
   </data>
 </root>

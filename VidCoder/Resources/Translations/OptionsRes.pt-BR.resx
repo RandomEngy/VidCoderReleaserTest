@@ -112,17 +112,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>Quando a seleção de áudio automática é desabilitada, a última faixa escolhida persiste.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>Quando a seleção de legenda automática estiver desativada, as últimas legendas escolhidas continuam.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>Geral</value>
   </data>
@@ -144,77 +138,14 @@
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
     <value>Atualizações automáticas</value>
   </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Receba atualizações Beta</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>Nomeação de arquivos</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Pasta padrão:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>Formato do arquivo:</value>
-  </data>
-  <data name="OutputToSourceDirCheckBox" xml:space="preserve">
-    <value>Usar o diretório de origem, se possível</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Formato padrão</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Formato personalizado:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Opções disponíveis: {0}</value>
-  </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>Quando um arquivo já existe...</value>
   </data>
   <data name="EncodingSingleFile" xml:space="preserve">
     <value>Codificação de arquivo único:</value>
   </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Perguntar se deseja substituí-lo</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Substituir o arquivo sem avisar</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Renomear automaticamente</value>
-  </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
     <value>Codificação de arquivos em lote:</value>
-  </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Sobrescrever</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Renomear automaticamente</value>
-  </data>
-  <data name="AutomaticAudioSelection" xml:space="preserve">
-    <value>Seleção automática de áudio</value>
-  </data>
-  <data name="AudioSubtitlesTab" xml:space="preserve">
-    <value>Áudio / legendas</value>
-  </data>
-  <data name="LanguageRadioButton" xml:space="preserve">
-    <value>Idioma:</value>
-  </data>
-  <data name="IncludeAllTracksCheckBox" xml:space="preserve">
-    <value>Incluem todas as faixas</value>
-  </data>
-  <data name="AutomaticSubtitleSelection" xml:space="preserve">
-    <value>Seleção automática de legendas</value>
-  </data>
-  <data name="ForeignAudioSearchRadioButton" xml:space="preserve">
-    <value>Pesquisa de áudio externo</value>
-  </data>
-  <data name="BurnInCheckBox" xml:space="preserve">
-    <value>Embutida</value>
-  </data>
-  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
-    <value>Somente se outro idioma de áudio</value>
   </data>
   <data name="AutoPauseLabel" xml:space="preserve">
     <value>Pausa automática quando um destes processos for iniciado:</value>
@@ -228,17 +159,11 @@
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
     <value>Lembrar das últimas pastas e arquivos utilizados</value>
   </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Permitir a configuração de nome personalizado em faixas de áudio (suporte limitado)</value>
-  </data>
   <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Habilitar LibDVDNav (Alteração requer reinicialização do programa)</value>
-  </data>
-  <data name="KeepScansAfterCompletionCheckBox" xml:space="preserve">
-    <value>Manter pesquisas após a conclusão (permite a edição de itens concluídos)</value>
+    <value>Habilitar LibDVDNav (Requer reinicialização do programa. Necessário para suportar múltiplos ângulos)</value>
   </data>
   <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Excluir arquivos de origem após limpeza dos itens concluídos (com confirmação)</value>
+    <value>Excluir arquivos de origem após limpeza dos itens concluídos com sucesso</value>
   </data>
   <data name="LoggingVerbosityLabel" xml:space="preserve">
     <value>Detalhe do Relatório:</value>
@@ -255,8 +180,8 @@
   <data name="OptionsDialogTitle" xml:space="preserve">
     <value>Opções</value>
   </data>
-  <data name="ProcessesTab" xml:space="preserve">
-    <value>Processos</value>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Processar</value>
   </data>
   <data name="AdvancedTab" xml:space="preserve">
     <value>Avançadas</value>
@@ -306,9 +231,6 @@
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
     <value>Cuidado: esta versão é mais propensa a ter erros e falhas.</value>
   </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Idiomas</value>
-  </data>
   <data name="PlayersSection" xml:space="preserve">
     <value>Reprodutores de vídeo</value>
   </data>
@@ -320,9 +242,6 @@
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
     <value>Pasta de destino</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Formato do nome</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Opções avançadas</value>
@@ -396,29 +315,73 @@
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
     <value>Utilizar o processo de trabalho para encodar</value>
   </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Vídeo</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Habilitar o acelerador de decodificação de hardware para DXVA</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>Esta opção só é adequada para sistemas mais lentos. Decodificadores de hardware atualmente são projetados para reprodução, não para re-codificar o vídeo. Então será provável gargalo em sistemas mais rápidos.</value>
-  </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
     <value>Preservar o tempo criado e modificado na conversão de arquivos</value>
   </data>
-  <data name="DefaultCheckBox" xml:space="preserve">
-    <value>Padrão</value>
-    <comment>Label for the check box to mark an automatically chosen subtitle as "Default"</comment>
-  </data>
-  <data name="PreserveFolderStructureCheckBox" xml:space="preserve">
-    <value>Preservar a estrutura de pastas ao converter lista</value>
-  </data>
-  <data name="PreserveFolderStructureToolTip" xml:space="preserve">
-    <value>Se você codificar uma pasta cheia de arquivos, os arquivos convertidos serão colocados em subpastas, para coincidir com a estrutura de diretório de origem.</value>
-  </data>
-	<data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
     <value>Pasta personalizada para visualização:</value>
+  </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Opções de processo</value>
+  </data>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>Escalonamento do CPU - Núcleos Permitidos:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
+  </data>
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Use a otimização de CPU para limitar o número de núcleos de processador que o VidCoder pode usar na codificação.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Use o reprodutor embutido para pré-visualizações</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Máximo de trabalhos de codificação permitidos:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Isto define o número de trabalhos simultâneos de codificação que são permitidos. Útil para máquinas com muitos núcleos de CPU.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Geral</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Alertas para atualizações:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>A opção de processar a tarefa, entrará em vigor após você sair e reiniciar o VidCoder.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Copiar o log de codificação para uma pasta personalizada</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Manter arquivos se falhar ou interromper a codificação</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Ativar ação "Quando terminar" quando houver falha na codificação de tarefas</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Pausar quando a bateria estiver baixa</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Pausar quando o espaço em disco estiver abaixo de:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Pausa automática</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Opções disponíveis: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Espaço em disco baixo em gigabytes</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Arraste e solte para reordenar</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Número de tentativas de codificação:</value>
   </data>
 </root>

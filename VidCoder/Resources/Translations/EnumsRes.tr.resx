@@ -129,6 +129,23 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Sıkı</value>
   </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>Sistem temasını kullan</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>Koyu</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Hızlı</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>Az Duyarlı</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
   </data>
@@ -141,48 +158,57 @@
   <data name="Default" xml:space="preserve">
     <value>Varsayılan</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
     <value>Bob</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Hızlı</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Yavaş</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 Bob</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Daha Yavaş</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>Mekansal Denetimi Atla</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>Taraksız</value>
+  </data>
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
     <value>Hafif</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>Orta</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
+  <data name="DenoisePreset_strong" xml:space="preserve">
     <value>Güçlü</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
-    <value>Ultra hafif</value>
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
+    <value>Ultra Hafif</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
+  <data name="DenoiseTune_animation" xml:space="preserve">
     <value>Animasyon</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
+  <data name="DenoiseTune_film" xml:space="preserve">
     <value>Film</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
+  <data name="DenoiseTune_grain" xml:space="preserve">
     <value>Granül</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
-    <value>Yüksek Devinim</value>
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
+    <value>Yüksek Hareket</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
-    <value>hqdn3d filtresi</value>
+    <value>hqdn3d</value>
   </data>
   <data name="Denoise_NLMeans" xml:space="preserve">
-    <value>NL-Means filtresi</value>
+    <value>NL-Means</value>
+  </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>VidCoder'ı Kapat</value>
   </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Hiçbir Şey Yapma</value>
@@ -190,11 +216,14 @@
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>Çıkar {0}:</value>
   </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Hazırda Beklet</value>
+  </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Oturumu Kapat</value>
   </data>
   <data name="EncodeCompleteActionType_Shutdown" xml:space="preserve">
-    <value>Kapat</value>
+    <value>Bilgisayarı Kapat</value>
   </data>
   <data name="EncodeCompleteActionType_Sleep" xml:space="preserve">
     <value>Uyku</value>
@@ -202,13 +231,118 @@
   <data name="Off" xml:space="preserve">
     <value>Kapalı</value>
   </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>Keskinleştir</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>Yumuşat</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>BluRay</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Dosya</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
-    <value>Bölüm</value>
+    <value>Bölümler</value>
   </data>
   <data name="VideoRangeType_Frames" xml:space="preserve">
-    <value>Kare</value>
+    <value>Kareler</value>
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Zaman Aralığı</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>Her Kelime</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>İlk Kelime</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>Kodlamayı durdur</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>Çıkışta Yükle</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>Açılışta Yükle</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>Kodlama</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>Tarama</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>Bölümler</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>Zaman Aralığı</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>Dosyaları sil (onay ile)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>Geri Dönüşüm Kutusuna Gönder</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>Otomatik adlandır</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>Üzerine yaz</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>Sor</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>Hiçbiri</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>Küçük</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>Çok Küçük</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>Çok geniş</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>Geniş</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>Pürüzsüz Kroma</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>Alfabetik</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>Seçilen</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>İlk</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>Yabancı ses parçası</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>Yabancı ses parçası, yoksa İlk</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>Hiçbiri</value>
   </data>
 </root>

@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CommonRes {
@@ -92,7 +92,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse....
+        ///   Looks up a localized string similar to Browse….
         /// </summary>
         public static string Browse {
             get {
@@ -164,6 +164,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default:.
+        /// </summary>
+        public static string DefaultLabel {
+            get {
+                return ResourceManager.GetString("DefaultLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mark this subtitle track as the default. This will show up during playback until another track is picked..
         /// </summary>
         public static string DefaultSubtitleToolTip {
@@ -200,6 +209,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate this track.
+        /// </summary>
+        public static string DuplicateTrack {
+            get {
+                return ResourceManager.GetString("DuplicateTrack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed.
         /// </summary>
         public static string Failed {
@@ -227,6 +245,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File no longer exists..
+        /// </summary>
+        public static string FileNoLongerExists {
+            get {
+                return ResourceManager.GetString("FileNoLongerExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} Files.
         /// </summary>
         public static string FilePickerExtTemplate {
@@ -236,7 +263,16 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only display forced subtitles from the given track. Usually this means small bits of foreign dialogue..
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        public static string First {
+            get {
+                return ResourceManager.GetString("First", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only display forced subtitles from the subtitle track(s). Usually this means small bits of foreign dialogue..
         /// </summary>
         public static string ForcedSubtitleToolTip {
             get {
@@ -250,6 +286,24 @@ namespace VidCoder.Resources {
         public static string ForeignAudioSearchToolTip {
             get {
                 return ResourceManager.GetString("ForeignAudioSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string Manual {
+            get {
+                return ResourceManager.GetString("Manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MB.
+        /// </summary>
+        public static string MegabytesAbbreviation {
+            get {
+                return ResourceManager.GetString("MegabytesAbbreviation", resourceCulture);
             }
         }
         
@@ -268,6 +322,24 @@ namespace VidCoder.Resources {
         public static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease {0}.
+        /// </summary>
+        public static string NumberBoxDecreaseButtonAutomationTextFormat {
+            get {
+                return ResourceManager.GetString("NumberBoxDecreaseButtonAutomationTextFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase {0}.
+        /// </summary>
+        public static string NumberBoxIncreaseButtonAutomationTextFormat {
+            get {
+                return ResourceManager.GetString("NumberBoxIncreaseButtonAutomationTextFormat", resourceCulture);
             }
         }
         
@@ -299,7 +371,16 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Output to the source directory if possible.
+        ///   Looks up a localized string similar to Open split button.
+        /// </summary>
+        public static string OpenSplitButtonAutomationName {
+            get {
+                return ResourceManager.GetString("OpenSplitButtonAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output to the source folder if possible.
         /// </summary>
         public static string OutputToSourceDirCheckBox {
             get {
@@ -326,7 +407,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you encode a folder full of files the encoded versions will be put into subfolders to match the source directory structure..
+        ///   Looks up a localized string similar to If you encode a folder full of files the encoded versions will be put into subfolders to match the source folder structure..
         /// </summary>
         public static string PreserveFolderStructureToolTip {
             get {
@@ -371,6 +452,24 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Tracks.
+        /// </summary>
+        public static string QueueColumnNameAudioTracks {
+            get {
+                return ResourceManager.GetString("QueueColumnNameAudioTracks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cropping.
+        /// </summary>
+        public static string QueueColumnNameCropping {
+            get {
+                return ResourceManager.GetString("QueueColumnNameCropping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination.
         /// </summary>
         public static string QueueColumnNameDestination {
@@ -385,6 +484,15 @@ namespace VidCoder.Resources {
         public static string QueueColumnNameDuration {
             get {
                 return ResourceManager.GetString("QueueColumnNameDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output Size.
+        /// </summary>
+        public static string QueueColumnNameOutputSize {
+            get {
+                return ResourceManager.GetString("QueueColumnNameOutputSize", resourceCulture);
             }
         }
         
@@ -412,6 +520,15 @@ namespace VidCoder.Resources {
         public static string QueueColumnNameSource {
             get {
                 return ResourceManager.GetString("QueueColumnNameSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subtitle Tracks.
+        /// </summary>
+        public static string QueueColumnNameSubtitleTracks {
+            get {
+                return ResourceManager.GetString("QueueColumnNameSubtitleTracks", resourceCulture);
             }
         }
         
@@ -470,6 +587,33 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove this track.
+        /// </summary>
+        public static string RemoveTrack {
+            get {
+                return ResourceManager.GetString("RemoveTrack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}/{1} audio track(s).
+        /// </summary>
+        public static string SelectedOverTotalAudioTracksFormat {
+            get {
+                return ResourceManager.GetString("SelectedOverTotalAudioTracksFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}/{1} subtitle track(s).
+        /// </summary>
+        public static string SelectedOverTotalSubtitleTracksFormat {
+            get {
+                return ResourceManager.GetString("SelectedOverTotalSubtitleTracksFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stream {0}.
         /// </summary>
         public static string StreamChoice {
@@ -493,6 +637,15 @@ namespace VidCoder.Resources {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         

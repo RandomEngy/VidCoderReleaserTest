@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Hinzufügen</value>
@@ -151,11 +151,9 @@
     <value>Auto-Umbenennen</value>
   </data>
   <data name="FileConflictWarning" xml:space="preserve">
-    <value>Unter {0} ist bereits eine Datei mit gleichem Namen vorhanden. Möchten Sie die Datei überschreiben, automatisch einen neuen Ausgabepfad für den Encodierungs-Auftrag finden oder den Vorgang abbrechen?</value>
+    <value>Unter {0} ist bereits eine Datei mit diesem Namen vorhanden. Möchten Sie die Datei überschreiben, automatisch einen neuen Ausgabepfad für den Encodierungsauftrag finden oder den Vorgang abbrechen?</value>
   </data>
-  <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Ein Warteschlangenauftrag nutzt bereits denselben Ausgabepfad {0}. Möchten Sie die Datei überschreiben, automatisch einen neuen Ausgabepfad für den Encodierungs-Auftrag finden oder den Vorgang abbrechen?</value>
-  </data>
+  
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Warteschlange: Spalten</value>
   </data>
@@ -170,12 +168,6 @@
   </data>
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Scanne...</value>
-  </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Erfolgreich</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder wurde erfolgreich aktualisiert.</value>
   </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>Über VidCoder</value>
@@ -192,18 +184,15 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder Entwickler</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>Beta {0}</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Benennen</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Name der Voreinstellung</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
+  <data name="ChooseNamePreset" xml:space="preserve">
     <value>Wählen Sie einen Namen für die Voreinstellung:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
@@ -222,7 +211,7 @@
     <value>Mitteilung</value>
   </data>
   <data name="UnsupportedOSError" xml:space="preserve">
-    <value>VidCoder wird auf Ihrem Betriebssystem nicht unterstützt. Windows XP und Server 2003 funktionieren nicht mehr. Bitte installieren Sie VidCoder 1.4 oder rüsten Sie Ihr Betriebssystem auf.</value>
+    <value>VidCoder wird von Ihrem Betriebssystem nicht unterstützt. Windows XP und Server 2003 funktionieren nicht länger. Bitte installieren Sie VidCoder 1.4 oder spendieren Sie Ihrem Betriebssystem ein Upgrade.</value>
   </data>
   <data name="EncodeCompleteWarning_SleepTitle" xml:space="preserve">
     <value>Umschalten in den Standby-Modus steht unmittelbar bevor</value>
@@ -234,21 +223,35 @@
     <value>Herunterfahren steht unmittelbar bevor</value>
   </data>
   <data name="EncodeCompleteWarning_SleepMessage" xml:space="preserve">
-    <value>Das System wird in {0} Sekunden in den Standby-Modus umschalten.</value>
+    <value>Das System wechselt in {0} Sekunden in den Standby-Modus.</value>
   </data>
   <data name="EncodeCompleteWarning_LogOffMessage" xml:space="preserve">
     <value>Sie werden in {0} Sekunden abgemeldet.</value>
   </data>
   <data name="EncodeCompleteWarning_ShutdownMessage" xml:space="preserve">
-    <value>Das System wird in {0} Sekunden herunterfahren.</value>
+    <value>Das System wird in {0} Sekunden heruntergefahren.</value>
   </data>
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Encodierung abgeschlossen.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Video-Player konnte für {0} nicht gefunden werden.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Fehler bei der Wiedergabe der Quelle.</value>
   </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>Das System wechselt in {0} Sekunden in den Ruhezustand.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Ruhezustand steht bevor</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Wählen Sie einen Namen für den Auswähler:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>Das Programm muss geschlossen werden, aber der Error wird automatisch gemeldet werden.</value>
+  </data>
+  
+  
 </root>

@@ -129,6 +129,23 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>厳密</value>
   </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>OSのテーマを使用</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Fast</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>弱く</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>カスタム</value>
   </data>
@@ -141,42 +158,48 @@
   <data name="Default" xml:space="preserve">
     <value>既定</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
     <value>Bob</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>高速</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>遅い</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 Bob</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>より遅い</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>空間のチェックをスキップ</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>縞除去：</value>
+  </data>
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
     <value>弱</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>中</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
+  <data name="DenoisePreset_strong" xml:space="preserve">
     <value>強</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
     <value>微弱</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
-    <value>アニメーション</value>
+  <data name="DenoiseTune_animation" xml:space="preserve">
+    <value>アニメ</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
-    <value>フィルム</value>
+  <data name="DenoiseTune_film" xml:space="preserve">
+    <value>映画</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
+  <data name="DenoiseTune_grain" xml:space="preserve">
     <value>粒子</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
-    <value>ハイモーション</value>
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
+    <value>激しい動き</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
     <value>hqdn3d</value>
@@ -184,11 +207,17 @@
   <data name="Denoise_NLMeans" xml:space="preserve">
     <value>NL-Means</value>
   </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>VidCoder を閉じる</value>
+  </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>何もしない</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>取り出し {0}：</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>休止状態</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>ログオフ</value>
@@ -202,6 +231,26 @@
   <data name="Off" xml:space="preserve">
     <value>オフ</value>
   </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>LapSharp</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>アンシャープ</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>ブルーレイ</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>ファイル</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>チャプター</value>
   </data>
@@ -210,5 +259,90 @@
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>時間範囲</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>すべての単語</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>最初の単語のみ</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>エンコード停止</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>終了時</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>起動時</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>エンコード</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>スキャン</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>チャプター</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>時間範囲</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>ファイルを削除(確認あり)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>ごみ箱に移動</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>自動的に名前を変更</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>上書き</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>確認する</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>中</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>小</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>極小</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>大</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>クロマ平滑</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>アルファベット順</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>選択済み</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>最初</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>強制字幕</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>強制字幕、それ以外の場合は最初</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>なし</value>
   </data>
 </root>

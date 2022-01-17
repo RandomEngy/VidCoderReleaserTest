@@ -2,32 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HandBrake.ApplicationServices.Interop;
+using System.Threading.Tasks;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Utilities;
+using Microsoft.AnyContainer;
+using Squirrel;
+using VidCoder.Extensions;
+using VidCoder.Resources;
+using VidCoder.Services;
 
 namespace VidCoder.ViewModel
 {
-	using Resources;
-	using Utilities = VidCoder.Utilities;
-
 	public class AboutDialogViewModel : OkCancelDialogViewModel
 	{
-		public string Version
-		{
-			get
-			{
-				return Utilities.VersionString;
-			}
-		}
+		public string Version => Utilities.VersionString;
 
 		public string BasedOnHandBrake
 		{
 			get
 			{
-				using (var hbInstance = new HandBrakeInstance())
-				{
-					hbInstance.Initialize(1);
-					return string.Format(MiscRes.BasedOnHandBrake, hbInstance.Version);
-				}
+				// We don't need to initialize or dispose the HandBrakeInstance because the Version actually doesn't use the hb_handle_t that's passed in so it can stay as IntPtr.Zero.
+				// Need to find out why it's being done this way
+				var tempInstance = new HandBrakeInstance();
+				string version = tempInstance.Version;
+
+				return string.Format(MiscRes.BasedOnHandBrake, version);
 			}
 		}
 
@@ -35,7 +34,7 @@ namespace VidCoder.ViewModel
 		{
 			get
 			{
-				return string.Format(MiscRes.Copyright, "2010-2015");
+				return string.Format(MiscRes.Copyright, "2010-2021");
 			}
 		}
 	}

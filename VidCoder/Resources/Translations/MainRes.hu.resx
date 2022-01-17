@@ -112,25 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TitleLabel" xml:space="preserve">
     <value>Cím:</value>
-  </data>
-  <data name="SettingsLabel" xml:space="preserve">
-    <value>Beállítások</value>
   </data>
   <data name="AddToQueueLabel" xml:space="preserve">
     <value>Hozzáadás a sorhoz</value>
   </data>
   <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
     <value>Több cím hozzáadása a sorhoz...</value>
-  </data>
-  <data name="FileMenu" xml:space="preserve">
-    <value>Fájl</value>
   </data>
   <data name="OpenVideoFile" xml:space="preserve">
     <value>Videófájl megnyitása...</value>
@@ -141,9 +135,6 @@
   <data name="EnqueueMultipleFiles" xml:space="preserve">
     <value>Több fájl sorba állítása...</value>
   </data>
-  <data name="EnqueueMultipleTitles" xml:space="preserve">
-    <value>Több cím sorba állítása...</value>
-  </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>Eszközök</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="ExportPreset" xml:space="preserve">
     <value>Séma exportálása...</value>
-  </data>
-  <data name="OptionsMenuItem" xml:space="preserve">
-    <value>Beállítás...</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Lejátszás</value>
@@ -168,11 +156,9 @@
   <data name="ClearCompleted" xml:space="preserve">
     <value>Teljesítettek eltávolítása</value>
   </data>
-  <data name="ExitMenuItem" xml:space="preserve">
-    <value>Kilépés</value>
-  </data>
   <data name="WindowsMenu" xml:space="preserve">
     <value>Windows</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
   </data>
   <data name="EncodingSettingsMenuItem" xml:space="preserve">
     <value>Kódolási beállítások</value>
@@ -195,15 +181,6 @@
   <data name="AboutVidCoderMenuItem" xml:space="preserve">
     <value>VidCoder névjegye...</value>
   </data>
-  <data name="ChooseVideoSourceLabel" xml:space="preserve">
-    <value>Válassz egy videóforrást:</value>
-  </data>
-  <data name="SourceLabel" xml:space="preserve">
-    <value>Forrás:</value>
-  </data>
-  <data name="ScanningSourceLabel" xml:space="preserve">
-    <value>Forrás vizsgálata...</value>
-  </data>
   <data name="Recent" xml:space="preserve">
     <value>Legutóbbi</value>
   </data>
@@ -212,18 +189,6 @@
   </data>
   <data name="ScanErrorLabel" xml:space="preserve">
     <value>Hiba történt a vizsgálat során.</value>
-  </data>
-  <data name="AudioLabel" xml:space="preserve">
-    <value>Hang.</value>
-  </data>
-  <data name="VideoLabel" xml:space="preserve">
-    <value>Videó:</value>
-  </data>
-  <data name="SubtitlesLabel" xml:space="preserve">
-    <value>Feliratok:</value>
-  </data>
-  <data name="AddTrackButton" xml:space="preserve">
-    <value>Sáv hozzáadása</value>
   </data>
   <data name="ChapterMarkersLabel" xml:space="preserve">
     <value>Fejezetjelzők:</value>
@@ -236,12 +201,6 @@
   </data>
   <data name="DestinationToolTip" xml:space="preserve">
     <value>Kattints a kódolási cél szerkesztéséhez.</value>
-  </data>
-  <data name="SelectOutputPathButton" xml:space="preserve">
-    <value>Kimeneti útvonal kiválasztása...</value>
-  </data>
-  <data name="EncodingLabel" xml:space="preserve">
-    <value>Kódolás:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Megállít</value>
@@ -273,14 +232,8 @@
   <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
     <value>Kódolások folyamatban</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Idegen hangkeresés</value>
-  </data>
   <data name="NoneParen" xml:space="preserve">
     <value>(Nincs)</value>
-  </data>
-  <data name="TracksSummaryMultiple" xml:space="preserve">
-    <value>{0} sáv</value>
   </data>
   <data name="SaveChangesPresetMessage" xml:space="preserve">
     <value>Szeretnéd elmenteni a változásokat a jelenlegi sémába?</value>
@@ -296,9 +249,6 @@
   </data>
   <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
     <value>Visszaállítva a teljesítettekből</value>
-  </data>
-  <data name="PresetLabel" xml:space="preserve">
-    <value>Séma:</value>
   </data>
   <data name="DestinationColumnHeader" xml:space="preserve">
     <value>Cél</value>
@@ -344,11 +294,6 @@
 
 {1} törlése nem lehetséges</value>
   </data>
-  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
-    <value>A következő fájlokat nem sikerült felismerni és ezért nem állíthatók sorba:
-
-{0}</value>
-  </data>
   <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
     <value>Hiba történt a videófájl(ok) vizsgálata során</value>
   </data>
@@ -360,9 +305,6 @@
 
 {0}</value>
   </data>
-  <data name="DirectoryCreateErrorTitle" xml:space="preserve">
-    <value>Hiba a mappa létrehozása közben</value>
-  </data>
   <data name="EncodeCompleted" xml:space="preserve">
     <value>Kódolás befejeződött.</value>
   </data>
@@ -371,12 +313,6 @@
   </data>
   <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
     <value>A VidCoder befejezte az összes sorbaállított fájl kódolását.</value>
-  </data>
-  <data name="OutputFolderRequiredMessage" xml:space="preserve">
-    <value>Feladatok kódolása nem lehetséges alapértelmezett kimeneti mappa nélkül. Kattints a Rendben-re a kiválasztásához.</value>
-  </data>
-  <data name="OutputFolderRequiredTitle" xml:space="preserve">
-    <value>Alapértelmezett kimeneti mappa szükséges!</value>
   </data>
   <data name="OutputPathNotValidMessage" xml:space="preserve">
     <value>Kimeneti útvonal nem érvényes.</value>
@@ -394,46 +330,7 @@
     <value>Hátravan:</value>
   </data>
   <data name="WhenDoneLabel" xml:space="preserve">
-    <value>Amikor végez:</value>
-  </data>
-  <data name="Preset_AndroidTablet" xml:space="preserve">
-    <value>Android tablet</value>
-  </data>
-  <data name="Preset_Android" xml:space="preserve">
-    <value>Android</value>
-  </data>
-  <data name="Preset_AppleiPad" xml:space="preserve">
-    <value>Apple iPad</value>
-  </data>
-  <data name="Preset_AppleiPhone4" xml:space="preserve">
-    <value>Apple iPhone 4</value>
-  </data>
-  <data name="Preset_AppleiPhoneTouch" xml:space="preserve">
-    <value>Apple iPhone/Touch</value>
-  </data>
-  <data name="Preset_AppleiPod" xml:space="preserve">
-    <value>Apple iPod</value>
-  </data>
-  <data name="Preset_AppleTV" xml:space="preserve">
-    <value>AppleTV</value>
-  </data>
-  <data name="Preset_AppleTV2" xml:space="preserve">
-    <value>AppleTV 2</value>
-  </data>
-  <data name="Preset_AppleTV3" xml:space="preserve">
-    <value>AppleTV 3</value>
-  </data>
-  <data name="Preset_Universal" xml:space="preserve">
-    <value>Univerzális</value>
-  </data>
-  <data name="Preset_HighProfile" xml:space="preserve">
-    <value>Magas profil</value>
-  </data>
-  <data name="Preset_Normal" xml:space="preserve">
-    <value>Normál</value>
-  </data>
-  <data name="Preset_WindowsPhone7" xml:space="preserve">
-    <value>Windows Phone 7</value>
+    <value>Amikor végez</value>
   </data>
   <data name="SourceOption_VideoFile" xml:space="preserve">
     <value>Videófájl...</value>
@@ -462,14 +359,8 @@
   <data name="LaunchUrlError" xml:space="preserve">
     <value>URL elindítási hiba: {0}</value>
   </data>
-  <data name="UserConfigLoadError" xml:space="preserve">
-    <value>Nem sikerült betölteni a szükséges felhasználói beállításfájlt; valósznűleg meghibásodott. Szeretnéd most törölni? Ennek nincs semmilyen hatása a már elmentett sémákra.</value>
-  </data>
-  <data name="UserConfigLoadErrorTitle" xml:space="preserve">
-    <value>Hiba történt a beállítások betöltése közben</value>
-  </data>
   <data name="PresetImportErrorMessage" xml:space="preserve">
-    <value>Nem sikerült a séma importálása. A formátum ismeretlen.</value>
+    <value>Séma importálása nem sikerült. A részleteket megtalálod a naplóban.</value>
   </data>
   <data name="ImportErrorTitle" xml:space="preserve">
     <value>Importálási hiba</value>
@@ -483,26 +374,23 @@
   <data name="ExportPresetFilePickerText" xml:space="preserve">
     <value>Séma exportálása</value>
   </data>
-  <data name="PresetSaveConfirmMessage" xml:space="preserve">
+  <data name="SaveChangesPickerMessage" xml:space="preserve">
     <value>Szeretnéd elmenteni a változásokat a jelenlegi sémába?</value>
   </data>
-  <data name="PresetSaveConfirmTitle" xml:space="preserve">
+  <data name="SaveChangesPickerTitle" xml:space="preserve">
     <value>Elmented a jelenlegi sémát?</value>
   </data>
-  <data name="PresetRevertConfirmMessage" xml:space="preserve">
+  <data name="RevertConfirmMessage" xml:space="preserve">
     <value>Biztosan szeretnéd elvetni a jelenlegi séma változásait?</value>
   </data>
-  <data name="PresetRevertConfirmTitle" xml:space="preserve">
-    <value>Séma visszaállítása</value>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>Visszavonás</value>
   </data>
-  <data name="PresetRemoveConfirmMessage" xml:space="preserve">
-    <value>Biztosan szeretnéd eltávolítani ezt a sémát?</value>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Biztos vagy benne, hogy eltávolítod ezt az elemet?</value>
   </data>
-  <data name="PresetRemoveConfirmTitle" xml:space="preserve">
-    <value>Séma eltávolítása</value>
-  </data>
-  <data name="UserConfigCorrupted" xml:space="preserve">
-    <value>A beállítás meghibásodott és nem sikerült betölteni. Néhány beállítás valószínűleg visszaállításra került.</value>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>Eltávolítás</value>
   </data>
   <data name="OutputDirectoryPickerText" xml:space="preserve">
     <value>Add meg az átkonvertált videófájlok kimeneti mappáját.</value>
@@ -522,9 +410,6 @@
   <data name="CloseVideoSourceToolTip" xml:space="preserve">
     <value>Videóforrás bezárása</value>
   </data>
-  <data name="CloseVideoSourceMenuItem" xml:space="preserve">
-    <value>Videóforrás bezárása</value>
-  </data>
   <data name="UpdatesMenuItem" xml:space="preserve">
     <value>Frissítések...</value>
   </data>
@@ -533,9 +418,6 @@
   </data>
   <data name="RangeBarToolTip" xml:space="preserve">
     <value>Bal klikkel az indulási, jobb klikkel a befejezési idő adható meg.</value>
-  </data>
-  <data name="Preset_WindowsPhone8" xml:space="preserve">
-    <value>Windows Phone 8</value>
   </data>
   <data name="QueueFormat_Chapters" xml:space="preserve">
     <value>{0}. fejezet</value>
@@ -561,12 +443,6 @@
   <data name="PresetDiscardConfirmTitle" xml:space="preserve">
     <value>Változások elvetése?</value>
   </data>
-  <data name="RemoveAudioTrackToolTip" xml:space="preserve">
-    <value>Hangsáv eltávolítása</value>
-  </data>
-  <data name="Preset_Xbox360" xml:space="preserve">
-    <value>Xbox 360</value>
-  </data>
   <data name="RemoveFromQueueToolTip" xml:space="preserve">
     <value>Eltávolítás a várólistából</value>
   </data>
@@ -580,7 +456,7 @@
     <value>Várólista exportálása</value>
   </data>
   <data name="QueueImportErrorMessage" xml:space="preserve">
-    <value>Nem sikerült a várólista importálása. A formátum ismeretlen.</value>
+    <value>Várólista importálása nem sikerült. A részleteket megtalálod a naplóban.</value>
   </data>
   <data name="ImportPresetFilePickerTitle" xml:space="preserve">
     <value>Séma fájl importálása</value>
@@ -609,21 +485,257 @@
   <data name="EncodeDetailsMenuItem" xml:space="preserve">
     <value>Konvertálás részletei</value>
   </data>
-	<data name="EncodingSettingsChangedMessage" xml:space="preserve">
-    <value>A konvertálási beállítások megváltoztak, amióta egy elemet a várólistához adtál. Szeretnéd alkalmazni az aktuális konvertálási beállításokat a várólista összes eleméhez?</value>
-  </data>
-	<data name="EncodingSettingsChangedTitle" xml:space="preserve">
-    <value>A beállítások megváltoztak</value>
-  </data>
-	<data name="RenameDatabaseFileLine2" xml:space="preserve">
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
     <value>Szeretnéd átnevezni a létező fájlt és újat indítani?</value>
   </data>
-	<data name="RenameDatabaseFileLine1" xml:space="preserve">
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
     <value>{0} verziójú adatbázis fájl nem olvasható. A Vidcoder {1} által felismert legmagasabb verzió {2}</value>
     <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
   </data>
-	<data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
     <value>Nem kompatibilis adatbázis fájl</value>
     <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
+  </data>
+  <data name="PickerMenuItem" xml:space="preserve">
+    <value>Választó</value>
+  </data>
+  <data name="CouldNotLoadPickerMessage" xml:space="preserve">
+    <value>Választó betöltése nem sikerült: </value>
+  </data>
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>További {0} cím rendelkezik ehhez hasonló lejátszási idővel.</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>Létezi kegy {0} verziójú elmentett fájl. Szeretnéd használni?</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>Hiba a videó lejátszása közben.</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>Egyéni videólejátszó nem található itt: {0}.</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  <data name="EnqueueFolderOfVideoFiles" xml:space="preserve">
+    <value>Videófájlok felsorakoztató mappája...</value>
+  </data>
+  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
+    <value>Hiba történt néhány fájl vizsgálata közben, és nem kerültek hozzáadásra a sorhoz:
+
+{0}</value>
+  </data>
+  <data name="FileSizeColumnHeader" xml:space="preserve">
+    <value>Méret</value>
+    <comment>Used on the "completed encodes" tab, to label the column that shows the final output file size.</comment>
+  </data>
+  <data name="OpenAppDataFolder" xml:space="preserve">
+    <value>AppData mappa megnyitása</value>
+    <comment>Menu choice for opening the application data folder (that holds the VidCoder database file, logs, etc)</comment>
+  </data>
+  <data name="RibbonEncodingGroupLabel" xml:space="preserve">
+    <value>Kódolás</value>
+  </data>
+  <data name="RibbonSettingsGroupLabel" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="GlobalOptionsLabel" xml:space="preserve">
+    <value>Globális beállítások</value>
+  </data>
+  <data name="EncodingSettingsButton" xml:space="preserve">
+    <value>Kódolási beállítások: {0}</value>
+    <comment>{0} is a placeholder for the name of the encoding preset currently selected.</comment>
+  </data>
+  <data name="EncodingSettingsButtonToolTip" xml:space="preserve">
+    <value>Videó és hangkodekek, méretezés, szűrők, tároló</value>
+  </data>
+  <data name="OpenSourceRibbonButton" xml:space="preserve">
+    <value>Forrás megnyitása</value>
+  </data>
+  <data name="ImportExportRibbonButton" xml:space="preserve">
+    <value>Importálás/exportálás</value>
+    <comment>Label for ribbon button to import or export presets or queues</comment>
+  </data>
+  <data name="AddedSubtitleFromFile" xml:space="preserve">
+    <value>Feliratfájl sikeresen hozzáadva a(z) {0} fájlból</value>
+  </data>
+  <data name="OpenFormat" xml:space="preserve">
+    <value>{0} megnyitása</value>
+    <comment>Format for opening a source. For example: "Open E:\ - THE_INCREDIBLES"</comment>
+  </data>
+  <data name="NoAudioDescription" xml:space="preserve">
+    <value>Nem található hang a forrásban.</value>
+  </data>
+  <data name="NoAudioSummary" xml:space="preserve">
+    <value>Nincs hang</value>
+    <comment>Summary text for when no audio tracks are found on the source</comment>
+  </data>
+  <data name="NoSubtitlesSummary" xml:space="preserve">
+    <value>Nincs felirat</value>
+    <comment>Summary text for when no subtitle tracks are found on the source and no external subtitles have been added</comment>
+  </data>
+  <data name="DataTooOldRunVidCoderVersion" xml:space="preserve">
+    <value>Az adataid túl elavultak a frissítéshez. Futtasd egyszer a(z) {0} VidCodert a kompatibilis verzióra frissítéshez, és próbáld meg újra ezt a verziót!</value>
+    <comment>This is shown on app start when old data is detected.</comment>
+  </data>
+  <data name="BitrateColumn" xml:space="preserve">
+    <value>Bitsűrűség</value>
+  </data>
+  <data name="SampleRateColumn" xml:space="preserve">
+    <value>Mintavételezés</value>
+  </data>
+  <data name="ClearRecentFilesButtonToolTip" xml:space="preserve">
+    <value>Legutóbbi fájlok törlése</value>
+  </data>
+  <data name="OpenSourceLabel" xml:space="preserve">
+    <value>Megnyitás</value>
+    <comment>Label on top of the different options for opening video source on the startup screen.</comment>
+  </data>
+  <data name="ScanningSourceLabelFormat" xml:space="preserve">
+    <value>{0} vizsgálata...</value>
+    <comment>{0} is the name of the source being scanned.</comment>
+  </data>
+  <data name="RetryFailedItemsMenuItem" xml:space="preserve">
+    <value>Összes sikertelen feladat újrapróbálása</value>
+  </data>
+  <data name="StartChapterAutomationName" xml:space="preserve">
+    <value>Fejezet indítása</value>
+    <comment>Narrator label for the chapter start combo box</comment>
+  </data>
+  <data name="EndChapterAutomationName" xml:space="preserve">
+    <value>Fejezet befejezése</value>
+    <comment>Narrator label for the end chapter combo box</comment>
+  </data>
+  <data name="EditChaptersButtonAutomationName" xml:space="preserve">
+    <value>Fejezetek szerkesztése</value>
+    <comment>Help text for screen readers for the Edit chapters button</comment>
+  </data>
+  <data name="ApplyCurrentEncodingSettings" xml:space="preserve">
+    <value>Aktuális kódolási beállítások alkalmazása</value>
+  </data>
+  <data name="OpenSourceFolderOption" xml:space="preserve">
+    <value>Forráskönyvtár megnyitása</value>
+    <comment>Menu option to open the folder of the source file in the queue</comment>
+  </data>
+  <data name="WithCurrentJobsFormat" xml:space="preserve">
+    <value>az aktuális munkákkal: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger when currently encoding job(s) complete. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="WithQueueFormat" xml:space="preserve">
+    <value>a várólistával: {0}</value>
+    <comment>Shown as options for the "When done" combo box for actions that trigger on queue completion. This string is only used when there are multiple items queued.
+{0} is the encode complete action, ex "Shut down"</comment>
+  </data>
+  <data name="VideoEncodingOptionsToolTip" xml:space="preserve">
+    <value>Videókódolási beállítások</value>
+  </data>
+  <data name="AudioEncodingOptionsToolTip" xml:space="preserve">
+    <value>Hangkódolási beállítások</value>
+  </data>
+  <data name="NewVersionDownloadFinishedOnLaunchStatus" xml:space="preserve">
+    <value>{0} verzió letöltése befejeződött.</value>
+  </data>
+  <data name="RemoveFromQueueMenuItem" xml:space="preserve">
+    <value>Eltávolítás a várólistából</value>
+  </data>
+  <data name="ClearSucceededMenuItem" xml:space="preserve">
+    <value>Törlés sikeres</value>
+  </data>
+  <data name="ClearFailedMenuItem" xml:space="preserve">
+    <value>Törlés sikertelen</value>
+  </data>
+  <data name="ClearQueueConfirmationMessage" xml:space="preserve">
+    <value>Biztosan el szeretnéd távolítani az összes elemet a várólistáról?</value>
+  </data>
+  <data name="RemoveAllFomQueueMenuItem" xml:space="preserve">
+    <value>Összes eltávolítása a várólistáról</value>
+  </data>
+  <data name="EncodeCompleteActionAbortedDueToErrorsMessage" xml:space="preserve">
+    <value>Kódolás teljesítési feladat nincs végrehajtva a kódolási eredménylista hibái miatt.</value>
+  </data>
+  <data name="AudioPickerButtonToolTip" xml:space="preserve">
+    <value>Hangsávok automatikus választása...</value>
+  </data>
+  <data name="SubtitlePickerButtonToolTip" xml:space="preserve">
+    <value>Feliratsávok automatikus választása...</value>
+  </data>
+  <data name="AudioSubtitleTrackColumnHeader" xml:space="preserve">
+    <value>Sáv</value>
+    <comment>Column header for the audio or subtitle track summary. This is an an auto-generated summary that includes language, format, etc.</comment>
+  </data>
+  <data name="AudioTrackNameAutomationName" xml:space="preserve">
+    <value>Hangsáv neve</value>
+    <comment>Narrator label for the audio track name text box.</comment>
+  </data>
+  <data name="SubtitleNameAutomationName" xml:space="preserve">
+    <value>Felirat neve</value>
+    <comment>Narrator label for the subtitle name text box.</comment>
+  </data>
+  <data name="CouldNotRecycleFile" xml:space="preserve">
+    <value>Nem sikerült a fájlok lomtárba küldése.</value>
+  </data>
+  <data name="DestinationAutomaticToolTip" xml:space="preserve">
+    <value>Útvonal automatikusan beállítva. Kattints a beállítások szerkesztéséhez!</value>
+  </data>
+  <data name="DestinationManualToolTip" xml:space="preserve">
+    <value>Útvonal manuálisan beállítva. Kattints az automatikusra váltáshoz!</value>
+  </data>
+  <data name="CompareAgainstOriginal" xml:space="preserve">
+    <value>Összehasonlítás az eredetivel</value>
+  </data>
+  <data name="CompareEncodedLabel" xml:space="preserve">
+    <value>Kódolt</value>
+    <comment>Label for the encoded video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareOriginalLabel" xml:space="preserve">
+    <value>Eredeti</value>
+    <comment>Label for the original video when comparing original vs encoded</comment>
+  </data>
+  <data name="CompareWindowHelpText" xml:space="preserve">
+    <value>Kattints vagy tartsd nyomva a Ctrl-t a kódolt verzió megjelenítéséhez!</value>
+  </data>
+  <data name="CompareWindowTitleFormat" xml:space="preserve">
+    <value>VIdeó összehasonlítás: {0} - {1}</value>
+    <comment>Title for the Video compare window.
+{0} is a string indicating if it's original or encoded.
+{1} is the file name, e.g. MyFile.mkv</comment>
+  </data>
+  <data name="MuteAutomationName" xml:space="preserve">
+    <value>Némítás</value>
+    <comment>Text for screen readers for the mute button on video playback</comment>
+  </data>
+  <data name="UnmuteAutomationName" xml:space="preserve">
+    <value>Némítás ki</value>
+    <comment>Text for screen readers for the unmute button on video playback</comment>
+  </data>
+  <data name="AutoPauseLowBattery" xml:space="preserve">
+    <value>Automatikus szüneteltetés alacsony akkutöltöttség esetén.</value>
+  </data>
+  <data name="AutoPauseLowDiskSpace" xml:space="preserve">
+    <value>Automatikus szüneteltetés {0}GB alatti szabad tárhely esetén.</value>
+    <comment>{0} is the disk space threshold for auto-pause in GB</comment>
+  </data>
+  <data name="AutoPauseProcessDetected" xml:space="preserve">
+    <value>Automatikus szüneteltetés, {0} folyamat észlelve.</value>
+    <comment>{0} is the name of the process we were waiting for to pause</comment>
+  </data>
+  <data name="AutoPauseResumeBattery" xml:space="preserve">
+    <value>Automatikus folytatás, hálózati áramforráshoz csatlakoztatva.</value>
+  </data>
+  <data name="AutoPauseResumeDiskSpace" xml:space="preserve">
+    <value>Automatikus folytatás, a lemezen található szabad tárhely.</value>
+  </data>
+  <data name="AutoPauseResumeProcess" xml:space="preserve">
+    <value>Automatikus folytatás, a folyamatok leálltak.</value>
+  </data>
+  <data name="Win7DeprecationWarning" xml:space="preserve">
+    <value>A VidCoder már nem támogatott Windows 7 és 8 operációs rendszereken.
+
+Saját felelősségedre folytathatod a VidCoder használatát. Bizonyos funkciók nem működnek, és egyéb ismeretlen problémák is előfordulhatnak. Ezeknél a problémáknál nem áll rendelkezésre támogatás.
+
+A v5 volt az utolsó Windows 7/8-ra tesztelt verzió.
+
+Ez a figyelmeztetés csak kétszer jelenik meg.</value>
   </data>
 </root>

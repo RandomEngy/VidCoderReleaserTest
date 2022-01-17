@@ -3,15 +3,17 @@
 
 . ./build_common.ps1
 
-# Change this to the folder containing HandBrake10.sln
-$HandBrakeFolder = "..\HandBrakeGit\win\CS"
+# Change this to the folder containing HandBrake.sln
+$HandBrakeFolder = "..\HandBrake\win\CS"
 
 $HandBrakeSolution = $HandBrakeFolder + "\HandBrake.sln"
-$HandBrakeAppServicesFolder = $HandBrakeFolder + "\HandBrake.ApplicationServices"
+$HandBrakeInteropFolder = $HandBrakeFolder + "\HandBrake.Interop"
+$HandBrakeInteropProject = $HandBrakeInteropFolder + "\HandBrake.Interop.csproj"
+$HandBrakeInteropBinFolder = $HandBrakeInteropFolder + "\bin\Any CPU\Release";
 
-& $DevEnvExe $HandBrakeSolution /Rebuild "Release|x64" /project "HandBrake.ApplicationServices"; ExitIfFailed
-copy ($HandBrakeAppServicesFolder + "\bin\Release\HandBrake.ApplicationServices.dll") Lib -force
-copy ($HandBrakeAppServicesFolder + "\bin\Release\HandBrake.ApplicationServices.pdb") Lib -force
+& $MsBuildExe $HandBrakeInteropProject /t:rebuild "/p:Configuration=Release;Platform=Any CPU"; ExitIfFailed
+copy ($HandBrakeInteropBinFolder + "\HandBrake.Interop.dll") Lib -force
+copy ($HandBrakeInteropBinFolder + "\HandBrake.Interop.pdb") Lib -force
 "Files copied."
 
 WriteSuccess

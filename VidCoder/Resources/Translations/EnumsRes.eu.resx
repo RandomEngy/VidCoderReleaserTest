@@ -129,6 +129,23 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Zorrotza</value>
   </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>Erabaili OS azalgaia</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>Iluna</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>Argia</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Azkarra</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>Sentikortasun gutxiago</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Norberea</value>
   </data>
@@ -141,41 +158,47 @@
   <data name="Default" xml:space="preserve">
     <value>Berezkoa</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
     <value>Bob</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Azkarra</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Astiroa</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 Bob</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Astiroagoa</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>Jauzi Egiaztapen Espaziala</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>Decomb</value>
+  </data>
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
     <value>Arina</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>Ertaina</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
+  <data name="DenoisePreset_strong" xml:space="preserve">
     <value>Gogorra</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
     <value>Oso-arina</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
+  <data name="DenoiseTune_animation" xml:space="preserve">
     <value>Animazioa</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
+  <data name="DenoiseTune_film" xml:space="preserve">
     <value>Filma</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
+  <data name="DenoiseTune_grain" xml:space="preserve">
     <value>Garaua</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
     <value>Mugimendu Handia</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
@@ -184,11 +207,17 @@
   <data name="Denoise_NLMeans" xml:space="preserve">
     <value>NL-Means</value>
   </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>Itxi VidCoder</value>
+  </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Ez egin ezer</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>Atera {0}:</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Neguratu</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Saioa amaitu</value>
@@ -202,6 +231,26 @@
   <data name="Off" xml:space="preserve">
     <value>Ez</value>
   </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>LapSharp</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>UnSharp</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>Blu-ray</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Agiria</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>Atalak</value>
   </data>
@@ -210,5 +259,90 @@
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Denbora Maila</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>Hitz Oro</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>Lehen hitza</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>Gelditu kodeaketa</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>Irtetzean</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>Abiatzean</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>Kodeatu</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>Eskaneatu</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>Atalak</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>Denbora maila</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>Ezabatu agiriak (baieztapenarekin)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>Bidali Birziklapen-ontzira</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>Berezgaitasunez berrizendatu</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>Gainidatzi</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>Galdetu</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>Ertaina</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>Ezer ez</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>Txikia</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>Oso txikia</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>Oso zabala</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>Zabala</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>Margo lehunketa</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>Alfabetikoa</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>Hautatua</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>Lehena</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>Beste hizkuntzako audio bidea</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>Beste hizkuntzako audio bidea, bestela Lehena</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>Ezer ez</value>
   </data>
 </root>

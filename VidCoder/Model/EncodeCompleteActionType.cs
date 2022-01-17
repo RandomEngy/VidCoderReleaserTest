@@ -13,6 +13,12 @@ namespace VidCoder.Model
 		[Display(ResourceType = typeof(EnumsRes), Name = "EncodeCompleteActionType_DoNothing")]
 		DoNothing = 0,
 
+		[Display(ResourceType = typeof(EnumsRes), Name = "EncodeCompleteActionType_StopEncoding")]
+		StopEncoding,
+
+		[Display(ResourceType = typeof(EnumsRes), Name = "EncodeCompleteActionType_CloseProgram")]
+		CloseProgram,
+
 		[Display(ResourceType = typeof(EnumsRes), Name = "EncodeCompleteActionType_EjectDisc")]
 		EjectDisc,
 

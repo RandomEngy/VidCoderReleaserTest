@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Hozzáad</value>
@@ -154,7 +154,7 @@
     <value>A fájl már létezik a(z) {0} helyen. Szeretnéd felülírni a fájlt, automatikusan új kimeneti útvonalat találni a kódolási műveletnek vagy megszakaítani a műveletet?</value>
   </data>
   <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Egy sorba rendezett művelet már rendelkezik kimeneti útvonallal a(z) {0} helyen. Szeretnéd felülírni a fájlt, automatikusan új kimeneti útvonalat találni a kódolási műveletnek vagy megszakaítani a műveletet?</value>
+    <value>Egy sorba rendezett művelet már rendelkezik kimeneti útvonallal a(z) {0} helyen. Szeretnéd lecserélni a sorba rendezett műveletet, automatikusan új kimeneti útvonalat találni a kódolási műveletnek vagy megszakaítani a műveletet?</value>
   </data>
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Oszlopsorrend</value>
@@ -171,12 +171,6 @@
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Keresés...</value>
   </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Siker</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder sikeresen frissítve.</value>
-  </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>VidCoder névjegye</value>
   </data>
@@ -192,18 +186,15 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder fejlesztők</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0} béta</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Béta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Név</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Névséma</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
+  <data name="ChooseNamePreset" xml:space="preserve">
     <value>Válassz egy nevet a sémának:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
@@ -245,10 +236,28 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>A kódolás befejeződött.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Nem található videólejátszó {0} formátumhoz.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Hiba történt a forrás lejátszása közben.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>A rendszer {0} másodperc múlva hibernál.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Hibernálás hamarosan</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Válassz egy nevet a sémának:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>A programnak be kell zárulnia, de a hiba automatikusan jelentésre kerül.</value>
+  </data>
+  <data name="DownloadInstallerButton" xml:space="preserve">
+    <value>Telepítő letöltése</value>
+  </data>
+  <data name="ReplaceJobButton" xml:space="preserve">
+    <value>Művelet lecserélése</value>
   </data>
 </root>

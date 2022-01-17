@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MiscRes {
@@ -124,11 +124,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Beta ({1}).
+        ///   Looks up a localized string similar to {0} Beta.
         /// </summary>
-        public static string BetaVersionFormat {
+        public static string BetaVersionFormat2 {
             get {
-                return ResourceManager.GetString("BetaVersionFormat", resourceCulture);
+                return ResourceManager.GetString("BetaVersionFormat2", resourceCulture);
             }
         }
         
@@ -142,11 +142,29 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose a name for the {0}:.
+        ///   Looks up a localized string similar to Choose a name for the picker:.
         /// </summary>
-        public static string ChooseName {
+        public static string ChooseNamePicker {
             get {
-                return ResourceManager.GetString("ChooseName", resourceCulture);
+                return ResourceManager.GetString("ChooseNamePicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a name for the preset:.
+        /// </summary>
+        public static string ChooseNamePreset {
+            get {
+                return ResourceManager.GetString("ChooseNamePreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy and report issue.
+        /// </summary>
+        public static string CopyAndReportIssueButton {
+            get {
+                return ResourceManager.GetString("CopyAndReportIssueButton", resourceCulture);
             }
         }
         
@@ -174,6 +192,15 @@ namespace VidCoder.Resources {
         public static string DisableUpdatesButton {
             get {
                 return ResourceManager.GetString("DisableUpdatesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download installer.
+        /// </summary>
+        public static string DownloadInstallerButton {
+            get {
+                return ResourceManager.GetString("DownloadInstallerButton", resourceCulture);
             }
         }
         
@@ -286,6 +313,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The program needs to close, but the error will be automatically reported..
+        /// </summary>
+        public static string ExceptionDialogSubTextReported {
+            get {
+                return ResourceManager.GetString("ExceptionDialogSubTextReported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exception.
         /// </summary>
         public static string ExceptionWindowTitle {
@@ -322,7 +358,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name {0}.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string NameDialogTitle {
             get {
@@ -336,6 +372,15 @@ namespace VidCoder.Resources {
         public static string NoticeMessageTitle {
             get {
                 return ResourceManager.GetString("NoticeMessageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We need to do some one-time cleanup of the old installer. Choose &apos;Yes&apos; on the next prompt to remove the old version of VidCoder..
+        /// </summary>
+        public static string OneTimeInstallerCleanup {
+            get {
+                return ResourceManager.GetString("OneTimeInstallerCleanup", resourceCulture);
             }
         }
         
@@ -376,7 +421,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A queue job already has an output path at {0}. Do you want to overwrite the file, automatically find a new output path for the encode job or cancel the operation?.
+        ///   Looks up a localized string similar to A queue job already has an output path at {0}. Do you want to replace the queued job, automatically find a new output path for the encode job or cancel the operation?.
         /// </summary>
         public static string QueueFileConflictWarning {
             get {
@@ -390,6 +435,15 @@ namespace VidCoder.Resources {
         public static string RefreshButton {
             get {
                 return ResourceManager.GetString("RefreshButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace job.
+        /// </summary>
+        public static string ReplaceJobButton {
+            get {
+                return ResourceManager.GetString("ReplaceJobButton", resourceCulture);
             }
         }
         
@@ -435,15 +489,6 @@ namespace VidCoder.Resources {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} ({1}).
-        /// </summary>
-        public static string VersionFormat {
-            get {
-                return ResourceManager.GetString("VersionFormat", resourceCulture);
             }
         }
         

@@ -2,28 +2,44 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Security;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shell;
-using HandBrake.ApplicationServices.Interop.EventArgs;
-using HandBrake.ApplicationServices.Interop.Json.Scan;
+using DynamicData;
+using DynamicData.Aggregation;
+using DynamicData.Binding;
+using HandBrake.Interop.Interop.Json.Scan;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Resources;
+using VidCoder.Services.Notifications;
 using VidCoder.Services.Windows;
 using VidCoder.ViewModel;
 using VidCoder.ViewModel.DataModels;
 using VidCoderCommon.Extensions;
 using VidCoderCommon.Model;
-using Color = System.Windows.Media.Color;
+using System.Reactive.Subjects;
+using System.Text;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.Interfaces.EventArgs;
+using Microsoft.WindowsAPICodePack.Shell;
+using FileInfo = System.IO.FileInfo;
+using Omu.ValueInjecter;
+using VidCoderCommon.Utilities.Injection;
 
 namespace VidCoder.Services
 {
@@ -37,70 +53,96 @@ namespace VidCoder.Services
 
 		private const double StopWarningThresholdMinutes = 5;
 
-		private ILogger logger = Ioc.Get<ILogger>();
-		private IProcessAutoPause autoPause = Ioc.Get<IProcessAutoPause>();
-		private ISystemOperations systemOperations = Ioc.Get<ISystemOperations>();
-		private IMessageBoxService messageBoxService = Ioc.Get<IMessageBoxService>();
-		private MainViewModel main = Ioc.Get<MainViewModel>();
-		private OutputPathService outputVM = Ioc.Get<OutputPathService>();
-		private PresetsService presetsService = Ioc.Get<PresetsService>();
-		private PickersService pickersService = Ioc.Get<PickersService>();
-		private IWindowManager windowManager = Ioc.Get<IWindowManager>();
-
-		private ReactiveList<EncodeJobViewModel> encodeQueue;
-		private bool encoding;
+		private IAppLogger logger = StaticResolver.Resolve<IAppLogger>();
+		private IAutoPause autoPause = StaticResolver.Resolve<IAutoPause>();
+		private ISystemOperations systemOperations = StaticResolver.Resolve<ISystemOperations>();
+		private IMessageBoxService messageBoxService = StaticResolver.Resolve<IMessageBoxService>();
+		private MainViewModel main = StaticResolver.Resolve<MainViewModel>();
+		private OutputPathService outputPathService = StaticResolver.Resolve<OutputPathService>();
+		private PresetsService presetsService = StaticResolver.Resolve<PresetsService>();
+		private PickersService pickersService = StaticResolver.Resolve<PickersService>();
+		private HardwareResourceService hardwareResourceService = StaticResolver.Resolve<HardwareResourceService>();
+		private IWindowManager windowManager = StaticResolver.Resolve<IWindowManager>();
+		private IToastNotificationService toastNotificationService = StaticResolver.Resolve<IToastNotificationService>();
+		private IAppThemeService appThemeService = StaticResolver.Resolve<IAppThemeService>();
 		private bool paused;
-		private bool encodeStopped;
-		private int totalTasks;
-		private int taskNumber;
-		private Stopwatch elapsedQueueEncodeTime;
-		private long pollCount;
-		private double completedQueueWork;
-		private double totalQueueCost;
-		private TimeSpan overallEtaSpan;
-		private TimeSpan currentJobEta; // Kept around to check if the job finished early
-		private ReactiveList<EncodeResultViewModel> completedJobs;
+		private EncodeCompleteReason encodeCompleteReason;
 		private List<EncodeCompleteAction> encodeCompleteActions;
-		private IEncodeProxy encodeProxy;
-		private bool profileEditedSinceLastQueue;
+		private ScanMultipleDialogViewModel scanMultipleDialogViewModel;
+		private bool selectedQueueItemModifyable = true;
+		private BehaviorSubject<bool> selectedQueueItemModifyableSubject;
+		private IDisposable simultaneousJobsSubscription;
 
 		public ProcessingService()
 		{
-			this.encodeQueue = new ReactiveList<EncodeJobViewModel>();
-			IList<EncodeJobWithMetadata> jobs = EncodeJobStorage.EncodeJobs;
-			foreach (EncodeJobWithMetadata job in jobs)
+			IObservable<IChangeSet<EncodeJobViewModel>> encodeQueueObservable = this.EncodeQueue.Connect();
+			encodeQueueObservable.Bind(this.EncodeQueueBindable).Subscribe();
+
+			IObservable<IChangeSet<EncodeJobViewModel>> encodingJobsObservable = this.encodingJobList.Connect();
+			encodingJobsObservable.Bind(this.EncodingJobListBindable).Subscribe();
+
+			DispatchUtilities.BeginInvoke(() =>
 			{
-				this.encodeQueue.Add(new EncodeJobViewModel(job.Job) { SourceParentFolder = job.SourceParentFolder, ManualOutputPath = job.ManualOutputPath, NameFormatOverride = job.NameFormatOverride, PresetName = job.PresetName});
-			}
+				IList<EncodeJobWithMetadata> jobs = EncodeJobStorage.EncodeJobs;
+
+				this.EncodeQueue.Edit(encodeQueueInnerList =>
+				{
+					foreach (EncodeJobWithMetadata job in jobs)
+					{
+						encodeQueueInnerList.Add(new EncodeJobViewModel(job.Job)
+						{
+							SourceParentFolder = job.SourceParentFolder,
+							ManualOutputPath = job.ManualOutputPath,
+							NameFormatOverride = job.NameFormatOverride,
+							PresetName = job.PresetName,
+							VideoSource = job.VideoSource,
+							VideoSourceMetadata = job.VideoSourceMetadata
+						});
+					}
+				});
+
+				encodeQueueObservable.Subscribe(changeSet =>
+				{
+					this.SaveEncodeQueue();
+					if (changeSet.Adds > 0 || changeSet.Removes > 0)
+					{
+						this.RefreshEncodeCompleteActions();
+					}
+				});
+
+				if (Config.ResumeEncodingOnRestart && this.EncodeQueue.Count > 0)
+				{
+					DispatchUtilities.BeginInvoke(() =>
+					{
+						this.StartEncodeQueue();
+					});
+				}
+			});
 
 			this.autoPause.PauseEncoding += this.AutoPauseEncoding;
 			this.autoPause.ResumeEncoding += this.AutoResumeEncoding;
 
-			this.encodeQueue.CollectionChanged +=
-				(o, e) =>
-					{
-						this.SaveEncodeQueue();
-
-						if (e.Action != NotifyCollectionChangedAction.Replace && e.Action != NotifyCollectionChangedAction.Move)
-						{
-							this.RefreshEncodeCompleteActions();
-						}
-					};
-
 			this.presetsService.PresetChanged += (o, e) =>
 			{
-				this.profileEditedSinceLastQueue = true;
+				if (this.EncodeQueue.Count > 0)
+				{
+					this.ShowApplyToQueueButton = true;
+				}
 			};
 
-			this.completedJobs = new ReactiveList<EncodeResultViewModel>();
-			this.completedJobs.CollectionChanged +=
-				(o, e) =>
+
+
+			this.completedJobs = new SourceList<EncodeResultViewModel>();
+			IObservable<IChangeSet<EncodeResultViewModel>> completedJobsObservable = this.completedJobs.Connect();
+			completedJobsObservable.Bind(this.CompletedJobsBindable).Subscribe();
+
+			completedJobsObservable.Subscribe(changeSet =>
+			{
+				if (changeSet.Adds > 0 || changeSet.Removes > 0)
 				{
-					if (e.Action != NotifyCollectionChangedAction.Replace && e.Action != NotifyCollectionChangedAction.Move)
-					{
-						this.RefreshEncodeCompleteActions();
-					}
-				};
+					this.RefreshEncodeCompleteActions();
+				}
+			});
 
 			this.RefreshEncodeCompleteActions();
 
@@ -111,28 +153,48 @@ namespace VidCoder.Services
 			}).ToProperty(this, x => x.PauseVisible, out this.pauseVisible);
 
 			// ProgressBarColor
-			this.WhenAnyValue(x => x.Paused)
-				.Select(paused =>
+			IObservable<bool> pausedObservable = this.WhenAnyValue(x => x.Paused);
+			IObservable<AppTheme> themeObservable = this.appThemeService.AppThemeObservable;
+			Observable.CombineLatest(
+				pausedObservable,
+				themeObservable,
+				(paused, theme) =>
 				{
-					if (this.Paused)
+					if (paused)
 					{
-						return new SolidColorBrush(Color.FromRgb(255, 230, 0));
+						return (Brush)Application.Current.Resources["ProgressBarPausedBrush"];
 					}
 					else
 					{
-						return new SolidColorBrush(Color.FromRgb(0, 200, 0));
+						return (Brush)Application.Current.Resources["ProgressBarBrush"];
 					}
-				}).ToProperty(this, x => x.ProgressBarColor, out this.progressBarColor);
+				}).ToProperty(this, x => x.ProgressBarBrush, out this.progressBarBrush);
 
 			// OverallEncodeProgressPercent
-			this.WhenAnyValue(x => x.OverallEncodeProgressFraction)
+			this.WorkTracker.WhenAnyValue(x => x.OverallEncodeProgressFraction)
 				.Select(progressFraction => progressFraction * 100)
 				.ToProperty(this, x => x.OverallEncodeProgressPercent, out this.overallEncodeProgressPercent);
 
-			var queueCountObservable = this.encodeQueue.CountChanged.StartWith(this.encodeQueue.Count);
+			this.QueueCountObservable = encodeQueueObservable.Count().StartWith(this.EncodeQueue.Count);
+
+			this.QueueCountObservable.Subscribe(newCount =>
+			{
+				if (newCount == 0)
+				{
+					this.ShowApplyToQueueButton = false;
+				}
+			});
+
+			this.presetsService.WhenAnyValue(x => x.SelectedPreset).Skip(1).Subscribe(_ =>
+			{
+				if (this.EncodeQueue.Count > 0)
+				{
+					this.ShowApplyToQueueButton = true;
+				}
+			});
 
 			// QueuedTabHeader
-			queueCountObservable
+			this.QueueCountObservable
 				.Select(count =>
 				{
 					if (count == 0)
@@ -144,14 +206,25 @@ namespace VidCoder.Services
 				}).ToProperty(this, x => x.QueuedTabHeader, out this.queuedTabHeader);
 
 			// QueueHasItems
-			queueCountObservable
+			this.QueueCountObservable
 				.Select(count =>
 				{
 					return count > 0;
 				}).ToProperty(this, x => x.QueueHasItems, out this.queueHasItems);
 
+			IObservable<bool> encodingObservable = this.WhenAnyValue(x => x.Encoding);
+
+			// CanClearQueue
+			Observable.CombineLatest(
+				this.QueueCountObservable,
+				encodingObservable,
+				(queueCount, encoding) =>
+				{
+					return !encoding && queueCount > 0;
+				}).ToProperty(this, x => x.CanClearQueue, out this.canClearQueue);
+
 			// EncodeButtonText
-			this.WhenAnyValue(x => x.Encoding)
+			encodingObservable
 				.Select(encoding =>
 				{
 					if (encoding)
@@ -170,7 +243,7 @@ namespace VidCoder.Services
 				return hasVideoSource && sourceData != null && sourceData.Titles.Count > 1;
 			}).ToProperty(this, x => x.CanTryEnqueueMultipleTitles, out this.canTryEnqueueMultipleTitles);
 
-			var completedCountObservable = this.completedJobs.CountChanged.StartWith(this.completedJobs.Count);
+			var completedCountObservable = completedJobsObservable.Count();
 
 			// CompletedItemsCount
 			completedCountObservable.ToProperty(this, x => x.CompletedItemsCount, out this.completedItemsCount);
@@ -182,93 +255,51 @@ namespace VidCoder.Services
 					return string.Format(MainRes.CompletedWithTotal, completedCount);
 				}).ToProperty(this, x => x.CompletedTabHeader, out this.completedTabHeader);
 
-			this.Encode = ReactiveCommand.Create(Observable.CombineLatest(
-				this.EncodeQueue.CountChanged.StartWith(this.EncodeQueue.Count),
-				this.main.WhenAnyValue(y => y.HasVideoSource),
-				(queueCount, hasVideoSource) =>
+			// JobsEncodingCount
+			this.EncodingJobsCountObservable = encodingJobsObservable.Count();
+			this.EncodingJobsCountObservable.ToProperty(this, x => x.JobsEncodingCount, out this.jobsEncodingCount);
+
+			this.simultaneousJobsSubscription = Config.Observables.MaxSimultaneousEncodes.Skip(1).Subscribe(maxSimultaneousEncodes =>
+			{
+				if (this.Encoding && maxSimultaneousEncodes > 1)
 				{
-					return queueCount > 0 || hasVideoSource;
-				}));
-			this.Encode.Subscribe(_ => this.EncodeImpl());
+					this.EncodeNextJobs();
+				}
+			});
 
-			this.AddToQueue = ReactiveCommand.Create(this.main.WhenAnyValue(x => x.HasVideoSource));
-			this.AddToQueue.Subscribe(_ => this.AddToQueueImpl());
-
-			this.QueueFiles = ReactiveCommand.Create();
-			this.QueueFiles.Subscribe(_ => this.QueueFilesImpl());
-
-			this.QueueTitlesAction = ReactiveCommand.Create(this.WhenAnyValue(x => x.CanTryEnqueueMultipleTitles));
-			this.QueueTitlesAction.Subscribe(_ => this.QueueTitlesActionImpl());
-
-			var canPauseOrStopObservable = this.WhenAnyValue(x => x.CanPauseOrStop);
-            this.Pause = ReactiveCommand.Create(canPauseOrStopObservable);
-			this.Pause.Subscribe(_ => this.PauseImpl());
-
-			this.StopEncode = ReactiveCommand.Create(canPauseOrStopObservable);
-			this.StopEncode.Subscribe(_ => this.StopEncodeImpl());
-
-			this.MoveSelectedJobsToTop = ReactiveCommand.Create();
-			this.MoveSelectedJobsToTop.Subscribe(_ => this.MoveSelectedJobsToTopImpl());
-
-			this.MoveSelectedJobsToBottom = ReactiveCommand.Create();
-			this.MoveSelectedJobsToBottom.Subscribe(_ => this.MoveSelectedJobsToBottomImpl());
-
-			this.ImportQueue = ReactiveCommand.Create();
-			this.ImportQueue.Subscribe(_ => this.ImportQueueImpl());
-
-			this.ExportQueue = ReactiveCommand.Create();
-			this.ExportQueue.Subscribe(_ => this.ExportQueueImpl());
-
-			this.RemoveSelectedJobs = ReactiveCommand.Create();
-			this.RemoveSelectedJobs.Subscribe(_ => this.RemoveSelectedJobsImpl());
-
-			this.ClearCompleted = ReactiveCommand.Create();
-			this.ClearCompleted.Subscribe(_ => this.ClearCompletedImpl());
-
-			if (Config.ResumeEncodingOnRestart && this.encodeQueue.Count > 0)
-			{
-				DispatchUtilities.BeginInvoke(() =>
-					{
-						this.StartEncodeQueue();
-					});
-			}
+			this.selectedQueueItemModifyableSubject = new BehaviorSubject<bool>(this.selectedQueueItemModifyable);
 		}
 
-		public ReactiveList<EncodeJobViewModel> EncodeQueue
+		public QueueWorkTracker WorkTracker { get; } = new QueueWorkTracker();
+
+		public SourceList<EncodeJobViewModel> EncodeQueue { get; } = new SourceList<EncodeJobViewModel>();
+
+		public IObservable<int> QueueCountObservable { get; }
+
+		public ObservableCollectionExtended<EncodeJobViewModel> EncodeQueueBindable { get; } = new ObservableCollectionExtended<EncodeJobViewModel>();
+
+		private readonly SourceList<EncodeJobViewModel> encodingJobList = new SourceList<EncodeJobViewModel>();
+
+		public IEnumerable<EncodeJobViewModel> EncodingJobs
 		{
 			get
 			{
-				return this.encodeQueue;
+				return this.encodingJobList.Items;
 			}
 		}
 
-		public EncodeJobViewModel CurrentJob
-		{
-			get
-			{
-				return this.EncodeQueue[0];
-			}
-		}
+		public IObservable<int> EncodingJobsCountObservable { get; }
 
-		public IEncodeProxy EncodeProxy
-		{
-			get
-			{
-				return this.encodeProxy;
-			}
-		}
+		public ObservableCollectionExtended<EncodeJobViewModel> EncodingJobListBindable { get; } = new ObservableCollectionExtended<EncodeJobViewModel>();
 
-		public ReactiveList<EncodeResultViewModel> CompletedJobs
-		{
-			get
-			{
-				return this.completedJobs;
-			}
-		}
+		private readonly SourceList<EncodeResultViewModel> completedJobs;
+
+		public ObservableCollectionExtended<EncodeResultViewModel> CompletedJobsBindable { get; } = new ObservableCollectionExtended<EncodeResultViewModel>();
 
 		private ObservableAsPropertyHelper<int> completedItemsCount;
 		public int CompletedItemsCount => this.completedItemsCount.Value;
 
+		private bool encoding;
 		public bool Encoding
 		{
 			get
@@ -279,25 +310,7 @@ namespace VidCoder.Services
 			set
 			{
 				this.encoding = value;
-
-				if (value)
-				{
-					SystemSleepManagement.PreventSleep();
-					this.elapsedQueueEncodeTime = Stopwatch.StartNew();
-				}
-				else
-				{
-					this.EncodeSpeedDetailsAvailable = false;
-					SystemSleepManagement.AllowSleep();
-					this.elapsedQueueEncodeTime.Stop();
-				}
-
 				this.RaisePropertyChanged();
-
-				if (!value)
-				{
-					this.EncodeProgress = new EncodeProgress { Encoding = false };
-				}
 			}
 		}
 
@@ -315,19 +328,52 @@ namespace VidCoder.Services
 			{
 				this.paused = value;
 
-				if (this.elapsedQueueEncodeTime != null)
+				if (value)
 				{
-					if (value)
-					{
-						this.elapsedQueueEncodeTime.Stop();
-					}
-					else
-					{
-						this.elapsedQueueEncodeTime.Start();
-					}
+					this.WorkTracker.ReportEncodePause();
+				}
+				else
+				{
+					this.WorkTracker.ReportEncodeResume();
 				}
 
 				this.RaisePropertyChanged();
+			}
+		}
+
+		private int totalTasks;
+		public int TotalTasks
+		{
+			get { return this.totalTasks; }
+			set { this.RaiseAndSetIfChanged(ref this.totalTasks, value); }
+		}
+
+		private int taskNumber;
+		public int TaskNumber
+		{
+			get { return this.taskNumber; }
+			set { this.RaiseAndSetIfChanged(ref this.taskNumber, value); }
+		}
+
+		private bool showApplyToQueueButton;
+		public bool ShowApplyToQueueButton
+		{
+			get { return this.showApplyToQueueButton; }
+			set { this.RaiseAndSetIfChanged(ref this.showApplyToQueueButton, value); }
+		}
+
+		public IObservable<bool> SelectedQueueItemModifyableObservable => this.selectedQueueItemModifyableSubject;
+
+		/// <summary>
+		/// When the selected items change, update the subject if needed.
+		/// </summary>
+		public void OnSelectedQueueItemsChanged()
+		{
+			bool next = this.EncodeQueue.Items.Any(job => job.IsSelected && !job.Encoding);
+			if (next != this.selectedQueueItemModifyable)
+			{
+				this.selectedQueueItemModifyableSubject.OnNext(next);
+				this.selectedQueueItemModifyable = next;
 			}
 		}
 
@@ -346,18 +392,17 @@ namespace VidCoder.Services
 		private ObservableAsPropertyHelper<bool> canTryEnqueueMultipleTitles;
 		public bool CanTryEnqueueMultipleTitles => this.canTryEnqueueMultipleTitles.Value;
 
+		private ObservableAsPropertyHelper<int> jobsEncodingCount;
+		public int JobsEncodingCount => this.jobsEncodingCount.Value;
+
+		private ObservableAsPropertyHelper<bool> canClearQueue;
+		public bool CanClearQueue => this.canClearQueue.Value;
+
 		private bool encodeSpeedDetailsAvailable;
 		public bool EncodeSpeedDetailsAvailable
 		{
 			get { return this.encodeSpeedDetailsAvailable; }
 			set { this.RaiseAndSetIfChanged(ref this.encodeSpeedDetailsAvailable, value); }
-		}
-
-		private string estimatedTimeRemaining;
-		public string EstimatedTimeRemaining
-		{
-			get { return this.estimatedTimeRemaining; }
-			set { this.RaiseAndSetIfChanged(ref this.estimatedTimeRemaining, value); }
 		}
 
 		public List<EncodeCompleteAction> EncodeCompleteActions
@@ -366,7 +411,7 @@ namespace VidCoder.Services
 			{
 				return this.encodeCompleteActions;
 			}
-		} 
+		}
 
 		private EncodeCompleteAction encodeCompleteAction;
 		public EncodeCompleteAction EncodeCompleteAction
@@ -389,32 +434,11 @@ namespace VidCoder.Services
 			set { this.RaiseAndSetIfChanged(ref this.averageFps, value); }
 		}
 
-		private double overallEncodeProgressFraction;
-		public double OverallEncodeProgressFraction
-		{
-			get { return this.overallEncodeProgressFraction; }
-			set { this.RaiseAndSetIfChanged(ref this.overallEncodeProgressFraction, value); }
-		}
-
 		private ObservableAsPropertyHelper<double> overallEncodeProgressPercent;
 		public double OverallEncodeProgressPercent => this.overallEncodeProgressPercent.Value;
 
-		private TaskbarItemProgressState encodeProgressState;
-		public TaskbarItemProgressState EncodeProgressState
-		{
-			get { return this.encodeProgressState; }
-			set { this.RaiseAndSetIfChanged(ref this.encodeProgressState, value); }
-		}
-
-		private ObservableAsPropertyHelper<Brush> progressBarColor;
-		public Brush ProgressBarColor => this.progressBarColor.Value;
-
-		private EncodeProgress encodeProgress;
-		public EncodeProgress EncodeProgress
-		{
-			get { return this.encodeProgress; }
-			set { this.RaiseAndSetIfChanged(ref this.encodeProgress, value); }
-		}
+		private ObservableAsPropertyHelper<Brush> progressBarBrush;
+		public Brush ProgressBarBrush => this.progressBarBrush.Value;
 
 		private int selectedTabIndex;
 		public int SelectedTabIndex
@@ -423,258 +447,692 @@ namespace VidCoder.Services
 			set { this.RaiseAndSetIfChanged(ref this.selectedTabIndex, value); }
 		}
 
-		public ReactiveCommand<object> Encode { get; }
-		private void EncodeImpl()
+		private ReactiveCommand<Unit, Unit> encode;
+		public ICommand Encode
 		{
-			if (this.Encoding)
+			get
 			{
-				this.ResumeEncoding();
-				this.autoPause.ReportResume();
-			}
-			else
-			{
-				if (this.EncodeQueue.Count == 0)
-				{
-					if (!this.TryQueue())
+				return this.encode ?? (this.encode = ReactiveCommand.Create(
+					() =>
 					{
-						return;
-					}
-				}
-				else if (profileEditedSinceLastQueue)
+						if (this.Encoding)
+						{
+							this.ResumeEncoding();
+							this.autoPause.ReportResume();
+						}
+						else
+						{
+							if (this.EncodeQueue.Count == 0 && !this.TryQueue())
+							{
+								return;
+							}
+
+							this.SelectedTabIndex = QueuedTabIndex;
+
+							this.StartEncodeQueue();
+						}
+					},
+					Observable.CombineLatest(
+						this.QueueCountObservable,
+						this.main.WhenAnyValue(y => y.HasVideoSource),
+						(queueCount, hasVideoSource) =>
+						{
+							return queueCount > 0 || hasVideoSource;
+						})));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> addToQueue;
+		public ICommand AddToQueue
+		{
+			get
+			{
+				return this.addToQueue ?? (this.addToQueue = ReactiveCommand.Create(
+					() =>
+					{
+						this.TryQueue();
+					},
+					this.main.WhenAnyValue(x => x.HasVideoSource)));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> queueFiles;
+		public ICommand QueueFiles
+		{
+			get
+			{
+				return this.queueFiles ?? (this.queueFiles = ReactiveCommand.Create(() =>
 				{
-					// If the encoding profile has changed since the last time we queued an item, we'll prompt to apply the current
-					// encoding profile to all queued items.
+					IList<string> fileNames = FileService.Instance.GetFileNames(Config.RememberPreviousFiles ? Config.LastInputFileFolder : null);
+					if (fileNames != null && fileNames.Count > 0)
+					{
+						Config.LastInputFileFolder = Path.GetDirectoryName(fileNames[0]);
 
-					var messageBoxService = Ioc.Get<IMessageBoxService>();
-					MessageBoxResult result = messageBoxService.Show(
-						this.main,
-						MainRes.EncodingSettingsChangedMessage,
-						MainRes.EncodingSettingsChangedTitle,
-						MessageBoxButton.YesNo);
+						this.QueueMultiple(fileNames);
+					}
+				}));
+			}
+		}
 
-					if (result == MessageBoxResult.Yes)
+		private ReactiveCommand<Unit, Unit> queueTitlesAction;
+		public ICommand QueueTitlesAction
+		{
+			get
+			{
+				return this.queueTitlesAction ?? (this.queueTitlesAction = ReactiveCommand.Create(
+					() =>
+					{
+						this.windowManager.OpenOrFocusWindow<QueueTitlesWindowViewModel>();
+					},
+					this.WhenAnyValue(x => x.CanTryEnqueueMultipleTitles)));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> applyCurrentPresetToQueue;
+		public ICommand ApplyCurrentPresetToQueue
+		{
+			get
+			{
+				return this.applyCurrentPresetToQueue ?? (this.applyCurrentPresetToQueue = ReactiveCommand.Create(() =>
+				{
+					if (this.EncodeQueue.Count > 0)
 					{
 						var newJobs = new List<EncodeJobViewModel>();
 
-						foreach (EncodeJobViewModel job in this.EncodeQueue)
-						{
-							VCProfile newProfile = this.presetsService.SelectedPreset.Preset.EncodingProfile;
-							job.Job.EncodingProfile = newProfile;
-							job.Job.OutputPath = Path.ChangeExtension(job.Job.OutputPath, OutputPathService.GetExtensionForProfile(newProfile));
+						Preset newPreset = this.presetsService.SelectedPreset.Preset;
 
-							newJobs.Add(job);
+						foreach (EncodeJobViewModel job in this.EncodeQueue.Items)
+						{
+							if (!job.Encoding)
+							{
+								this.ApplyPresetToJob(job, newPreset);
+								newJobs.Add(job);
+							}
 						}
 
-						// Clear out the queue and re-add the updated jobs so all the changes get reflected.
-						this.EncodeQueue.Clear();
-						foreach (var job in newJobs)
+						if (this.encodingJobList.Count < this.EncodeQueue.Count)
 						{
-							this.EncodeQueue.Add(job);
+							// Clear out the queue and re-add the updated jobs so all the changes get reflected.
+							this.EncodeQueue.Edit(encodeQueueInnerList =>
+							{
+								// Remove everything that's not encoding
+								int encodingJobsCount = this.encodingJobList.Count;
+								encodeQueueInnerList.RemoveRange(encodingJobsCount, encodeQueueInnerList.Count - encodingJobsCount);
+
+								// Add the changed jobs back
+								encodeQueueInnerList.AddRange(newJobs);
+							});
+						}
+					}
+
+					this.ShowApplyToQueueButton = false;
+				}));
+			}
+		}
+
+		private void ApplyPresetToJob(EncodeJobViewModel job, Preset newPreset)
+		{
+			if (this.Encoding)
+			{
+				this.WorkTracker.ReportRemovedFromQueue(job.Work);
+			}
+
+			VCProfile newProfile = newPreset.EncodingProfile;
+			job.PresetName = newPreset.Name;
+			job.Job.EncodingProfile = newProfile;
+			job.Job.FinalOutputPath = Path.ChangeExtension(job.Job.FinalOutputPath, OutputPathService.GetExtensionForProfile(newProfile));
+			job.CalculateWork();
+
+			if (this.Encoding)
+			{
+				this.WorkTracker.ReportAddedToQueue(job.Work);
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> pause;
+		public ICommand Pause
+		{
+			get
+			{
+				return this.pause ?? (this.pause = ReactiveCommand.Create(
+					() =>
+					{
+						this.PauseEncoding();
+						this.autoPause.ReportPause();
+					},
+					this.canPauseOrStopSubject));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> stopEncode;
+		public ICommand StopEncode
+		{
+			get
+			{
+				return this.stopEncode ?? (this.stopEncode = ReactiveCommand.Create(
+					() =>
+					{
+						if (this.EncodeQueue.Items.First().EncodeTime > TimeSpan.FromMinutes(StopWarningThresholdMinutes))
+						{
+							MessageBoxResult dialogResult = Utilities.MessageBox.Show(
+								MainRes.StopEncodeConfirmationMessage,
+								MainRes.StopEncodeConfirmationTitle,
+								MessageBoxButton.YesNo);
+							if (dialogResult == MessageBoxResult.No)
+							{
+								return;
+							}
+						}
+
+						this.Stop();
+					},
+					this.canPauseOrStopSubject));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> moveSelectedJobsToTop;
+		public ICommand MoveSelectedJobsToTop
+		{
+			get
+			{
+				return this.moveSelectedJobsToTop ?? (this.moveSelectedJobsToTop = ReactiveCommand.Create(
+					() =>
+					{
+						IList<EncodeJobViewModel> jobsToMove = this.GetSelectedSortedNonEncodingJobs();
+						if (jobsToMove.Count > 0)
+						{
+							this.EncodeQueue.Edit(encodeQueueInnerList =>
+							{
+								int insertPosition = 0;
+								for (int i = 0; i < encodeQueueInnerList.Count; i++)
+								{
+									if (!encodeQueueInnerList[i].Encoding)
+									{
+										insertPosition = i;
+										break;
+									}
+								}
+
+								foreach (EncodeJobViewModel jobToMove in jobsToMove)
+								{
+									encodeQueueInnerList.Remove(jobToMove);
+								}
+
+								for (int i = jobsToMove.Count - 1; i >= 0; i--)
+								{
+									encodeQueueInnerList.Insert(insertPosition, jobsToMove[i]);
+								}
+							});
+						}
+					},
+					this.SelectedQueueItemModifyableObservable));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> moveSelectedJobsToBottom;
+		public ICommand MoveSelectedJobsToBottom
+		{
+			get
+			{
+				return this.moveSelectedJobsToBottom ?? (this.moveSelectedJobsToBottom = ReactiveCommand.Create(
+					() =>
+					{
+						IList<EncodeJobViewModel> jobsToMove = this.GetSelectedSortedNonEncodingJobs();
+						if (jobsToMove.Count > 0)
+						{
+							this.EncodeQueue.Edit(encodeQueueInnerList =>
+							{
+								foreach (EncodeJobViewModel jobToMove in jobsToMove)
+								{
+									encodeQueueInnerList.Remove(jobToMove);
+								}
+
+								foreach (EncodeJobViewModel jobToMove in jobsToMove)
+								{
+									encodeQueueInnerList.Add(jobToMove);
+								}
+							});
+						}
+					},
+					this.SelectedQueueItemModifyableObservable));
+			}
+		}
+
+		/// <summary>
+		/// Gets a sorted list of the selected jobs in queue that are not currently encoding.
+		/// </summary>
+		/// <returns>A sorted list of the selected jobs in queue that are not currently encoding.</returns>
+		private IList<EncodeJobViewModel> GetSelectedSortedNonEncodingJobs()
+		{
+			// This list may have items that are encoding and it may be misordered.
+			IList<EncodeJobViewModel> rawSelectedJobs = this.main.SelectedJobs;
+
+			// First get all of the desired jobs to select in a hash set
+			var selectedJobsSet = new HashSet<EncodeJobViewModel>();
+			foreach (EncodeJobViewModel selectedJob in rawSelectedJobs)
+			{
+				if (!selectedJob.Encoding)
+				{
+					selectedJobsSet.Add(selectedJob);
+				}
+			}
+
+			// Now run down the list in order, adding items that match
+			var result = new List<EncodeJobViewModel>();
+			foreach (EncodeJobViewModel queueJob in this.EncodeQueue.Items)
+			{
+				if (selectedJobsSet.Contains(queueJob))
+				{
+					result.Add(queueJob);
+				}
+			}
+
+			return result;
+		}
+
+		private ReactiveCommand<Unit, Unit> importQueue;
+		public ICommand ImportQueue
+		{
+			get
+			{
+				return this.importQueue ?? (this.importQueue = ReactiveCommand.Create(() =>
+				{
+					string presetFileName = FileService.Instance.GetFileNameLoad(
+						null,
+						MainRes.ImportQueueFilePickerTitle,
+						CommonRes.QueueFileFilter + "|*.vjqueue");
+					if (presetFileName != null)
+					{
+						try
+						{
+							StaticResolver.Resolve<IQueueImportExport>().Import(presetFileName);
+							this.messageBoxService.Show(MainRes.QueueImportSuccessMessage, CommonRes.Success, System.Windows.MessageBoxButton.OK);
+						}
+						catch (Exception)
+						{
+							this.messageBoxService.Show(MainRes.QueueImportErrorMessage, MainRes.ImportErrorTitle, System.Windows.MessageBoxButton.OK);
+						}
+					}
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> exportQueue;
+		public ICommand ExportQueue
+		{
+			get
+			{
+				return this.exportQueue ?? (this.exportQueue = ReactiveCommand.Create(() =>
+				{
+					var encodeJobs = new List<EncodeJobWithMetadata>();
+					foreach (EncodeJobViewModel jobVM in this.EncodeQueue.Items)
+					{
+						encodeJobs.Add(
+							new EncodeJobWithMetadata
+							{
+								Job = jobVM.Job,
+								SourceParentFolder = jobVM.SourceParentFolder,
+								ManualOutputPath = jobVM.ManualOutputPath,
+								NameFormatOverride = jobVM.NameFormatOverride,
+								PresetName = jobVM.PresetName
+							});
+					}
+
+					StaticResolver.Resolve<IQueueImportExport>().Export(encodeJobs);
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> applyCurrentPresetToSelectedJobs;
+		public ICommand ApplyCurrentPresetToSelectedJobs
+		{
+			get
+			{
+				return this.applyCurrentPresetToSelectedJobs ?? (this.applyCurrentPresetToSelectedJobs = ReactiveCommand.Create(
+					() =>
+					{
+						IList<EncodeJobViewModel> selectedJobs = this.main.SelectedJobs;
+						Preset newPreset = this.presetsService.SelectedPreset.Preset;
+
+
+						this.EncodeQueue.Edit(encodeQueueInnerList =>
+						{
+							foreach (EncodeJobViewModel selectedJob in selectedJobs)
+							{
+								if (!selectedJob.Encoding)
+								{
+									int jobIndex = encodeQueueInnerList.IndexOf(selectedJob);
+									encodeQueueInnerList.RemoveAt(jobIndex);
+
+									this.ApplyPresetToJob(selectedJob, newPreset);
+
+									encodeQueueInnerList.Insert(jobIndex, selectedJob);
+								}
+							}
+						});
+					},
+					this.SelectedQueueItemModifyableObservable));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> removeSelectedJobs;
+		public ICommand RemoveSelectedJobs
+		{
+			get
+			{
+				return this.removeSelectedJobs ?? (this.removeSelectedJobs = ReactiveCommand.Create(
+					() => { this.RemoveSelectedJobsImpl(); },
+					this.SelectedQueueItemModifyableObservable));
+			}
+		}
+
+		private void RemoveSelectedJobsImpl()
+		{
+			IList<EncodeJobViewModel> selectedJobs = this.main.SelectedJobs;
+
+			this.EncodeQueue.Edit(encodeQueueInnerList =>
+			{
+				foreach (EncodeJobViewModel selectedJob in selectedJobs)
+				{
+					if (!selectedJob.Encoding)
+					{
+						encodeQueueInnerList.Remove(selectedJob);
+
+						if (this.Encoding)
+						{
+							this.TotalTasks--;
+							this.WorkTracker.ReportRemovedFromQueue(selectedJob.Work);
 						}
 					}
 				}
-
-				this.SelectedTabIndex = QueuedTabIndex;
-
-				this.StartEncodeQueue();
-			}
+			});
 		}
 
-		public ReactiveCommand<object> AddToQueue { get; }
-		private void AddToQueueImpl()
+		private ReactiveCommand<Unit, Unit> removeAllJobs;
+		public ICommand RemoveAllJobs
 		{
-			this.TryQueue();
-		}
-
-		public ReactiveCommand<object> QueueFiles { get; }
-		private void QueueFilesImpl()
-		{
-			if (!this.EnsureDefaultOutputFolderSet())
+			get
 			{
-				return;
-			}
-
-			IList<string> fileNames = FileService.Instance.GetFileNames(Config.RememberPreviousFiles ? Config.LastInputFileFolder : null);
-			if (fileNames != null && fileNames.Count > 0)
-			{
-				Config.LastInputFileFolder = Path.GetDirectoryName(fileNames[0]);
-
-				this.QueueMultiple(fileNames);
-			}
-		}
-
-		public ReactiveCommand<object> QueueTitlesAction { get; }
-		private void QueueTitlesActionImpl()
-		{
-			if (!this.EnsureDefaultOutputFolderSet())
-			{
-				return;
-			}
-
-			this.windowManager.OpenOrFocusWindow(typeof(QueueTitlesWindowViewModel));
-		}
-
-		public ReactiveCommand<object> Pause { get; }
-		private void PauseImpl()
-		{
-			this.PauseEncoding();
-			this.autoPause.ReportPause();
-		}
-
-		public ReactiveCommand<object> StopEncode { get; }
-		private void StopEncodeImpl()
-		{
-			if (this.CurrentJob.EncodeTime > TimeSpan.FromMinutes(StopWarningThresholdMinutes))
-			{
-				MessageBoxResult dialogResult = Utilities.MessageBox.Show(
-					MainRes.StopEncodeConfirmationMessage,
-					MainRes.StopEncodeConfirmationTitle,
-					MessageBoxButton.YesNo);
-				if (dialogResult == MessageBoxResult.No)
+				return this.removeAllJobs ?? (this.removeAllJobs = ReactiveCommand.Create(() =>
 				{
-					return;
-				}
-			}
+					MessageBoxResult dialogResult = Utilities.MessageBox.Show(
+						MainRes.ClearQueueConfirmationMessage,
+						MainRes.DeleteSourceFilesConfirmationTitle,
+						MessageBoxButton.OKCancel);
 
-			// Signify that we stopped the encode manually rather than it completing.
-			this.encodeStopped = true;
-			this.encodeProxy.StopEncode();
-
-			this.logger.ShowStatus(MainRes.StoppedEncoding);
-		}
-
-		public ReactiveCommand<object> MoveSelectedJobsToTop { get; }
-		private void MoveSelectedJobsToTopImpl()
-		{
-			List<EncodeJobViewModel> jobsToMove = this.EncodeQueue.Where(j => j.IsSelected && !j.Encoding).ToList();
-			if (jobsToMove.Count > 0)
-			{
-				foreach (EncodeJobViewModel jobToMove in jobsToMove)
-				{
-					this.EncodeQueue.Remove(jobToMove);
-				}
-
-				int insertPosition = this.Encoding ? 1 : 0;
-
-				for (int i = jobsToMove.Count - 1; i >= 0; i--)
-				{
-					this.EncodeQueue.Insert(insertPosition, jobsToMove[i]);
-				}
-			}
-		}
-
-		public ReactiveCommand<object> MoveSelectedJobsToBottom { get; }
-		private void MoveSelectedJobsToBottomImpl()
-		{
-			List<EncodeJobViewModel> jobsToMove = this.EncodeQueue.Where(j => j.IsSelected && !j.Encoding).ToList();
-			if (jobsToMove.Count > 0)
-			{
-				foreach (EncodeJobViewModel jobToMove in jobsToMove)
-				{
-					this.EncodeQueue.Remove(jobToMove);
-				}
-
-				foreach (EncodeJobViewModel jobToMove in jobsToMove)
-				{
-					this.EncodeQueue.Add(jobToMove);
-				}
-			}
-		}
-
-		public ReactiveCommand<object> ImportQueue { get; }
-		private void ImportQueueImpl()
-		{
-			string presetFileName = FileService.Instance.GetFileNameLoad(
-				null,
-				MainRes.ImportQueueFilePickerTitle,
-				CommonRes.QueueFileFilter + "|*.xml;*.vjqueue");
-			if (presetFileName != null)
-			{
-				try
-				{
-					Ioc.Get<IQueueImportExport>().Import(presetFileName);
-					this.messageBoxService.Show(MainRes.QueueImportSuccessMessage, CommonRes.Success, System.Windows.MessageBoxButton.OK);
-				}
-				catch (Exception)
-				{
-					this.messageBoxService.Show(MainRes.QueueImportErrorMessage, MainRes.ImportErrorTitle, System.Windows.MessageBoxButton.OK);
-				}
-			}
-		}
-
-		public ReactiveCommand<object> ExportQueue { get; }
-		private void ExportQueueImpl()
-		{
-			var encodeJobs = new List<EncodeJobWithMetadata>();
-			foreach (EncodeJobViewModel jobVM in this.EncodeQueue)
-			{
-				encodeJobs.Add(
-					new EncodeJobWithMetadata
+					if (dialogResult == MessageBoxResult.OK && !this.Encoding)
 					{
-						Job = jobVM.Job,
-						SourceParentFolder = jobVM.SourceParentFolder,
-						ManualOutputPath = jobVM.ManualOutputPath,
-						NameFormatOverride = jobVM.NameFormatOverride,
-						PresetName = jobVM.PresetName
-					});
+						this.EncodeQueue.Clear();
+					}
+				}));
 			}
-
-			Ioc.Get<IQueueImportExport>().Export(encodeJobs);
 		}
 
-		public ReactiveCommand<object> RemoveSelectedJobs { get; }
-		private void RemoveSelectedJobsImpl()
+		private bool hasFailedItems;
+		public bool HasFailedItems
 		{
-			for (int i = this.EncodeQueue.Count - 1; i >= 0; i--)
+			get { return this.hasFailedItems; }
+			set { this.RaiseAndSetIfChanged(ref this.hasFailedItems, value); }
+		}
+
+		private ReactiveCommand<Unit, Unit> retryFailed;
+		public ICommand RetryFailed
+		{
+			get
 			{
-				EncodeJobViewModel jobVM = this.EncodeQueue[i];
-
-				if (jobVM.IsSelected && !jobVM.Encoding)
+				return this.retryFailed ?? (this.retryFailed = ReactiveCommand.Create(() =>
 				{
-					this.EncodeQueue.RemoveAt(i);
-				}
+					int oldEncodeQueueCount = this.EncodeQueue.Count;
+
+					var itemsToQueue = new List<EncodeJobViewModel>();
+					this.completedJobs.Edit(completedJobsInnerList =>
+					{
+						for (int i = completedJobsInnerList.Count - 1; i >= 0; i--)
+						{
+							EncodeResultViewModel completedItem = completedJobsInnerList[i];
+							if (!completedItem.EncodeResult.Succeeded)
+							{
+								itemsToQueue.Add(completedItem.Job);
+								completedJobsInnerList.RemoveAt(i);
+							}
+						}
+					});
+
+					this.QueueMultiple(itemsToQueue);
+
+					this.HasFailedItems = false;
+
+					if (oldEncodeQueueCount == 0)
+					{
+						this.StartEncodeQueue();
+					}
+				}));
 			}
 		}
 
-		public ReactiveCommand<object> ClearCompleted { get; }
-		private void ClearCompletedImpl()
+		private ReactiveCommand<Unit, Unit> clearCompleted;
+		public ICommand ClearCompleted
 		{
-			var removedItems = new List<EncodeResultViewModel>(this.CompletedJobs);
-			this.CompletedJobs.Clear();
+			get
+			{
+				return this.clearCompleted ?? (this.clearCompleted = ReactiveCommand.Create(() =>
+				{
+					var itemsToClear = new List<EncodeResultViewModel>(this.completedJobs.Items);
+					bool clearItems = true;
+
+					Picker picker = this.pickersService.SelectedPicker.Picker;
+					if (picker.SourceFileRemoval != SourceFileRemoval.Disabled && picker.SourceFileRemovalTiming == SourceFileRemovalTiming.AfterClearingCompletedItems)
+					{
+						List<string> deletionCandidates = this.GetRemovalCandidates(itemsToClear);
+						clearItems = this.PromptAndRemoveSourceFiles(deletionCandidates, picker);
+					}
+
+					if (clearItems)
+					{
+						this.completedJobs.Clear();
+						this.HasFailedItems = false;
+					}
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> clearFailed;
+		public ICommand ClearFailed
+		{
+			get
+			{
+				return this.clearFailed ?? (this.clearFailed = ReactiveCommand.Create(() =>
+				{
+					this.ClearCompletedItems(encodeResultViewModel => !encodeResultViewModel.EncodeResult.Succeeded);
+					this.HasFailedItems = false;
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> clearSucceeded;
+		public ICommand ClearSucceeded
+		{
+			get
+			{
+				return this.clearSucceeded ?? (this.clearSucceeded = ReactiveCommand.Create(() =>
+				{
+					var itemsToClear = this.completedJobs.Items.Where(completedJob => completedJob.EncodeResult.Succeeded);
+					bool clearItems = true;
+
+					Picker picker = this.pickersService.SelectedPicker.Picker;
+					if (picker.SourceFileRemoval != SourceFileRemoval.Disabled && picker.SourceFileRemovalTiming == SourceFileRemovalTiming.AfterClearingCompletedItems)
+					{
+						List<string> deletionCandidates = this.GetRemovalCandidates(itemsToClear);
+						clearItems = this.PromptAndRemoveSourceFiles(deletionCandidates, picker);
+					}
+
+					if (clearItems)
+					{
+						this.ClearCompletedItems(encodeResultViewModel => encodeResultViewModel.EncodeResult.Succeeded);
+					}
+				}));
+			}
+		}
+
+		/// <summary>
+		/// Gets candidate files for recycle/deletion given the completed items.
+		/// </summary>
+		/// <param name="completedItems">The completed items to examine.</param>
+		/// <returns>The list of file paths to recycle/delete.</returns>
+		private List<string> GetRemovalCandidates(IEnumerable<EncodeResultViewModel> completedItems)
+		{
 			var deletionCandidates = new List<string>();
 
-			foreach (var removedItem in removedItems)
+			int totalItems = 0;
+			int failedItems = 0;
+			int notExistItems = 0;
+			int readOnlyItems = 0;
+			int itemsInEncodeQueue = 0;
+			int itemsCurrentlyScanned = 0;
+
+			foreach (var itemToClear in completedItems)
 			{
-				// Delete file if setting is enabled and item succeeded
-				if (Config.DeleteSourceFilesOnClearingCompleted && removedItem.EncodeResult.Succeeded)
+				totalItems++;
+
+				// Mark for deletion if item succeeded
+				if (itemToClear.EncodeResult.Succeeded)
 				{
 					// And if file exists and is not read-only
-					string sourcePath = removedItem.Job.Job.SourcePath;
+					string sourcePath = itemToClear.Job.Job.SourcePath;
 					var fileInfo = new FileInfo(sourcePath);
 					var directoryInfo = new DirectoryInfo(sourcePath);
 
-					if (fileInfo.Exists && !fileInfo.IsReadOnly || directoryInfo.Exists && !directoryInfo.Attributes.HasFlag(FileAttributes.ReadOnly))
+					if (fileInfo.Exists || directoryInfo.Exists)
 					{
-						// And if it's not currently scanned or in the encode queue
-						bool sourceInEncodeQueue = this.EncodeQueue.Any(job => string.Compare(job.Job.SourcePath, sourcePath, StringComparison.OrdinalIgnoreCase) == 0);
-						if (!sourceInEncodeQueue &&
-							(!this.main.HasVideoSource || string.Compare(this.main.SourcePath, sourcePath, StringComparison.OrdinalIgnoreCase) != 0))
+						if (fileInfo.Exists && !fileInfo.IsReadOnly || directoryInfo.Exists && !directoryInfo.Attributes.HasFlag(FileAttributes.ReadOnly))
 						{
-							deletionCandidates.Add(sourcePath);
+							// And if it's not currently scanned or in the encode queue
+							bool sourceInEncodeQueue = this.EncodeQueue.Items.Any(job => string.Compare(job.Job.SourcePath, sourcePath, StringComparison.OrdinalIgnoreCase) == 0);
+							if (!sourceInEncodeQueue)
+							{
+								if (!this.main.HasVideoSource || string.Compare(this.main.SourcePath, sourcePath, StringComparison.OrdinalIgnoreCase) != 0)
+								{
+									deletionCandidates.Add(sourcePath);
+								}
+								else
+								{
+									itemsCurrentlyScanned++;
+								}
+							}
+							else
+							{
+								itemsInEncodeQueue++;
+							}
+						}
+						else
+						{
+							readOnlyItems++;
 						}
 					}
+					else
+					{
+						notExistItems++;
+					}
+				}
+				else
+				{
+					failedItems++;
 				}
 			}
 
+			var builder = new StringBuilder();
+			builder.AppendLine("Prepared candidates for deletion");
+			builder.AppendLine("Total: " + totalItems);
+			builder.Append("Eligible deletion candidates: " + deletionCandidates.Count);
+			if (failedItems > 0)
+			{
+				builder.AppendLine();
+				builder.Append("Skipped due to failed status: " + failedItems);
+			}
+
+			if (notExistItems > 0)
+			{
+				builder.AppendLine();
+				builder.Append("Skipped due to file(s) no longer existing: " + notExistItems);
+			}
+
+			if (readOnlyItems > 0)
+			{
+				builder.AppendLine();
+				builder.Append("Skipped due to file(s) being read only: " + readOnlyItems);
+			}
+
+			if (itemsInEncodeQueue > 0)
+			{
+				builder.AppendLine();
+				builder.Append("Skipped due to file(s) existing in encode queue: " + itemsInEncodeQueue);
+			}
+
+			if (itemsCurrentlyScanned > 0)
+			{
+				builder.AppendLine();
+				builder.Append("Skipped due to file being currently scanned: " + itemsCurrentlyScanned);
+			}
+
+			this.logger.Log(builder.ToString());
+
+			return deletionCandidates;
+		}
+
+		/// <summary>
+		/// Prompts the user to delete or recycle the given source files, and does so if the user answers yes.
+		/// </summary>
+		/// <param name="deletionCandidates">The files to prompt to delete or recycle</param>
+		/// <param name="picker">The picker to use for the operation.</param>
+		/// <returns>True if the files should be cleared from the list.</returns>
+		private bool PromptAndRemoveSourceFiles(IList<string> deletionCandidates, Picker picker)
+		{
+			bool clearItems = true;
 			if (deletionCandidates.Count > 0)
 			{
-				MessageBoxResult dialogResult = Utilities.MessageBox.Show(
-					string.Format(MainRes.DeleteSourceFilesConfirmationMessage, deletionCandidates.Count),
-					MainRes.DeleteSourceFilesConfirmationTitle,
-					MessageBoxButton.YesNo);
-				if (dialogResult == MessageBoxResult.Yes)
+				bool confirmRemoval = picker.SourceFileRemovalConfirmation;
+				bool removeFiles = true;
+				if (confirmRemoval)
 				{
-					foreach (string pathToDelete in deletionCandidates)
+					string verb = picker.SourceFileRemoval == SourceFileRemoval.Recycle ? MainRes.RemoveSourceFiles_Recycle : MainRes.RemoveSourceFiles_Delete;
+					MessageBoxResult dialogResult = Utilities.MessageBox.Show(
+						string.Format(MainRes.DeleteSourceFilesConfirmationMessage, verb, deletionCandidates.Count),
+						MainRes.DeleteSourceFilesConfirmationTitle,
+						MessageBoxButton.YesNoCancel);
+					if (dialogResult == MessageBoxResult.No)
+					{
+						removeFiles = false;
+					}
+					else if (dialogResult == MessageBoxResult.Cancel)
+					{
+						clearItems = false;
+						removeFiles = false;
+					}
+				}
+
+				if (removeFiles)
+				{
+					RemoveSourceFiles(deletionCandidates, picker, this.logger);
+				}
+			}
+
+			return clearItems;
+		}
+
+		/// <summary>
+		/// Recycles or deletes the given files, based on picker settings.
+		/// </summary>
+		/// <param name="filesToRemove">The files to recycle or delete.</param>
+		/// <param name="picker">The picker to use.</param>
+		/// <param name="operationLogger">The logger to use for the operation.</param>
+		/// <returns>The number of files removed.</returns>
+		private static int RemoveSourceFiles(IList<string> filesToRemove, Picker picker, IAppLogger operationLogger)
+		{
+			int filesRemoved = 0;
+			switch (picker.SourceFileRemoval)
+			{
+				case SourceFileRemoval.Delete:
+					foreach (string pathToDelete in filesToRemove)
 					{
 						try
 						{
@@ -686,14 +1144,62 @@ namespace VidCoder.Services
 							{
 								FileUtilities.DeleteDirectory(pathToDelete);
 							}
+
+							filesRemoved++;
 						}
-						catch (IOException exception)
+						catch (Exception exception)
 						{
 							Utilities.MessageBox.Show(string.Format(MainRes.CouldNotDeleteFile, pathToDelete, exception));
 						}
 					}
-				}
+
+					operationLogger.Log($"Deleted {filesRemoved} source video(s).");
+					break;
+				case SourceFileRemoval.Recycle:
+				default:
+					try
+					{
+						int result = FileOperationApiWrapper.SendToRecycle(filesToRemove);
+						if (result > 0)
+						{
+							Utilities.MessageBox.Show(MainRes.CouldNotRecycleFile);
+							operationLogger.LogError("Could not send files to recycle bin: Error code 0x" + result.ToString("X2"));
+						}
+						else
+						{
+							filesRemoved = filesToRemove.Count;
+							operationLogger.Log($"Sent {filesToRemove.Count} source video(s) to Recycle Bin");
+						}
+					}
+					catch (Exception exception)
+					{
+						Utilities.MessageBox.Show(MainRes.CouldNotRecycleFile);
+						operationLogger.LogError("Could not recycle files: " + exception.ToString());
+					}
+
+					break;
 			}
+
+			return filesRemoved;
+		}
+
+		/// <summary>
+		/// Clears the completed items that match the given selector.
+		/// </summary>
+		/// <param name="selector">The selector to test the items.</param>
+		private void ClearCompletedItems(Func<EncodeResultViewModel, bool> selector)
+		{
+			this.completedJobs.Edit(completedJobsInnerList =>
+			{
+				for (int i = completedJobsInnerList.Count - 1; i >= 0; i--)
+				{
+					EncodeResultViewModel completedItem = completedJobsInnerList[i];
+					if (selector(completedItem))
+					{
+						completedJobsInnerList.RemoveAt(i);
+					}
+				}
+			});
 		}
 
 		/// <summary>
@@ -702,18 +1208,13 @@ namespace VidCoder.Services
 		/// <param name="source">The path to the source file to encode.</param>
 		/// <param name="destination">The destination path for the encoded file.</param>
 		/// <param name="presetName">The name of the preset to use to encode.</param>
-		/// <param name="pickerName">The name of the picker to use.</param>
+		/// <param name="pickerName">The name of the picker to use. Will use default picker if null.</param>
 		/// <returns>True if the item was successfully queued for processing.</returns>
 		public void Process(string source, string destination, string presetName, string pickerName)
 		{
 			if (string.IsNullOrWhiteSpace(source))
 			{
 				throw new ArgumentException("source cannot be null or empty.");
-			}
-
-			if (string.IsNullOrWhiteSpace(destination) && !this.EnsureDefaultOutputFolderSet())
-			{
-				throw new ArgumentException("If destination is not set, the default output folder must be set.");
 			}
 
 			if (destination != null && !Utilities.IsValidFullPath(destination))
@@ -733,13 +1234,25 @@ namespace VidCoder.Services
 			{
 				picker = pickerVM.Picker;
 			}
-			
+			else
+			{
+				picker = pickersService.Pickers[0].Picker;
+			}
 
-			var scanMultipleDialog = new ScanMultipleDialogViewModel(new List<string> { source });
+			var scanMultipleDialog = new ScanMultipleDialogViewModel(new List<SourcePath> { new SourcePath { Path = source } });
 			this.windowManager.OpenDialog(scanMultipleDialog);
 
-			VideoSource videoSource = scanMultipleDialog.ScanResults[0];
-			List<int> titleNumbers = this.PickTitles(videoSource, picker);
+			VideoSource videoSource = scanMultipleDialog.ScanResults[0].VideoSource;
+
+			List<int> titleNumbers;
+			if (videoSource != null)
+			{
+				titleNumbers = this.PickTitles(videoSource, picker);
+			}
+			else
+			{
+				titleNumbers = new List<int>();
+			}
 
 			foreach (int titleNumber in titleNumbers)
 			{
@@ -750,9 +1263,10 @@ namespace VidCoder.Services
 					Title = titleNumber,
 					RangeType = VideoRangeType.All,
 					EncodingProfile = profile,
-					ChosenAudioTracks = new List<int> { 1 },
-					OutputPath = destination,
+					AudioTracks = new List<ChosenAudioTrack> { new ChosenAudioTrack { TrackNumber = 1 } },
+					FinalOutputPath = destination,
 					UseDefaultChapterNames = true,
+					PassThroughMetadata = picker.PassThroughMetadata
 				});
 
 				jobVM.VideoSource = videoSource;
@@ -764,41 +1278,39 @@ namespace VidCoder.Services
 				SourceTitle title = jobVM.VideoSource.Titles.Single(t => t.Index == titleNumber);
 				jobVM.Job.Length = title.Duration.ToSpan();
 
+				// Choose the correct range based on picker settings
+				this.AutoPickRange(job, title, picker: picker);
+
 				// Choose the correct audio/subtitle tracks based on settings
-				this.AutoPickAudio(job, title);
-				this.AutoPickSubtitles(job, title);
+				this.AutoPickAudio(job, title, picker: picker);
+				this.AutoPickSubtitles(job, title, picker: picker);
 
 				// Now that we have the title and subtitles we can determine the final output file name
 				if (string.IsNullOrWhiteSpace(destination))
 				{
 					// Exclude all current queued files if overwrite is disabled
-					HashSet<string> excludedPaths;
-					if (CustomConfig.WhenFileExistsBatch == WhenFileExists.AutoRename)
-					{
-						excludedPaths = this.GetQueuedFiles();
-					}
-					else
-					{
-						excludedPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-					}
+					HashSet<string> queuedOutputFiles = this.GetQueuedOutputFiles();
+					HashSet<string> queuedInputFiles = this.GetQueuedInputFiles();
+
+					queuedInputFiles.Add(source);
 
 					string pathToQueue = job.SourcePath;
 
-					excludedPaths.Add(pathToQueue);
-					string outputFolder = this.outputVM.GetOutputFolder(pathToQueue, null, picker);
-					string outputFileName = this.outputVM.BuildOutputFileName(
+					queuedOutputFiles.Add(pathToQueue);
+					string outputFolder = this.outputPathService.GetOutputFolder(pathToQueue, null, picker);
+					string outputFileName = this.outputPathService.BuildOutputFileName(
 						pathToQueue,
-						Utilities.GetSourceName(pathToQueue),
-						job.Title, 
-						title.Duration.ToSpan(), 
+						this.outputPathService.CleanUpSourceName(picker, Utilities.GetSourceName(pathToQueue)),
+						job.Title,
+						title.Duration.ToSpan(),
 						title.ChapterList.Count,
 						multipleTitlesOnSource: videoSource.Titles.Count > 1,
 						picker: picker);
-					string outputExtension = this.outputVM.GetOutputExtension();
+					string outputExtension = this.outputPathService.GetOutputExtension();
 					string queueOutputPath = Path.Combine(outputFolder, outputFileName + outputExtension);
-					queueOutputPath = this.outputVM.ResolveOutputPathConflicts(queueOutputPath, excludedPaths, isBatch: true);
+					queueOutputPath = this.outputPathService.ResolveOutputPathConflicts(queueOutputPath, source, queuedInputFiles, queuedOutputFiles, isBatch: true, picker: picker, allowConflictDialog: false, allowQueueRemoval: true);
 
-					job.OutputPath = queueOutputPath;
+					job.FinalOutputPath = queueOutputPath;
 				}
 
 				this.Queue(jobVM);
@@ -814,11 +1326,6 @@ namespace VidCoder.Services
 
 		public bool TryQueue()
 		{
-			if (!this.EnsureDefaultOutputFolderSet())
-			{
-				return false;
-			}
-
 			if (!this.EnsureValidOutputPath())
 			{
 				return false;
@@ -826,56 +1333,26 @@ namespace VidCoder.Services
 
 			var newEncodeJobVM = this.main.CreateEncodeJobVM();
 
-			string resolvedOutputPath = this.outputVM.ResolveOutputPathConflicts(newEncodeJobVM.Job.OutputPath, isBatch: false);
+			Picker picker = this.pickersService.SelectedPicker.Picker;
+			string resolvedOutputPath = this.outputPathService.ResolveOutputPathConflicts(newEncodeJobVM.Job.FinalOutputPath, newEncodeJobVM.Job.SourcePath, isBatch: false, picker, allowConflictDialog: true, allowQueueRemoval: true);
 			if (resolvedOutputPath == null)
 			{
 				return false;
 			}
 
-			newEncodeJobVM.Job.OutputPath = resolvedOutputPath;
+			newEncodeJobVM.Job.FinalOutputPath = resolvedOutputPath;
 
 			this.Queue(newEncodeJobVM);
 			return true;
 		}
 
 		/// <summary>
-		/// Queues the given Job. Assumed that the job has an associated HandBrake instance and populated Length.
+		/// Queues the given Job. Assumed that the job has a populated Length.
 		/// </summary>
-		/// <param name="encodeJobVM">The job to add.</param>
-		public void Queue(EncodeJobViewModel encodeJobVM)
+		/// <param name="encodeJobViewModel">The job to add.</param>
+		public void Queue(EncodeJobViewModel encodeJobViewModel)
 		{
-			if (this.Encoding)
-			{
-				if (this.totalTasks == 1)
-				{
-					this.EncodeQueue[0].IsOnlyItem = false;
-				}
-
-				this.totalTasks++;
-				this.totalQueueCost += encodeJobVM.Cost;
-			}
-
-			Picker picker = this.pickersService.SelectedPicker.Picker;
-			if (picker.UseEncodingPreset && !string.IsNullOrEmpty(picker.EncodingPreset))
-			{
-				// Override the encoding preset
-				var presetViewModel = this.presetsService.AllPresets.FirstOrDefault(p => p.Preset.Name == picker.EncodingPreset);
-				if (presetViewModel != null)
-				{
-					encodeJobVM.Job.EncodingProfile = presetViewModel.Preset.EncodingProfile.Clone();
-					encodeJobVM.PresetName = picker.EncodingPreset;
-				}
-			}
-
-			this.EncodeQueue.Add(encodeJobVM);
-
-			this.profileEditedSinceLastQueue = false;
-
-			// Select the Queued tab.
-			if (this.SelectedTabIndex != QueuedTabIndex)
-			{
-				this.SelectedTabIndex = QueuedTabIndex;
-			}
+			this.QueueMultiple(new[] { encodeJobViewModel });
 		}
 
 		public void QueueTitles(List<SourceTitle> titles, int titleStartOverride, string nameFormatOverride)
@@ -885,15 +1362,11 @@ namespace VidCoder.Services
 			Picker picker = this.pickersService.SelectedPicker.Picker;
 
 			// Queue the selected titles
-			List<SourceTitle> titlesToQueue = titles;
-			foreach (SourceTitle title in titlesToQueue)
+			var jobsToAdd = new List<EncodeJobViewModel>();
+			foreach (SourceTitle title in titles)
 			{
 				VCProfile profile = this.presetsService.SelectedPreset.Preset.EncodingProfile;
-				string queueSourceName = this.main.SourceName;
-				if (this.main.SelectedSource.Type == SourceType.Dvd)
-				{
-					queueSourceName = this.outputVM.TranslateDvdSourceName(queueSourceName);
-				}
+				string queueSourceName = this.outputPathService.CleanUpSourceName(picker);
 
 				int titleNumber = title.Index;
 				if (titleStartOverride >= 0)
@@ -902,11 +1375,7 @@ namespace VidCoder.Services
 					currentTitleNumber++;
 				}
 
-				string outputDirectoryOverride = null;
-				if (picker.OutputDirectoryOverrideEnabled)
-				{
-					outputDirectoryOverride = picker.OutputDirectoryOverride;
-				}
+				string outputFolder = this.outputPathService.GetOutputFolder(this.main.SourcePath, null, picker);
 
 				var job = new VCJob
 				{
@@ -917,13 +1386,15 @@ namespace VidCoder.Services
 					ChapterStart = 1,
 					ChapterEnd = title.ChapterList.Count,
 					UseDefaultChapterNames = true,
-					Length = title.Duration.ToSpan()
+					PassThroughMetadata = picker.PassThroughMetadata
 				};
+
+				this.AutoPickRange(job, title);
 
 				this.AutoPickAudio(job, title, useCurrentContext: true);
 				this.AutoPickSubtitles(job, title, useCurrentContext: true);
 
-				string queueOutputFileName = this.outputVM.BuildOutputFileName(
+				string queueOutputFileName = this.outputPathService.BuildOutputFileName(
 					this.main.SourcePath,
 					queueSourceName,
 					titleNumber,
@@ -932,10 +1403,10 @@ namespace VidCoder.Services
 					nameFormatOverride,
 					multipleTitlesOnSource: true);
 
-				string extension = this.outputVM.GetOutputExtension();
-				string queueOutputPath = this.outputVM.BuildOutputPath(queueOutputFileName, extension, sourcePath: null, outputFolder: outputDirectoryOverride);
+				string extension = this.outputPathService.GetOutputExtension();
+				string queueOutputPath = this.outputPathService.BuildOutputPath(queueOutputFileName, extension, sourcePath: null, outputFolder: outputFolder);
 
-				job.OutputPath = this.outputVM.ResolveOutputPathConflicts(queueOutputPath, isBatch: true);
+				job.FinalOutputPath = this.outputPathService.ResolveOutputPathConflicts(queueOutputPath, this.main.SourcePath, isBatch: true, picker, allowConflictDialog: false, allowQueueRemoval: true);
 
 				var jobVM = new EncodeJobViewModel(job)
 				{
@@ -946,7 +1417,78 @@ namespace VidCoder.Services
 					PresetName = this.presetsService.SelectedPreset.DisplayName
 				};
 
-				this.Queue(jobVM);
+				jobsToAdd.Add(jobVM);
+			}
+
+			this.QueueMultiple(jobsToAdd);
+		}
+
+		private void RetryJobIfNeeded(EncodeJobViewModel encodeJobViewModel)
+		{
+			if (encodeJobViewModel.FailedTries < Config.EncodeRetries)
+			{
+				encodeJobViewModel.FailedTries++;
+
+				int encodingItemCount = this.EncodeQueue.Items.Count(i => i.Encoding);
+				this.EncodeQueue.Insert(encodingItemCount, encodeJobViewModel);
+
+				if (this.Encoding)
+				{
+					this.TotalTasks++;
+				}
+			}
+		}
+
+		public void QueueMultiple(IEnumerable<EncodeJobViewModel> encodeJobViewModels, bool allowPickerProfileOverride = true)
+		{
+			var encodeJobList = encodeJobViewModels.ToList();
+			if (encodeJobList.Count == 0)
+			{
+				return;
+			}
+
+			if (this.Encoding)
+			{
+				this.TotalTasks += encodeJobList.Count;
+			}
+
+			Picker picker = this.pickersService.SelectedPicker.Picker;
+			PresetViewModel overridePresetViewModel = null;
+			if (picker.UseEncodingPreset && !string.IsNullOrEmpty(picker.EncodingPreset) && allowPickerProfileOverride)
+			{
+				// Override the encoding preset
+				overridePresetViewModel = this.presetsService.AllPresets.FirstOrDefault(p => p.Preset.Name == picker.EncodingPreset);
+			}
+
+			this.EncodeQueue.Edit(encodeQueueInnerList =>
+			{
+				foreach (var encodeJobViewModel in encodeJobList)
+				{
+					if (this.Encoding)
+					{
+						this.WorkTracker.ReportAddedToQueue(encodeJobViewModel.Work);
+					}
+
+					if (overridePresetViewModel != null)
+					{
+						encodeJobViewModel.Job.EncodingProfile = overridePresetViewModel.Preset.EncodingProfile.Clone();
+						encodeJobViewModel.PresetName = picker.EncodingPreset;
+					}
+
+					encodeQueueInnerList.Add(encodeJobViewModel);
+				}
+			});
+
+			// Select the Queued tab.
+			if (this.SelectedTabIndex != QueuedTabIndex)
+			{
+				this.SelectedTabIndex = QueuedTabIndex;
+			}
+
+			// After adding new items, immediately start them
+			if (this.Encoding && Config.MaxSimultaneousEncodes > 1 && !this.Paused)
+			{
+				this.EncodeNextJobs();
 			}
 		}
 
@@ -958,127 +1500,143 @@ namespace VidCoder.Services
 		// Queues a list of files or video folders.
 		public void QueueMultiple(IEnumerable<SourcePath> sourcePaths)
 		{
-			if (!this.EnsureDefaultOutputFolderSet())
-			{
-				return;
-			}
+			Picker picker = this.pickersService.SelectedPicker.Picker;
 
-			// Exclude all current queued files if overwrite is disabled
-			HashSet<string> excludedPaths;
-			if (CustomConfig.WhenFileExistsBatch == WhenFileExists.AutoRename)
-			{
-				excludedPaths = this.GetQueuedFiles();
-			}
-			else
-			{
-				excludedPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			}
+			HashSet<string> queuedOutputFiles = this.GetQueuedOutputFiles();
+			HashSet<string> queuedInputFiles = this.GetQueuedInputFiles();
 
 			List<SourcePath> sourcePathList = sourcePaths.ToList();
-			List<string> sourcePathStrings = sourcePathList.Select(p => p.Path).ToList();
 
-			// This dialog will scan the items in the list, calculating length.
-			var scanMultipleDialog = new ScanMultipleDialogViewModel(sourcePathStrings);
-			this.windowManager.OpenDialog(scanMultipleDialog);
-
-			List<VideoSource> videoSources = scanMultipleDialog.ScanResults;
-
-			if (sourcePathList.Count != videoSources.Count)
+			if (this.scanMultipleDialogViewModel != null)
 			{
-				// Scan dialog was closed before it could complete. Abort.
-				this.logger.Log("Batch scan cancelled. Aborting queue operation.");
-				return;
-			}
-
-			var itemsToQueue = new List<EncodeJobViewModel>();
-
-			for (int i = 0; i < sourcePathList.Count; i++)
-			{
-				SourcePath sourcePath = sourcePathList[i];
-				VideoSource videoSource = videoSources[i];
-
-				List<int> titleNumbers = this.PickTitles(videoSource);
-
-				foreach (int titleNumber in titleNumbers)
+				if (this.scanMultipleDialogViewModel.TryAddScanPaths(sourcePathList))
 				{
-					var job = new VCJob
-					{
-						SourcePath = sourcePath.Path,
-						EncodingProfile = this.presetsService.SelectedPreset.Preset.EncodingProfile.Clone(),
-						Title = titleNumber,
-						RangeType = VideoRangeType.All,
-						UseDefaultChapterNames = true
-					};
-
-					if (sourcePath.SourceType == SourceType.None)
-					{
-						if (Directory.Exists(sourcePath.Path))
-						{
-							job.SourceType = SourceType.VideoFolder;
-						}
-						else if (File.Exists(sourcePath.Path))
-						{
-							job.SourceType = SourceType.File;
-						}
-					}
-					else
-					{
-						job.SourceType = sourcePath.SourceType;
-					}
-
-					if (job.SourceType != SourceType.None)
-					{
-						var jobVM = new EncodeJobViewModel(job);
-						jobVM.VideoSource = videoSource;
-						jobVM.SourceParentFolder = sourcePath.ParentFolder;
-						jobVM.ManualOutputPath = false;
-						jobVM.PresetName = this.presetsService.SelectedPreset.DisplayName;
-						itemsToQueue.Add(jobVM);
-					}
+					return;
 				}
 			}
 
-			var failedFiles = new List<string>();
-			foreach (EncodeJobViewModel jobVM in itemsToQueue)
+			// This dialog will scan the items in the list, calculating length.
+			this.scanMultipleDialogViewModel = new ScanMultipleDialogViewModel(sourcePathList);
+			this.windowManager.OpenDialog(this.scanMultipleDialogViewModel);
+
+			if (this.scanMultipleDialogViewModel.CancelPending)
 			{
-				var titles = jobVM.VideoSource.Titles;
+				// Scan dialog was closed before it could complete. Abort.
+				this.logger.Log("Batch scan canceled. Aborting queue operation.");
+				this.scanMultipleDialogViewModel = null;
+				return;
+			}
 
-				// Only queue items with a successful scan
-				if (titles.Count > 0)
+			List<ScanMultipleDialogViewModel.ScanResult> scanResults = this.scanMultipleDialogViewModel.ScanResults;
+			this.scanMultipleDialogViewModel = null;
+
+			var itemsToQueue = new List<EncodeJobViewModel>();
+			var failedFiles = new List<string>();
+
+			foreach (ScanMultipleDialogViewModel.ScanResult scanResult in scanResults)
+			{
+				SourcePath sourcePath = scanResult.SourcePath;
+
+				if (scanResult.VideoSource?.Titles != null && scanResult.VideoSource.Titles.Count > 0)
 				{
-					VCJob job = jobVM.Job;
-					SourceTitle title = titles.Single(t => t.Index == job.Title);
-					job.Length = title.Duration.ToSpan();
+					VideoSource videoSource = scanResult.VideoSource;
 
-					// Choose the correct audio/subtitle tracks based on settings
-					this.AutoPickAudio(job, title);
-					this.AutoPickSubtitles(job, title);
+					List<int> titleNumbers = this.PickTitles(videoSource);
 
-					// Now that we have the title and subtitles we can determine the final output file name
-					string fileToQueue = job.SourcePath;
+					foreach (int titleNumber in titleNumbers)
+					{
+						var job = new VCJob
+						{
+							SourcePath = sourcePath.Path,
+							EncodingProfile = this.presetsService.SelectedPreset.Preset.EncodingProfile.Clone(),
+							Title = titleNumber,
+							UseDefaultChapterNames = true,
+							PassThroughMetadata = picker.PassThroughMetadata
+						};
 
-					excludedPaths.Add(fileToQueue);
-					string outputFolder = this.outputVM.GetOutputFolder(fileToQueue, jobVM.SourceParentFolder);
-					string outputFileName = this.outputVM.BuildOutputFileName(
-						fileToQueue, 
-						Utilities.GetSourceNameFile(fileToQueue),
-						job.Title, 
-						title.Duration.ToSpan(),
-						title.ChapterList.Count,
-						multipleTitlesOnSource: titles.Count > 1);
-					string outputExtension = this.outputVM.GetOutputExtension();
-					string queueOutputPath = Path.Combine(outputFolder, outputFileName + outputExtension);
-					queueOutputPath = this.outputVM.ResolveOutputPathConflicts(queueOutputPath, excludedPaths, isBatch: true);
+						if (sourcePath.SourceType == SourceType.Unknown)
+						{
+							if (Directory.Exists(sourcePath.Path))
+							{
+								job.SourceType = SourceType.DiscVideoFolder;
+							}
+							else if (File.Exists(sourcePath.Path))
+							{
+								job.SourceType = SourceType.File;
+							}
+						}
+						else
+						{
+							job.SourceType = sourcePath.SourceType;
+						}
 
-					job.OutputPath = queueOutputPath;
-
-					excludedPaths.Add(queueOutputPath);
-
-					this.Queue(jobVM);
+						if (job.SourceType != SourceType.Unknown)
+						{
+							var jobVM = new EncodeJobViewModel(job);
+							jobVM.VideoSource = videoSource;
+							jobVM.SourceParentFolder = sourcePath.ParentFolder;
+							jobVM.ManualOutputPath = false;
+							jobVM.PresetName = this.presetsService.SelectedPreset.DisplayName;
+							itemsToQueue.Add(jobVM);
+						}
+					}
 				}
 				else
 				{
-					failedFiles.Add(jobVM.Job.SourcePath);
+					// If the scan call failed outright or has no titles, mark as failed.
+					failedFiles.Add(sourcePath.Path);
+				}
+			}
+
+			bool isBatch = itemsToQueue.Count > 1;
+
+			foreach (EncodeJobViewModel jobViewModel in itemsToQueue)
+			{
+				var titles = jobViewModel.VideoSource.Titles;
+
+				VCJob job = jobViewModel.Job;
+				SourceTitle title = titles.Single(t => t.Index == job.Title);
+				job.Length = title.Duration.ToSpan();
+
+				// Choose the correct range based on picker settings
+				this.AutoPickRange(job, title);
+
+				// Choose the correct audio/subtitle tracks based on settings
+				this.AutoPickAudio(job, title);
+				this.AutoPickSubtitles(job, title, openDialogOnMissingCharCode: itemsToQueue.Count <= 1);
+
+				// Now that we have the title and subtitles we can determine the final output file name
+				string fileToQueue = job.SourcePath;
+
+				queuedInputFiles.Add(fileToQueue);
+				string outputFolder = this.outputPathService.GetOutputFolder(fileToQueue, jobViewModel.SourceParentFolder);
+				string outputFileName = this.outputPathService.BuildOutputFileName(
+					fileToQueue,
+					this.outputPathService.CleanUpSourceName(picker, Utilities.GetSourceNameFile(fileToQueue)),
+					job.Title,
+					title.Duration.ToSpan(),
+					title.ChapterList.Count,
+					multipleTitlesOnSource: titles.Count > 1);
+				string outputExtension = this.outputPathService.GetOutputExtension();
+				string queueOutputPath = Path.Combine(outputFolder, outputFileName + outputExtension);
+				queueOutputPath = this.outputPathService.ResolveOutputPathConflicts(queueOutputPath, fileToQueue, queuedInputFiles, queuedOutputFiles, isBatch: isBatch, picker, allowConflictDialog: !isBatch, allowQueueRemoval: true);
+
+				job.FinalOutputPath = queueOutputPath;
+
+				queuedOutputFiles.Add(queueOutputPath);
+			}
+
+			if (itemsToQueue.Count > 0)
+			{
+				// If this was a single item the user may have decided to cancel the encode on a file conflict.
+				if (isBatch || itemsToQueue[0].Job.FinalOutputPath != null)
+				{
+					this.QueueMultiple(itemsToQueue);
+
+					if (picker.AutoEncodeOnScan && !this.Encoding)
+					{
+						this.StartEncodeQueue();
+					}
 				}
 			}
 
@@ -1092,73 +1650,158 @@ namespace VidCoder.Services
 			}
 		}
 
+		public void RemoveQueueJobAndOthersIfSelected(EncodeJobViewModel job)
+		{
+			if (job.IsSelected)
+			{
+				// If job is selected, remove all jobs that are selected
+				this.RemoveSelectedJobsImpl();
+			}
+			else
+			{
+				// If not, remove only this job.
+				this.RemoveQueueJob(job);
+			}
+		}
+
 		public void RemoveQueueJob(EncodeJobViewModel job)
 		{
 			this.EncodeQueue.Remove(job);
 
 			if (this.Encoding)
 			{
-				this.totalTasks--;
-				this.totalQueueCost -= job.Cost;
-
-				if (this.totalTasks == 1)
-				{
-					this.EncodeQueue[0].IsOnlyItem = true;
-				}
+				this.TotalTasks--;
+				this.WorkTracker.ReportRemovedFromQueue(job.Work);
 			}
 		}
 
 		public void StartEncodeQueue()
 		{
-			this.EncodeProgressState = TaskbarItemProgressState.Normal;
 			this.logger.Log("Starting queue");
 			this.logger.ShowStatus(MainRes.StartedEncoding);
 
-			this.totalTasks = this.EncodeQueue.Count;
-			this.taskNumber = 0;
-
-			this.completedQueueWork = 0.0;
-			this.totalQueueCost = 0.0;
-			foreach (EncodeJobViewModel jobVM in this.EncodeQueue)
+			// If we had a "when done with current jobs" complete action last time, reset it to nothing.
+			if (this.EncodeCompleteAction.Trigger == EncodeCompleteTrigger.DoneWithCurrentJobs)
 			{
-				this.totalQueueCost += jobVM.Cost;
+				this.EncodeCompleteAction = this.EncodeCompleteActions.Single(a => a.ActionType == EncodeCompleteActionType.DoNothing);
 			}
 
-			this.OverallEncodeProgressFraction = 0;
+			this.TotalTasks = this.EncodeQueue.Count;
+			this.TaskNumber = 0;
 
-			this.pollCount = 0;
 			this.Encoding = true;
+			this.WorkTracker.ReportEncodeStart(this.EncodeQueue.Items.Select(job => job.Work));
+			SystemSleepManagement.PreventSleep();
 			this.Paused = false;
-			this.encodeStopped = false;
+
+			// If the encode is stopped we will change
+			this.encodeCompleteReason = EncodeCompleteReason.Finished;
 			this.autoPause.ReportStart();
 
-			this.EncodeNextJob();
+			this.EncodeNextJobs();
 
 			// User had the window open when the encode ended last time, so we re-open when starting the queue again.
 			if (Config.EncodeDetailsWindowOpen)
 			{
-				this.windowManager.OpenOrFocusWindow(typeof(EncodeDetailsWindowViewModel));
+				this.windowManager.OpenOrFocusWindow<EncodeDetailsWindowViewModel>();
 			}
-
-			this.EncodeProgress = new EncodeProgress
-			{
-				Encoding = true,
-				OverallProgressFraction = 0,
-				TaskNumber = 1,
-				TotalTasks = this.totalTasks,
-				FileName = Path.GetFileName(this.CurrentJob.Job.OutputPath)
-			};
 		}
 
-		public HashSet<string> GetQueuedFiles()
+		private void RebuildEncodingJobsList()
 		{
-			return new HashSet<string>(this.EncodeQueue.Select(j => j.Job.OutputPath), StringComparer.OrdinalIgnoreCase);
+			this.encodingJobList.Edit(encodingJobInnerList =>
+			{
+				encodingJobInnerList.Clear();
+				foreach (var encodeJobViewModel in this.EncodeQueue.Items.Where(j => j.Encoding))
+				{
+					encodingJobInnerList.Add(encodeJobViewModel);
+				}
+			});
+		}
+
+		public HashSet<string> GetQueuedInputFiles()
+		{
+			return new HashSet<string>(this.EncodeQueue.Items.Select(j => j.Job.SourcePath), StringComparer.OrdinalIgnoreCase);
+		}
+
+		public HashSet<string> GetQueuedOutputFiles()
+		{
+			return new HashSet<string>(this.EncodeQueue.Items.Select(j => j.Job.FinalOutputPath), StringComparer.OrdinalIgnoreCase);
+		}
+
+		private void RunForAllEncodeProxies(Func<IEncodeProxy, Task> proxyAction, string actionName)
+		{
+			foreach (IEncodeProxy encodeProxy in this.EncodeQueue.Items.Where(j => j.Encoding).Select(j => j.EncodeProxy))
+			{
+				if (encodeProxy != null)
+				{
+					this.StartEncodeProxyAction(encodeProxy, proxyAction, actionName);
+				}
+			}
+		}
+
+		private async void StartEncodeProxyAction(IEncodeProxy encodeProxy, Func<IEncodeProxy, Task> proxyAction, string actionName)
+		{
+			await this.RunEncodeProxyAction(encodeProxy, proxyAction, actionName).ConfigureAwait(false);
+		}
+
+		private async Task RunEncodeProxyAction(IEncodeProxy encodeProxy, Func<IEncodeProxy, Task> proxyAction, string actionName)
+		{
+			if (encodeProxy != null)
+			{
+				try
+				{
+					await proxyAction(encodeProxy).ConfigureAwait(false);
+				}
+				catch (Exception exception)
+				{
+					this.logger.LogError($"Encode proxy action '{actionName}' failed:" + Environment.NewLine + exception);
+				}
+			}
+		}
+
+		private void RunForAllEncodingJobs(Action<EncodeJobViewModel> jobAction)
+		{
+			foreach (var jobViewModel in this.EncodeQueue.Items.Where(j => j.Encoding))
+			{
+				jobAction(jobViewModel);
+			}
+		}
+
+		public void Stop()
+		{
+			this.encodeCompleteReason = EncodeCompleteReason.ManualStopAll;
+
+			this.RunForAllEncodeProxies(encodeProxy => encodeProxy.StopEncodeAsync(), "Stop");
+
+			this.logger.ShowStatus(MainRes.StoppedEncoding);
+		}
+
+		public void Stop(EncodeJobViewModel jobViewModel)
+		{
+			if (this.encodingJobList.Count == 1)
+			{
+				this.Stop();
+			}
+			else if (this.encodingJobList.Count > 1)
+			{
+				this.encodeCompleteReason = EncodeCompleteReason.ManualStopSingle;
+				this.StartEncodeProxyAction(jobViewModel.EncodeProxy, encodeProxy => encodeProxy.StopEncodeAsync(), "Stop");
+			}
+		}
+
+		public async Task StopAndWaitAsync(EncodeCompleteReason reason)
+		{
+			this.encodeCompleteReason = reason;
+
+			var stopTasks = this.EncodeQueue.Items.Where(j => j.Encoding).Select(j => this.RunEncodeProxyAction(j.EncodeProxy, encodeProxy => encodeProxy.StopAndWaitAsync(), "StopAndWait"));
+			await Task.WhenAll(stopTasks).ConfigureAwait(false);
 		}
 
 		public IList<EncodeJobWithMetadata> GetQueueStorageJobs()
 		{
 			var jobs = new List<EncodeJobWithMetadata>();
-			foreach (EncodeJobViewModel jobVM in this.EncodeQueue)
+			foreach (EncodeJobViewModel jobVM in this.EncodeQueue.Items)
 			{
 				jobs.Add(
 					new EncodeJobWithMetadata
@@ -1167,28 +1810,58 @@ namespace VidCoder.Services
 						SourceParentFolder = jobVM.SourceParentFolder,
 						ManualOutputPath = jobVM.ManualOutputPath,
 						NameFormatOverride = jobVM.NameFormatOverride,
-						PresetName = jobVM.PresetName
+						PresetName = jobVM.PresetName,
+						VideoSource = jobVM.VideoSource,
+						VideoSourceMetadata = jobVM.VideoSourceMetadata
 					});
 			}
 
 			return jobs;
 		}
 
-		private void EncodeNextJob()
+		private void EncodeNextJobs()
 		{
-			this.taskNumber++;
-			this.StartEncode();
+			if (this.EncodeCompleteAction.Trigger == EncodeCompleteTrigger.DoneWithCurrentJobs)
+			{
+				return;
+			}
+
+			// Make sure we've started encoding the correct number of simultaneous jobs.
+			var encodeQueueList = this.EncodeQueue.Items.ToList();
+			for (int i = 0; i < this.EncodeQueue.Count; i++)
+			{
+				EncodeJobViewModel jobViewModel = encodeQueueList[i];
+				if (!jobViewModel.Encoding)
+				{
+					if (this.hardwareResourceService.TryAcquireSlot(jobViewModel))
+					{
+						// We acquired all the hardware we need, so we can start the encode.
+						this.TaskNumber++;
+						this.StartEncode(jobViewModel);
+					}
+					else
+					{
+						// If we couldn't acquire a hardware slot, bail.
+						break;
+					}
+				}
+			}
+
+			this.RebuildEncodingJobsList();
+			this.RefreshEncodeCompleteActions();
 		}
 
-		private void StartEncode()
+		private void StartEncode(EncodeJobViewModel jobViewModel)
 		{
-			VCJob job = this.CurrentJob.Job;
+			VCJob job = jobViewModel.Job;
 
-			var encodeLogger = new Logger(this.logger, Path.GetFileName(job.OutputPath));
-			this.CurrentJob.Logger = encodeLogger;
+			var encodeLogger = StaticResolver.Resolve<AppLoggerFactory>().ResolveEncodeLogger(job.FinalOutputPath);
+			jobViewModel.EncodeLogger = encodeLogger;
+			jobViewModel.EncodeSpeedDetailsAvailable = false;
 
-			encodeLogger.Log("Starting job " + this.taskNumber + "/" + this.totalTasks);
-			encodeLogger.Log("  Path: " + job.SourcePath);
+			encodeLogger.Log("Starting job " + this.TaskNumber + "/" + this.TotalTasks);
+			encodeLogger.Log("  Source path: " + job.SourcePath);
+			encodeLogger.Log("  Destination path: " + job.FinalOutputPath);
 			encodeLogger.Log("  Title: " + job.Title);
 
 			switch (job.RangeType)
@@ -1207,80 +1880,108 @@ namespace VidCoder.Services
 					break;
 			}
 
-			this.encodeProxy = Utilities.CreateEncodeProxy();
-			this.encodeProxy.EncodeProgress += this.OnEncodeProgress;
-			this.encodeProxy.EncodeCompleted += this.OnEncodeCompleted;
-			this.encodeProxy.EncodeStarted += this.OnEncodeStarted;
+			encodeLogger.Log("  Preset: " + jobViewModel.PresetName);
 
-			string destinationDirectory = Path.GetDirectoryName(this.CurrentJob.Job.OutputPath);
+			this.logger.Log("Starting encode: " + job.FinalOutputPath);
+
+			jobViewModel.ReportEncodeStart();
+
+			string destinationDirectory = Path.GetDirectoryName(job.FinalOutputPath);
 			if (!Directory.Exists(destinationDirectory))
 			{
 				try
 				{
 					Directory.CreateDirectory(destinationDirectory);
 				}
-				catch (IOException exception)
+				catch (Exception exception)
 				{
-					Utilities.MessageBox.Show(
-						string.Format(MainRes.DirectoryCreateErrorMessage, exception),
-						MainRes.DirectoryCreateErrorTitle,
-						MessageBoxButton.OK,
-						MessageBoxImage.Error);
+					encodeLogger.LogError(string.Format(MainRes.DirectoryCreateErrorMessage, exception));
+					this.OnEncodeCompleted(jobViewModel, VCEncodeResultCode.ErrorCouldNotCreateOutputDirectory);
+					return;
 				}
 			}
 
-			this.CanPauseOrStop = false;
+			try
+			{
+				job.PartOutputPath = GetPartFilePath(job.FinalOutputPath);
+			}
+			catch (Exception exception)
+			{
+				encodeLogger.Log("Could not use temporary encoding path. Will instead output directly." + Environment.NewLine + exception);
+			}
 
-			this.currentJobEta = TimeSpan.Zero;
-			this.EncodeQueue[0].ReportEncodeStart(this.totalTasks == 1);
-			this.encodeProxy.StartEncode(this.CurrentJob.Job, encodeLogger, false, 0, 0, 0);
+			jobViewModel.EncodeProxy = Utilities.CreateEncodeProxy();
+			jobViewModel.EncodeProxy.EncodeProgress += (sender, args) =>
+			{
+				this.OnEncodeProgress(jobViewModel, args);
+			};
+			jobViewModel.EncodeProxy.EncodeCompleted += (sender, args) =>
+			{
+				this.OnEncodeCompleted(jobViewModel, args.Result);
+			};
+			jobViewModel.EncodeProxy.EncodeStarted += (sender, args) =>
+			{
+				this.OnEncodeStarted(jobViewModel);
+			};
+
+			// When a job is starting, we can't pause it or stop it.
+			jobViewModel.CanPauseOrStop = false;
+			this.canPauseOrStopSubject.OnNext(false);
+
+			if (!string.IsNullOrWhiteSpace(jobViewModel.DebugEncodeJsonOverride))
+			{
+				jobViewModel.EncodeProxy.StartEncodeAsync(jobViewModel.DebugEncodeJsonOverride, encodeLogger);
+			}
+			else
+			{
+				jobViewModel.EncodeProxy.StartEncodeAsync(job, encodeLogger, false, 0, 0, 0);
+			}
 		}
 
-		private bool canPauseOrStop;
-		public bool CanPauseOrStop
-		{
-			get { return this.canPauseOrStop; }
-			set { this.RaiseAndSetIfChanged(ref this.canPauseOrStop, value); }
-		}
+		private BehaviorSubject<bool> canPauseOrStopSubject = new BehaviorSubject<bool>(false);
 
-		private void OnEncodeStarted(object sender, EventArgs e)
+		private void OnEncodeStarted(EncodeJobViewModel jobViewModel)
 		{
 			DispatchUtilities.BeginInvoke(() =>
 			{
 				// After the encode has reported that it's started, we can now pause/stop it.
-				this.CanPauseOrStop = true;
+				jobViewModel.CanPauseOrStop = true;
+
+				if (this.encodingJobList.Items.All(job => job.CanPauseOrStop))
+				{
+					this.canPauseOrStopSubject.OnNext(true);
+				}
 			});
 		}
 
-		private void OnEncodeProgress(object sender, EncodeProgressEventArgs e)
+		private void OnEncodeProgress(EncodeJobViewModel jobViewModel, EncodeProgressEventArgs e)
 		{
 			if (this.EncodeQueue.Count == 0)
 			{
 				return;
 			}
 
-			VCJob currentJob = this.EncodeQueue[0].Job;
-			double passCost = currentJob.Length.TotalSeconds;
+			VCJob job = jobViewModel.Job;
+			double passCost = job.Length.TotalSeconds;
 			double scanPassCost = passCost / EncodeJobViewModel.SubtitleScanCostFactor;
-			double currentJobCompletedWork = 0.0;
+			double jobCompletedWork = 0.0;
 
-			Debug.WriteLine("Pass id in encode progress: " + e.PassId);
-			if (this.EncodeQueue[0].SubtitleScan)
+			if (jobViewModel.SubtitleScan)
 			{
 				switch (e.PassId)
 				{
 					case -1:
-						currentJobCompletedWork += scanPassCost * e.FractionComplete;
+						jobCompletedWork += scanPassCost * e.FractionComplete;
 						break;
 					case 0:
 					case 1:
-						currentJobCompletedWork += scanPassCost;
-						currentJobCompletedWork += passCost * e.FractionComplete;
+						jobCompletedWork += scanPassCost;
+						jobCompletedWork += passCost * e.FractionComplete;
 						break;
 					case 2:
-						currentJobCompletedWork += scanPassCost;
-						currentJobCompletedWork += passCost;
-						currentJobCompletedWork += passCost * e.FractionComplete;
+						jobCompletedWork += scanPassCost;
+						jobCompletedWork += passCost;
+						jobCompletedWork += passCost * e.FractionComplete;
 						break;
 					default:
 						break;
@@ -1292,221 +1993,258 @@ namespace VidCoder.Services
 				{
 					case 0:
 					case 1:
-						currentJobCompletedWork += passCost * e.FractionComplete;
+						jobCompletedWork += passCost * e.FractionComplete;
 						break;
 					case 2:
-						currentJobCompletedWork += passCost;
-						currentJobCompletedWork += passCost * e.FractionComplete;
+						jobCompletedWork += passCost;
+						jobCompletedWork += passCost * e.FractionComplete;
 						break;
 					default:
 						break;
 				}
 			}
 
-			double totalCompletedWork = this.completedQueueWork + currentJobCompletedWork;
+			jobViewModel.Work.CompletedWork = jobCompletedWork;
 
-			this.OverallEncodeProgressFraction = this.totalQueueCost > 0 ? totalCompletedWork / this.totalQueueCost : 0;
-
-			double queueElapsedSeconds = this.elapsedQueueEncodeTime.Elapsed.TotalSeconds;
-			double overallWorkCompletionRate = queueElapsedSeconds > 0 ? totalCompletedWork / queueElapsedSeconds : 0;
-
-			// Only update encode time every 5th update.
-			if (Interlocked.Increment(ref this.pollCount) % 5 == 1)
+			if (this.WorkTracker.CanShowEta)
 			{
-				if (this.elapsedQueueEncodeTime != null && queueElapsedSeconds > 0.5 && this.OverallEncodeProgressFraction != 0.0)
+				double jobRemainingWork = jobViewModel.Work.Cost - jobCompletedWork;
+
+				if (this.WorkTracker.OverallWorkCompletionRate == 0)
 				{
-					if (this.OverallEncodeProgressFraction == 1.0)
-					{
-						this.EstimatedTimeRemaining = Utilities.FormatTimeSpan(TimeSpan.Zero);
-					}
-					else
-					{
-						if (this.OverallEncodeProgressFraction == 0)
-						{
-							this.overallEtaSpan = TimeSpan.MaxValue;
-						}
-						else
-						{
-							try
-							{
-								this.overallEtaSpan =
-									TimeSpan.FromSeconds((long)(((1.0 - this.OverallEncodeProgressFraction) * queueElapsedSeconds) / this.OverallEncodeProgressFraction));
-							}
-							catch (OverflowException)
-							{
-								this.overallEtaSpan = TimeSpan.MaxValue;
-							}
-						}
-
-						this.EstimatedTimeRemaining = Utilities.FormatTimeSpan(this.overallEtaSpan);
-					}
-
-					double currentJobRemainingWork = this.EncodeQueue[0].Cost - currentJobCompletedWork;
-
-					if (overallWorkCompletionRate == 0)
-					{
-						this.currentJobEta = TimeSpan.MaxValue;
-					}
-					else
-					{
-						try
-						{
-							this.currentJobEta = TimeSpan.FromSeconds(currentJobRemainingWork / overallWorkCompletionRate);
-						}
-						catch (OverflowException)
-						{
-							this.currentJobEta = TimeSpan.MaxValue;
-						}
-					}
-
-					this.EncodeQueue[0].Eta = this.currentJobEta;
-				}
-			}
-
-			double currentJobFractionComplete = currentJobCompletedWork / this.EncodeQueue[0].Cost;
-			this.EncodeQueue[0].PercentComplete = (int)(currentJobFractionComplete * 100.0);
-
-			if (e.EstimatedTimeLeft >= TimeSpan.Zero)
-			{
-				this.CurrentFps = Math.Round(e.CurrentFrameRate, 1);
-				this.AverageFps = Math.Round(e.AverageFrameRate, 1);
-				this.EncodeSpeedDetailsAvailable = true;
-			}
-
-			VCProfile currentProfile = currentJob.EncodingProfile;
-
-			var newEncodeProgress = new EncodeProgress
-			{
-				Encoding = true,
-				OverallProgressFraction = this.OverallEncodeProgressFraction,
-				TaskNumber = this.taskNumber,
-				TotalTasks = this.totalTasks,
-				OverallElapsedTime = this.elapsedQueueEncodeTime.Elapsed,
-				OverallEta = this.overallEtaSpan,
-				FileName = Path.GetFileName(currentJob.OutputPath),
-				FileProgressFraction = currentJobFractionComplete,
-				FileElapsedTime = this.CurrentJob.EncodeTime,
-				FileEta = this.currentJobEta,
-				HasScanPass = this.CurrentJob.SubtitleScan,
-				TwoPass = currentProfile.VideoEncodeRateType != VCVideoEncodeRateType.ConstantQuality && currentProfile.TwoPass,
-				CurrentPassId = e.PassId,
-				PassProgressFraction = e.FractionComplete,
-				EncodeSpeedDetailsAvailable = this.EncodeSpeedDetailsAvailable,
-				CurrentFps = this.CurrentFps,
-				AverageFps = this.AverageFps
-			};
-
-			try
-			{
-				var outputFileInfo = new FileInfo(currentJob.OutputPath);
-				newEncodeProgress.FileSizeBytes = outputFileInfo.Length;
-			}
-			catch (IOException)
-			{
-			}
-			catch (UnauthorizedAccessException)
-			{
-			}
-
-			this.EncodeProgress = newEncodeProgress;
-		}
-
-		private void OnEncodeCompleted(object sender, EncodeCompletedEventArgs e)
-		{
-			DispatchUtilities.BeginInvoke(() =>
-			{
-				ILogger encodeLogger = this.CurrentJob.Logger;
-				string outputPath = this.CurrentJob.Job.OutputPath;
-
-				this.CanPauseOrStop = false;
-
-				if (this.encodeStopped)
-				{
-					// If the encode was stopped manually
-					this.StopEncodingAndReport();
-					this.CurrentJob.ReportEncodeEnd();
-
-					if (this.totalTasks == 1)
-					{
-						this.EncodeQueue.Clear();
-					}
-
-					encodeLogger.Log("Encoding stopped");
+					jobViewModel.Eta = TimeSpan.MaxValue;
 				}
 				else
 				{
-					// If the encode completed successfully
-					this.completedQueueWork += this.CurrentJob.Cost;
+					try
+					{
+						jobViewModel.Eta = TimeSpan.FromSeconds(jobRemainingWork / this.WorkTracker.OverallWorkCompletionRate);
+					}
+					catch (OverflowException)
+					{
+						jobViewModel.Eta = TimeSpan.MaxValue;
+					}
+				}
+			}
 
-					var outputFileInfo = new FileInfo(this.CurrentJob.Job.OutputPath);
+			jobViewModel.FractionComplete = jobCompletedWork / jobViewModel.Work.Cost;
+			jobViewModel.CurrentPassId = e.PassId;
+			jobViewModel.PassProgressFraction = e.FractionComplete;
+			jobViewModel.RefreshEncodeTimeDisplay();
 
-					EncodeResultStatus status = EncodeResultStatus.Succeeded;
-					if (e.Error)
+			try
+			{
+				var outputFileInfo = new FileInfo(jobViewModel.Job.InProgressOutputPath);
+				jobViewModel.FileSizeBytes = outputFileInfo.Length;
+			}
+			catch (Exception)
+			{
+			}
+
+			if (e.EstimatedTimeLeft >= TimeSpan.Zero)
+			{
+				jobViewModel.CurrentFps = Math.Round(e.CurrentFrameRate, 1);
+				jobViewModel.AverageFps = Math.Round(e.AverageFrameRate, 1);
+				jobViewModel.EncodeSpeedDetailsAvailable = true;
+			}
+
+			this.UpdateOverallEncodeProgress();
+		}
+
+		private void UpdateOverallEncodeProgress()
+		{
+			double inProgressJobsCompletedWork = 0;
+			this.RunForAllEncodingJobs(job =>
+			{
+				inProgressJobsCompletedWork += job.Work.CompletedWork;
+			});
+
+			this.WorkTracker.CalculateOverallEncodeProgress(inProgressJobsCompletedWork);
+
+			double currentFps = 0;
+			double averageFps = 0;
+
+			foreach (var jobViewModel in this.EncodeQueue.Items.Where(jobViewModel => jobViewModel.Encoding && jobViewModel.EncodeSpeedDetailsAvailable))
+			{
+				currentFps += jobViewModel.CurrentFps;
+				averageFps += jobViewModel.AverageFps;
+				this.EncodeSpeedDetailsAvailable = true;
+			}
+
+			if (this.EncodeSpeedDetailsAvailable)
+			{
+				this.CurrentFps = currentFps;
+				this.AverageFps = averageFps;
+			}
+		}
+
+		private void OnEncodeCompleted(EncodeJobViewModel finishedJobViewModel, VCEncodeResultCode result)
+		{
+			if (finishedJobViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(finishedJobViewModel));
+			}
+
+			finishedJobViewModel.EncodeProxy?.Dispose();
+
+			DispatchUtilities.BeginInvoke(() =>
+			{
+				this.hardwareResourceService.ReleaseSlot(finishedJobViewModel);
+
+				IAppLogger encodeLogger = finishedJobViewModel.EncodeLogger;
+				string finalOutputPath = finishedJobViewModel.Job.FinalOutputPath;
+				FileInfo directOutputFileInfo;
+				try
+				{
+					directOutputFileInfo = new FileInfo(finishedJobViewModel.Job.InProgressOutputPath);
+				}
+				catch (Exception exception)
+				{
+					throw new InvalidOperationException("Could not get info for output file: " + finishedJobViewModel.Job.InProgressOutputPath, exception);
+				}
+
+				EncodeResultViewModel addedResult = null;
+				bool encodingStopped = false;
+
+				finishedJobViewModel.CanPauseOrStop = false;
+				EncodeResultStatus status = EncodeResultStatus.Succeeded;
+
+				finishedJobViewModel.ReportEncodeEnd();
+
+				if (this.encodeCompleteReason == EncodeCompleteReason.Finished)
+				{
+					// If the encode finished naturally (Not stopped by user)
+					this.WorkTracker.ReportFinished(finishedJobViewModel.Work);
+
+					long outputFileLength = 0;
+
+					if (result != VCEncodeResultCode.Succeeded)
 					{
 						status = EncodeResultStatus.Failed;
-						encodeLogger.LogError("Encode failed.");
+						encodeLogger.LogError("Encode failed with code " + result.ToString());
 					}
-					else if (!outputFileInfo.Exists)
+					else if (!directOutputFileInfo.Exists)
 					{
 						status = EncodeResultStatus.Failed;
 						encodeLogger.LogError("Encode failed. HandBrake reported no error but the expected output file was not found.");
 					}
-					else if (outputFileInfo.Length == 0)
+					else
 					{
-						status = EncodeResultStatus.Failed;
-						encodeLogger.LogError("Encode failed. HandBrake reported no error but the output file was empty.");
+						outputFileLength = directOutputFileInfo.Length;
+						if (outputFileLength == 0)
+						{
+							status = EncodeResultStatus.Failed;
+							encodeLogger.LogError("Encode failed. HandBrake reported no error but the output file was empty.");
+						}
 					}
 
-					EncodeJobViewModel finishedJob = this.CurrentJob;
+					this.EncodeQueue.Remove(finishedJobViewModel);
 
-					if (Config.PreserveModifyTimeFiles)
-					{
-						try
-						{
-							if (status != EncodeResultStatus.Failed && !FileUtilities.IsDirectory(finishedJob.Job.SourcePath))
-							{
-								FileInfo info = new FileInfo(finishedJob.Job.SourcePath);
-
-								File.SetCreationTimeUtc(finishedJob.Job.OutputPath, info.CreationTimeUtc);
-								File.SetLastWriteTimeUtc(finishedJob.Job.OutputPath, info.LastWriteTimeUtc);
-							}
-						}
-						catch (IOException exception)
-						{
-							encodeLogger.LogError("Could not set create/modify dates on file: " + exception);
-						}
-						catch (UnauthorizedAccessException exception)
-						{
-							encodeLogger.LogError("Could not set create/modify dates on file: " + exception);
-						} 
-					}
-
-					this.CompletedJobs.Add(new EncodeResultViewModel(
+					addedResult = new EncodeResultViewModel(
 						new EncodeResult
 						{
-							Destination = this.CurrentJob.Job.OutputPath,
+							Destination = finalOutputPath,
 							Status = status,
-							EncodeTime = this.CurrentJob.EncodeTime,
-							LogPath = encodeLogger.LogPath
+							EncodeTime = finishedJobViewModel.EncodeTime,
+							LogPath = encodeLogger.LogPath,
+							SizeBytes = outputFileLength,
 						},
-						finishedJob));
+						finishedJobViewModel);
 
-					this.EncodeQueue.RemoveAt(0);
-
-					var picker = this.pickersService.SelectedPicker.Picker;
-					if (status == EncodeResultStatus.Succeeded && picker.PostEncodeActionEnabled && !string.IsNullOrWhiteSpace(picker.PostEncodeExecutable))
+					// Before we delete the source file we need to set creation time
+					if (status == EncodeResultStatus.Succeeded && !FileUtilities.IsDirectory(finishedJobViewModel.Job.SourcePath))
 					{
-						string arguments = picker.PostEncodeArguments.Replace("{file}", outputPath);
-
-						var process = new ProcessStartInfo(
-							picker.PostEncodeExecutable,
-							arguments);
-						System.Diagnostics.Process.Start(process);
-
-						encodeLogger.Log($"Started post-encode action. Executable: {picker.PostEncodeExecutable} , Arguments: {arguments}");
+						if (Config.PreserveModifyTimeFiles)
+						{
+							try
+							{
+								UpdateFileTimes(finishedJobViewModel, encodeLogger, finishedJobViewModel.Job.PartOutputPath);
+							}
+							catch (Exception exception)
+							{
+								encodeLogger.LogError("Could not set create/modify dates on file: " + exception);
+							}
+						}
 					}
 
-					encodeLogger.Log("Job completed (Elapsed Time: " + Utilities.FormatTimeSpan(finishedJob.EncodeTime) + ")");
+					// Delete source files if successful and configured to do so immediately. This way if the destination was the same as source we can clear the way for swapping in the newly encoded file.
+					// This needs to run after removing from the encode queue, otherwise the logic will bail when seeing the finished job's output path as part of the encode queue.
+					var picker = this.pickersService.SelectedPicker.Picker;
+					if (status == EncodeResultStatus.Succeeded && picker.SourceFileRemoval != SourceFileRemoval.Disabled && picker.SourceFileRemovalTiming == SourceFileRemovalTiming.Immediately)
+					{
+						List<string> deletionCandidates = this.GetRemovalCandidates(new List<EncodeResultViewModel> { addedResult });
+						if (RemoveSourceFiles(deletionCandidates, picker, encodeLogger) > 0)
+						{
+							addedResult.SourceFileExists = false;
+						}
+					}
+
+					string failedFilePath = null;
+
+					if (status == EncodeResultStatus.Succeeded && finishedJobViewModel.Job.PartOutputPath != null)
+					{
+						// Rename from in progress path to final path. Run after deleting source file, in case we are doing an in-place swap.
+						try
+						{
+							if (File.Exists(finalOutputPath))
+							{
+								File.Delete(finalOutputPath);
+							}
+
+							File.Move(finishedJobViewModel.Job.PartOutputPath, finalOutputPath);
+						}
+						catch (Exception exception)
+						{
+							status = EncodeResultStatus.Failed;
+							encodeLogger.LogError($"Could not rename to final output path. Output is left as '{finishedJobViewModel.Job.PartOutputPath}'" + Environment.NewLine + exception);
+						}
+					}
+					else if (status != EncodeResultStatus.Succeeded)
+					{
+						// If failed, rename or delete the failed file as configured in settings
+						failedFilePath = TryHandleFailedFile(directOutputFileInfo, encodeLogger, "failed", finalOutputPath);
+					}
+
+					addedResult.EncodeResult.FailedFilePath = failedFilePath;
+
+					this.completedJobs.Add(addedResult);
+
+					if (status != EncodeResultStatus.Succeeded)
+					{
+						this.HasFailedItems = true;
+					}
+
+					// Run post-encode job
+					if (status == EncodeResultStatus.Succeeded)
+					{
+						if (picker.PostEncodeActionEnabled && !string.IsNullOrWhiteSpace(picker.PostEncodeExecutable))
+						{
+							string arguments = this.outputPathService.ReplaceArguments(picker.PostEncodeArguments, picker, finishedJobViewModel)
+								.Replace("{file}", finalOutputPath)
+								.Replace("{folder}", Path.GetDirectoryName(finalOutputPath));
+
+							try
+							{
+								var process = new ProcessStartInfo(
+									picker.PostEncodeExecutable,
+									arguments);
+								System.Diagnostics.Process.Start(process);
+								encodeLogger.Log($"Started post-encode action. Executable: {picker.PostEncodeExecutable} , Arguments: {arguments}");
+							}
+							catch (Exception exception)
+							{
+								encodeLogger.LogError($"Could not start post-encode action. Executable: {picker.PostEncodeExecutable} , Arguments: {arguments}." + Environment.NewLine + exception);
+							}
+						}
+					}
+
+					encodeLogger.Log("Job completed (Elapsed Time: " + finishedJobViewModel.EncodeTime.FormatFriendly() + ")");
+					this.logger.Log("Job completed: " + finalOutputPath);
+
+					if (status != EncodeResultStatus.Succeeded)
+					{
+						this.RetryJobIfNeeded(finishedJobViewModel);
+					}
 
 					if (this.EncodeQueue.Count == 0)
 					{
@@ -1517,69 +2255,74 @@ namespace VidCoder.Services
 						this.logger.ShowStatus(MainRes.EncodeCompleted);
 						this.logger.Log("");
 
-						Ioc.Get<TrayService>().ShowBalloonMessage(MainRes.EncodeCompleteBalloonTitle, MainRes.EncodeCompleteBalloonMessage);
+						this.TriggerQueueCompleteNotificationIfBackground();
 
-						EncodeCompleteActionType actionType = this.EncodeCompleteAction.ActionType;
-						if (Config.PlaySoundOnCompletion &&
-							actionType != EncodeCompleteActionType.Sleep && 
-							actionType != EncodeCompleteActionType.LogOff &&
-							actionType != EncodeCompleteActionType.Shutdown &&
-							actionType != EncodeCompleteActionType.Hibernate)
+						if (Config.PlaySoundOnCompletion && this.EncodeCompleteAction.Trigger == EncodeCompleteTrigger.None)
 						{
-							string soundPath = null;
-							if (Config.UseCustomCompletionSound)
-							{
-								if (File.Exists(Config.CustomCompletionSound))
-								{
-									soundPath = Config.CustomCompletionSound;
-								}
-								else
-								{
-									this.logger.LogError(string.Format("Cound not find custom completion sound \"{0}\" . Using default.", Config.CustomCompletionSound));
-								}
-							}
-
-							if (soundPath == null)
-							{
-								soundPath = Path.Combine(Utilities.ProgramFolder, "Encode_Complete.wav");
-							}
-
-							var soundPlayer = new SoundPlayer(soundPath);
-
-							try
-							{
-								soundPlayer.Play();
-							}
-							catch (InvalidOperationException)
-							{
-								this.logger.LogError(string.Format("Completion sound \"{0}\" was not a supported WAV file.", soundPath));
-							}
+							this.PlayEncodeCompleteSound();
 						}
 
-						switch (actionType)
-						{
-							case EncodeCompleteActionType.DoNothing:
-								break;
-							case EncodeCompleteActionType.EjectDisc:
-								this.systemOperations.Eject(this.EncodeCompleteAction.DriveLetter);
-								break;
-							case EncodeCompleteActionType.Sleep:
-							case EncodeCompleteActionType.LogOff:
-							case EncodeCompleteActionType.Shutdown:
-							case EncodeCompleteActionType.Hibernate:
-								this.windowManager.OpenWindow(new ShutdownWarningWindowViewModel(actionType));
-								break;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
+						encodingStopped = true;
+						this.TriggerEncodeCompleteAction();
+					}
+					else if (this.EncodeCompleteAction.Trigger == EncodeCompleteTrigger.DoneWithCurrentJobs && !this.EncodeQueue.Items.Any(j => j.Encoding))
+					{
+						this.SelectedTabIndex = CompletedTabIndex;
+						this.StopEncodingAndReport();
+
+						encodingStopped = true;
+						this.TriggerEncodeCompleteAction();
 					}
 					else
 					{
-						this.EncodeNextJob();
+						this.EncodeNextJobs();
 					}
 				}
+				else
+				{
+					// If the encode was stopped manually
 
-				if (this.encodeStopped || this.EncodeQueue.Count == 0)
+					string stopMessage;
+					if (this.encodeCompleteReason == EncodeCompleteReason.ManualStopSingle)
+					{
+						// If we're stopping just this job, we need to push it down the queue and start up the next job in line
+						this.EncodeQueue.Edit(encodeQueueInnerList =>
+						{
+							encodeQueueInnerList.Remove(finishedJobViewModel);
+							encodeQueueInnerList.Insert(Math.Min(Config.MaxSimultaneousEncodes, encodeQueueInnerList.Count - 1), finishedJobViewModel);
+
+							this.EncodeNextJobs();
+						});
+
+						stopMessage = "Encoding stopped for " + finalOutputPath;
+					}
+					else
+					{
+						// If we're stopping all jobs, update encoding state.
+						this.StopEncodingAndReport();
+						encodingStopped = true;
+
+						stopMessage = "Encoding stopped";
+
+						// If the user still has the video source up, clear the queue so they can change settings and try again.
+						// If the source isn't loaded they probably want to keep it in the queue.
+						if (this.TotalTasks == 1
+							&& this.encodeCompleteReason == EncodeCompleteReason.ManualStopAll
+							&& this.main.HasVideoSource
+							&& this.main.SourcePath == this.EncodeQueue.Items.First().Job.SourcePath)
+						{
+							this.EncodeQueue.Clear();
+						}
+					}
+
+					encodeLogger.Log(stopMessage);
+					this.logger.Log(stopMessage);
+
+					// Try to clean up the failed file
+					TryHandleFailedFile(directOutputFileInfo, encodeLogger, "stopped", finalOutputPath);
+				}
+
+				if (encodingStopped)
 				{
 					this.windowManager.Close<EncodeDetailsWindowViewModel>(userInitiated: false);
 				}
@@ -1587,19 +2330,70 @@ namespace VidCoder.Services
 				string encodeLogPath = encodeLogger.LogPath;
 				encodeLogger.Dispose();
 
-				if (Config.CopyLogToOutputFolder && encodeLogPath != null)
+				string logAffix;
+				if (this.encodeCompleteReason != EncodeCompleteReason.Finished)
 				{
-					string logCopyPath = Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileName(encodeLogPath));
+					logAffix = "aborted";
+				}
+				else
+				{
+					logAffix = status == EncodeResultStatus.Succeeded ? "succeeded" : "failed";
+				}
 
+				string finalLogPath;
+				if (CustomConfig.UseWorkerProcess)
+				{
+					finalLogPath = ApplyStatusAffixToLogPath(encodeLogPath, logAffix);
+					encodeLogger.LogPath = finalLogPath;
+				}
+				else
+				{
+					finalLogPath = encodeLogPath;
+				}
+
+				if (addedResult != null)
+				{
+					addedResult.EncodeResult.LogPath = finalLogPath;
+				}
+
+				if (finalLogPath != null)
+				{
+					if (Config.CopyLogToOutputFolder)
+					{
+						if (CustomConfig.UseWorkerProcess)
+						{
+							string logCopyPath = Path.Combine(Path.GetDirectoryName(finalOutputPath), Path.GetFileName(finalLogPath));
+
+							try
+							{
+								File.Copy(finalLogPath, logCopyPath);
+							}
+							catch (Exception exception)
+							{
+								this.logger.LogError("Could not copy log file to output directory: " + exception);
+							}
+						}
+						else
+						{
+							this.logger.LogError("Cannot copy log to output folder: encode logs are only supported when using worker process.");
+						}
+					}
+				}
+
+				if (Config.CopyLogToCustomFolder)
+				{
 					try
 					{
-						File.Copy(encodeLogPath, logCopyPath);
+						if (!Directory.Exists(Config.LogCustomFolder))
+						{
+							Directory.CreateDirectory(Config.LogCustomFolder);
+						}
+
+						string logCopyPath = Path.Combine(Config.LogCustomFolder, Path.GetFileName(finalLogPath));
+
+						File.Copy(finalLogPath, logCopyPath);
 					}
-					catch (IOException exception)
-					{
-						this.logger.LogError("Could not copy log file to output directory: " + exception);
-					}
-					catch (UnauthorizedAccessException exception)
+					catch (Exception exception)
 					{
 						this.logger.LogError("Could not copy log file to output directory: " + exception);
 					}
@@ -1607,28 +2401,212 @@ namespace VidCoder.Services
 			});
 		}
 
+		private static void UpdateFileTimes(EncodeJobViewModel finishedJobViewModel, IAppLogger encodeLogger, string outputPath)
+		{
+			if (outputPath == null)
+			{
+				// Only would happen with very old queue items. Will abort if that's the case.
+				return;
+			}
+
+			var inputShellFile = ShellFile.FromFilePath(finishedJobViewModel.Job.SourcePath);
+			var outputShellFile = ShellFile.FromFilePath(outputPath);
+
+			try
+			{
+				DateTime? inputFileMediaCreatedTime = inputShellFile.Properties.System.Media.DateEncoded.Value;
+				if (inputFileMediaCreatedTime != null)
+				{
+					outputShellFile.Properties.System.Media.DateEncoded.Value = inputFileMediaCreatedTime;
+				}
+			}
+			catch (Exception exception)
+			{
+				encodeLogger.LogError("Could not set encoded date on file: " + exception);
+			}
+
+			File.SetCreationTimeUtc(outputPath, inputShellFile.Properties.System.DateCreated.Value.Value);
+
+			// Set "last write" time last so it isn't reset by another property edit.
+			File.SetLastWriteTimeUtc(outputPath, inputShellFile.Properties.System.DateModified.Value.Value);
+
+			// Writing Created/Modified time does not work via the ShellFile API, otherwise we would use this approach to set them all at once.
+			//ShellPropertyWriter propertyWriter = outputShellFile.Properties.GetPropertyWriter();
+			//propertyWriter.WriteProperty(SystemProperties.System.DateCreated, inputShellFile.Properties.System.DateCreated.Value);
+			//propertyWriter.WriteProperty(SystemProperties.System.DateModified, inputShellFile.Properties.System.DateModified.Value);
+			//propertyWriter.Close();
+		}
+
+		private void TriggerQueueCompleteNotificationIfBackground()
+		{
+			if (!Utilities.IsInForeground)
+			{
+				StaticResolver.Resolve<TrayService>().ShowBalloonMessage(MainRes.EncodeCompleteBalloonTitle, MainRes.EncodeCompleteBalloonMessage);
+				if (Utilities.UwpApisAvailable)
+				{
+					const string toastFormat =
+						"<?xml version=\"1.0\" encoding=\"utf-8\"?><toast><visual><binding template=\"ToastGeneric\"><text>{0}</text><text>{1}</text></binding></visual></toast>";
+
+					string toastString = string.Format(toastFormat, SecurityElement.Escape(MainRes.EncodeCompleteBalloonTitle), SecurityElement.Escape(MainRes.EncodeCompleteBalloonMessage));
+
+					this.toastNotificationService.Clear();
+					this.toastNotificationService.ShowToast(toastString);
+				}
+			}
+		}
+
+		private void PlayEncodeCompleteSound()
+		{
+			string soundPath = null;
+			if (Config.UseCustomCompletionSound)
+			{
+				if (File.Exists(Config.CustomCompletionSound))
+				{
+					soundPath = Config.CustomCompletionSound;
+				}
+				else
+				{
+					this.logger.LogError(string.Format("Cound not find custom completion sound \"{0}\" . Using default.", Config.CustomCompletionSound));
+				}
+			}
+
+			if (soundPath == null)
+			{
+				soundPath = Path.Combine(Utilities.ProgramFolder, "Encode_Complete.wav");
+			}
+
+			var soundPlayer = new SoundPlayer(soundPath);
+
+			try
+			{
+				soundPlayer.Play();
+			}
+			catch (InvalidOperationException)
+			{
+				this.logger.LogError(string.Format("Completion sound \"{0}\" was not a supported WAV file.", soundPath));
+			}
+		}
+
+		private void TriggerEncodeCompleteAction()
+		{
+			if (this.EncodeCompleteAction.ActionType != EncodeCompleteActionType.DoNothing && !Config.TriggerEncodeCompleteActionWithErrors && this.completedJobs.Items.Any(job => !job.EncodeResult.Succeeded))
+			{
+				StaticResolver.Resolve<IMessageBoxService>().Show(MainRes.EncodeCompleteActionAbortedDueToErrorsMessage);
+				this.logger.Log(MainRes.EncodeCompleteActionAbortedDueToErrorsMessage);
+				return;
+			}
+
+			switch (this.EncodeCompleteAction.ActionType)
+			{
+				case EncodeCompleteActionType.DoNothing:
+				case EncodeCompleteActionType.StopEncoding:
+					break;
+				case EncodeCompleteActionType.EjectDisc:
+					this.systemOperations.Eject(this.EncodeCompleteAction.DriveLetter);
+					break;
+				case EncodeCompleteActionType.CloseProgram:
+					this.windowManager.Close(this.main);
+					break;
+				case EncodeCompleteActionType.Sleep:
+				case EncodeCompleteActionType.LogOff:
+				case EncodeCompleteActionType.Shutdown:
+				case EncodeCompleteActionType.Hibernate:
+					this.windowManager.OpenWindow(new ShutdownWarningWindowViewModel(this.EncodeCompleteAction.ActionType));
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		private static string ApplyStatusAffixToLogPath(string encodeLogPath, string affix)
+		{
+			if (encodeLogPath != null)
+			{
+				string directory = Path.GetDirectoryName(encodeLogPath);
+				string logBaseName = Path.GetFileNameWithoutExtension(encodeLogPath);
+				string extension = Path.GetExtension(encodeLogPath);
+
+				string newEncodeLogPath = Path.Combine(directory, logBaseName + "-" + affix + extension);
+				try
+				{
+					File.Move(encodeLogPath, newEncodeLogPath);
+					return newEncodeLogPath;
+				}
+				catch
+				{
+					// Don't worry about it if moving failed.
+				}
+			}
+
+			return encodeLogPath;
+		}
+
+		private static string TryHandleFailedFile(FileInfo directOutputFileInfo, IAppLogger encodeLogger, string reason, string finalOutputPath)
+		{
+			if (Config.KeepFailedFiles)
+			{
+				if (directOutputFileInfo.Exists)
+				{
+					try
+					{
+						string directory = Path.GetDirectoryName(finalOutputPath);
+						string outputBaseName = Path.GetFileNameWithoutExtension(finalOutputPath);
+						string extension = Path.GetExtension(finalOutputPath);
+
+						string destinationPath = Path.Combine(directory, outputBaseName + "." + reason + extension);
+						destinationPath = FileUtilities.CreateUniqueFileName(destinationPath, new HashSet<string>());
+						directOutputFileInfo.MoveTo(destinationPath);
+						return destinationPath;
+					}
+					catch (Exception exception)
+					{
+						encodeLogger.Log($"Could not rename failed file '{directOutputFileInfo.FullName}'." + Environment.NewLine + exception);
+					}
+				}
+			}
+			else
+			{
+				try
+				{
+					directOutputFileInfo.Delete();
+				}
+				catch (Exception exception)
+				{
+					encodeLogger.Log($"Could not clean up failed file '{directOutputFileInfo.FullName}'." + Environment.NewLine + exception);
+				}
+			}
+
+			return null;
+		}
+
 		private void PauseEncoding()
 		{
-			this.encodeProxy.PauseEncode();
-			this.EncodeProgressState = TaskbarItemProgressState.Paused;
-			this.CurrentJob.ReportEncodePause();
+			this.RunForAllEncodeProxies(encodeProxy => encodeProxy.PauseEncodeAsync(), nameof(IEncodeProxy.PauseEncodeAsync));
+			this.RunForAllEncodingJobs(job => job.ReportEncodePause());
 
 			this.Paused = true;
 		}
 
 		private void ResumeEncoding()
 		{
-			this.encodeProxy.ResumeEncode();
-			this.EncodeProgressState = TaskbarItemProgressState.Normal;
-			this.CurrentJob.ReportEncodeResume();
+			this.RunForAllEncodeProxies(encodeProxy => encodeProxy.ResumeEncodeAsync(), nameof(IEncodeProxy.ResumeEncodeAsync));
+			this.RunForAllEncodingJobs(job => job.ReportEncodeResume());
 
 			this.Paused = false;
+
+			// Some more jobs may have been added while paused. Start them if needed.
+			if (Config.MaxSimultaneousEncodes > 1)
+			{
+				this.EncodeNextJobs();
+			}
 		}
 
 		private void StopEncodingAndReport()
 		{
-			this.EncodeProgressState = TaskbarItemProgressState.None;
+			this.WorkTracker.ReportEncodeStop();
 			this.Encoding = false;
+			this.EncodeSpeedDetailsAvailable = false;
+			SystemSleepManagement.AllowSleep();
 			this.autoPause.ReportStop();
 		}
 
@@ -1639,28 +2617,55 @@ namespace VidCoder.Services
 
 		private void RefreshEncodeCompleteActions()
 		{
-			if (this.EncodeQueue == null || this.CompletedJobs == null)
+			if (this.completedJobs == null)
 			{
 				return;
 			}
 
 			EncodeCompleteAction oldCompleteAction = this.EncodeCompleteAction;
 
-			this.encodeCompleteActions =
-				new List<EncodeCompleteAction>
-				{
-					new EncodeCompleteAction { ActionType = EncodeCompleteActionType.DoNothing },
-					new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Sleep },
-					new EncodeCompleteAction { ActionType = EncodeCompleteActionType.LogOff },
-					new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Hibernate },
-					new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Shutdown },
-				};
+			if (this.EncodeQueue.Items.Any(j => !j.Encoding))
+			{
+				// If any items are not encoding yet, show both "when done with current items" choices and "when done with queue" choices
+
+				this.encodeCompleteActions =
+					new List<EncodeCompleteAction>
+					{
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.DoNothing, Trigger = EncodeCompleteTrigger.None },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.CloseProgram, Trigger = EncodeCompleteTrigger.DoneWithQueue, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Sleep, Trigger = EncodeCompleteTrigger.DoneWithQueue, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.LogOff, Trigger = EncodeCompleteTrigger.DoneWithQueue, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Hibernate, Trigger = EncodeCompleteTrigger.DoneWithQueue, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Shutdown, Trigger = EncodeCompleteTrigger.DoneWithQueue, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.StopEncoding, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.CloseProgram, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Sleep, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.LogOff, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Hibernate, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Shutdown, Trigger = EncodeCompleteTrigger.DoneWithCurrentJobs, ShowTriggerInDisplay = true },
+					};
+			}
+			else
+			{
+				// If all items are encoding, only show queue options
+
+				this.encodeCompleteActions =
+					new List<EncodeCompleteAction>
+					{
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.DoNothing },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.CloseProgram, Trigger = EncodeCompleteTrigger.DoneWithQueue },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Sleep, Trigger = EncodeCompleteTrigger.DoneWithQueue },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.LogOff, Trigger = EncodeCompleteTrigger.DoneWithQueue },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Hibernate, Trigger = EncodeCompleteTrigger.DoneWithQueue },
+						new EncodeCompleteAction { ActionType = EncodeCompleteActionType.Shutdown, Trigger = EncodeCompleteTrigger.DoneWithQueue },
+					};
+			}
 
 			// Applicable drives to eject are those in the queue or completed items list
 			var applicableDrives = new HashSet<string>();
-			foreach (EncodeJobViewModel job in this.EncodeQueue)
+			foreach (EncodeJobViewModel job in this.EncodeQueue.Items)
 			{
-				if (job.Job.SourceType == SourceType.Dvd)
+				if (job.Job.SourceType == SourceType.Disc)
 				{
 					string driveLetter = job.Job.SourcePath.Substring(0, 1).ToUpperInvariant();
 					if (!applicableDrives.Contains(driveLetter))
@@ -1670,9 +2675,9 @@ namespace VidCoder.Services
 				}
 			}
 
-			foreach (EncodeResultViewModel result in this.CompletedJobs)
+			foreach (EncodeResultViewModel result in this.completedJobs.Items)
 			{
-				if (result.Job.Job.SourceType == SourceType.Dvd)
+				if (result.Job.Job.SourceType == SourceType.Disc)
 				{
 					string driveLetter = result.Job.Job.SourcePath.Substring(0, 1).ToUpperInvariant();
 					if (!applicableDrives.Contains(driveLetter))
@@ -1685,63 +2690,56 @@ namespace VidCoder.Services
 			// Order backwards so repeated insertions put them in correct order
 			var orderedDrives =
 				from d in applicableDrives
-				orderby d descending 
+				orderby d descending
 				select d;
 
 			foreach (string drive in orderedDrives)
 			{
-				this.encodeCompleteActions.Insert(1, new EncodeCompleteAction { ActionType = EncodeCompleteActionType.EjectDisc, DriveLetter = drive });
+				this.encodeCompleteActions.Insert(1, new EncodeCompleteAction { ActionType = EncodeCompleteActionType.EjectDisc, DriveLetter = drive, Trigger = EncodeCompleteTrigger.DoneWithQueue });
 			}
 
 			this.RaisePropertyChanged(nameof(this.EncodeCompleteActions));
 
-			// Transfer over the previously selected item
+			// Transfer over the previously selected item. First look for exact match.
 			this.encodeCompleteAction = this.encodeCompleteActions[0];
+			bool foundMatch = false;
 			for (int i = 1; i < this.encodeCompleteActions.Count; i++)
 			{
 				if (this.encodeCompleteActions[i].Equals(oldCompleteAction))
 				{
 					this.encodeCompleteAction = this.encodeCompleteActions[i];
+					foundMatch = true;
 					break;
+				}
+			}
+
+			// If no exact match, try again but ignore the trigger
+			if (!foundMatch && oldCompleteAction != null)
+			{
+				for (int i = 1; i < this.encodeCompleteActions.Count; i++)
+				{
+					EncodeCompleteAction action = this.encodeCompleteActions[i];
+					if (action.ActionType == oldCompleteAction.ActionType && action.DriveLetter == oldCompleteAction.DriveLetter)
+					{
+						this.encodeCompleteAction = this.encodeCompleteActions[i];
+						break;
+					}
 				}
 			}
 
 			this.RaisePropertyChanged(nameof(this.EncodeCompleteAction));
 		}
 
-		private bool EnsureDefaultOutputFolderSet()
-		{
-			if (!string.IsNullOrEmpty(Config.AutoNameOutputFolder))
-			{
-				return true;
-			}
-
-			var messageService = Ioc.Get<IMessageBoxService>();
-			var messageResult = messageService.Show(
-				this.main,
-				MainRes.OutputFolderRequiredMessage, 
-				MainRes.OutputFolderRequiredTitle, 
-				MessageBoxButton.OKCancel, 
-				MessageBoxImage.Information);
-
-			if (messageResult == MessageBoxResult.Cancel)
-			{
-				return false;
-			}
-
-			return this.outputVM.PickDefaultOutputFolderImpl();
-		}
-
 		private bool EnsureValidOutputPath()
 		{
-			if (this.outputVM.PathIsValid())
+			if (this.outputPathService.PathIsValid())
 			{
 				return true;
 			}
 
-			Ioc.Get<IMessageBoxService>().Show(
+			StaticResolver.Resolve<IMessageBoxService>().Show(
 				MainRes.OutputPathNotValidMessage,
-				MainRes.OutputPathNotValidTitle, 
+				MainRes.OutputPathNotValidTitle,
 				MessageBoxButton.OK,
 				MessageBoxImage.Error);
 
@@ -1785,6 +2783,32 @@ namespace VidCoder.Services
 			return result;
 		}
 
+		/// <summary>
+		/// Gets the .part file path given the final output path.
+		/// </summary>
+		/// <param name="outputFilePath"></param>
+		/// <returns>The .part file path.</returns>
+		/// <exception cref="PathTooLongException">Thrown when path is too long.</exception>
+		/// <exception cref="IOException">Thrown when unable to delete old part file.</exception>
+		private static string GetPartFilePath(string outputFilePath)
+		{
+			string directory = Path.GetDirectoryName(outputFilePath);
+			string extension = Path.GetExtension(outputFilePath);
+			string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(outputFilePath);
+
+			string partPath = Path.Combine(directory, fileNameWithoutExtension + ".part" + extension);
+
+			// This will throw if the path is too long.
+			partPath = Path.GetFullPath(partPath);
+
+			if (File.Exists(partPath))
+			{
+				File.Delete(partPath);
+			}
+
+			return partPath;
+		}
+
 		private void AutoPauseEncoding(object sender, EventArgs e)
 		{
 			DispatchUtilities.Invoke(() =>
@@ -1809,11 +2833,16 @@ namespace VidCoder.Services
 
 		// Automatically pick the correct audio on the given job.
 		// Only relies on input from settings and the current title.
-		private void AutoPickAudio(VCJob job, SourceTitle title, bool useCurrentContext = false)
+		private void AutoPickAudio(VCJob job, SourceTitle title, bool useCurrentContext = false, Picker picker = null)
 		{
-			Picker picker = this.pickersService.SelectedPicker.Picker;
+			if (picker == null)
+			{
+				picker = this.pickersService.SelectedPicker.Picker;
+			}
 
-			job.ChosenAudioTracks = new List<int>();
+			int outputIndex = 0;
+
+			job.AudioTracks = new List<ChosenAudioTrack>();
 			switch (picker.AudioSelectionMode)
 			{
 				case AudioSelectionMode.Disabled:
@@ -1822,52 +2851,35 @@ namespace VidCoder.Services
 						if (useCurrentContext)
 						{
 							// With previous context, pick similarly
-							foreach (AudioChoiceViewModel audioVM in this.main.AudioChoices)
+							foreach (AudioTrackViewModel audioVM in this.main.AudioTracks.Items.Where(t => t.Selected))
 							{
-								int audioIndex = audioVM.SelectedIndex;
+								int audioIndex = audioVM.TrackIndex;
 
 								if (title.AudioList.Count > audioIndex && this.main.SelectedTitle.AudioList[audioIndex].LanguageCode == title.AudioList[audioIndex].LanguageCode)
 								{
-									job.ChosenAudioTracks.Add(audioIndex + 1);
+									job.AudioTracks.Add(new ChosenAudioTrack { TrackNumber = audioIndex + 1, Name = GetPickerAudioName(picker, outputIndex++) });
 								}
 							}
 
 							// If we didn't manage to match any existing audio tracks, use the first audio track.
-							if (this.main.AudioChoices.Count > 0 && job.ChosenAudioTracks.Count == 0)
+							if (job.AudioTracks.Count == 0)
 							{
-								job.ChosenAudioTracks.Add(1);
+								job.AudioTracks.Add(new ChosenAudioTrack { TrackNumber = 1, Name = GetPickerAudioName(picker, outputIndex++) });
 							}
 						}
 						else
 						{
 							// With no previous context, just pick the first track
-							job.ChosenAudioTracks.Add(1);
+							job.AudioTracks.Add(new ChosenAudioTrack { TrackNumber = 1, Name = GetPickerAudioName(picker, outputIndex++) });
 						}
 					}
 
 					break;
+				case AudioSelectionMode.First:
+				case AudioSelectionMode.ByIndex:
 				case AudioSelectionMode.Language:
-					for (int i = 0; i < title.AudioList.Count; i++)
-					{
-						SourceAudioTrack track = title.AudioList[i];
-
-						if (track.LanguageCode == picker.AudioLanguageCode)
-						{
-							job.ChosenAudioTracks.Add(i + 1);
-
-							if (!picker.AudioLanguageAll)
-							{
-								break;
-							}
-						}
-					}
-
-					break;
 				case AudioSelectionMode.All:
-					for (int i = 0; i < title.AudioList.Count; i++)
-					{
-						job.ChosenAudioTracks.Add(i + 1);
-					}
+					job.AudioTracks.AddRange(ChooseAudioTracks(title.AudioList, picker).Select(track => new ChosenAudioTrack { TrackNumber = track.TrackNumber, Name = GetPickerAudioName(picker, outputIndex++) }));
 
 					break;
 				default:
@@ -1875,120 +2887,581 @@ namespace VidCoder.Services
 			}
 
 			// If none get chosen, pick the first one.
-			if (job.ChosenAudioTracks.Count == 0 && title.AudioList.Count > 0)
+			if (job.AudioTracks.Count == 0 && title.AudioList.Count > 0)
 			{
-				job.ChosenAudioTracks.Add(1);
+				job.AudioTracks.Add(new ChosenAudioTrack { TrackNumber = 1 });
 			}
+
+			// Use the picker to apply names to the chosen audio tracks
+			for (int i = 0; i < job.AudioTracks.Count; i++)
+			{
+				job.AudioTracks[i].Name = GetPickerAudioName(picker, i);
+			}
+		}
+
+		/// <summary>
+		/// Returns the 0-based track indices that should be included. Valid for all modes but Disabled.
+		/// </summary>
+		/// <param name="audioTracks">The audio tracks on the input video.</param>
+		/// <param name="picker">The picker to use.</param>
+		/// <returns>The audio tracks that should be included.</returns>
+		public static IList<SourceAudioTrack> ChooseAudioTracks(IList<SourceAudioTrack> audioTracks, Picker picker)
+		{
+			var result = new List<SourceAudioTrack>();
+			IList<SourceAudioTrack> chosenAudioTracks;
+			switch (picker.AudioSelectionMode)
+			{
+				case AudioSelectionMode.Disabled:
+					throw new ArgumentException("Disabled is an invalid mode.");
+				case AudioSelectionMode.First:
+					if (audioTracks.Count > 0)
+					{
+						result.Add(audioTracks[0]);
+					}
+
+					break;
+				case AudioSelectionMode.ByIndex:
+					// 1-based
+					IList<int> chosenAudioTrackIndices = ParseUtilities.ParseCommaSeparatedListToPositiveIntegers(picker.AudioIndices);
+
+					// Filter out indices that are out of range and look up the tracks
+					result.AddRange(chosenAudioTrackIndices.Where(i => i <= audioTracks.Count).Select(i => audioTracks[i - 1]));
+
+					break;
+				case AudioSelectionMode.Language:
+					chosenAudioTracks = ChooseAudioTracksFromLanguages(audioTracks, picker.AudioLanguageCodes, picker.AudioLanguageAll);
+					result.AddRange(chosenAudioTracks);
+
+					break;
+				case AudioSelectionMode.All:
+					if (picker.AudioLanguageCodes != null && picker.AudioLanguageCodes.Count > 0)
+					{
+						// All tracks with certain languages first
+						chosenAudioTracks = ChooseAudioTracksFromLanguages(audioTracks, picker.AudioLanguageCodes, includeAllTracks: true);
+						result.AddRange(chosenAudioTracks);
+
+						foreach (SourceAudioTrack track in audioTracks)
+						{
+							if (!chosenAudioTracks.Contains(track))
+							{
+								result.Add(track);
+							}
+						}
+					}
+					else
+					{
+						// All tracks, no ordering on language
+						foreach (SourceAudioTrack track in audioTracks)
+						{
+							result.Add(track);
+						}
+					}
+
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(picker), picker, null);
+			}
+
+			// If none are chosen and we have not explicitly left it out, add the first one.
+			if (result.Count == 0 && audioTracks.Count > 0 && picker.AudioSelectionMode != AudioSelectionMode.ByIndex)
+			{
+				result.Add(audioTracks[0]);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Chooses audio tracks matching given language codes.
+		/// </summary>
+		/// <param name="audioTracks">The list of audio tracks to look in.</param>
+		/// <param name="languageCodes">The codes for the languages to include.</param>
+		/// <param name="includeAllTracks">True if all tracks should be included rather than just the first.</param>
+		/// <returns>The chosen audio tracks.</returns>
+		private static IList<SourceAudioTrack> ChooseAudioTracksFromLanguages(IList<SourceAudioTrack> audioTracks, IList<string> languageCodes, bool includeAllTracks)
+		{
+			var result = new List<SourceAudioTrack>();
+
+			foreach (string code in languageCodes)
+			{
+				foreach (SourceAudioTrack track in audioTracks)
+				{
+					if (track.LanguageCode == code)
+					{
+						result.Add(track);
+
+						if (!includeAllTracks)
+						{
+							break;
+						}
+					}
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Gets the audio track name according to the picker.
+		/// </summary>
+		/// <param name="picker">The picker to use to determine the audio track name.</param>
+		/// <param name="index">The 0-based index into the output audio track list.</param>
+		/// <returns>The name for the audio track, or null if one should not be set.</returns>
+		public static string GetPickerAudioName(Picker picker, int index)
+		{
+			if (!picker.UseCustomAudioTrackNames || picker.AudioTrackNames == null)
+			{
+				return null;
+			}
+
+			if (index >= picker.AudioTrackNames.Count)
+			{
+				return null;
+			}
+
+			string name = picker.AudioTrackNames[index];
+			if (name == string.Empty)
+			{
+				return null;
+			}
+
+			return name;
 		}
 
 		// Automatically pick the correct subtitles on the given job.
 		// Only relies on input from settings and the current title.
-		private void AutoPickSubtitles(VCJob job, SourceTitle title, bool useCurrentContext = false)
+		private void AutoPickSubtitles(VCJob job, SourceTitle title, bool useCurrentContext = false, bool openDialogOnMissingCharCode = true, Picker picker = null)
 		{
-			Picker picker = this.pickersService.SelectedPicker.Picker;
+			if (picker == null)
+			{
+				picker = this.pickersService.SelectedPicker.Picker;
+			}
 
-			job.Subtitles = new VCSubtitles { SourceSubtitles = new List<SourceSubtitle>(), SrtSubtitles = new List<SrtSubtitle>() };
+			job.Subtitles = new VCSubtitles { SourceSubtitles = new List<ChosenSourceSubtitle>(), FileSubtitles = new List<FileSubtitle>() };
 			switch (picker.SubtitleSelectionMode)
 			{
 				case SubtitleSelectionMode.Disabled:
 					// Only pick subtitles when we have previous context.
 					if (useCurrentContext)
 					{
-						foreach (SourceSubtitle sourceSubtitle in this.main.CurrentSubtitles.SourceSubtitles)
+						foreach (ChosenSourceSubtitle sourceSubtitle in this.main.CurrentSubtitles.SourceSubtitles)
 						{
 							if (sourceSubtitle.TrackNumber == 0)
 							{
 								job.Subtitles.SourceSubtitles.Add(sourceSubtitle.Clone());
 							}
-							else if (
-								title.SubtitleList.Count > sourceSubtitle.TrackNumber - 1 &&
-								this.main.SelectedTitle.SubtitleList[sourceSubtitle.TrackNumber - 1].LanguageCode == title.SubtitleList[sourceSubtitle.TrackNumber - 1].LanguageCode)
+							else if (title.SubtitleList.Count > sourceSubtitle.TrackNumber - 1 && this.main.SelectedTitle.SubtitleList[sourceSubtitle.TrackNumber - 1].LanguageCode == title.SubtitleList[sourceSubtitle.TrackNumber - 1].LanguageCode)
 							{
 								job.Subtitles.SourceSubtitles.Add(sourceSubtitle.Clone());
 							}
 						}
 					}
 					break;
+				case SubtitleSelectionMode.None:
+				case SubtitleSelectionMode.First:
+				case SubtitleSelectionMode.ByIndex:
 				case SubtitleSelectionMode.ForeignAudioSearch:
-					job.Subtitles.SourceSubtitles.Add(
-						new SourceSubtitle
-						{
-							TrackNumber = 0,
-							BurnedIn = picker.SubtitleForeignBurnIn,
-							Forced = true,
-							Default = true
-						});
-					break;
 				case SubtitleSelectionMode.Language:
-					string languageCode = picker.SubtitleLanguageCode;
-					bool audioSame = false;
-					bool burnIn = picker.SubtitleLanguageBurnIn;
-					bool def = picker.SubtitleLanguageDefault;
-					if (job.ChosenAudioTracks.Count > 0 && title.AudioList.Count > 0)
+				case SubtitleSelectionMode.All:
+					job.Subtitles.SourceSubtitles.AddRange(ChooseSubtitles(
+						title,
+						picker,
+						job.AudioTracks.Count > 0 ? job.AudioTracks[0].TrackNumber : -1,
+						job.EncodingProfile.ContainerName));
+
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			// Use the picker to apply track names to the chosen subtitles
+			for (int i = 0; i < job.Subtitles.SourceSubtitles.Count; i++)
+			{
+				job.Subtitles.SourceSubtitles[i].Name = GetPickerSubtitleName(picker, i);
+			}
+
+			if (picker.EnableExternalSubtitleImport && job.SourceType == SourceType.File)
+			{
+				FileSubtitle fileSubtitle = FindSubtitleFile(job.SourcePath, picker, openDialogOnMissingCharCode);
+				if (fileSubtitle != null)
+				{
+					job.Subtitles.FileSubtitles.Add(fileSubtitle);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns all the source subtitles that should be included.
+		/// </summary>
+		/// <param name="title">The title to pick from.</param>
+		/// <param name="picker">The picker to use.</param>
+		/// <param name="chosenAudioTrack">The (1-based) main audio track currently selected, or -1 if no audio track is selected.</param>
+		/// <returns></returns>
+		public static IList<ChosenSourceSubtitle> ChooseSubtitles(SourceTitle title, Picker picker, int chosenAudioTrack, string containerName)
+		{
+			var result = new List<ChosenSourceSubtitle>();
+			IList<SourceSubtitleTrack> chosenSubtitleTracks;
+
+			int containerId = HandBrakeEncoderHelpers.GetContainer(containerName).Id;
+
+			if (picker.SubtitleAddForeignAudioScan)
+			{
+				result.Add(new ChosenSourceSubtitle
+				{
+					TrackNumber = 0,
+					BurnedIn = picker.SubtitleBurnInSelection.ForeignAudioIncluded(),
+					ForcedOnly = true,
+					Default = false
+				});
+			}
+
+			switch (picker.SubtitleSelectionMode)
+			{
+				case SubtitleSelectionMode.Disabled:
+					throw new ArgumentException("Disabled is an invalid mode.");
+				case SubtitleSelectionMode.None:
+					break;
+				case SubtitleSelectionMode.First:
+					if (title.SubtitleList.Count > 0)
 					{
-						if (title.AudioList[job.ChosenAudioTracks[0] - 1].LanguageCode == languageCode)
+						result.Add(new ChosenSourceSubtitle
 						{
-							audioSame = true;
+							TrackNumber = 1,
+							BurnedIn = picker.SubtitleBurnInSelection.FirstTrackIncluded()
+								|| !HandBrakeEncoderHelpers.SubtitleCanPassthrough(title.SubtitleList[0].Source, containerId),
+							ForcedOnly = picker.SubtitleForcedOnly,
+							Default = picker.SubtitleDefault
+						});
+					}
+
+					break;
+				case SubtitleSelectionMode.ByIndex:
+					// 1-based
+					IList<int> chosenSubtitleTrackNumbersParsed = ParseUtilities.ParseCommaSeparatedListToPositiveIntegers(picker.SubtitleIndices);
+					var subtitleIndicesThatPointToRealTracks = chosenSubtitleTrackNumbersParsed.Where(i => i <= title.SubtitleList.Count).ToList();
+					int? defaultSubtitleIndex = picker.SubtitleDefaultIndex;
+
+					// If there are multiple tracks specified, weed out the ones that can't pass through.
+					if (subtitleIndicesThatPointToRealTracks.Count > 1)
+					{
+						for (int i = subtitleIndicesThatPointToRealTracks.Count - 1; i >= 0; i--)
+						{
+							if (!HandBrakeEncoderHelpers.SubtitleCanPassthrough(title.SubtitleList[subtitleIndicesThatPointToRealTracks[i] - 1].Source, containerId))
+							{
+								subtitleIndicesThatPointToRealTracks.RemoveAt(i);
+							}
 						}
 					}
 
-					if (!picker.SubtitleLanguageOnlyIfDifferent || !audioSame)
+					if (subtitleIndicesThatPointToRealTracks.Count > 1)
 					{
-						// 0-based indices of the subtitles with the matching language
-						var languageSubtitleIndices = new List<int>();
-						for (int i = 0; i < title.SubtitleList.Count; i++)
+						bool defaultChosen = false;
+						bool isFirstTrack = true;
+						foreach (int trackNumber in subtitleIndicesThatPointToRealTracks)
 						{
-							SourceSubtitleTrack subtitle = title.SubtitleList[i];
-
-							if (subtitle.LanguageCode == languageCode)
+							bool burnIn = isFirstTrack && picker.SubtitleBurnInSelection.FirstTrackIncluded();
+							bool isDefault = false;
+							if (!burnIn && !defaultChosen && defaultSubtitleIndex != null && defaultSubtitleIndex.Value == trackNumber)
 							{
-								languageSubtitleIndices.Add(i);
+								isDefault = true;
+								defaultChosen = true;
 							}
-						}
 
-						if (languageSubtitleIndices.Count > 1)
-						{
-							foreach (int subtitleIndex in languageSubtitleIndices)
+							result.Add(new ChosenSourceSubtitle
 							{
-								job.Subtitles.SourceSubtitles.Add(new SourceSubtitle
-								{
-									BurnedIn = false,
-									Default = false,
-									Forced = false,
-									TrackNumber = subtitleIndex + 1
-								});
-							}
-						}
-						else if (languageSubtitleIndices.Count > 0)
-						{
-							job.Subtitles.SourceSubtitles.Add(new SourceSubtitle
-							{
+								TrackNumber = trackNumber,
 								BurnedIn = burnIn,
-								Default = def,
-								Forced = false,
-								TrackNumber = languageSubtitleIndices[0] + 1
+								ForcedOnly = picker.SubtitleForcedOnly,
+								Default = isDefault
+							});
+
+							isFirstTrack = false;
+						}
+					}
+					else if (subtitleIndicesThatPointToRealTracks.Count > 0)
+					{
+						result.Add(new ChosenSourceSubtitle
+						{
+							TrackNumber = subtitleIndicesThatPointToRealTracks[0],
+							BurnedIn = picker.SubtitleBurnInSelection.FirstTrackIncluded() || !HandBrakeEncoderHelpers.SubtitleCanPassthrough(title.SubtitleList[subtitleIndicesThatPointToRealTracks[0] - 1].Source, containerId),
+							ForcedOnly = picker.SubtitleForcedOnly,
+							Default = defaultSubtitleIndex != null && defaultSubtitleIndex.Value == subtitleIndicesThatPointToRealTracks[0]
+						});
+					}
+
+					break;
+				case SubtitleSelectionMode.Language:
+					chosenSubtitleTracks = ChooseSubtitlesFromLanguages(title.SubtitleList, title.AudioList, chosenAudioTrack, picker.SubtitleLanguageCodes, picker.SubtitleLanguageAll, picker.SubtitleLanguageOnlyIfDifferent);
+					if (chosenSubtitleTracks.Count > 1)
+					{
+						// Multiple
+
+						// First track
+						result.Add(new ChosenSourceSubtitle
+						{
+							TrackNumber = chosenSubtitleTracks[0].TrackNumber,
+							BurnedIn = picker.SubtitleBurnInSelection.FirstTrackIncluded(),
+							ForcedOnly = picker.SubtitleForcedOnly,
+							Default = picker.SubtitleDefault
+						});
+
+						// The rest
+						foreach (var sourceSubtitleTrack in chosenSubtitleTracks.Skip(1))
+						{
+							result.Add(new ChosenSourceSubtitle
+							{
+								TrackNumber = sourceSubtitleTrack.TrackNumber,
+								BurnedIn = false,
+								ForcedOnly = picker.SubtitleForcedOnly,
+								Default = false
 							});
 						}
+					}
+					else if (chosenSubtitleTracks.Count > 0)
+					{
+						// Single
+						result.Add(new ChosenSourceSubtitle
+						{
+							TrackNumber = chosenSubtitleTracks[0].TrackNumber,
+							BurnedIn = picker.SubtitleBurnInSelection.FirstTrackIncluded(),
+							ForcedOnly = picker.SubtitleForcedOnly,
+							Default = picker.SubtitleDefault
+						});
 					}
 
 					break;
 				case SubtitleSelectionMode.All:
-					for (int i = 0; i < title.SubtitleList.Count; i++)
+					List<SourceSubtitleTrack> subtitlesThatCanPassthrough = FilterToPassthroughSourceSubtitles(title.SubtitleList, containerId);
+					if (picker.SubtitleLanguageCodes != null && picker.SubtitleLanguageCodes.Count > 0)
 					{
-						job.Subtitles.SourceSubtitles.Add(
-							new SourceSubtitle
+						// First the chosen language tracks to bring to the top
+						chosenSubtitleTracks = ChooseSubtitlesFromLanguages(subtitlesThatCanPassthrough, title.AudioList, chosenAudioTrack, picker.SubtitleLanguageCodes, includeAllTracks: true, onlyIfDifferentFromAudio: false);
+
+						// Then everything else
+						foreach (var sourceSubtitleTrack in subtitlesThatCanPassthrough)
+						{
+							if (!chosenSubtitleTracks.Contains(sourceSubtitleTrack))
 							{
-								TrackNumber = i + 1,
+								chosenSubtitleTracks.Add(sourceSubtitleTrack);
+							}
+						}
+					}
+					else
+					{
+						chosenSubtitleTracks = new List<SourceSubtitleTrack>();
+
+						foreach (var sourceSubtitleTrack in subtitlesThatCanPassthrough)
+						{
+							chosenSubtitleTracks.Add(sourceSubtitleTrack);
+						}
+					}
+
+					if (chosenSubtitleTracks.Count > 0)
+					{
+						// First track
+						bool burnFirstTrack = picker.SubtitleBurnInSelection.FirstTrackIncluded();
+						result.Add(new ChosenSourceSubtitle
+						{
+							TrackNumber = chosenSubtitleTracks[0].TrackNumber,
+							BurnedIn = burnFirstTrack,
+							ForcedOnly = picker.SubtitleForcedOnly,
+							Default = picker.SubtitleDefault && !burnFirstTrack
+						});
+
+						// The rest
+						foreach (var sourceSubtitleTrack in chosenSubtitleTracks.Skip(1))
+						{
+							result.Add(new ChosenSourceSubtitle
+							{
+								TrackNumber = sourceSubtitleTrack.TrackNumber,
 								BurnedIn = false,
-								Default = false,
-								Forced = false
+								ForcedOnly = picker.SubtitleForcedOnly,
+								Default = false
 							});
+						}
 					}
 
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Finds the file subtitle for the given path and picker.
+		/// </summary>
+		/// <param name="sourcePath">The source path to check.</param>
+		/// <param name="picker">The picker settings to use.</param>
+		/// <param name="openDialogOnMissingCharCode">Open a dialog if the char code for the file cannot be determined.</param>
+		/// <returns></returns>
+		public static FileSubtitle FindSubtitleFile(string sourcePath, Picker picker, bool openDialogOnMissingCharCode)
+		{
+			if (!picker.EnableExternalSubtitleImport)
+			{
+				return null;
+			}
+
+			string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourcePath);
+			string pathWithoutExtension = Path.Combine(Path.GetDirectoryName(sourcePath), fileNameWithoutExtension);
+			foreach (string subtitleExtension in FileUtilities.SubtitleExtensions)
+			{
+				string potentialSubtitlePath = pathWithoutExtension + subtitleExtension;
+				if (File.Exists(potentialSubtitlePath))
+				{
+					FileSubtitle fileSubtitle = StaticResolver.Resolve<SubtitlesService>().LoadSubtitleFile(potentialSubtitlePath, picker.ExternalSubtitleImportLanguage, openDialogOnMissingCharCode);
+					fileSubtitle.Default = picker.ExternalSubtitleImportDefault;
+					fileSubtitle.BurnedIn = picker.ExternalSubtitleImportBurnIn;
+
+					return fileSubtitle;
+				}
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the subtitle name according to the picker.
+		/// </summary>
+		/// <param name="picker">The picker to use to determine the subtitle name.</param>
+		/// <param name="index">The 0-based index into the output subtitle list.</param>
+		/// <returns>The name for the subtitle, or null if one should not be set.</returns>
+		public static string GetPickerSubtitleName(Picker picker, int index)
+		{
+			if (!picker.UseCustomSubtitleTrackNames || picker.SubtitleTrackNames == null)
+			{
+				return null;
+			}
+
+			if (index >= picker.SubtitleTrackNames.Count)
+			{
+				return null;
+			}
+
+			string name = picker.SubtitleTrackNames[index];
+			if (name == string.Empty)
+			{
+				return null;
+			}
+
+			return name;
+		}
+
+		private static List<SourceSubtitleTrack> FilterToPassthroughSourceSubtitles(List<SourceSubtitleTrack> sourceSubtitleList, int containerId)
+		{
+			// Do we have the right options here?
+			// You might only be able to burn and you might only be able to pass through
+			return sourceSubtitleList.Where(s => HandBrakeEncoderHelpers.SubtitleCanPassthrough(s.Source, containerId)).ToList();
+		}
+
+		private static IList<SourceSubtitleTrack> ChooseSubtitlesFromLanguages(IList<SourceSubtitleTrack> sourceSubtitleTracks, IList<SourceAudioTrack> sourceAudioTracks, int chosenAudioTrack, IList<string> languageCodes, bool includeAllTracks, bool onlyIfDifferentFromAudio)
+		{
+			var result = new List<SourceSubtitleTrack>();
+			string audioLanguageCode = null;
+
+			if (chosenAudioTrack > 0 && sourceAudioTracks.Count > 0)
+			{
+				audioLanguageCode = sourceAudioTracks[chosenAudioTrack - 1].LanguageCode;
+			}
+
+			foreach (string code in languageCodes)
+			{
+				if (!onlyIfDifferentFromAudio || code != audioLanguageCode)
+				{
+					for (int i = 0; i < sourceSubtitleTracks.Count; i++)
+					{
+						SourceSubtitleTrack track = sourceSubtitleTracks[i];
+
+						if (track.LanguageCode == code)
+						{
+							result.Add(track);
+
+							if (!includeAllTracks)
+							{
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Populates range and length information on job.
+		/// </summary>
+		/// <param name="job">The job to pick the range on.</param>
+		/// <param name="title">The title the job is applied to.</param>
+		/// <param name="picker">The picker to use to pick the range.</param>
+		private void AutoPickRange(VCJob job, SourceTitle title, Picker picker = null)
+		{
+			if (picker == null)
+			{
+				picker = this.pickersService.SelectedPicker.Picker;
+			}
+
+			switch (picker.PickerTimeRangeMode)
+			{
+				case PickerTimeRangeMode.Chapters:
+					var chapterRange = PickerUtilities.GetChapterRange(picker, title);
+
+					job.RangeType = VideoRangeType.Chapters;
+					job.ChapterStart = chapterRange.chapterStart;
+					job.ChapterEnd = chapterRange.chapterEnd;
+					job.Length = title.GetChapterRangeDuration(chapterRange.chapterStart, chapterRange.chapterEnd);
+
+					break;
+				case PickerTimeRangeMode.Time:
+					TimeSpan rangeStart = picker.TimeRangeStart;
+					TimeSpan rangeEnd = picker.TimeRangeEnd;
+
+					if (rangeStart >= rangeEnd)
+					{
+						job.RangeType = VideoRangeType.All;
+						job.Length = title.Duration.ToSpan();
+						return;
+					}
+
+					job.RangeType = VideoRangeType.Seconds;
+					var range = this.GetRangeFromPicker(title, picker);
+
+					job.SecondsStart = range.start.TotalSeconds;
+					job.SecondsEnd = range.end.TotalSeconds;
+					job.Length = range.end - range.start;
+
+					break;
+				case PickerTimeRangeMode.All:
+				default:
+					job.RangeType = VideoRangeType.All;
+					job.Length = title.Duration.ToSpan();
+					break;
+			}
+		}
+
+		public (TimeSpan start, TimeSpan end) GetRangeFromPicker(SourceTitle title, Picker picker)
+		{
+			TimeSpan titleDuration = title.Duration.ToSpan();
+			TimeSpan rangeStart = picker.TimeRangeStart;
+			TimeSpan rangeEnd = picker.TimeRangeEnd;
+
+			TimeSpan duration = rangeEnd - rangeStart;
+
+			// Make sure the end of the range doesn't go past the video end.
+			// If it does, preserve the duration of the same clip and move toward the start
+			if (rangeEnd > title.Duration.ToSpan())
+			{
+				rangeEnd = titleDuration;
+				rangeStart = titleDuration - duration;
+
+				if (rangeStart < TimeSpan.Zero)
+				{
+					rangeStart = TimeSpan.Zero;
+				}
+			}
+
+			return (rangeStart, rangeEnd);
 		}
 	}
 }

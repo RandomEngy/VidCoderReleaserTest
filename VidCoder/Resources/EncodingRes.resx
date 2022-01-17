@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -125,124 +125,6 @@
   </data>
   <data name="Revert" xml:space="preserve">
     <value>Revert</value>
-  </data>
-  <data name="Advanced_AdaptiveBFramesToolTip" xml:space="preserve">
-    <value>x264 has a variety of algorithms to decide when to use B-frames and how many to use.
-
-Fast mode takes roughly the same amount of time no matter how many B-frames you specify.  However, while fast, its decisions are often suboptimal.
-
-Optimal mode gets slower as the maximum number of B-Frames increases, but makes much more accurate decisions, especially when used with B-pyramid.</value>
-  </data>
-  <data name="Advanced_AdaptiveDirectModeToolTip" xml:space="preserve">
-    <value>H.264 allows for two different prediction modes, spatial and temporal, in B-frames.
-
-Spatial, the default, is almost always better, but temporal is sometimes useful too.
-
-x264 can, at the cost of a small amount of speed (and accordingly for a small compression gain), adaptively select which is better for each particular frame.</value>
-  </data>
-  <data name="Advanced_AdaptiveQuantizationStrengthToolTip" xml:space="preserve">
-    <value>Adaptive quantization controls how the encoder distributes bits across the frame.
-Higher values take more bits away from edges and complex areas to improve areas with finer detail.</value>
-  </data>
-  <data name="Advanced_AnalysisToolTip" xml:space="preserve">
-    <value>Mode decision picks from a variety of options to make its decision: this option chooses what options those are.  
-Fewer partitions to check means faster encoding, at the cost of worse decisions, since the best option might have been one that was turned off.</value>
-  </data>
-  <data name="Advanced_BFramesToolTip" xml:space="preserve">
-    <value>Sane values are ~2-5.  
-This specifies the maximum number of sequential B-frames that the encoder can use. 
- Large numbers generally won't help significantly unless Adaptive B-frames is set to Optimal.  
-Cel-animated source material and B-pyramid also significantly increase the usefulness of larger values. 
-Baseline profile, as required for iPods and similar devices, requires B-frames to be set to 0 (off).</value>
-  </data>
-  <data name="Advanced_CabacToolTip" xml:space="preserve">
-    <value>After the encoder has done its work, it has a bunch of data that needs to be compressed losslessly, similar to ZIP or RAR. H.264 provides two options for this: CAVLC and CABAC.  CABAC decodes a lot slower but compresses significantly better (10-30%), especially at lower bitrates. If you're looking to minimize CPU requirements for video playback, disable this option. Baseline profile, as required for iPods and similar devices, requires CABAC to be disabled.</value>
-  </data>
-  <data name="Advanced_DeblockingToolTip" xml:space="preserve">
-    <value>H.264 has a built-in deblocking filter that smooths out blocking artifacts after decoding each frame.  This not only improves visual quality, but also helps compression significantly. 
-The deblocking filter takes a lot of CPU power, so if you're looking to minimize CPU requirements for video playback, disable it.
-
-The deblocking filter has two adjustable parameters, "strength" and "threshold". 
-The former controls how strong (or weak) the deblocker is, while the latter controls how many (or few)  edges it applies to. 
-Lower values mean less deblocking, higher values mean more deblocking. The default is 0 (normal strength) for both parameters.</value>
-  </data>
-  <data name="Advanced_EightByEightDctToolTip" xml:space="preserve">
-    <value>The 8x8 transform is the single most useful feature of x264 in terms of compression-per-speed.  
-It improves compression by at least 5% at a very small speed cost and may provide an unusually high visual quality benefit compared to its compression gain.  
-However, it requires High Profile, which many devices may not support.</value>
-  </data>
-  <data name="Advanced_MotionEstimationMethodToolTip" xml:space="preserve">
-    <value>Controls the motion estimation method. Motion estimation is how the encoder estimates how each block of pixels in a frame has moved.  
-A better motion search method improves compression at the cost of speed.
-
-Diamond: performs an extremely fast and simple search using a diamond pattern.
-
-Hexagon: performs a somewhat more effective but slightly slower search using a hexagon pattern.
-
-Uneven Multi-Hex: performs a very wide search using a variety of patterns, more accurately capturing complex motion.
-
-Exhaustive: performs a "dumb" search of every pixel in a wide area.  Significantly slower for only a small compression gain.
-
-Transformed Exhaustive: Like exhaustive, but makes even more accurate decisions. Accordingly, somewhat slower, also for only a small improvement.</value>
-  </data>
-  <data name="Advanced_MotionEstimationRangeToolTip" xml:space="preserve">
-    <value>This is the distance x264 searches from its best guess at the motion of a block in order to try to find its actual motion.  
-
-The default is fine for most content, but extremely high motion video, especially at HD resolutions, may benefit from higher ranges, albeit at a high speed cost.
-
-Valid values are 4-16 for Diamond and Hexagon methods and 4-64 for other methods.</value>
-  </data>
-  <data name="Advanced_NoDctDecimateToolTip" xml:space="preserve">
-    <value>x264 normally zeroes out nearly-empty data blocks to save bits to be better used for some other purpose in the video.  
-However, this can sometimes have slight negative effects on retention of subtle grain and dither.  
-Don't touch this unless you're having banding issues or other such cases where you are having trouble keeping fine noise.</value>
-  </data>
-  <data name="Advanced_PsychovisualRateDistortionToolTip" xml:space="preserve">
-    <value>Psychovisual Rate Distortion means x264 tries to retain detail, for better quality to the human eye, 
-as opposed to trying to maximize quality the way a computer understands it, through signal-to-noise ratios that have trouble telling apart fine detail and noise.</value>
-  </data>
-  <data name="Advanced_PsychovisualTrellisToolTip" xml:space="preserve">
-    <value>Psychovisual Trellis tries to retain more sharpness and detail, but can cause artifacting.
-It is considered experimental, which is why it's off by default. Good values are 0.1 to 0.2.</value>
-  </data>
-  <data name="Advanced_PyramidalBFramesToolTip" xml:space="preserve">
-    <value>B-pyramid creates a pyramidal structure (hence the name) of B-frames, allowing B-frames to 
-reference each other to improve compression.  
-
-Requires Max B-frames greater than 1; optimal adaptive B-frames is strongly recommended for full compression benefit.</value>
-  </data>
-  <data name="Advanced_ReferenceFramesToolTip" xml:space="preserve">
-    <value>Sane values are ~1-6.
-
-The more you add, the better the compression, but the slower the encode.
-
-Cel animation tends to benefit from more reference frames a lot more than film content.
-
-Note that many hardware devices have limitations on the number of supported reference frames, so if you're encoding for a handheld or standalone player, don't touch this unless you're absolutely sure you know what you're doing!</value>
-  </data>
-  <data name="Advanced_SubpixelMotionEstimationToolTip" xml:space="preserve">
-    <value>This setting controls both subpixel-precision motion estimation and mode decision methods.
-
-Subpixel motion estimation is used for refining motion estimates beyond mere pixel accuracy, improving compression.
-
-Mode decision is the method used to choose how to encode each block of the frame: a very important decision.
-
-SAD is the fastest method, followed by SATD, RD, RD refinement, and the slowest, QPRD.
-6 or higher is strongly recommended: Psy-RD, a very powerful psy optimization that helps retain detail, requires RD.
-10, the most powerful and slowest option, requires trellis=2.</value>
-  </data>
-  <data name="Advanced_TrellisToolTip" xml:space="preserve">
-    <value>Trellis fine-tunes the rounding of transform coefficients to squeeze out 3-5% more compression at the cost of some speed. 
-"Always" uses trellis not only during the main encoding process, but also during analysis, which improves compression even more, albeit at great speed cost. 
-
-Trellis costs more speed at higher bitrates.</value>
-  </data>
-  <data name="Advanced_WeightPToolTip" xml:space="preserve">
-    <value>Performs extra analysis to decide upon weighting parameters for each frame.  
-This improves overall compression slightly and improves the quality of fades greatly. 
-Baseline profile, as required for iPods and similar devices, requires weighted P-frame prediction to be disabled.  
-Note that some devices and players, even those that support Main Profile, 
-may have problems with Weighted P-frame prediction: the Apple TV is completely incompatible with it, for example.</value>
   </data>
   <data name="Audio_DrcToolTip" xml:space="preserve">
     <value>Dynamic Range Compression. Valid values are 0-4.
@@ -259,9 +141,6 @@ This only works with AC3 sources.</value>
   </data>
   <data name="IPod5GSupportToolTip" xml:space="preserve">
     <value>Applies a marker to the file that older iPods require before they'll allow H.264 video to sync.</value>
-  </data>
-  <data name="LargeFileSizeToolTip" xml:space="preserve">
-    <value>Allows files over 4GB. When enabled, uses 64-bit numbers in encoding. Some devices such as the iPod and PS3 are incompatible with this option.</value>
   </data>
   <data name="PixelAspectRatioToolTip" xml:space="preserve">
     <value>Manually specify a Pixel Aspect Ratio.</value>
@@ -280,17 +159,11 @@ You should set this if you know your playback device only supports a certain pro
   <data name="X264TuneToolTip" xml:space="preserve">
     <value>Tune options to further optimize them for your input content. If you specify a tuning, the changes will be applied after the Preset but before all other parameters.</value>
   </data>
-  <data name="DisplayWidthToolTip" xml:space="preserve">
-    <value>The desired display width of the video. Other parameters such as the Pixel Aspect Ratio will be changed to achieve this.</value>
-  </data>
   <data name="ContainerLabel" xml:space="preserve">
-    <value>Container:</value>
+    <value>Container format:</value>
   </data>
   <data name="ExtensionLabel" xml:space="preserve">
     <value>Extension:</value>
-  </data>
-  <data name="LargeFileSizeCheckBox" xml:space="preserve">
-    <value>Large file size</value>
   </data>
   <data name="WebOptimizedCheckBox" xml:space="preserve">
     <value>Web optimized</value>
@@ -301,20 +174,17 @@ You should set this if you know your playback device only supports a certain pro
   <data name="IncludeChapterMarkersCheckBox" xml:space="preserve">
     <value>Include chapter markers</value>
   </data>
-  <data name="TabHeader_Picture" xml:space="preserve">
-    <value>Picture</value>
+  <data name="TabHeader_Sizing" xml:space="preserve">
+    <value>Sizing</value>
   </data>
   <data name="TabHeader_VideoFilters" xml:space="preserve">
     <value>Video Filters</value>
   </data>
-  <data name="TabHeader_Video" xml:space="preserve">
-    <value>Video</value>
+  <data name="TabHeader_VideoEncoding" xml:space="preserve">
+    <value>Video Encoding</value>
   </data>
-  <data name="TabHeader_Audio" xml:space="preserve">
-    <value>Audio</value>
-  </data>
-  <data name="TabHeader_Advanced" xml:space="preserve">
-    <value>Advanced Video</value>
+  <data name="TabHeader_AudioEncoding" xml:space="preserve">
+    <value>Audio Encoding</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Rename</value>
@@ -329,13 +199,13 @@ You should set this if you know your playback device only supports a certain pro
     <value>(none)</value>
   </data>
   <data name="StorageResolutionLabel" xml:space="preserve">
-    <value>Storage Resolution:</value>
+    <value>Storage resolution:</value>
   </data>
   <data name="PixelAspectRatioLabel" xml:space="preserve">
-    <value>Pixel Aspect Ratio:</value>
+    <value>Pixel aspect ratio:</value>
   </data>
   <data name="DisplayResolutionLabel" xml:space="preserve">
-    <value>Display Resolution:</value>
+    <value>Display resolution:</value>
   </data>
   <data name="SizingLabel" xml:space="preserve">
     <value>Sizing</value>
@@ -347,22 +217,10 @@ You should set this if you know your playback device only supports a certain pro
     <value>Height:</value>
   </data>
   <data name="MaxWidthLabel" xml:space="preserve">
-    <value>Max Width:</value>
+    <value>Max width:</value>
   </data>
   <data name="MaxHeightLabel" xml:space="preserve">
-    <value>Max Height:</value>
-  </data>
-  <data name="KeepAspectRatioCheckBox" xml:space="preserve">
-    <value>Keep Aspect Ratio</value>
-  </data>
-  <data name="AnamorphicLabel" xml:space="preserve">
-    <value>Anamorphic:</value>
-  </data>
-  <data name="ModulusLabel" xml:space="preserve">
-    <value>Modulus:</value>
-  </data>
-  <data name="DisplayWidthRadioButton" xml:space="preserve">
-    <value>Display Width:</value>
+    <value>Max height:</value>
   </data>
   <data name="OutputLabel" xml:space="preserve">
     <value>Output</value>
@@ -370,23 +228,8 @@ You should set this if you know your playback device only supports a certain pro
   <data name="CroppingLabel" xml:space="preserve">
     <value>Cropping</value>
   </data>
-  <data name="Top" xml:space="preserve">
-    <value>Top</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>Left</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Bottom</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>Right</value>
-  </data>
   <data name="DetelecineLabel" xml:space="preserve">
     <value>Detelecine:</value>
-  </data>
-  <data name="DecombLabel" xml:space="preserve">
-    <value>Decomb:</value>
   </data>
   <data name="DeinterlaceLabel" xml:space="preserve">
     <value>Deinterlace:</value>
@@ -413,28 +256,25 @@ You should set this if you know your playback device only supports a certain pro
     <value>Framerate (FPS):</value>
   </data>
   <data name="ConstantFramerateRadioButton" xml:space="preserve">
-    <value>Constant Framerate</value>
+    <value>Constant framerate</value>
   </data>
   <data name="Quality" xml:space="preserve">
     <value>Quality</value>
   </data>
   <data name="TwoPassEncodingCheckBox" xml:space="preserve">
-    <value>2-pass Encoding</value>
+    <value>2-pass encoding</value>
   </data>
   <data name="TurboFirstPassCheckBox" xml:space="preserve">
-    <value>Turbo first Pass</value>
+    <value>Turbo first pass</value>
   </data>
   <data name="TargetSizeRadioButton" xml:space="preserve">
-    <value>Target Size (MB)</value>
+    <value>Target size (MB)</value>
   </data>
   <data name="AverageBitrateRadioButton" xml:space="preserve">
-    <value>Avg Bitrate (kbps)</value>
+    <value>Avg bitrate (kbps)</value>
   </data>
   <data name="ConstantQualityRadioButton" xml:space="preserve">
-    <value>Constant Quality</value>
-  </data>
-  <data name="X264BasicSettings" xml:space="preserve">
-    <value>x264 Basic Settings</value>
+    <value>Constant quality</value>
   </data>
   <data name="ProfileLabel" xml:space="preserve">
     <value>Profile:</value>
@@ -455,13 +295,13 @@ You should set this if you know your playback device only supports a certain pro
     <value>High</value>
   </data>
   <data name="Preset_UltraFast" xml:space="preserve">
-    <value>Ultra Fast</value>
+    <value>Ultra fast</value>
   </data>
   <data name="Preset_SuperFast" xml:space="preserve">
-    <value>Super Fast</value>
+    <value>Super fast</value>
   </data>
   <data name="Preset_VeryFast" xml:space="preserve">
-    <value>Very Fast</value>
+    <value>Very fast</value>
   </data>
   <data name="Preset_Faster" xml:space="preserve">
     <value>Faster</value>
@@ -470,7 +310,7 @@ You should set this if you know your playback device only supports a certain pro
     <value>Fast</value>
   </data>
   <data name="Preset_Medium" xml:space="preserve">
-    <value>Medium (Default)</value>
+    <value>Medium</value>
   </data>
   <data name="Preset_Slow" xml:space="preserve">
     <value>Slow</value>
@@ -479,7 +319,7 @@ You should set this if you know your playback device only supports a certain pro
     <value>Slower</value>
   </data>
   <data name="Preset_VerySlow" xml:space="preserve">
-    <value>Very Slow</value>
+    <value>Very slow</value>
   </data>
   <data name="Preset_Placebo" xml:space="preserve">
     <value>Placebo</value>
@@ -494,7 +334,7 @@ You should set this if you know your playback device only supports a certain pro
     <value>Grain</value>
   </data>
   <data name="Tune_stillimage" xml:space="preserve">
-    <value>Still Image</value>
+    <value>Still image</value>
   </data>
   <data name="Tune_psnr" xml:space="preserve">
     <value>PSNR</value>
@@ -503,10 +343,10 @@ You should set this if you know your playback device only supports a certain pro
     <value>SSIM</value>
   </data>
   <data name="Tune_fastdecode" xml:space="preserve">
-    <value>Fast Decode</value>
+    <value>Fast decode</value>
   </data>
   <data name="Tune_zerolatency" xml:space="preserve">
-    <value>Zero Latency</value>
+    <value>Zero latency</value>
   </data>
   <data name="FpsFormat" xml:space="preserve">
     <value>{0:0.###} FPS</value>
@@ -524,10 +364,10 @@ You should set this if you know your playback device only supports a certain pro
     <value>Allow a variable framerate and use the specified rate as a peak. If the source has a variable frame rate, this setting will preserve it. Note that some players do not support variable frame rates.</value>
   </data>
   <data name="VfrChoice" xml:space="preserve">
-    <value>Variable Framerate</value>
+    <value>Variable framerate</value>
   </data>
   <data name="VfrPeakChoice" xml:space="preserve">
-    <value>Peak Framerate (VFR)</value>
+    <value>Peak framerate (VFR)</value>
   </data>
   <data name="HighQuality" xml:space="preserve">
     <value>High quality</value>
@@ -545,13 +385,13 @@ You should set this if you know your playback device only supports a certain pro
     <value>(No tracks)</value>
   </data>
   <data name="TargetStream" xml:space="preserve">
-    <value>Target Stream</value>
+    <value>Target stream</value>
   </data>
   <data name="MixdownLabel" xml:space="preserve">
     <value>Mixdown:</value>
   </data>
   <data name="SampleRateLabel" xml:space="preserve">
-    <value>Sample Rate:</value>
+    <value>Sample rate:</value>
   </data>
   <data name="BitrateLabel" xml:space="preserve">
     <value>Bitrate:</value>
@@ -632,176 +472,8 @@ You should set this if you know your playback device only supports a certain pro
   <data name="Bitrate" xml:space="preserve">
     <value>Bitrate</value>
   </data>
-  <data name="Encoding" xml:space="preserve">
-    <value>Encoding</value>
-  </data>
-  <data name="ReferenceFramesLabel" xml:space="preserve">
-    <value>Reference Frames:</value>
-  </data>
-  <data name="MaxBFramesLabel" xml:space="preserve">
-    <value>Maximum B-Frames:</value>
-  </data>
-  <data name="CabacLabel" xml:space="preserve">
-    <value>CABAC:</value>
-  </data>
-  <data name="EightByEightTransformLabel" xml:space="preserve">
-    <value>8x8 Transform:</value>
-  </data>
-  <data name="WeightedPFramesLabel" xml:space="preserve">
-    <value>Weighted P-Frames:</value>
-  </data>
-  <data name="PyramidalBFramesLabel" xml:space="preserve">
-    <value>Pyramidal B-Frames:</value>
-  </data>
-  <data name="NoDctDecimateLabel" xml:space="preserve">
-    <value>No DCT-Decimate:</value>
-  </data>
-  <data name="Analysis" xml:space="preserve">
-    <value>Analysis</value>
-  </data>
-  <data name="AdaptiveBFramesLabel" xml:space="preserve">
-    <value>Adaptive B-Frames:</value>
-  </data>
-  <data name="AdaptiveDirectModeLabel" xml:space="preserve">
-    <value>Adaptive Direct Mode:</value>
-  </data>
-  <data name="MotionEstimationMethodLabel" xml:space="preserve">
-    <value>Motion Estimation Method:</value>
-  </data>
-  <data name="SubpixelMotionEstimationLabel" xml:space="preserve">
-    <value>Subpixel Motion Estimation:</value>
-  </data>
-  <data name="MotionEstimationRangeLabel" xml:space="preserve">
-    <value>Motion Estimation Range:</value>
-  </data>
-  <data name="AdaptiveQuantizationStrengthLabel" xml:space="preserve">
-    <value>Adaptive Quantization Strength:</value>
-  </data>
-  <data name="PsychoVisualRateDistortionLabel" xml:space="preserve">
-    <value>Psychovisual Rate Distortion:</value>
-  </data>
-  <data name="PsychovisualTrellisLabel" xml:space="preserve">
-    <value>Psychovisual Trellis:</value>
-  </data>
-  <data name="DeblockingLabel" xml:space="preserve">
-    <value>Deblocking:</value>
-  </data>
-  <data name="PartitionTypeLabel" xml:space="preserve">
-    <value>Partition Type:</value>
-  </data>
-  <data name="TrellisLabel" xml:space="preserve">
-    <value>Trellis:</value>
-  </data>
-  <data name="OptionsString" xml:space="preserve">
-    <value>Options String</value>
-  </data>
-  <data name="PyramidalBFrames_Off" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="PyramidalBFrames_Normal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="PyramidalBFrames_Strict" xml:space="preserve">
-    <value>Strict</value>
-  </data>
-  <data name="AdaptiveBFrames_Off" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="AdaptiveBFrames_Fast" xml:space="preserve">
-    <value>Fast</value>
-  </data>
-  <data name="AdaptiveBFrames_Optimal" xml:space="preserve">
-    <value>Optimal</value>
-  </data>
-  <data name="DirectPrediction_None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="DirectPrediction_Spatial" xml:space="preserve">
-    <value>Spatial</value>
-  </data>
-  <data name="DirectPrediction_Temporal" xml:space="preserve">
-    <value>Temporal</value>
-  </data>
-  <data name="DirectPrediction_Automatic" xml:space="preserve">
-    <value>Automatic</value>
-  </data>
-  <data name="MotionEstimationMethod_Diamond" xml:space="preserve">
-    <value>Diamond</value>
-  </data>
-  <data name="MotionEstimationMethod_Hexagon" xml:space="preserve">
-    <value>Hexagon</value>
-  </data>
-  <data name="MotionEstimationMethod_UnevenMultiHexagon" xml:space="preserve">
-    <value>Uneven Multi-Hexagon</value>
-  </data>
-  <data name="MotionEstimationMethod_Exhaustive" xml:space="preserve">
-    <value>Exhaustive</value>
-  </data>
-  <data name="MotionEstimationMethod_TransformedExhaustive" xml:space="preserve">
-    <value>Transformed Exhaustive</value>
-  </data>
-  <data name="SubpixelMotionEstimation_0" xml:space="preserve">
-    <value>0: SAD, no subpel (super fast!)</value>
-  </data>
-  <data name="SubpixelMotionEstimation_1" xml:space="preserve">
-    <value>1: SAD, qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_2" xml:space="preserve">
-    <value>2: SATD, qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_3" xml:space="preserve">
-    <value>3: SATD, multi-qpel</value>
-  </data>
-  <data name="SubpixelMotionEstimation_4" xml:space="preserve">
-    <value>4: SATD, qpel on all</value>
-  </data>
-  <data name="SubpixelMotionEstimation_5" xml:space="preserve">
-    <value>5: SATD, multi-qpel on all</value>
-  </data>
-  <data name="SubpixelMotionEstimation_6" xml:space="preserve">
-    <value>6: RD in I/P-frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_7" xml:space="preserve">
-    <value>7: RD in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_8" xml:space="preserve">
-    <value>8: RD refine in I/P-frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_9" xml:space="preserve">
-    <value>9: RD refine in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_10" xml:space="preserve">
-    <value>10: QPRD in all frames</value>
-  </data>
-  <data name="SubpixelMotionEstimation_11" xml:space="preserve">
-    <value>11: No early terminations in analysis</value>
-  </data>
-  <data name="Analysis_None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="Analysis_Some" xml:space="preserve">
-    <value>Some</value>
-  </data>
-  <data name="Analysis_All" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="Trellis_Off" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="Trellis_EncodeOnly" xml:space="preserve">
-    <value>Encode Only</value>
-  </data>
-  <data name="Trellis_Always" xml:space="preserve">
-    <value>Always</value>
-  </data>
   <data name="DefaultFormat" xml:space="preserve">
     <value>{0} (Default)</value>
-  </data>
-  <data name="EncodingWindowTitle" xml:space="preserve">
-    <value>Encoding preset: {0}</value>
-  </data>
-  <data name="AdvancedOptionsStringLabel" xml:space="preserve">
-    <value>Additional advanced x264 options:</value>
   </data>
   <data name="LevelToolTip" xml:space="preserve">
     <value>Sets and ensures compliance with the specified encoder level.
@@ -812,7 +484,7 @@ Overrides all other settings.</value>
     <value>High 4:4:4 Predictive</value>
   </data>
   <data name="VideoCodecLabel" xml:space="preserve">
-    <value>Video Codec:</value>
+    <value>Video codec:</value>
   </data>
   <data name="VideoEncoder_ffmpeg2" xml:space="preserve">
     <value>MPEG-2 (Libav)</value>
@@ -823,23 +495,14 @@ Overrides all other settings.</value>
   <data name="VideoEncoder_x264" xml:space="preserve">
     <value>H.264 (x264)</value>
   </data>
-  <data name="Analysis_Most" xml:space="preserve">
-    <value>Most</value>
-  </data>
-  <data name="AdvancedQuery" xml:space="preserve">
-    <value>Advanced Query</value>
-  </data>
   <data name="Video" xml:space="preserve">
     <value>Video</value>
-  </data>
-  <data name="X264Settings" xml:space="preserve">
-    <value>x264 Settings</value>
   </data>
   <data name="LevelLabel" xml:space="preserve">
     <value>Level:</value>
   </data>
   <data name="MoreSettingsLabel" xml:space="preserve">
-    <value>More Settings:</value>
+    <value>More settings:</value>
   </data>
   <data name="Track" xml:space="preserve">
     <value>Track</value>
@@ -854,33 +517,13 @@ Overrides all other settings.</value>
     <value>Channel Layout</value>
   </data>
   <data name="SampleRate" xml:space="preserve">
-    <value>Sample Rate</value>
+    <value>Sample rate</value>
   </data>
   <data name="Modifiers" xml:space="preserve">
     <value>Modifiers</value>
   </data>
-  <data name="DtsMp4Warning" xml:space="preserve">
-    <value>Few players support playback of DTS audio in MP4 containers. MKV is recommended for DTS audio.</value>
-  </data>
   <data name="AudioEncoder_flac24" xml:space="preserve">
     <value>FLAC 24-bit</value>
-  </data>
-  <data name="Advanced_PsychovisualLabel" xml:space="preserve">
-    <value>Psychovisual</value>
-  </data>
-  <data name="AudioEncoder_fdk_aac" xml:space="preserve">
-    <value>AAC (FDK)</value>
-  </data>
-  <data name="AudioEncoder_fdk_haac" xml:space="preserve">
-    <value>HE-AAC (FDK)</value>
-  </data>
-  <data name="X264SettingsRadioButtonBasic" xml:space="preserve">
-    <value>Basic</value>
-    <comment>Label for radio button to choose basic x264 settings: Preset, Profile, Tune, Level.</comment>
-  </data>
-  <data name="X264SettingsRadioButtonAdvanced" xml:space="preserve">
-    <value>Advanced Tab</value>
-    <comment>Label for radio button to choose advanced x264 settings on a separate tab.</comment>
   </data>
   <data name="VideoEncoder_mpeg2" xml:space="preserve">
     <value>MPEG-2</value>
@@ -901,7 +544,7 @@ Overrides all other settings.</value>
     <value>Passthrough does not work on all audio codecs. This specifies the encoder to fall back to if the track cannot be passed through.</value>
   </data>
   <data name="EncoderSettings" xml:space="preserve">
-    <value>Encoder Settings</value>
+    <value>Encoder settings</value>
   </data>
   <data name="QsvDecodingLabel" xml:space="preserve">
     <value>QSV Decoding</value>
@@ -924,34 +567,11 @@ Overrides all other settings.</value>
   <data name="PresetToolTip" xml:space="preserve">
     <value>Change options to trade off compression efficiency against encoding speed.</value>
   </data>
-  <data name="ScaleMethodToolTip" xml:space="preserve">
-    <value>Lanczos: This is the default scaler with the best quality.
-Bicubic: This is an OpenCL hardware accelerated scaling algorithm.</value>
-  </data>
   <data name="AudioEncoder_Passthrough" xml:space="preserve">
     <value>Passthrough</value>
   </data>
-  <data name="Passthrough_aac" xml:space="preserve">
-    <value>AAC</value>
-  </data>
-  <data name="Passthrough_ac3" xml:space="preserve">
-    <value>AC3</value>
-  </data>
-  <data name="Passthrough_any" xml:space="preserve">
-    <value>Any</value>
-    <comment>Choice for a passthrough which accepts any input codec.</comment>
-  </data>
-  <data name="Passthrough_dts" xml:space="preserve">
-    <value>DTS</value>
-  </data>
-  <data name="Passthrough_dtshd" xml:space="preserve">
-    <value>DTS-HD</value>
-  </data>
-  <data name="Passthrough_mp3" xml:space="preserve">
-    <value>MP3</value>
-  </data>
-  <data name="ScopeLabel" xml:space="preserve">
-    <value>Scope:</value>
+  <data name="Passthrough_auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="PassthroughScopeToolTip" xml:space="preserve">
     <value>Specifies which input codecs the passthrough will apply to.</value>
@@ -986,11 +606,8 @@ Bicubic: This is an OpenCL hardware accelerated scaling algorithm.</value>
   <data name="PassthroughIfPossibleToolTip" xml:space="preserve">
     <value>If the input track matches the codec it will be passed through instead of encoded.</value>
   </data>
-  <data name="ScalingAlgorithmLabel" xml:space="preserve">
-    <value>Scaling Algorithm:</value>
-  </data>
   <data name="RotationLabel" xml:space="preserve">
-    <value>Rotation:</value>
+    <value>Rotation</value>
   </data>
   <data name="ClosePresetsListToolTip" xml:space="preserve">
     <value>Close the presets list</value>
@@ -1002,13 +619,240 @@ Bicubic: This is an OpenCL hardware accelerated scaling algorithm.</value>
     <value>Chapter {0}</value>
     <comment>What a chapter will be named when not given a custom name. {0} is the chapter number.</comment>
   </data>
+  <data name="PassthroughSettingsLabel" xml:space="preserve">
+    <value>Passthrough settings</value>
+  </data>
+  <data name="PassthroughMaskLabel" xml:space="preserve">
+    <value>Allow passthrough for:</value>
+  </data>
+  <data name="Passthrough_aac" xml:space="preserve">
+    <value>AAC</value>
+  </data>
+  <data name="Passthrough_ac3" xml:space="preserve">
+    <value>AC3</value>
+  </data>
+  <data name="Passthrough_dts" xml:space="preserve">
+    <value>DTS</value>
+  </data>
+  <data name="Passthrough_dtshd" xml:space="preserve">
+    <value>DTS-HD</value>
+  </data>
   <data name="Passthrough_eac3" xml:space="preserve">
     <value>E-AC3</value>
   </data>
   <data name="Passthrough_flac" xml:space="preserve">
     <value>FLAC</value>
   </data>
+  <data name="Passthrough_mp3" xml:space="preserve">
+    <value>MP3</value>
+  </data>
   <data name="Passthrough_truehd" xml:space="preserve">
     <value>TrueHD</value>
+  </data>
+  <data name="InterlaceDetectionLabel" xml:space="preserve">
+    <value>Interlace Detection:</value>
+  </data>
+  <data name="ModeLabel" xml:space="preserve">
+    <value>Mode:</value>
+    <comment>Label for the sizing or padding mode.</comment>
+  </data>
+  <data name="AnamorphicCheckbox" xml:space="preserve">
+    <value>Use Anamorphic</value>
+  </data>
+  <data name="SizingModeManual" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Choice for the user to enter all sizing information manually.</comment>
+  </data>
+  <data name="UpscaleMaxFormat" xml:space="preserve">
+    <value>Upscale {0}x max</value>
+    <comment>Label for scaling option to allow upscaling, but only to a particular multiple of the source resolution. {0} is the multiple, e.g. 2, 3 or 4</comment>
+  </data>
+  <data name="ScalingMode_DownscaleOnly" xml:space="preserve">
+    <value>Downscale only</value>
+  </data>
+  <data name="ScalingMode_Fill" xml:space="preserve">
+    <value>Scale up/down to target</value>
+  </data>
+  <data name="ScalingModeLabel" xml:space="preserve">
+    <value>Scaling mode:</value>
+  </data>
+  <data name="PaddingMode_Fill" xml:space="preserve">
+    <value>Fill</value>
+  </data>
+  <data name="PaddingMode_Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="PaddingMode_Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="TargetWidthLabel" xml:space="preserve">
+    <value>Target width:</value>
+  </data>
+  <data name="TargetHeightLabel" xml:space="preserve">
+    <value>Target height:</value>
+  </data>
+  <data name="PadColorLabel" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="AnamorphicToolTip" xml:space="preserve">
+    <value>With Anamorphic enabled, non-square pixels are allowed. This can result in more efficient storage, but not all players support this.</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Resolution:</value>
+    <comment>Label for a video resolution in pixels.</comment>
+  </data>
+  <data name="CustomFilterToolTipFormatPart" xml:space="preserve">
+    <value>Format: key1=value1:key2=value2:...</value>
+    <comment>The "format" portion of the custom filter tooltip. When translating, keep the = and : the same and only replace "key1", "value2", etc.</comment>
+  </data>
+  <data name="CustomFilterToolTipKeysLabel" xml:space="preserve">
+    <value>Keys:</value>
+    <comment>The label for the "keys" portion of the custom filter tooltip.</comment>
+  </data>
+  <data name="PaddingLabel" xml:space="preserve">
+    <value>Padding</value>
+  </data>
+  <data name="AlignAVStartCheckBox" xml:space="preserve">
+    <value>Align A/V Start</value>
+  </data>
+  <data name="AlignAVStartCheckBoxToolTip" xml:space="preserve">
+    <value>Aligns the initial timestamps of all audio and video streams by inserting blank frames or dropping frames. May improve audio/video sync for broken players that do not honor MP4 edit lists.</value>
+  </data>
+  <data name="TabHeader_Container" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Encoding preset: {0}</value>
+    <comment>Label for the encoding settings window.</comment>
+  </data>
+  <data name="AudioEncoder_none" xml:space="preserve">
+    <value>None</value>
+    <comment>Label for the choice to use no audio encoder. Used in fallback selection.</comment>
+  </data>
+  <data name="SizingModeToolTip" xml:space="preserve">
+    <value>Automatic will pick the size for you based on provided constraints. Manual will let you enter a specific size and pixel aspect ratio.</value>
+  </data>
+  <data name="SharpenLabel" xml:space="preserve">
+    <value>Sharpen</value>
+  </data>
+  <data name="DeblockToolTip" xml:space="preserve">
+    <value>Deblock reduces blocky artifacts caused by low quality video compression.</value>
+  </data>
+  <data name="DeinterlaceToolTip" xml:space="preserve">
+    <value>Deinterlace removes comb artifacts from the picture.
+
+Yadif is a popular and fast deinterlacer.
+
+Decomb switches between multiple interpolation algorithms for speed and quality.</value>
+  </data>
+  <data name="DenoiseToolTip" xml:space="preserve">
+    <value>Denoise reduces or removes the appearance of noise and grain. This can improve compression efficiency and create higher quality video at smaller file sizes. 
+Overly strong Denoise settings may damage picture quality by discarding detail.
+         
+NLMeans is a high quality denoise filter with a cost to speed. Use where quality is more important than speed.
+         
+HQDN3D is an adaptive low-pass filter, faster than NLMeans but less effective at preserving fine detail.</value>
+  </data>
+  <data name="DetelecineToolTip" xml:space="preserve">
+    <value>This filter removes 'combing' artifacts that are the result of telecining.
+
+Telecining is a process that adjusts film framerates that are 24fps to NTSC video frame rates which are 30fps.</value>
+  </data>
+  <data name="SharpenToolTip" xml:space="preserve">
+    <value>Sharpening enhances the appearance of detail, especially edges. Overly strong Sharpen settings may damage picture quality by creating ringing artifacts and enhancing noise, which can reduce compression efficiency.
+
+Unsharp is a general purpose unsharp masking filter. It sharpens by blurring, then calculating the difference between the blurred picture and the original.
+
+Lapsharp sharpens using convolution kernels approximating Laplacian edge filters, sometimes producing higher quality results than unsharp masking.</value>
+  </data>
+  <data name="PresetFolder_Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="PresetFolder_BuiltIn" xml:space="preserve">
+    <value>Built-in</value>
+  </data>
+  <data name="PresetFolderCreateSubfolderMenuItem" xml:space="preserve">
+    <value>Create subfolder</value>
+  </data>
+  <data name="PrestFolderRenameFolderMenuItem" xml:space="preserve">
+    <value>Rename folder</value>
+  </data>
+  <data name="PresetFolderRemoveFolderMenuItem" xml:space="preserve">
+    <value>Remove folder</value>
+  </data>
+  <data name="DefaultPresetFolderName" xml:space="preserve">
+    <value>New Folder</value>
+  </data>
+  <data name="ChooseNameSubfolder" xml:space="preserve">
+    <value>Choose a name for the subfolder:</value>
+  </data>
+  <data name="ChooseNewFolderName" xml:space="preserve">
+    <value>Choose a new name for the folder:</value>
+  </data>
+  <data name="NVEncPreset_ll" xml:space="preserve">
+    <value>Low Latency</value>
+  </data>
+  <data name="NVEncPreset_hq" xml:space="preserve">
+    <value>High Quality</value>
+  </data>
+  <data name="NVEncPreset_hp" xml:space="preserve">
+    <value>High Performance</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Top</value>
+  </data>
+  <data name="PixelAspectRatioNumeratorAutomationName" xml:space="preserve">
+    <value>Pixel aspect ratio numerator</value>
+    <comment>Name for the pixel aspect ratio numerator box for screen readers</comment>
+  </data>
+  <data name="PixelAspectRatioDenominatorAutomationName" xml:space="preserve">
+    <value>Pixel aspect ratio denominator</value>
+    <comment>Name for the pixel aspect ratio denominator box for screen readers</comment>
+  </data>
+  <data name="ApplyToQueueButton" xml:space="preserve">
+    <value>Apply to queue</value>
+  </data>
+  <data name="FullEncoderParameterLabel" xml:space="preserve">
+    <value>Full parameter list:</value>
+  </data>
+  <data name="MoreOptionsToolTip" xml:space="preserve">
+    <value>Additional advanced arguments to pass to the video encoder.</value>
+  </data>
+  <data name="CannotSwitchEncodingPresetDueToPicker" xml:space="preserve">
+    <value>Cannot switch encoding preset, it has been locked in the Picker window.</value>
+    <comment>Message to show when the user is blocked from switching an encoding preset due to a Picker setting.</comment>
+  </data>
+  <data name="PadColorTextToolTip" xml:space="preserve">
+    <value>Format: FFFFFF</value>
+  </data>
+  <data name="ChromaSmoothLabel" xml:space="preserve">
+    <value>Chroma smooth:</value>
+  </data>
+  <data name="ColorspaceLabel" xml:space="preserve">
+    <value>Colorspace:</value>
+  </data>
+  <data name="ChromaSmoothToolTip" xml:space="preserve">
+    <value>Reduces chroma noise, rainbows, and other prominent visual artifacts. Useful for resolving various color-related issues, especially with lower resolution content from analog sources, e.g. poor quality DVD and VHS sources. The blurring/smoothing algorithm is the same as used by the unsharp filter.</value>
+  </data>
+  <data name="ConstrainToOneAxisCheckBox" xml:space="preserve">
+    <value>Constrain to one axis</value>
+  </data>
+  <data name="ConstrainToOneAxisToolTip" xml:space="preserve">
+    <value>If enabled, only the axis with the most total detected cropping will be cropped. For example if Top+Bottom = 32 and Left+Right = 6, then cropping on Left and Right will be set to 0.</value>
+  </data>
+  <data name="MinimumCroppingLabel" xml:space="preserve">
+    <value>Minimum:</value>
+  </data>
+  <data name="MinimumCroppingToolTip" xml:space="preserve">
+    <value>If the automatic cropping is below this amount for a side, disable the cropping for that side. Useful for preventing resampling on small cropping amounts.</value>
   </data>
 </root>

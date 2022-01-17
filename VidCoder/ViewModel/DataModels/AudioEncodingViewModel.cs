@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using HandBrake.ApplicationServices.Interop;
-using HandBrake.ApplicationServices.Interop.Json.Scan;
-using HandBrake.ApplicationServices.Interop.Model;
-using HandBrake.ApplicationServices.Interop.Model.Encoding;
+using DynamicData;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.HbLib;
+using HandBrake.Interop.Interop.Interfaces.Model;
+using HandBrake.Interop.Interop.Interfaces.Model.Encoders;
+using HandBrake.Interop.Interop.Json.Scan;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
 using VidCoder.Resources;
 using VidCoder.Services;
 using VidCoderCommon.Model;
+using VidCoderCommon.Utilities;
 using Brush = System.Windows.Media.Brush;
 
 namespace VidCoder.ViewModel
@@ -24,12 +29,13 @@ namespace VidCoder.ViewModel
 	public class AudioEncodingViewModel : ReactiveObject, IDisposable
 	{
 		private const int RangeRoundDigits = 5;
+		public const string AutoPassthroughEncoder = "copy";
 
 		private AudioPanelViewModel audioPanelVM;
 		private bool initializing;
 
-		private MainViewModel main = Ioc.Get<MainViewModel>();
-		private PresetsService presetsService = Ioc.Get<PresetsService>();
+		private MainViewModel main = StaticResolver.Resolve<MainViewModel>();
+		private PresetsService presetsService = StaticResolver.Resolve<PresetsService>();
 
 		private ObservableCollection<TargetStreamViewModel> targetStreams;
 		private int targetStreamIndex;
@@ -51,7 +57,8 @@ namespace VidCoder.ViewModel
 
 		private IDisposable containerSubscription;
 		private IDisposable presetChangeSubscription;
-		private IDisposable selectedTitleSubscrption;
+		private IDisposable selectedTitleSubscription;
+		private IDisposable audioTrackChangedSubscription;
 
 		static AudioEncodingViewModel()
 		{
@@ -62,7 +69,7 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public AudioEncodingViewModel(AudioEncoding audioEncoding, SourceTitle selectedTitle, List<int> chosenAudioTracks, AudioPanelViewModel audioPanelVM)
+		public AudioEncodingViewModel(AudioEncoding audioEncoding, SourceTitle selectedTitle, List<ChosenAudioTrack> chosenAudioTracks, AudioPanelViewModel audioPanelVM)
 		{
 			this.initializing = true;
 			this.audioPanelVM = audioPanelVM;
@@ -86,7 +93,7 @@ namespace VidCoder.ViewModel
 						.Skip(1)
 						.Subscribe(_ =>
 						{
-							this.RefreshEncoderChoices();
+							this.RefreshEncoderChoices(isContainerChange: true);
 						});
 
 					this.audioPanelVM.SuppressProfileEdits = true;
@@ -180,7 +187,7 @@ namespace VidCoder.ViewModel
 					return false;
 				}
 
-				if (HandBrakeEncoderHelpers.CanPassthroughAudio(audioEncoder.Encoder.Id))
+				if (HandBrakeEncoderHelpers.AudioEncoders.Any(e => e.Id == (HandBrakeNativeConstants.HB_ACODEC_PASS_FLAG | audioEncoder.Encoder.Id)))
 				{
 					return true;
 				}
@@ -348,62 +355,40 @@ namespace VidCoder.ViewModel
 					audioEncoder.Encoder.CompressionLimits.High);
 			}).ToProperty(this, x => x.AudioCompressionToolTip, out this.audioCompressionToolTip);
 
-			// AutoPassthroughSettingsVisible
-			this.WhenAnyValue(x => x.SelectedAudioEncoder, x => x.SelectedPassthrough, (audioEncoder, passthrough) =>
-			{
-				if (audioEncoder == null)
-				{
-					return false;
-				}
-
-				if (passthrough == null)
-				{
-					return false;
-				}
-
-				return GetHBAudioEncoder(audioEncoder, passthrough).ShortName == "copy";
-			}).ToProperty(this, x => x.AutoPassthroughSettingsVisible, out this.autoPassthroughSettingsVisible);
-
 			// PassthroughChoicesVisible
 			this.WhenAnyValue(x => x.SelectedAudioEncoder, audioEncoder =>
 			{
 				return audioEncoder.IsPassthrough;
 			}).ToProperty(this, x => x.PassthroughChoicesVisible, out this.passthroughChoicesVisible);
 
-			this.RemoveAudioEncoding = ReactiveCommand.Create();
-			this.RemoveAudioEncoding.Subscribe(_ => this.RemoveAudioEncodingImpl());
-
-			this.selectedTitleSubscrption = this.main.WhenAnyValue(x => x.SelectedTitle)
+			this.selectedTitleSubscription = this.main.WhenAnyValue(x => x.SelectedTitle)
 				.Skip(1)
 				.Subscribe(_ =>
 				{
 					this.RefreshFromNewInput();
 				});
 
-			this.main.AudioChoiceChanged += this.OnMainAudioChoiceChanged;
-
-			Config.Observables.ShowAudioTrackNameField.ToProperty(this, x => x.NameVisible, out this.nameVisible);
+			this.audioTrackChangedSubscription = this.main.AudioTracks.Connect().WhenAnyPropertyChanged().Subscribe(_ =>
+			{
+				this.RefreshFromNewInput();
+			});
 
 			this.initializing = false;
 		}
 
 		public void Dispose()
 		{
-			this.main.AudioChoiceChanged -= this.OnMainAudioChoiceChanged;
-
 			this.containerSubscription?.Dispose();
 			this.containerSubscription = null;
 
 			this.presetChangeSubscription?.Dispose();
 			this.presetChangeSubscription = null;
 
-			this.selectedTitleSubscrption?.Dispose();
-			this.selectedTitleSubscrption = null;
-		}
+			this.selectedTitleSubscription?.Dispose();
+			this.selectedTitleSubscription = null;
 
-		private void OnMainAudioChoiceChanged(object sender, EventArgs args)
-		{
-			this.RefreshFromNewInput();
+			this.audioTrackChangedSubscription?.Dispose();
+			this.audioTrackChangedSubscription = null;
 		}
 
 		private void RefreshFromNewInput()
@@ -411,6 +396,7 @@ namespace VidCoder.ViewModel
 			this.RefreshMixdownChoices();
 			this.RefreshBitrateChoices();
 			this.RefreshDrc();
+			this.RefreshSourceName();
 		}
 
 		public AudioPanelViewModel AudioPanelVM
@@ -429,6 +415,8 @@ namespace VidCoder.ViewModel
 				newAudioEncoding.InputNumber = this.TargetStreamIndex;
 
 				newAudioEncoding.Encoder = this.HBAudioEncoder.ShortName;
+
+				newAudioEncoding.Name = this.Name;
 
 				if (!this.HBAudioEncoder.IsPassthrough)
 				{
@@ -453,7 +441,6 @@ namespace VidCoder.ViewModel
 					newAudioEncoding.Gain = this.Gain;
 					newAudioEncoding.Drc = this.Drc;
 					newAudioEncoding.PassthroughIfPossible = this.PassthroughIfPossible;
-					newAudioEncoding.Name = this.Name;
 				}
 
 				return newAudioEncoding;
@@ -556,17 +543,7 @@ namespace VidCoder.ViewModel
 		{
 			get
 			{
-				if (this.SelectedAudioEncoder == null)
-				{
-					return null;
-				}
-
-				if (this.SelectedAudioEncoder.IsPassthrough)
-				{
-					return HandBrakeEncoderHelpers.GetAudioEncoder(this.SelectedPassthrough);
-				}
-
-				return this.SelectedAudioEncoder.Encoder;
+				return GetHBAudioEncoder(this.SelectedAudioEncoder, this.SelectedPassthrough);
 			}
 		}
 
@@ -620,9 +597,6 @@ namespace VidCoder.ViewModel
 
 		private ObservableAsPropertyHelper<bool> passthroughChoicesVisible;
 		public bool PassthroughChoicesVisible => this.passthroughChoicesVisible.Value;
-
-		private ObservableAsPropertyHelper<bool> autoPassthroughSettingsVisible;
-		public bool AutoPassthroughSettingsVisible => this.autoPassthroughSettingsVisible.Value;
 
 		private AudioEncodeRateType encodeRateType;
 		public AudioEncodeRateType EncodeRateType
@@ -715,9 +689,6 @@ namespace VidCoder.ViewModel
 
 		private ObservableAsPropertyHelper<string> audioCompressionToolTip;
 		public string AudioCompressionToolTip => this.audioCompressionToolTip.Value;
-
-		private ObservableAsPropertyHelper<bool> nameVisible;
-		public bool NameVisible => this.nameVisible.Value;
 
 		public List<MixdownViewModel> MixdownChoices
 		{
@@ -833,21 +804,18 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public Brush DrcBrush
+		public bool DrcEnabled
 		{
 			get
 			{
-				Brush disabledBrush = Brushes.Gray;
-				Brush enabledBrush = Brushes.Black;
-
 				if (!this.main.HasVideoSource)
 				{
-					return enabledBrush;
+					return true;
 				}
 
 				if (this.SelectedAudioEncoder == null)
 				{
-					return enabledBrush;
+					return true;
 				}
 
 				// Find if we're encoding a single track
@@ -857,17 +825,17 @@ namespace VidCoder.ViewModel
 				if (track != null)
 				{
 					int trackNumber = this.main.SelectedTitle.AudioList.IndexOf(track);
-					if (!this.SelectedAudioEncoder.IsPassthrough && this.main.ScanInstance.CanApplyDrc(trackNumber, this.SelectedAudioEncoder.Encoder, this.main.SelectedTitle.Index))
+					if (!this.SelectedAudioEncoder.IsPassthrough && this.main.ScanInstance != null && this.main.ScanInstance.CanApplyDrc(trackNumber, this.SelectedAudioEncoder.Encoder, this.main.SelectedTitle.Index))
 					{
-						return enabledBrush;
+						return true;
 					}
 					else
 					{
-						return disabledBrush;
+						return false;
 					}
 				}
 
-				return enabledBrush;
+				return true;
 			}
 		}
 
@@ -903,6 +871,30 @@ namespace VidCoder.ViewModel
 			}
 		}
 
+		public string SourceName
+		{
+			get
+			{
+				if (!this.main.HasVideoSource)
+				{
+					return string.Empty;
+				}
+
+				var track = this.GetTargetAudioTrack();
+				if (track != null)
+				{
+					return track.Name ?? string.Empty;
+				}
+
+				return string.Empty;
+			}
+		}
+
+		private void RefreshSourceName()
+		{
+			this.RaisePropertyChanged(nameof(this.SourceName));
+		}
+
 		public bool IsValid
 		{
 			get
@@ -917,13 +909,19 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public ReactiveCommand<object> RemoveAudioEncoding { get; }
-		private void RemoveAudioEncodingImpl()
+		private ReactiveCommand<Unit, Unit> removeAudioEncoding;
+		public ReactiveCommand<Unit, Unit> RemoveAudioEncoding
 		{
-			this.audioPanelVM.RemoveAudioEncoding(this);
+			get
+			{
+				return this.removeAudioEncoding ?? (this.removeAudioEncoding = ReactiveCommand.Create(() =>
+				{
+					this.audioPanelVM.RemoveAudioEncoding(this);
+				}));
+			}
 		}
 
-		public void SetChosenTracks(List<int> chosenAudioTracks, SourceTitle selectedTitle)
+		public void SetChosenTracks(List<ChosenAudioTrack> chosenAudioTracks, SourceTitle selectedTitle)
 		{
 			DispatchUtilities.Invoke(() =>
 			{
@@ -939,7 +937,7 @@ namespace VidCoder.ViewModel
 					string details = null;
 					if (i < chosenAudioTracks.Count && selectedTitle != null)
 					{
-						details = selectedTitle.AudioList[chosenAudioTracks[i] - 1].Description;
+						details = selectedTitle.AudioList[chosenAudioTracks[i].TrackNumber - 1].Description;
 					}
 
 					this.targetStreams.Add(
@@ -965,7 +963,7 @@ namespace VidCoder.ViewModel
 			this.RaiseAudioEncodingChanged();
 		}
 
-		private void RefreshEncoderChoices()
+		private void RefreshEncoderChoices(bool isContainerChange = false)
 		{
 			HBContainer container = HandBrakeEncoderHelpers.GetContainer(this.presetsService.SelectedPreset.Preset.EncodingProfile.ContainerName);
 			AudioEncoderViewModel oldEncoder = null;
@@ -979,10 +977,12 @@ namespace VidCoder.ViewModel
 			var resourceManager = new ResourceManager(typeof(EncodingRes));
 
 			this.audioEncoders = new List<AudioEncoderViewModel>();
-			this.audioEncoders.Add(new AudioEncoderViewModel { IsPassthrough = true });
+			//this.audioEncoders.Add(new AudioEncoderViewModel { IsPassthrough = true });
 
 			this.passthroughChoices = new List<ComboChoice>();
-			this.passthroughChoices.Add(new ComboChoice("copy", EncodingRes.Passthrough_any));
+			this.passthroughChoices.Add(new ComboChoice(AutoPassthroughEncoder, EncodingRes.Passthrough_auto));
+
+			bool anyCodecSupportsPassthrough = false;
 
 			foreach (HBAudioEncoder encoder in HandBrakeEncoderHelpers.AudioEncoders)
 			{
@@ -1002,12 +1002,19 @@ namespace VidCoder.ViewModel
 
 							this.passthroughChoices.Add(new ComboChoice(encoder.ShortName, display));
 						}
+
+						anyCodecSupportsPassthrough = true;
 					}
 					else
 					{
 						this.AudioEncoders.Add(new AudioEncoderViewModel { Encoder = encoder });
 					}
 				}
+			}
+
+			if (anyCodecSupportsPassthrough)
+			{
+				this.audioEncoders.Insert(0, new AudioEncoderViewModel { IsPassthrough = true });
 			}
 
 			this.RaisePropertyChanged(nameof(this.PassthroughChoices));
@@ -1036,11 +1043,15 @@ namespace VidCoder.ViewModel
 				this.selectedAudioEncoder = this.audioEncoders[1];
 			}
 
+			// If it's a container change we need to commit the new encoder change.
+			if (isContainerChange && this.selectedAudioEncoder != oldEncoder)
+			{
+				this.RaiseAudioEncodingChanged();
+			}
+
 			this.RaisePropertyChanged(nameof(this.SelectedAudioEncoder));
 			this.RaisePropertyChanged(nameof(this.SelectedPassthrough));
 		}
-
-
 
 		private void RefreshMixdownChoices()
 		{
@@ -1198,7 +1209,7 @@ namespace VidCoder.ViewModel
 
 		private void RefreshDrc()
 		{
-			this.RaisePropertyChanged(nameof(this.DrcBrush));
+			this.RaisePropertyChanged(nameof(this.DrcEnabled));
 		}
 
 		private SourceAudioTrack GetTargetAudioTrack()
@@ -1209,11 +1220,11 @@ namespace VidCoder.ViewModel
 			}
 
 			SourceAudioTrack track = null;
-			List<int> chosenAudioTracks = this.main.GetChosenAudioTracks();
+			List<ChosenAudioTrack> chosenAudioTracks = this.main.GetChosenAudioTracks();
 
 			if (this.TargetStreamIndex > 0 && this.TargetStreamIndex <= chosenAudioTracks.Count)
 			{
-				int audioTrack = chosenAudioTracks[this.TargetStreamIndex - 1];
+				int audioTrack = chosenAudioTracks[this.TargetStreamIndex - 1].TrackNumber;
 				if (audioTrack <= this.main.SelectedTitle.AudioList.Count)
 				{
 					track = this.main.SelectedTitle.AudioList[audioTrack - 1];
@@ -1222,7 +1233,7 @@ namespace VidCoder.ViewModel
 
 			if (this.TargetStreamIndex == 0 && chosenAudioTracks.Count == 1)
 			{
-				int audioTrack = chosenAudioTracks[0];
+				int audioTrack = chosenAudioTracks[0].TrackNumber;
 				if (audioTrack <= this.main.SelectedTitle.AudioList.Count)
 				{
 					track = this.main.SelectedTitle.AudioList[audioTrack - 1];

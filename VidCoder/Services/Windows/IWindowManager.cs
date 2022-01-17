@@ -13,7 +13,8 @@ namespace VidCoder.Services.Windows
 		/// </summary>
 		/// <param name="viewModel">The window's viewmodel.</param>
 		/// <param name="ownerViewModel">The viewmodel of the owner window.</param>
-		void OpenWindow(object viewModel, object ownerViewModel = null);
+		/// <param name="userInitiated">True if the user explicitly opened the window.</param>
+		Window OpenWindow(object viewModel, object ownerViewModel = null, bool userInitiated = true);
 
 		/// <summary>
 		/// Opens the viewmodel as a dialog.
@@ -110,6 +111,24 @@ namespace VidCoder.Services.Windows
 		/// </summary>
 		/// <typeparam name="T">The type of the viewmodel.</typeparam>
 		/// <param name="ownerViewModel">The viewmodel of the owner window.</param>
-		void OpenDialog<T>(object ownerViewModel = null);
+		void OpenDialog<T>(object ownerViewModel = null) where T : class;
+
+		/// <summary>
+		/// Suspends the AllowDrop property on all windows (used when a smaller drag/drop operation is starting).
+		/// </summary>
+		void SuspendDropOnWindows();
+
+		/// <summary>
+		/// Resumes the AllowDrop property on all windows (used when a smaller drag/drop operation is finished).
+		/// </summary>
+		void ResumeDropOnWindows();
+
+		/// <summary>
+		/// Opens or focuses the viewmodel type's window.
+		/// </summary>
+		/// <typeparam name="T">The type of the window viewmodel.</typeparam>
+		/// <param name="ownerViewModel">The owner view model (main view model).</param>
+		/// <returns>The opened viewmodel.</returns>
+		T OpenOrFocusWindow<T>(object ownerViewModel = null) where T : class;
 	}
 }

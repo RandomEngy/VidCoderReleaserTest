@@ -129,6 +129,11 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Strict</value>
   </data>
+  
+  
+  
+  
+  
   <data name="Custom" xml:space="preserve">
     <value>Personnalisé</value>
   </data>
@@ -141,54 +146,37 @@
   <data name="Default" xml:space="preserve">
     <value>Par défaut</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
-    <value>Doublement (Bob)</value>
-    <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
-  </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Rapide</value>
-  </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Lent</value>
-  </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Plus lent</value>
-  </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
-    <value>Clair</value>
-  </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
-    <value>Moyen</value>
-  </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
-    <value>Fort</value>
-  </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
-    <value>Très Clair</value>
-  </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
-    <value>Animation</value>
-  </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
-    <value>Film</value>
-  </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
-    <value>Grain</value>
-  </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
-    <value>Mouvement rapide</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Denoise_HQDN3D" xml:space="preserve">
     <value>hqdn3d</value>
   </data>
   <data name="Denoise_NLMeans" xml:space="preserve">
     <value>NL-Means</value>
   </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>Fermer VidCoder</value>
+  </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Ne rien faire</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>Éjecter {0} :</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Mise en veille prolongée</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Fermez la session</value>
@@ -202,6 +190,20 @@
   <data name="Off" xml:space="preserve">
     <value>Inactif</value>
   </data>
+  
+  
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>Blu-ray</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Fichier</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>Chapitres</value>
   </data>
@@ -211,4 +213,31 @@
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Plage de temps (s)</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

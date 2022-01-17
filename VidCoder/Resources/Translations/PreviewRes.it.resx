@@ -112,16 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PlaySourceButton" xml:space="preserve">
-    <value>Play Sorgente</value>
+    <value>Riproduci sorgente</value>
   </data>
   <data name="EncodePreviewClipButton" xml:space="preserve">
-    <value>Codifica Clip di anteprima</value>
+    <value>Codifica spezzone di anteprima</value>
   </data>
   <data name="EncodePreviewClipToolTip" xml:space="preserve">
     <value>Codifica e gioca una piccola anteprima clip dallo schermo selezionato. Utilizza le impostazioni di codifica corrente.</value>
@@ -157,7 +157,7 @@
     <value>secondi</value>
   </data>
   <data name="PreviewDisplay_Corners" xml:space="preserve">
-    <value>Angoli</value>
+    <value>Margini</value>
   </data>
   <data name="PreviewDisplay_FitToWindow" xml:space="preserve">
     <value>Adatta alla finestra</value>
@@ -180,7 +180,26 @@
   <data name="BottomMargin" xml:space="preserve">
     <value>Margine inferiore</value>
   </data>
-	<data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
+  <data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
     <value>Impossibile trovare il file di origine.</value>
+  </data>
+  <data name="CloseVideoButton" xml:space="preserve">
+    <value>Chiudi Video</value>
+    <comment>Button to close the preview video clip.</comment>
+  </data>
+  <data name="OpenInSystemPlayerButton" xml:space="preserve">
+    <value>Apri col lettore di sistema</value>
+  </data>
+  <data name="VolumeSliderLabel" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="ReplayPreviewButton" xml:space="preserve">
+    <value>Ripeti l'anteprima</value>
+  </data>
+  <data name="VideoErrorMessage" xml:space="preserve">
+    <value>Non posso riprodurre il video internamente. Vuoi aprirlo con il riproduttore di sistema?</value>
+  </data>
+  <data name="VideoErrorTitle" xml:space="preserve">
+    <value>Errore video</value>
   </data>
 </root>

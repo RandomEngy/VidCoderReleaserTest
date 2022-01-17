@@ -8,13 +8,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using VidCoder.Model;
 using System.Windows.Forms;
+using Microsoft.AnyContainer;
 
 
 namespace VidCoder.Services
 {
 	public class SystemOperations : ISystemOperations
 	{
-		private static ILogger logger = Ioc.Get<ILogger>();
+		private static IAppLogger logger = StaticResolver.Resolve<IAppLogger>();
 
 		[Flags]
 		private enum ExitWindows : uint
@@ -107,8 +108,8 @@ namespace VidCoder.Services
 			InitiateSystemShutdownEx(
 				null, 
 				null, 
-				0, 
-				false, 
+				0,
+				true, 
 				false, 
 				ShutdownReason.MajorOther | ShutdownReason.MinorOther | ShutdownReason.FlagPlanned);
 		}

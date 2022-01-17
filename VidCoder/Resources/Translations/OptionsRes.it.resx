@@ -112,17 +112,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>Quando la selezione audio automatica è disattivata, viene mantenuto l'ultimo brano scelto.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>Quando la selezione automatica dei sottotitoli è disabilitato, i sottotitoli ultimi raccolti sono persistenti.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>Generale</value>
   </data>
@@ -130,10 +124,10 @@
     <value>Ridurre al minimo la barra delle applicazioni</value>
   </data>
   <data name="MinimizeToSystemTrayRadioButton" xml:space="preserve">
-    <value>Minimizzare al vassoio di sistema</value>
+    <value>Riduci ad icona sull'area di notifica</value>
   </data>
   <data name="PlaySoundOnQueueCompletionCheckBox" xml:space="preserve">
-    <value>Riprodurre l'audio sul completamento della coda</value>
+    <value>Riproduci suono al completamento della coda</value>
   </data>
   <data name="PreferredDvdPlayerLabel" xml:space="preserve">
     <value>Lettore di DVD preferito:</value>
@@ -144,107 +138,38 @@
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
     <value>Aggiornamenti automatici</value>
   </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Unire la traccia di aggiornamento Beta</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>Denominazione file</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Cartella predefinita:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>Formato file:</value>
-  </data>
-  <data name="OutputToSourceDirCheckBox" xml:space="preserve">
-    <value>Uscita alla directory sorgente se possibile</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Formato predefinito</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Formato personalizzato:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Opzioni disponibili: {0}</value>
-  </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>Quando un file esiste già...</value>
   </data>
   <data name="EncodingSingleFile" xml:space="preserve">
-    <value>Codifica file singolo:</value>
-  </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Chiederà se si desidera sovrascriverlo</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Sovrascrivere il file senza chiedere conferma</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Passare automaticamente a un nome diverso</value>
+    <value>Codifica di un singolo file:</value>
   </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
-    <value>Codifica batch di file:</value>
-  </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Sovrascrivi</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Rinominare automaticamente</value>
-  </data>
-  <data name="AutomaticAudioSelection" xml:space="preserve">
-    <value>Selezione automatica audio</value>
-  </data>
-  <data name="AudioSubtitlesTab" xml:space="preserve">
-    <value>Audio / sottotitoli</value>
-  </data>
-  <data name="LanguageRadioButton" xml:space="preserve">
-    <value>Lingua:</value>
-  </data>
-  <data name="IncludeAllTracksCheckBox" xml:space="preserve">
-    <value>Includono tutte le canzoni</value>
-  </data>
-  <data name="AutomaticSubtitleSelection" xml:space="preserve">
-    <value>Selezione automatica dei sottotitoli</value>
-  </data>
-  <data name="ForeignAudioSearchRadioButton" xml:space="preserve">
-    <value>Ricerca Audio Straniero</value>
-  </data>
-  <data name="BurnInCheckBox" xml:space="preserve">
-    <value>Scrivi in</value>
-  </data>
-  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
-    <value>Solo se una lingua diversa dall'audio</value>
+    <value>Codifica non-interattiva di più file:</value>
   </data>
   <data name="AutoPauseLabel" xml:space="preserve">
-    <value>Pausa automaticamente codifica quando uno qualsiasi di questi processi sono in esecuzione:</value>
+    <value>Metti in pausa la codifica automaticamente quando uno qualsiasi di questi processi sono in esecuzione:</value>
   </data>
   <data name="AddEllipsesButton" xml:space="preserve">
     <value>Aggiungi...</value>
   </data>
   <data name="PreviewCountLabel" xml:space="preserve">
-    <value>Numero di anteprime di foto a scansione:</value>
+    <value>Numero di anteprime delle foto durante la scansione:</value>
   </data>
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
-    <value>Ricordate di cartelle e file usati in precedenza</value>
-  </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Consentono l'impostazione nome personalizzato sulle tracce audio (supporto limitato giocatore)</value>
+    <value>Ricorda cartelle e file utilizzati in precedenza</value>
   </data>
   <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Abilitare LibDVDNav (cambiamento richiede il riavvio del programma)</value>
-  </data>
-  <data name="KeepScansAfterCompletionCheckBox" xml:space="preserve">
-    <value>Mantenere scansioni dopo completamento (permette di modificare gli elementi completati)</value>
+    <value>Abilita LibDVDNav (la modifica richiede il riavvio del programma). Richiesto per supportare più angoli di visione</value>
   </data>
   <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Eliminare i file di origine al termine compensazione successo oggetti (con conferma)</value>
+    <value>Elimina i file sorgenti dopo aver cancellato gli elementi completati con successo</value>
   </data>
   <data name="LoggingVerbosityLabel" xml:space="preserve">
-    <value>Livello di dettaglio registrazione:</value>
+    <value>Livello di dettaglio dei registri:</value>
   </data>
   <data name="MinScanLengthLabel" xml:space="preserve">
-    <value>Lunghezza minima del titolo per la scansione (secondi):</value>
+    <value>Lunghezza minima del titolo da scansionare (secondi):</value>
   </data>
   <data name="RecognizedExtensionsLabel" xml:space="preserve">
     <value>Estensioni riconosciute:</value>
@@ -255,35 +180,35 @@
   <data name="OptionsDialogTitle" xml:space="preserve">
     <value>Opzioni</value>
   </data>
-  <data name="ProcessesTab" xml:space="preserve">
-    <value>Processi</value>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Processo</value>
   </data>
   <data name="AdvancedTab" xml:space="preserve">
     <value>Avanzato</value>
   </data>
   <data name="BetaUpdatesInBeta" xml:space="preserve">
-    <value>Si sta eseguendo la versione Beta. Questo può funzionare a fianco con la versione stabile.</value>
+    <value>State eseguendo una versione Beta. Questa può funzionare contemporaneamente alla versione stabile.</value>
   </data>
   <data name="BetaUpdatesNonBeta" xml:space="preserve">
-    <value>Unisci la traccia Beta per aggiornamenti più frequenti</value>
+    <value>Iscriviti al programma Beta per ottenere aggiornamenti più frequenti</value>
   </data>
   <data name="UpdateReadyStatus" xml:space="preserve">
-    <value>Aggiornare {0} pronto. Quando si esce il programma verrà installato.</value>
+    <value>Aggiornamento alla {0} pronto. Verrà installato quando si esce dal programma.</value>
   </data>
   <data name="DownloadingStatus" xml:space="preserve">
-    <value>Download aggiornamento {0}:</value>
+    <value>Prelievo aggiornamento alla versione {0}:</value>
   </data>
   <data name="UpToDateStatus" xml:space="preserve">
     <value>VidCoder è aggiornato.</value>
   </data>
   <data name="ChooseDefaultOutputFolder" xml:space="preserve">
-    <value>Scegliere la directory di output predefinito per i file video codificati.</value>
+    <value>Scegliere la cartella di salvataggio predefinita per i file video codificati.</value>
   </data>
   <data name="InterfaceLanguageLabel" xml:space="preserve">
-    <value>Interfaccia lingua:</value>
+    <value>Lingua dell'interfaccia:</value>
   </data>
   <data name="NewLanguageRestartDialogMessage" xml:space="preserve">
-    <value>La nuova lingua sarà effettive dopo uscire e riavviare VidCoder.</value>
+    <value>La nuova lingua sarà utilizzata dopo il riavvio di VidCoder.</value>
   </data>
   <data name="UseOSLanguage" xml:space="preserve">
     <value>Utilizzare la lingua del sistema operativo</value>
@@ -292,48 +217,40 @@
     <value>Aggiornamenti</value>
   </data>
   <data name="DownloadingInfoStatus" xml:space="preserve">
-    <value>Trovare la versione più recente...</value>
+    <value>Ricerca della versione più recente...</value>
   </data>
   <data name="UpdateFailedStatus" xml:space="preserve">
     <value>Controllo dell'aggiornamento non riuscito.</value>
   </data>
   <data name="CompletionWavFilePickTitle" xml:space="preserve">
-    <value>Scegliere il file wav che si desidera utilizzare per il suono di completamento.</value>
+    <value>Scegli il file .wav che desideri utilizzare per il suono di completamento.</value>
   </data>
   <data name="CurrentVersionLabel" xml:space="preserve">
     <value>Versione corrente: {0}</value>
   </data>
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
-    <value>Attenzione: questa versione è più probabile avere bug e crash.</value>
-  </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Lingue</value>
+    <value>Attenzione: è probabile che questa versione sia affetta da problemi e blocchi.</value>
   </data>
   <data name="PlayersSection" xml:space="preserve">
-    <value>Suonatori
-	
-</value>
+    <value>Riproduttore video</value>
   </data>
   <data name="SoundSection" xml:space="preserve">
     <value>Suono</value>
   </data>
   <data name="SystemTraySection" xml:space="preserve">
-    <value>Vassoio di sistema</value>
+    <value>Area di notifica</value>
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
-    <value>Cartella di output</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Formato di denominazione</value>
+    <value>Cartella di salvataggio</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Opzioni avanzate</value>
   </data>
   <data name="ScanningSection" xml:space="preserve">
-    <value>Ricerca in corso</value>
+    <value>Scansione</value>
   </data>
   <data name="LoggingSection" xml:space="preserve">
-    <value>Registrazione</value>
+    <value>Registro</value>
   </data>
   <data name="DvdReadingSection" xml:space="preserve">
     <value>Lettura DVD</value>
@@ -354,7 +271,7 @@
     <value>Controlla ora</value>
   </data>
   <data name="UseSystemPlayer" xml:space="preserve">
-    <value>Utilizza suonatore di sistema</value>
+    <value>Utilizza riproduttore di sistema</value>
   </data>
   <data name="VideoFilesLabel" xml:space="preserve">
     <value>File video:</value>
@@ -366,7 +283,7 @@
     <value>Scegliere il Suonatore da utilizzare per i file video.</value>
   </data>
   <data name="CustomPlayerLabel" xml:space="preserve">
-    <value>Suonatore personalizzato:</value>
+    <value>Riproduttore personalizzato:</value>
   </data>
   <data name="Priority_High" xml:space="preserve">
     <value>Elevata</value>
@@ -381,44 +298,90 @@
     <value>Inferiore al normale</value>
   </data>
   <data name="WorkerProcessPriorityLabel" xml:space="preserve">
-    <value>Priorità del processo di lavoro:</value>
+    <value>Priorità del processo di codifica:</value>
   </data>
   <data name="Priority_Idle" xml:space="preserve">
     <value>Basso</value>
   </data>
   <data name="CopyLogToOutputFolderLabel" xml:space="preserve">
-    <value>Copia codifica log nella stessa directory come il codifica video</value>
+    <value>Copia il registro di codifica nella stessa cartella del video codificato</value>
   </data>
   <data name="OpenLogFolderButton" xml:space="preserve">
-    <value>Cartella di registro aperto</value>
+    <value>Apri cartella dei file di registro</value>
   </data>
   <data name="ResumeEncodingOnRestartCheckBox" xml:space="preserve">
-    <value>Riprendere automaticamente la codifica al riavvio</value>
+    <value>Riprendere automaticamente la codifica al riavvio del programma</value>
   </data>
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
-    <value>Utilizzare il processo di lavoro per la codifica</value>
-  </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Video</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Abilitare decodifica Hardware DXVA</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>Questa opzione è soltanto adatta a sistemi più lenti. Decodificatori hardware attualmente sono progettati per la riproduzione, non per la ri-codifica video così sarà probabile strozzatura sui sistemi più veloci.</value>
+    <value>Utilizza il processo di lavoro per la codifica</value>
   </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
-    <value>Preservare il tempo creata e modificata quando conversione file</value>
+    <value>Preservare l'orario originale di Creazione e Modifica quando si converte un file</value>
   </data>
-  <data name="DefaultCheckBox" xml:space="preserve">
-    <value>Default</value>
-    <comment>Label for the check box to mark an automatically chosen subtitle as "Default"</comment>
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+    <value>Cartella personalizzata per le anteprime:</value>
   </data>
-  <data name="PreserveFolderStructureCheckBox" xml:space="preserve">
-    <value>Preservare la struttura della codifica delle cartelle in modalità batch</value>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Opzioni processo</value>
   </data>
-  <data name="PreserveFolderStructureToolTip" xml:space="preserve">
-    <value>Se si codifica una cartella piena di file saranno messe le versioni codificate in sottocartelle per abbinare la struttura di directory di origine.</value>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>Limitazione della CPU - processori ammessi:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
   </data>
-	
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Utilizza la "Limitazione quantità CPU" per limitare il numero di core del processore che VidCoder può utilizzare durante la codifica.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Utilizza il riproduttore incorporato per le anteprime</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Massimo numero di processori di codifica simultanei:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Potete indicare quanti processori di codifica simultanei sono permessi. Utile per macchine con CPU a più processori.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Generale</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Richiesta di aggiornamento:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>L'opzione del processo lavorativo avrà effetto dopo l'uscita e il riavvio di VidCoder.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Copia il tracciamento della codifica in una cartella personalizzata</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Mantieni i file anche se la codifica è stata interrotta o è fallita</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Attiva l'azione "Quando concluso" quando ci sono processi di codifica falliti</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Metti in pausa quando la batteria è quasi scarica</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Metti in pausa quando lo spazio libero del disco è inferiore a:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Messa in pausa automatica</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Opzioni disponibili: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Soglia di spazio libero su disco, in gigabyte</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Trascina e rilascia l'ordine di scansione:</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Numero dei tentativi di codifica:</value>
+  </data>
 </root>

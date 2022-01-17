@@ -112,25 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TitleLabel" xml:space="preserve">
     <value>Tytuł:</value>
-  </data>
-  <data name="SettingsLabel" xml:space="preserve">
-    <value>Ustawienia</value>
   </data>
   <data name="AddToQueueLabel" xml:space="preserve">
     <value>Dodaj do Kolejki</value>
   </data>
   <data name="AddMultipleTitlesToQueueLabel" xml:space="preserve">
     <value>Dodaj kilka tytułów do kolejki...</value>
-  </data>
-  <data name="FileMenu" xml:space="preserve">
-    <value>Plik</value>
   </data>
   <data name="OpenVideoFile" xml:space="preserve">
     <value>Otwórz plik wideo...</value>
@@ -141,9 +135,6 @@
   <data name="EnqueueMultipleFiles" xml:space="preserve">
     <value>Dodaj do kolejki kilka plików...</value>
   </data>
-  <data name="EnqueueMultipleTitles" xml:space="preserve">
-    <value>Dodaj do kolejki kilka plików...</value>
-  </data>
   <data name="ToolsMenu" xml:space="preserve">
     <value>Narzędzia</value>
   </data>
@@ -152,9 +143,6 @@
   </data>
   <data name="ExportPreset" xml:space="preserve">
     <value>Eksportuj Ustawienia...</value>
-  </data>
-  <data name="OptionsMenuItem" xml:space="preserve">
-    <value>Opcje...</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Odtwórz</value>
@@ -168,11 +156,9 @@
   <data name="ClearCompleted" xml:space="preserve">
     <value>Wyczyść Ukończone</value>
   </data>
-  <data name="ExitMenuItem" xml:space="preserve">
-    <value>Wyjście</value>
-  </data>
   <data name="WindowsMenu" xml:space="preserve">
-    <value>Windows</value>
+    <value>Okna programu</value>
+    <comment>The label for the "Windows" menu that lists all the windows that can be opened (encoding, preview, log, etc)</comment>
   </data>
   <data name="EncodingSettingsMenuItem" xml:space="preserve">
     <value>Ustawienia Enkodowania</value>
@@ -195,15 +181,6 @@
   <data name="AboutVidCoderMenuItem" xml:space="preserve">
     <value>O programie VidCoder...</value>
   </data>
-  <data name="ChooseVideoSourceLabel" xml:space="preserve">
-    <value>Wybierz źródło wideo:</value>
-  </data>
-  <data name="SourceLabel" xml:space="preserve">
-    <value>Źródło:</value>
-  </data>
-  <data name="ScanningSourceLabel" xml:space="preserve">
-    <value>Skanowanie źródła...</value>
-  </data>
   <data name="Recent" xml:space="preserve">
     <value>Ostatnie</value>
   </data>
@@ -212,18 +189,6 @@
   </data>
   <data name="ScanErrorLabel" xml:space="preserve">
     <value>Wystąpił błąd podczas skanowania.</value>
-  </data>
-  <data name="AudioLabel" xml:space="preserve">
-    <value>Audio:</value>
-  </data>
-  <data name="VideoLabel" xml:space="preserve">
-    <value>Wideo:</value>
-  </data>
-  <data name="SubtitlesLabel" xml:space="preserve">
-    <value>Napisy:</value>
-  </data>
-  <data name="AddTrackButton" xml:space="preserve">
-    <value>Dodać Ścieżkę</value>
   </data>
   <data name="ChapterMarkersLabel" xml:space="preserve">
     <value>Znacznik rozdziałów:</value>
@@ -236,12 +201,6 @@
   </data>
   <data name="DestinationToolTip" xml:space="preserve">
     <value>Kliknij aby zmienić miejsce docelowe enkodowania.</value>
-  </data>
-  <data name="SelectOutputPathButton" xml:space="preserve">
-    <value>Wybierz ścieżkę wyjścową...</value>
-  </data>
-  <data name="EncodingLabel" xml:space="preserve">
-    <value>Enkodowanie:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
@@ -273,14 +232,8 @@
   <data name="EncodesInProgressExitWarningTitle" xml:space="preserve">
     <value>Enkodowanie w toku</value>
   </data>
-  <data name="ForeignAudioSearch" xml:space="preserve">
-    <value>Wyszukiwanie Zagranicznych Ścieżek Audio</value>
-  </data>
   <data name="NoneParen" xml:space="preserve">
     <value>(Brak)</value>
-  </data>
-  <data name="TracksSummaryMultiple" xml:space="preserve">
-    <value>{0} utwory(ów)</value>
   </data>
   <data name="SaveChangesPresetMessage" xml:space="preserve">
     <value>Czy chcesz zapisać zmiany w ustawieniach?</value>
@@ -296,9 +249,6 @@
   </data>
   <data name="PresetNameRestoredFromCompleted" xml:space="preserve">
     <value>Przywrócony z zakończonych</value>
-  </data>
-  <data name="PresetLabel" xml:space="preserve">
-    <value>Ustawienia zdefiniowane:</value>
   </data>
   <data name="DestinationColumnHeader" xml:space="preserve">
     <value>Miejsce docelowe</value>
@@ -342,9 +292,6 @@
   <data name="CouldNotDeleteFile" xml:space="preserve">
     <value>Nie można usunąć {0} {1}</value>
   </data>
-  <data name="QueueMultipleScanErrorMessage" xml:space="preserve">
-    <value>Następujące pliki nie zostały rozpoznane i będą dodane do kolejki: {0}</value>
-  </data>
   <data name="QueueMultipleScanErrorTitle" xml:space="preserve">
     <value>Błąd skanowania plików wideo</value>
   </data>
@@ -354,9 +301,6 @@
   <data name="DirectoryCreateErrorMessage" xml:space="preserve">
     <value>Nie można utworzyć katalogu wyjściowego. Szczegóły błędu: {0}</value>
   </data>
-  <data name="DirectoryCreateErrorTitle" xml:space="preserve">
-    <value>Błąd tworzenia katalogu</value>
-  </data>
   <data name="EncodeCompleted" xml:space="preserve">
     <value>Enkodowanie zakończone.</value>
   </data>
@@ -365,12 +309,6 @@
   </data>
   <data name="EncodeCompleteBalloonMessage" xml:space="preserve">
     <value>VidCoder zakończył enkodowanie wszystkich zadań z kolejki.</value>
-  </data>
-  <data name="OutputFolderRequiredMessage" xml:space="preserve">
-    <value>Nie można dodać zadań bez domyślnego folderu danych wyjściowych. Naciśnij przycisk OK, aby wybrać jeden.</value>
-  </data>
-  <data name="OutputFolderRequiredTitle" xml:space="preserve">
-    <value>Wymagany domyślny folder danych wyjściowych</value>
   </data>
   <data name="OutputPathNotValidMessage" xml:space="preserve">
     <value>Ścieżka wyjściowa nie jest prawidłowa.</value>
@@ -387,48 +325,7 @@
   <data name="EtaLabel" xml:space="preserve">
     <value>ETA:</value>
   </data>
-  <data name="WhenDoneLabel" xml:space="preserve">
-    <value>Po zakończeniu:</value>
-  </data>
-  <data name="Preset_AndroidTablet" xml:space="preserve">
-    <value>Android Tablet</value>
-  </data>
-  <data name="Preset_Android" xml:space="preserve">
-    <value>Android</value>
-  </data>
-  <data name="Preset_AppleiPad" xml:space="preserve">
-    <value>Apple iPad</value>
-  </data>
-  <data name="Preset_AppleiPhone4" xml:space="preserve">
-    <value>Apple iPhone 4</value>
-  </data>
-  <data name="Preset_AppleiPhoneTouch" xml:space="preserve">
-    <value>Apple iPhone/Touch</value>
-  </data>
-  <data name="Preset_AppleiPod" xml:space="preserve">
-    <value>Apple iPod</value>
-  </data>
-  <data name="Preset_AppleTV" xml:space="preserve">
-    <value>AppleTV</value>
-  </data>
-  <data name="Preset_AppleTV2" xml:space="preserve">
-    <value>AppleTV 2</value>
-  </data>
-  <data name="Preset_AppleTV3" xml:space="preserve">
-    <value>AppleTV 3</value>
-  </data>
-  <data name="Preset_Universal" xml:space="preserve">
-    <value>Uniwersalne</value>
-  </data>
-  <data name="Preset_HighProfile" xml:space="preserve">
-    <value>Wysoki profil</value>
-  </data>
-  <data name="Preset_Normal" xml:space="preserve">
-    <value>Normalny</value>
-  </data>
-  <data name="Preset_WindowsPhone7" xml:space="preserve">
-    <value>Windows Phone 7</value>
-  </data>
+  
   <data name="SourceOption_VideoFile" xml:space="preserve">
     <value>Plik wideo...</value>
   </data>
@@ -456,14 +353,8 @@
   <data name="LaunchUrlError" xml:space="preserve">
     <value>Błąd uruchomienia adresu URL: {0}</value>
   </data>
-  <data name="UserConfigLoadError" xml:space="preserve">
-    <value>Nie można załadować wymaganego pliku ustawień użytkownika; może być uszkodzony. Czy chcesz go usunąć? Nie wpłynie to na inne zapisane ustawienia.</value>
-  </data>
-  <data name="UserConfigLoadErrorTitle" xml:space="preserve">
-    <value>Błąd ładowania ustawień</value>
-  </data>
   <data name="PresetImportErrorMessage" xml:space="preserve">
-    <value>Nie można zaimportować ustawień. Format nierozpoznany.</value>
+    <value>Nie można zaimportować ustawień predefiniowanych. Sprawdź dziennik, aby uzyskać informacje.</value>
   </data>
   <data name="ImportErrorTitle" xml:space="preserve">
     <value>Błąd importowania</value>
@@ -477,26 +368,19 @@
   <data name="ExportPresetFilePickerText" xml:space="preserve">
     <value>Eksportuj Ustawienia</value>
   </data>
-  <data name="PresetSaveConfirmMessage" xml:space="preserve">
-    <value>Czy chcesz zapisać zmiany w ustawieniach?</value>
+  
+  
+  <data name="RevertConfirmMessage" xml:space="preserve">
+    <value>Czy na pewno chcesz odrzucić wszystkie zmiany?</value>
   </data>
-  <data name="PresetSaveConfirmTitle" xml:space="preserve">
-    <value>Zapisz aktualne ustawienia?</value>
+  <data name="RevertConfirmTitle" xml:space="preserve">
+    <value>Przywróć</value>
   </data>
-  <data name="PresetRevertConfirmMessage" xml:space="preserve">
-    <value>Czy na pewno chcesz anulować wszystkie niezapisane zmiany w ustawieniach?</value>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Czy na pewno chcesz usunąć?</value>
   </data>
-  <data name="PresetRevertConfirmTitle" xml:space="preserve">
-    <value>Przywróć ustawienia</value>
-  </data>
-  <data name="PresetRemoveConfirmMessage" xml:space="preserve">
-    <value>Czy na pewno chcesz usunąć to ustawienie?</value>
-  </data>
-  <data name="PresetRemoveConfirmTitle" xml:space="preserve">
-    <value>Usuń ustawienie</value>
-  </data>
-  <data name="UserConfigCorrupted" xml:space="preserve">
-    <value>Konfiguracja jest uszkodzona i nie może być załadowana. Niektóre ustawienia mogą być zresetowane.</value>
+  <data name="RemoveConfirmTitle" xml:space="preserve">
+    <value>Usuń</value>
   </data>
   <data name="OutputDirectoryPickerText" xml:space="preserve">
     <value>Wybierz katalog wyjściowy enkodowanych plików wideo.</value>
@@ -516,9 +400,6 @@
   <data name="CloseVideoSourceToolTip" xml:space="preserve">
     <value>Zamknij źródło wideo</value>
   </data>
-  <data name="CloseVideoSourceMenuItem" xml:space="preserve">
-    <value>Zamknij Źródło Wideo</value>
-  </data>
   <data name="UpdatesMenuItem" xml:space="preserve">
     <value>Aktualizacje...</value>
   </data>
@@ -527,9 +408,6 @@
   </data>
   <data name="RangeBarToolTip" xml:space="preserve">
     <value>Kliknij lewym przyciskiem, aby ustawić czas rozpoczęcia oraz prawym, aby ustawić czas zakończenia.</value>
-  </data>
-  <data name="Preset_WindowsPhone8" xml:space="preserve">
-    <value>Windows Phone 8</value>
   </data>
   <data name="QueueFormat_Chapters" xml:space="preserve">
     <value>Ch {0}</value>
@@ -555,12 +433,6 @@
   <data name="PresetDiscardConfirmTitle" xml:space="preserve">
     <value>Odrzuć Zmiany?</value>
   </data>
-  <data name="RemoveAudioTrackToolTip" xml:space="preserve">
-    <value>Usuń ścieżkę dźwiękową</value>
-  </data>
-  <data name="Preset_Xbox360" xml:space="preserve">
-    <value>Xbox 360</value>
-  </data>
   <data name="RemoveFromQueueToolTip" xml:space="preserve">
     <value>Usuń z kolejki</value>
   </data>
@@ -574,7 +446,7 @@
     <value>Wyeksportuj kolejkę</value>
   </data>
   <data name="QueueImportErrorMessage" xml:space="preserve">
-    <value>Nie można zaimportować kolejki. Format nierozpoznany.</value>
+    <value>Nie udało się zaimportować kolejki. Sprawdź dziennik, aby uzyskać informacje.</value>
   </data>
   <data name="ImportPresetFilePickerTitle" xml:space="preserve">
     <value>Importuj plik z ustawieniami domyślnymi</value>
@@ -603,21 +475,93 @@
   <data name="EncodeDetailsMenuItem" xml:space="preserve">
     <value>Szczegóły kompresji</value>
   </data>
-	<data name="EncodingSettingsChangedMessage" xml:space="preserve">
-    <value>Ustawienia enkodowania uległy zmianie od ostatnio dodanego elementu kolejki. Czy chcesz zastosować bieżące ustawienia kodowania dla wszystkich elementów w kolejce?</value>
-  </data>
-	<data name="EncodingSettingsChangedTitle" xml:space="preserve">
-    <value>Ustawienia zostały zmienione</value>
-  </data>
-	<data name="RenameDatabaseFileLine2" xml:space="preserve">
+  <data name="RenameDatabaseFileLine2" xml:space="preserve">
     <value>Czy chcesz zmienić nazwę istniejącego pliku i rozpocząć z nowym?</value>
   </data>
-	<data name="RenameDatabaseFileLine1" xml:space="preserve">
+  <data name="RenameDatabaseFileLine1" xml:space="preserve">
     <value>Nie można odczytać wersji {0} pliku bazy danych. Najwyższą wersją rozpoznawalną przez VidCoder {1} jest {2}</value>
     <comment>{0} is the version of the incompatible database file. {1} is the current version of VidCoder. {2} is the highest database version that is supported.</comment>
   </data>
-	<data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
+  <data name="IncompatibleDatabaseFileTitle" xml:space="preserve">
     <value>Niekompatybilny plik bazy danych</value>
     <comment>Dialog title for a message explaining that the current database file is unsupported.</comment>
   </data>
+  
+  
+  <data name="SimilarTitlesToolTip" xml:space="preserve">
+    <value>{0} inne tytuły mają długość zbliżoną to tego.</value>
+    <comment>{0} is the number of titles that have a similar duration.</comment>
+  </data>
+  <data name="UseBackupDatabaseLine" xml:space="preserve">
+    <value>Masz kopie zapasową wersji {0} pliku. Czy chcesz jej użyć?</value>
+    <comment>{0} is the version of the database file you have a backup for.</comment>
+  </data>
+  <data name="VideoPlayError" xml:space="preserve">
+    <value>Błąd odtwarzania wideo.</value>
+  </data>
+  <data name="CustomVideoPlayerError" xml:space="preserve">
+    <value>Nie można odnaleźć odtwarzacza wideo w {0}.</value>
+    <comment>{0} is the path to the custom video player.</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

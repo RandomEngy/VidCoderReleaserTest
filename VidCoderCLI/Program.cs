@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.ServiceModel;
+using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
+using PipeMethodCalls;
+using VidCoderCommon;
+using VidCoderCommon.Model;
+using VidCoderCommon.Services;
 
 namespace VidCoderCLI
 {
@@ -28,28 +33,29 @@ namespace VidCoderCLI
 			Console.WriteLine("Action: '" + action + "'");
 			Console.WriteLine("Action length: " + action.Length);
 
+			RunActionStringAsync(action, args).Wait();
+		}
+
+		private static Task RunActionStringAsync(string action, string[] args)
+		{
 			switch (action)
 			{
 				case "encode":
-					Encode(ReadArguments(args));
-					break;
+					return EncodeAsync(ReadArguments(args));
 				case "scan":
-					Scan(ReadArguments(args));
-					break;
+					return ScanAsync(ReadArguments(args));
 				case "importpreset":
-					ImportPreset(args);
-					break;
+					return ImportPresetAsync(args);
 				case "importqueue":
-					ImportQueue(args);
-					break;
+					return ImportQueueAsync(args);
 				default:
 					WriteError("Action not recognized.");
 					PrintUsage();
-					break;
+					return Task.CompletedTask;
 			}
 		}
 
-		private static void Encode(Dictionary<string, string> argumentDict)
+		private static async Task EncodeAsync(Dictionary<string, string> argumentDict)
 		{
 			foreach (string token in argumentDict.Keys)
 			{
@@ -100,10 +106,10 @@ namespace VidCoderCLI
 				return;
 			}
 
-			RunAction(a => a.Encode(source, destination, preset, picker), "Encode started.", "Could not start encode.");
+			await SetupAndRunActionAsync(a => a.Encode(source, destination, preset, picker), "Encode started.", "Could not start encode.").ConfigureAwait(false);
 		}
 
-		private static void Scan(Dictionary<string, string> argumentDict)
+		private static async Task ScanAsync(Dictionary<string, string> argumentDict)
 		{
 			foreach (string token in argumentDict.Keys)
 			{
@@ -127,10 +133,10 @@ namespace VidCoderCLI
 				return;
 			}
 
-			RunAction(a => a.Scan(source), "Scan started.", "Could not start scan.");
+			await SetupAndRunActionAsync(a => a.Scan(source), "Scan started.", "Could not start scan.").ConfigureAwait(false);
 		}
 
-		private static void ImportPreset(string[] args)
+		private static async Task ImportPresetAsync(string[] args)
 		{
 			if (args.Length != 2)
 			{
@@ -141,10 +147,10 @@ namespace VidCoderCLI
 			string filePath = args[1];
 
 			// Further checks on the file path will happen inside the app
-			RunAction(a => a.ImportPreset(filePath), "Preset imported.", "Failed to import preset.");
+			await SetupAndRunActionAsync(a => a.ImportPreset(filePath), "Preset imported.", "Failed to import preset.").ConfigureAwait(false);
 		}
 
-		private static void ImportQueue(string[] args)
+		private static async Task ImportQueueAsync(string[] args)
 		{
 			if (args.Length != 2)
 			{
@@ -155,7 +161,40 @@ namespace VidCoderCLI
 			string filePath = args[1];
 
 			// Further checks on the file path will happen inside the app
-			RunAction(a => a.ImportQueue(filePath), "Queue imported.", "Failed to import queue.");
+			await SetupAndRunActionAsync(a => a.ImportQueue(filePath), "Queue imported.", "Failed to import queue.").ConfigureAwait(false);
+		}
+
+		private static async Task SetupAndRunActionAsync(Expression<Action<IVidCoderAutomation>> action, string startedText, string failedText)
+		{
+			string vidCoderExe = GetVidCoderExePath();
+
+			if (!VidCoderIsRunning(vidCoderExe))
+			{
+				Console.WriteLine("Could not find a running instance of VidCoder. Starting it now.");
+				Process.Start(vidCoderExe);
+				await Task.Delay(1000).ConfigureAwait(false);
+			}
+
+			var client = new AutomationClient();
+			try
+			{
+				AutomationResult result = await client.RunActionAsync(action);
+				switch (result)
+				{
+					case AutomationResult.Success:
+						Console.WriteLine(startedText);
+						break;
+					case AutomationResult.ConnectionFailed:
+						WriteError(failedText);
+						break;
+					default:
+						break;
+				}
+			}
+			catch (Exception exception)
+			{
+				WriteError(exception.ToString());
+			}
 		}
 
 		private static Dictionary<string, string> ReadArguments(string[] args)
@@ -215,89 +254,6 @@ namespace VidCoderCLI
 			}
 
 			return false;
-		}
-
-		private static void RunAction(Action<IVidCoderAutomation> action, string startedText, string failedText)
-		{
-			var firstAttemptResult = TryAction(action);
-			if (firstAttemptResult == AutomationResult.Success)
-			{
-				Console.WriteLine(startedText);
-				return;
-			}
-
-			if (firstAttemptResult == AutomationResult.FailedInVidCoder)
-			{
-				return;
-			}
-
-			string vidCoderExe = GetVidCoderExePath();
-
-			if (!VidCoderIsRunning(vidCoderExe))
-			{
-				Console.WriteLine("Could not find a running instance of VidCoder. Starting it now.");
-				Process.Start(vidCoderExe);
-			}
-
-			for (int i = 0; i < 30; i++)
-			{
-				Thread.Sleep(1000);
-				var encodeResult = TryAction(action);
-
-				if (encodeResult == AutomationResult.Success)
-				{
-					Console.WriteLine(startedText);
-					return;
-				}
-
-				if (encodeResult == AutomationResult.FailedInVidCoder)
-				{
-					return;
-				}
-			}
-
-			WriteError(failedText);
-		}
-
-		private static AutomationResult TryAction(Action<IVidCoderAutomation> action)
-		{
-			try
-			{
-				var binding = new NetNamedPipeBinding
-				{
-					OpenTimeout = TimeSpan.FromSeconds(30),
-					CloseTimeout = TimeSpan.FromSeconds(30),
-					SendTimeout = TimeSpan.FromSeconds(30),
-					ReceiveTimeout = TimeSpan.FromSeconds(30)
-				};
-
-				string betaString = string.Empty;
-#if BETA
-				betaString = "Beta";
-#endif
-
-				var pipeFactory = new ChannelFactory<IVidCoderAutomation>(
-					binding,
-					new EndpointAddress("net.pipe://localhost/VidCoderAutomation" + betaString));
-
-				IVidCoderAutomation channel = pipeFactory.CreateChannel();
-				action(channel);
-
-				return AutomationResult.Success;
-			}
-			catch (FaultException<AutomationError> exception)
-			{
-				WriteError(exception.Detail.Message);
-				return AutomationResult.FailedInVidCoder;
-			}
-			catch (CommunicationException)
-			{
-				return AutomationResult.ConnectionFailed;
-			}
-			catch (TimeoutException)
-			{
-				return AutomationResult.ConnectionFailed;
-			}
 		}
 
 		private static void WriteError(string error)

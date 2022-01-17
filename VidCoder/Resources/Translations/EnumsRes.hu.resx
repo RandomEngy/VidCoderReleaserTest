@@ -129,6 +129,23 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Szigorú</value>
   </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>OS stílus használata</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>Sötét</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>Világos</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Gyors</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>Kevésbé érzékeny</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Egyéni</value>
   </data>
@@ -141,41 +158,47 @@
   <data name="Default" xml:space="preserve">
     <value>Alapértelmezett</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
-    <value>Bob</value>
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
+    <value>Lök.</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Gyors</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Lassú</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 lök.</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Lassabb</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>Térbeli ellenőrzés kihagyása</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
-    <value>Alacsony</value>
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>Decomb:</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
+    <value>Könnyű</value>
+  </data>
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>Közepes</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
+  <data name="DenoisePreset_strong" xml:space="preserve">
     <value>Erős</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
     <value>Ultrakönnyű</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
+  <data name="DenoiseTune_animation" xml:space="preserve">
     <value>Animáció</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
+  <data name="DenoiseTune_film" xml:space="preserve">
     <value>Film</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
+  <data name="DenoiseTune_grain" xml:space="preserve">
     <value>Szemcsés</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
     <value>Nagy mozgás</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
@@ -184,11 +207,17 @@
   <data name="Denoise_NLMeans" xml:space="preserve">
     <value>NL-Means</value>
   </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>VidCoder bezárása</value>
+  </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Ne csináljon semmit</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>{0} kiadása:</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Hibernálás</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Kijelentkezés</value>
@@ -202,6 +231,26 @@
   <data name="Off" xml:space="preserve">
     <value>Ki</value>
   </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>LapSharp</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>UnSharp</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>Blu-ray</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Fájl</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>Fejezetek</value>
   </data>
@@ -210,5 +259,90 @@
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Idő hatókör</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>Minden szó</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>Első szó</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>Kódolás megállítása</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>Kilépéskor</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>Indításkor</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>Kódolás</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>Vizsgálat</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>Fejezetek</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>Időtartomány</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>Fájlok törlése (megerősítéssel)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>Áthelyezés a Lomtárba</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>Automatikus átnevezés</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>Felülírás</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>Rákérdez</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>Közepes</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>Kicsi</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>Apró</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>Nagyon széles</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>Széles</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>Chromasimítás</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>ABC sorrendben</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>Kijelölve</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>Első</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>Külföldi hangsáv</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>Külföldi hangsáv, egyébként az első</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>Nincs</value>
   </data>
 </root>

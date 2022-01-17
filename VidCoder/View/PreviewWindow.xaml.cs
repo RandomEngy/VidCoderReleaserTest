@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -18,6 +20,7 @@ using VidCoder.Services;
 using VidCoder.Services.Windows;
 using VidCoder.View.Preview;
 using VidCoder.ViewModel;
+using VidCoderCommon.Model;
 
 namespace VidCoder.View
 {
@@ -30,16 +33,24 @@ namespace VidCoder.View
 	{
 		private PreviewWindowViewModel viewModel;
 
+		private IDisposable controlsUpdateSubscription;
+		private IDisposable mainDisplayUpdateSubscription;
+		private IDisposable previewPausedSubscription;
+
 		public PreviewWindow()
 		{
 			this.InitializeComponent();
 
 			this.DataContextChanged += this.OnDataContextChanged;
+			this.Loaded += (sender, args) =>
+			{
+				this.rootGrid.Focus();
+			};
 		}
 
 		public void RefreshViewModelFromMediaElement()
 		{
-			var previewholder = this.MainContent as IPreviewHolder;
+			var previewholder = this.MainContent as IPreviewFrame;
 			if (previewholder != null)
 			{
 				TimeSpan position = previewholder.GetVideoPosition();
@@ -49,7 +60,7 @@ namespace VidCoder.View
 
 		public void SeekToViewModelPosition(TimeSpan position)
 		{
-			var previewholder = this.MainContent as IPreviewHolder;
+			var previewholder = this.MainContent as IPreviewFrame;
 			if (previewholder != null)
 			{
 				previewholder.SetVideoPosition(this.viewModel.PreviewVideoPosition);
@@ -61,7 +72,7 @@ namespace VidCoder.View
 			this.viewModel = (PreviewWindowViewModel)this.DataContext;
 			this.viewModel.View = this;
 
-			Observable.CombineLatest(
+			this.mainDisplayUpdateSubscription = Observable.CombineLatest(
 				this.viewModel.MainDisplayObservable, 
 				this.viewModel.WhenAnyValue(x => x.PlayingPreview),
 				(mainDisplay, playingPreview) =>
@@ -73,16 +84,16 @@ namespace VidCoder.View
 					this.OnMainDisplayUpdate(x.mainDisplay, x.playingPreview);
 				});
 
-			this.viewModel.ControlsObservable
+			this.controlsUpdateSubscription = this.viewModel.ControlsObservable
 				.Subscribe(controls =>
 				{
 					this.OnControlsUpdate(controls);
 				});
 
-			this.viewModel.WhenAnyValue(x => x.PreviewPaused)
+			this.previewPausedSubscription = this.viewModel.WhenAnyValue(x => x.PreviewPaused)
 				.Subscribe(paused =>
 				{
-					var previewholder = this.MainContent as IPreviewHolder;
+					var previewholder = this.MainContent as IPreviewFrame;
 					if (previewholder != null)
 					{
 						if (paused)
@@ -106,10 +117,10 @@ namespace VidCoder.View
 		private void RefreshMainContent(PreviewMainDisplay mainDisplay, bool playingPreview)
 		{
 			// Close the video if we're swapping it out.
-			var previewholder = this.MainContent as IPreviewHolder;
-			if (!playingPreview && previewholder != null)
+			var previewFrame = this.MainContent as IPreviewFrame;
+			if (!playingPreview && previewFrame != null)
 			{
-				previewholder.CloseVideo();
+				previewFrame.CloseVideo();
 			}
 
 			switch (mainDisplay)
@@ -150,16 +161,16 @@ namespace VidCoder.View
 					throw new ArgumentOutOfRangeException();
 			}
 
-			previewholder = this.MainContent as IPreviewHolder;
-			if (previewholder != null)
+			previewFrame = this.MainContent as IPreviewFrame;
+			if (previewFrame != null)
 			{
 				if (playingPreview)
 				{
-					previewholder.SetVideo(this.viewModel.OnVideoCompleted, this.viewModel.OnVideoFailed, this.viewModel.WhenAnyValue(x => x.Volume));
+					previewFrame.SetVideo(this.viewModel.OnVideoCompleted, this.viewModel.OnVideoFailed, this.viewModel.WhenAnyValue(x => x.Volume));
 				}
 				else
 				{
-					previewholder.SetImage();
+					previewFrame.SetImage();
 				}
 			}
 		}
@@ -269,39 +280,37 @@ namespace VidCoder.View
 			var previewVM = (PreviewWindowViewModel) this.DataContext;
 			PreviewFit fitControl;
 
-			switch (previewVM.MainDisplay)
+			OutputSizeInfo outputSize = previewVM.PreviewImageService.OutputSizeInfo;
+
+			if (outputSize != null)
 			{
-				case PreviewMainDisplay.Default:
-					fitControl = this.MainContent as PreviewFit;
-					fitControl?.ResizeHolder(this.previewArea, previewVM.PreviewDisplayWidth, previewVM.PreviewDisplayHeight, showOneToOneWhenSmaller: true);
+				int displayHeight = outputSize.OutputHeight;
+				int displayWidth = outputSize.DisplayWidth;
 
-					break;
-				case PreviewMainDisplay.FitToWindow:
-					fitControl = this.MainContent as PreviewFit;
-					fitControl?.ResizeHolder(this.previewArea, previewVM.PreviewDisplayWidth, previewVM.PreviewDisplayHeight, showOneToOneWhenSmaller: false);
+				switch (previewVM.MainDisplay)
+				{
+					case PreviewMainDisplay.Default:
+						fitControl = this.MainContent as PreviewFit;
+						fitControl?.ResizeHolder(this.previewArea, displayWidth, displayHeight, showOneToOneWhenSmaller: true);
 
-					break;
-				case PreviewMainDisplay.OneToOne:
-					var oneToOneControl = this.MainContent as PreviewOneToOne;
-					oneToOneControl?.ResizeHolder(previewVM.PreviewDisplayWidth, previewVM.PreviewDisplayHeight);
+						break;
+					case PreviewMainDisplay.FitToWindow:
+						fitControl = this.MainContent as PreviewFit;
+						fitControl?.ResizeHolder(this.previewArea, displayWidth, displayHeight, showOneToOneWhenSmaller: false);
 
-					break;
-				case PreviewMainDisplay.StillCorners:
-					var cornersControl = this.MainContent as PreviewCorners;
-					cornersControl?.UpdateCornerImages();
+						break;
+					case PreviewMainDisplay.OneToOne:
+						var oneToOneControl = this.MainContent as PreviewOneToOne;
+						oneToOneControl?.ResizeHolder(displayWidth, displayHeight);
 
-					break;
+						break;
+					case PreviewMainDisplay.StillCorners:
+						var cornersControl = this.MainContent as PreviewCorners;
+						cornersControl?.UpdateCornerImages();
+
+						break;
+				}
 			}
-		}
-
-		private void Window_PreviewDrop(object sender, DragEventArgs e)
-		{
-			Ioc.Get<Main>().HandleDrop(sender, e);
-		}
-
-		private void Window_PreviewDragOver(object sender, DragEventArgs e)
-		{
-			Utilities.SetDragIcon(e);
 		}
 
 		private void OnVideoClick(object sender, MouseButtonEventArgs e)
@@ -314,6 +323,39 @@ namespace VidCoder.View
 			{
 				this.viewModel.Pause.Execute(null);
 			}
+		}
+
+		private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			if (e.Delta > 0)
+			{
+				this.viewModel.PreviewImageServiceClient.ShowPreviousPreview();
+			}
+			else
+			{
+				this.viewModel.PreviewImageServiceClient.ShowNextPreview();
+			}
+		}
+
+		private void OnKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Left)
+			{
+				this.viewModel.PreviewImageServiceClient.ShowPreviousPreview();
+				e.Handled = true;
+			}
+			else if (e.Key == Key.Right)
+			{
+				this.viewModel.PreviewImageServiceClient.ShowNextPreview();
+				e.Handled = true;
+			}
+		}
+
+		private void PreviewWindow_OnClosing(object sender, CancelEventArgs e)
+		{
+			this.mainDisplayUpdateSubscription?.Dispose();
+			this.previewPausedSubscription?.Dispose();
+			this.controlsUpdateSubscription?.Dispose();
 		}
 	}
 }

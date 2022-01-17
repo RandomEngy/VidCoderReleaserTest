@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OverrideTitleNumberToolTip" xml:space="preserve">
     <value>Une fois choisi, cela écrasera le titre normal pour la création du nom de fichier de sortie. Par exemple avec les titres 2, 3 et 4 et une substitution de 7, ils seront nommés comme les 7, 8 et 9. Peut être utile pour ripper un disque d'une série télévisée.</value>
@@ -141,19 +141,13 @@
     <value>minutes</value>
     <comment>Goes after the second number box in the length range specification.</comment>
   </data>
-  <data name="OverrideTitleCheckBox">
-    <value xml:space="preserve">Substituer le titre #: commencer à</value>
+  <data name="OverrideTitleCheckBox" xml:space="preserve">
+    <value>Substituer le titre #: commencer à</value>
   </data>
-  <data name="OverrideNameFormatCheckBox">
-    <value xml:space="preserve">Substituer le formatage du nom :</value>
+  <data name="QueueTitlesDialogTitle" xml:space="preserve">
+    <value>Mise en File d'attente de plusieurs titres</value>
   </data>
-  <data name="QueueTitlesDialogTitle">
-    <value xml:space="preserve">Mise en File d'attente de plusieurs titres</value>
-  </data>
-  <data name="TitleFormat">
-    <value xml:space="preserve">Titre : {0}</value>
-  </data>
-	<data name="OverrideDirectoryCheckBox" xml:space="preserve">
-    <value>Remplacer le répertoire :</value>
+  <data name="TitleFormat" xml:space="preserve">
+    <value>Titre : {0}</value>
   </data>
 </root>

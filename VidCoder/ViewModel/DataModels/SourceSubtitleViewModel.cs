@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using HandBrake.ApplicationServices.Interop;
-using HandBrake.ApplicationServices.Interop.Json.Scan;
+using System.Reactive;
+using System.Reactive.Concurrency;
+using System.Windows.Input;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.Json.Scan;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Resources;
@@ -12,21 +16,20 @@ namespace VidCoder.ViewModel
 {
 	public class SourceSubtitleViewModel : ReactiveObject
 	{
-		private SourceSubtitle subtitle;
+		private ChosenSourceSubtitle subtitle;
 
-		private MainViewModel mainViewModel = Ioc.Get<MainViewModel>();
-		private PresetsService presetsService = Ioc.Get<PresetsService>();
+		private PresetsService presetsService = StaticResolver.Resolve<PresetsService>();
 
 		private SourceSubtitleTrack inputSubtitle; 
 
-		public SourceSubtitleViewModel(SubtitleDialogViewModel subtitleDialogViewModel, SourceSubtitle subtitle)
+		public SourceSubtitleViewModel(MainViewModel mainViewModel, ChosenSourceSubtitle subtitle)
 		{
-			this.SubtitleDialogViewModel = subtitleDialogViewModel;
+			this.MainViewModel = mainViewModel;
 			this.subtitle = subtitle;
 
 			if (subtitle.TrackNumber != 0)
 			{
-				this.inputSubtitle = this.mainViewModel.SelectedTitle.SubtitleList[subtitle.TrackNumber - 1];
+				this.inputSubtitle = this.MainViewModel.SelectedTitle.SubtitleList[subtitle.TrackNumber - 1];
 			}
 
 			// CanPass
@@ -38,7 +41,13 @@ namespace VidCoder.ViewModel
 				}
 
 				return HandBrakeEncoderHelpers.SubtitleCanPassthrough(this.inputSubtitle.Source, HandBrakeEncoderHelpers.GetContainer(containerName).Id);
-			}).ToProperty(this, x => x.CanPass, out this.canPass);
+			}).ToProperty(this, x => x.CanPass, out this.canPass, scheduler: Scheduler.Immediate);
+
+			// DefaultEnabled
+			this.WhenAnyValue(x => x.BurnedIn, x => x.TrackNumber, x => x.MainViewModel.DefaultSubtitlesEnabled, (burnedIn, trackNumber, defaultSubtitlesEnabled) =>
+			{
+				return !burnedIn && (trackNumber == 0 || defaultSubtitlesEnabled);
+			}).ToProperty(this, x => x.DefaultEnabled, out this.defaultEnabled);
 
 			// BurnedInEnabled
 			this.WhenAnyValue(x => x.CanPass, canPass =>
@@ -66,22 +75,16 @@ namespace VidCoder.ViewModel
 			{
 				this.RaisePropertyChanged(nameof(this.BurnedIn));
 			});
-
-			this.DuplicateSubtitle = ReactiveCommand.Create();
-			this.DuplicateSubtitle.Subscribe(_ => this.DuplicateSubtitleImpl());
-
-			this.RemoveSubtitle = ReactiveCommand.Create();
-			this.RemoveSubtitle.Subscribe(_ => this.RemoveSubtitleImpl());
 		}
 
-		public SubtitleDialogViewModel SubtitleDialogViewModel { get; set; }
+		public MainViewModel MainViewModel { get; }
 
 		public List<SourceSubtitleTrack> InputSubtitles
 		{
-			get { return this.mainViewModel.SelectedTitle.SubtitleList; }
+			get { return this.MainViewModel.SelectedTitle.SubtitleList; }
 		}
 
-		public SourceSubtitle Subtitle
+		public ChosenSourceSubtitle Subtitle
 		{
 			get
 			{
@@ -101,27 +104,60 @@ namespace VidCoder.ViewModel
 			{
 				this.selected = value;
 				this.RaisePropertyChanged();
-				this.SubtitleDialogViewModel.UpdateBoxes(this);
-				this.SubtitleDialogViewModel.UpdateWarningVisibility();
+				this.MainViewModel.UpdateSourceSubtitleBoxes(this);
+				this.MainViewModel.UpdateSubtitleWarningVisibility();
+				this.MainViewModel.RefreshSubtitleSummary();
+				this.UpdateButtonVisiblity();
 			}
 		}
 
-		public string SubtitleName
+		public bool IsForeignAudioSearch => this.TrackNumber == 0;
+
+		public DateTimeOffset? LastMouseDownTime { get; set; }
+
+		public override string ToString()
+		{
+			if (string.IsNullOrEmpty(this.Name))
+			{
+				return this.TrackSummary;
+			}
+			else if (this.TrackNumber == 0)
+			{
+				return SubtitleRes.ForeignAudioScan + " " + this.Name;
+			}
+			else
+			{
+				return this.TrackNumber + " " + this.Name + " - " + this.inputSubtitle.Language;
+			}
+		}
+
+		public string TrackSummary
 		{
 			get
 			{
 				if (this.TrackNumber == 0)
 				{
-					return SubtitleRes.ForeignAudioSearch;
+					return SubtitleRes.ForeignAudioScan;
 				}
 
 				return string.Format(
-					"{0} {1} ({2})", 
+					"{0} {1}", 
 					this.TrackNumber, 
-					this.inputSubtitle.Language, 
-					HandBrakeEncoderHelpers.GetSubtitleSourceName(this.inputSubtitle.Source));
+					this.inputSubtitle.Language);
 			}
 		}
+
+		public string Name
+		{
+			get => this.subtitle.Name ?? this.inputSubtitle?.Name;
+			set
+			{
+				this.subtitle.Name = value;
+				this.RaisePropertyChanged();
+			}
+		}
+
+		public string SourceName => this.inputSubtitle?.Name;
 
 		public int TrackNumber
 		{
@@ -145,10 +181,13 @@ namespace VidCoder.ViewModel
 
 				if (value)
 				{
-					this.SubtitleDialogViewModel.ReportDefault(this);
+					this.MainViewModel.ReportDefaultSubtitle(this);
 				}
 			}
 		}
+
+		private ObservableAsPropertyHelper<bool> defaultEnabled;
+		public bool DefaultEnabled => this.defaultEnabled.Value;
 
 		public bool ForcedOnly
 		{
@@ -159,12 +198,12 @@ namespace VidCoder.ViewModel
 					return false;
 				}
 
-				return this.subtitle.Forced;
+				return this.subtitle.ForcedOnly;
 			}
 
 			set
 			{
-				this.subtitle.Forced = value;
+				this.subtitle.ForcedOnly = value;
 				this.RaisePropertyChanged();
 			}
 		}
@@ -201,25 +240,23 @@ namespace VidCoder.ViewModel
 
 				if (value)
 				{
-					this.SubtitleDialogViewModel.ReportBurned(this);
+					this.Default = false;
+					this.MainViewModel.ReportBurnedSubtitle(this);
 				}
 
-				this.SubtitleDialogViewModel.UpdateBoxes();
-				this.SubtitleDialogViewModel.UpdateWarningVisibility();
+				this.MainViewModel.UpdateSourceSubtitleBoxes();
+				this.MainViewModel.UpdateSubtitleWarningVisibility();
 			}
 		}
 
 		private ObservableAsPropertyHelper<bool> burnedInEnabled;
-		public bool BurnedInEnabled
-		{
-			get { return this.burnedInEnabled.Value; }
-		}
+		public bool BurnedInEnabled => this.burnedInEnabled.Value;
 
 		public bool RemoveVisible
 		{
 			get
 			{
-				return this.SubtitleDialogViewModel.HasMultipleSourceTracks(this.TrackNumber);
+				return this.MainViewModel.HasMultipleSourceSubtitleTracks(this.TrackNumber);
 			}
 		}
 
@@ -227,7 +264,7 @@ namespace VidCoder.ViewModel
 		{
 			get
 			{
-				return !this.SubtitleDialogViewModel.HasMultipleSourceTracks(this.TrackNumber);
+				return !this.MainViewModel.HasMultipleSourceSubtitleTracks(this.TrackNumber) && this.Selected;
 			}
 		}
 
@@ -250,16 +287,28 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public ReactiveCommand<object> DuplicateSubtitle { get; }
-		private void DuplicateSubtitleImpl()
+		private ReactiveCommand<Unit, Unit> duplicateSubtitle;
+		public ICommand DuplicateSubtitle
 		{
-			this.SubtitleDialogViewModel.DuplicateSourceSubtitle(this);
+			get
+			{
+				return this.duplicateSubtitle ?? (this.duplicateSubtitle = ReactiveCommand.Create(() =>
+				{
+					this.MainViewModel.DuplicateSourceSubtitle(this);
+				}));
+			}
 		}
 
-		public ReactiveCommand<object> RemoveSubtitle { get; }
-		private void RemoveSubtitleImpl()
+		private ReactiveCommand<Unit, Unit> removeSubtitle;
+		public ICommand RemoveSubtitle
 		{
-			this.SubtitleDialogViewModel.RemoveSourceSubtitle(this);
+			get
+			{
+				return this.removeSubtitle ?? (this.removeSubtitle = ReactiveCommand.Create(() =>
+				{
+					this.MainViewModel.RemoveSourceSubtitle(this);
+				}));
+			}
 		}
 
 		public void Deselect()

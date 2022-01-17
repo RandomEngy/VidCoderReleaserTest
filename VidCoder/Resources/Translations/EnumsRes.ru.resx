@@ -129,6 +129,23 @@
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Точно</value>
   </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>Использовать тему ОС</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Быстро</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>Слабая чувствительность</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Пользовательский</value>
   </data>
@@ -141,41 +158,47 @@
   <data name="Default" xml:space="preserve">
     <value>По умолчанию</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
     <value>Bob</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Быстрая</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Медленная</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 Bob</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Медленнее</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>Пропустить пространственную проверку</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>Decomb</value>
+  </data>
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
     <value>Лёгкий</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>Средний</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
-    <value>Сильно</value>
+  <data name="DenoisePreset_strong" xml:space="preserve">
+    <value>Тяжёлый</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
-    <value>Ультралайт</value>
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
+    <value>Очень лёгкий</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
+  <data name="DenoiseTune_animation" xml:space="preserve">
     <value>Анимация</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
+  <data name="DenoiseTune_film" xml:space="preserve">
     <value>Фильм</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
-    <value>Зерна</value>
+  <data name="DenoiseTune_grain" xml:space="preserve">
+    <value>Зёрна</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
     <value>Высокое движение</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
@@ -184,11 +207,17 @@
   <data name="Denoise_NLMeans" xml:space="preserve">
     <value>NL-Means</value>
   </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>Закрыть VidCoder</value>
+  </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Ничего не делать</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>Извлечь {0}:</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Гибернация</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Выйти</value>
@@ -200,7 +229,27 @@
     <value>Спящий режим</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Выкл</value>
+    <value>ОТКЛ</value>
+  </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>LapSharp</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>UnSharp</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>Blu-ray</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Файл</value>
+    <comment>What to display when the source is a file</comment>
   </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>Главы</value>
@@ -210,5 +259,90 @@
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Диапазон времени</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>Каждое слово</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>Первое слово</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>Остановить кодирование</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>При выходе</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>При запуске</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>Кодирование</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>Анализ</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>Главы</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>Временной диапазон</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>Удалить файлы (с подтверждением)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>Отправить в корзину</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>Автоматическое переименование</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>Перезаписать</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>Спрашивать</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>Средний</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>Отсутствует</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>Мелкий</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>Наименьший</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>Очень широкий</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>Широкий</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>Цветовое сглаживание</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>Алфавитный</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>Выбранный</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>Первые</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>По треку иностранного звука</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>По треку иностранного звука, иначе первые</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>Нет</value>
   </data>
 </root>

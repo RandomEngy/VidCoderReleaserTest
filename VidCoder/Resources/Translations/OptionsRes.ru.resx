@@ -112,22 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>Когда автоматическая выбор аудио отключен, последний выбранный трек сохраняется.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>Когда автоматический выбор субтитров отключен, последние выбранные субтитры сохраняются.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>Общие</value>
   </data>
   <data name="MinimizeToTaskBarRadioButton" xml:space="preserve">
-    <value>Свернуть в панель задач</value>
+    <value>Сворачивать в панель задач</value>
   </data>
   <data name="MinimizeToSystemTrayRadioButton" xml:space="preserve">
     <value>Минимизировать в системный трей</value>
@@ -136,37 +130,13 @@
     <value>Звуковой сигнал после завершения очереди</value>
   </data>
   <data name="PreferredDvdPlayerLabel" xml:space="preserve">
-    <value>Предпочтительный DVD плеер:</value>
+    <value>Предпочтительный DVD-плеер:</value>
   </data>
   <data name="PreferredDvdPlayerToolTip" xml:space="preserve">
-    <value>Выберите плеер, который вы хотите использовать для источников DVD.</value>
+    <value>Выберите плеер, который вы хотите использовать для исходных DVD.</value>
   </data>
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
-    <value>Автоматическое обновления</value>
-  </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Принять участие в бета-версии проекта</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>Именование файлов</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Папка по умолчанию:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>Формат файла:</value>
-  </data>
-  <data name="OutputToSourceDirCheckBox" xml:space="preserve">
-    <value>Вывод в исходный каталог, если это возможно</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Формат по умолчанию</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Пользовательский формат:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Доступные параметры: {0}</value>
+    <value>Автоматические обновления</value>
   </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>Если файл уже существует...</value>
@@ -174,47 +144,8 @@
   <data name="EncodingSingleFile" xml:space="preserve">
     <value>Кодирование одного файла:</value>
   </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Спросите, если вы хотите перезаписать его</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Перезаписать файл без запроса</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Автоматическое переключение на другое имя</value>
-  </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
     <value>Пакетное кодирование файлов:</value>
-  </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Перезаписать</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Автоматическое переименование</value>
-  </data>
-  <data name="AutomaticAudioSelection" xml:space="preserve">
-    <value>Автоматический выбор аудио</value>
-  </data>
-  <data name="AudioSubtitlesTab" xml:space="preserve">
-    <value>Аудио / субтитры</value>
-  </data>
-  <data name="LanguageRadioButton" xml:space="preserve">
-    <value>Язык:</value>
-  </data>
-  <data name="IncludeAllTracksCheckBox" xml:space="preserve">
-    <value>Включить все треки</value>
-  </data>
-  <data name="AutomaticSubtitleSelection" xml:space="preserve">
-    <value>Автоматический выбор субтитров</value>
-  </data>
-  <data name="ForeignAudioSearchRadioButton" xml:space="preserve">
-    <value>По поиску иностранного звука</value>
-  </data>
-  <data name="BurnInCheckBox" xml:space="preserve">
-    <value>Записать в</value>
-  </data>
-  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
-    <value>Только если другой язык аудио</value>
   </data>
   <data name="AutoPauseLabel" xml:space="preserve">
     <value>Автоматически пауза кодирования, если любой из этих процессов запущен:</value>
@@ -223,46 +154,40 @@
     <value>Добавить...</value>
   </data>
   <data name="PreviewCountLabel" xml:space="preserve">
-    <value>Номер изображения пред просмотра для сканирования:</value>
+    <value>Количество изображений предпросмотра для сканирования:</value>
   </data>
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
-    <value>Запомнить недавно использованные файлы и папки</value>
-  </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Позволяет установить пользовательское имя для аудио-треков (ограниченная поддержка плееров)</value>
+    <value>Запоминать недавно использованные файлы и папки</value>
   </data>
   <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Включить LibDVDNav (Требуется перезапуск программы)</value>
-  </data>
-  <data name="KeepScansAfterCompletionCheckBox" xml:space="preserve">
-    <value>Хранить сканы после завершения (позволяет редактировать завершенные пункты)</value>
+    <value>Включить LibDVDNav (Для изменения требуется перезапуск программы. Требуется для поддержки нескольких углов.)</value>
   </data>
   <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Удалить исходные файлы после очистки успешно завершенных пунктов (с подтверждением)</value>
+    <value>Удалить исходные файлы после очистки успешно завершённых заданий</value>
   </data>
   <data name="LoggingVerbosityLabel" xml:space="preserve">
-    <value>Подробное протоколирование:</value>
+    <value>Детализация журналирования:</value>
   </data>
   <data name="MinScanLengthLabel" xml:space="preserve">
     <value>Минимальная длительность названия для сканирования (секунды):</value>
   </data>
   <data name="RecognizedExtensionsLabel" xml:space="preserve">
-    <value>Признанные расширения:</value>
+    <value>Известные расширения:</value>
   </data>
   <data name="RecognizedExtensionsToolTip" xml:space="preserve">
-    <value>При сканировании папки для видео файлов, добавлять файлы с этими расширениями. (Через запятую)</value>
+    <value>При сканировании папки для видеофайлов, добавлять файлы с этими расширениями. (Через запятую)</value>
   </data>
   <data name="OptionsDialogTitle" xml:space="preserve">
     <value>Параметры</value>
   </data>
-  <data name="ProcessesTab" xml:space="preserve">
-    <value>Процессы</value>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Процесс</value>
   </data>
   <data name="AdvancedTab" xml:space="preserve">
     <value>Дополнительно</value>
   </data>
   <data name="BetaUpdatesInBeta" xml:space="preserve">
-    <value>Вы используете бета-версию. Вы может работать бок о бок со стабильной версией.</value>
+    <value>Вы используете бета-версию. Она может работать бок о бок со стабильной версией.</value>
   </data>
   <data name="BetaUpdatesNonBeta" xml:space="preserve">
     <value>Принять участие в бета-версии проекта для частых обновлений</value>
@@ -277,13 +202,13 @@
     <value>VidCoder в актуальном состоянии.</value>
   </data>
   <data name="ChooseDefaultOutputFolder" xml:space="preserve">
-    <value>Выберите выходной каталог по умолчанию для закодированных видео-файлов.</value>
+    <value>Выберите выходную папку по умолчанию для кодированных видеофайлов.</value>
   </data>
   <data name="InterfaceLanguageLabel" xml:space="preserve">
     <value>Язык интерфейса:</value>
   </data>
   <data name="NewLanguageRestartDialogMessage" xml:space="preserve">
-    <value>Новый язык вступит в силу только после перезапуска VidCoder.</value>
+    <value>Новый язык будет применён после перезапуска VidCoder.</value>
   </data>
   <data name="UseOSLanguage" xml:space="preserve">
     <value>Использовать язык ОС</value>
@@ -298,19 +223,16 @@
     <value>Ошибка проверки обновления.</value>
   </data>
   <data name="CompletionWavFilePickTitle" xml:space="preserve">
-    <value>Выберите .wav файл, который будет проигрываться после завершения кодирования.</value>
+    <value>Выберите .wav-файл, который будет проигрываться после завершения кодирования.</value>
   </data>
   <data name="CurrentVersionLabel" xml:space="preserve">
     <value>Текущая версия: {0}</value>
   </data>
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
-    <value>Внимание: Данная версия может содержать ошибки и аварии.</value>
-  </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Языки</value>
+    <value>Внимание: данная версия может содержать ошибки и приводить к сбоям.</value>
   </data>
   <data name="PlayersSection" xml:space="preserve">
-    <value>Игроки</value>
+    <value>Плееры</value>
   </data>
   <data name="SoundSection" xml:space="preserve">
     <value>Звук</value>
@@ -320,9 +242,6 @@
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
     <value>Выходная папка</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Формат именования</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Дополнительные возможности</value>
@@ -334,7 +253,7 @@
     <value>Ведение журнала</value>
   </data>
   <data name="DvdReadingSection" xml:space="preserve">
-    <value>DVD чтение</value>
+    <value>Чтение DVD</value>
   </data>
   <data name="UpdatesSection" xml:space="preserve">
     <value>Обновления</value>
@@ -346,7 +265,7 @@
     <value>Бета-версия</value>
   </data>
   <data name="UseCustomWavLabel" xml:space="preserve">
-    <value>Использование пользовательских WAV-файлов:</value>
+    <value>Использовать пользовательский .wav-файл:</value>
   </data>
   <data name="CheckNowButton" xml:space="preserve">
     <value>Проверить сейчас</value>
@@ -355,16 +274,16 @@
     <value>Использовать плеер системы</value>
   </data>
   <data name="VideoFilesLabel" xml:space="preserve">
-    <value>Видео-файл:</value>
+    <value>Видеофайл:</value>
   </data>
   <data name="CustomVideoPlayerToolTip" xml:space="preserve">
     <value>Выберите путь к программе воспроизведения, которую вы хотите использовать для видео.</value>
   </data>
   <data name="VideoPlayerFilePickTitle" xml:space="preserve">
-    <value>Выберите плеер, который будет использоваться для видео-файлов.</value>
+    <value>Выберите плеер, который будет использоваться для видеофайлов.</value>
   </data>
   <data name="CustomPlayerLabel" xml:space="preserve">
-    <value>Пользовательский проигрыватель:</value>
+    <value>Пользовательский плеер:</value>
   </data>
   <data name="Priority_High" xml:space="preserve">
     <value>Высокий</value>
@@ -373,10 +292,10 @@
     <value>Выше среднего</value>
   </data>
   <data name="Priority_Normal" xml:space="preserve">
-    <value>Норма</value>
+    <value>Средний</value>
   </data>
   <data name="Priority_BelowNormal" xml:space="preserve">
-    <value>Ниже нормы</value>
+    <value>Ниже среднего</value>
   </data>
   <data name="WorkerProcessPriorityLabel" xml:space="preserve">
     <value>Приоритет рабочего процесса:</value>
@@ -385,7 +304,7 @@
     <value>Низкий</value>
   </data>
   <data name="CopyLogToOutputFolderLabel" xml:space="preserve">
-    <value>Скопировать журнал кодирования в каталог кодируемого видео</value>
+    <value>Копировать журнал кодирования в папку кодируемого видео</value>
   </data>
   <data name="OpenLogFolderButton" xml:space="preserve">
     <value>Открыть папку журнала</value>
@@ -396,29 +315,73 @@
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
     <value>Использовать рабочий процесс для кодирования</value>
   </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Видео</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Включить DXVA декодирования с аппаратным ускорением</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>Этот вариант подходит только для медленных системах. В настоящее время аппаратные декодеры предназначены для воспроизведения, не для повторного кодирования видео так будет скорее всего узким местом на быстрее систем.</value>
-  </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
-    <value>Заповедник создан и изменен время при преобразовании файлов</value>
+    <value>Сохранять время создания и изменения при конвертации файлов</value>
   </data>
-  <data name="DefaultCheckBox" xml:space="preserve">
-    <value>По умолчанию</value>
-    <comment>Label for the check box to mark an automatically chosen subtitle as "Default"</comment>
-  </data>
-  <data name="PreserveFolderStructureCheckBox" xml:space="preserve">
-    <value>Сохранить структуру папок в кодируемом пакете</value>
-  </data>
-  <data name="PreserveFolderStructureToolTip" xml:space="preserve">
-    <value>Если вы кодируете папку с файлами закодированной версии поместит в подпапки в соответствии со структурой исходного каталога.</value>
-  </data>
-	<data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
     <value>Папка для просмотра:</value>
+  </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Настройка процессов</value>
+  </data>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>Пропуск тактов ЦП - доступные ядра:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
+  </data>
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Используйте регулирование ЦП, чтобы ограничить количество ядер процессора, которые VidCoder может использовать при кодировании.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Использовать встроенный плеер для просмотра</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Максимальное количество одновременных заданий кодирования:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Количество разрешённых одновременных заданий кодирования. Полезно для компьютеров с большим количеством процессорных ядер.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Тема:</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Запрос на обновление:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>Настройка рабочего процесса вступит в силу после перезапуска VidCoder.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Копировать журнал кодирования в пользовательскую папку</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Сохранять файлы неудачных или остановленных кодирований</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Действие «Когда сделано» при наличии неудачных заданий кодирования</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Пауза при низком заряде батареи</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Пауза, если места на диске менее:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Автоматическая пауза</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Доступные параметры: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Порог места на диске в гигабайтах</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Порядок сканирования при перетаскивании:</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Количество проходов кодирования:</value>
   </data>
 </root>

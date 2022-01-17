@@ -48,13 +48,18 @@ Function Pause ($Message = "Press any key to continue . . . ") {
     Write-Host
 }
 
+function ExitWithError($message)
+{
+    Write-Host $message -foregroundcolor "red"
+    Pause
+    exit
+}
+
 function ExitIfFailed()
 {
     if ($LASTEXITCODE -ne 0)
     {
-        Write-Host "An error occurred. Stopping build." -foregroundcolor "red"
-        Pause
-        exit
+        ExitWithError "An error occurred. Stopping build."
     }
 }
 
@@ -79,6 +84,5 @@ function DeleteFileIfExists($fileName)
     if (Test-Path $fileName) { Remove-Item $fileName }
 }
 
-$DevEnvExe = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.com"
-$NetToolsFolder = "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6 Tools"
-$InnoSetupExe = "C:\Program Files (x86)\Inno Setup 5\ISCC.exe"
+$VSFolder = "C:\Program Files\Microsoft Visual Studio\2022\Professional"
+$MsBuildExe = "$VSFolder\Msbuild\Current\Bin\MSBuild.exe"

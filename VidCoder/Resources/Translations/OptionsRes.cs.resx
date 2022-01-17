@@ -112,17 +112,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoAudioDisabledToolTip" xml:space="preserve">
-    <value>Když je automatická volba audio stopy vypnuta, je použita naposledy vybraná varianta.</value>
-  </data>
-  <data name="AutoSubtitleDisabledToolTip" xml:space="preserve">
-    <value>Když je automatická volba titulků vypnuta, tak je použita naposledy vybraná varianta.</value>
-  </data>
   <data name="GeneralTab" xml:space="preserve">
     <value>Obecné</value>
   </data>
@@ -144,77 +138,14 @@
   <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
     <value>Automatická aktualizace</value>
   </data>
-  <data name="JoinBetaTrackCheckBox" xml:space="preserve">
-    <value>Připojte se k aktualizacím Beta verze</value>
-  </data>
-  <data name="FileNamingTab" xml:space="preserve">
-    <value>Pojmenovávání souborů</value>
-  </data>
-  <data name="DefaultFolderLabel" xml:space="preserve">
-    <value>Výchozí složka:</value>
-  </data>
-  <data name="FileFormatLabel" xml:space="preserve">
-    <value>Formát souboru:</value>
-  </data>
-  <data name="OutputToSourceDirCheckBox" xml:space="preserve">
-    <value>Výstup do zdrojového adresáře pokud to je možné</value>
-  </data>
-  <data name="DefaultFormatRadioButton" xml:space="preserve">
-    <value>Výchozí formát</value>
-  </data>
-  <data name="CustomFormatRadioButton" xml:space="preserve">
-    <value>Vlastní formát:</value>
-  </data>
-  <data name="FileNameFormatOptions" xml:space="preserve">
-    <value>Dostupné možnosti: {0}</value>
-  </data>
   <data name="WhenFileAlreadyExists" xml:space="preserve">
     <value>Pokud soubor již existuje...</value>
   </data>
   <data name="EncodingSingleFile" xml:space="preserve">
     <value>Enkódování jednoho souboru:</value>
   </data>
-  <data name="AskOverwriteRadioButton" xml:space="preserve">
-    <value>Zeptejte se jestli to chcete přepsat</value>
-  </data>
-  <data name="OverwriteWithoutPromptRadioButton" xml:space="preserve">
-    <value>Přepsat soubor bez výzvy</value>
-  </data>
-  <data name="AutomaticallySwitchNameRadioButton" xml:space="preserve">
-    <value>Automaticky přepnout na jiný název</value>
-  </data>
   <data name="EncodingBatchOfFiles" xml:space="preserve">
     <value>Enkódování skupiny souborů:</value>
-  </data>
-  <data name="OverwriteRadioButton" xml:space="preserve">
-    <value>Přepsat</value>
-  </data>
-  <data name="AutomaticallyRenameRadioButton" xml:space="preserve">
-    <value>Automaticky přejmenovat</value>
-  </data>
-  <data name="AutomaticAudioSelection" xml:space="preserve">
-    <value>Automatický výběr audia</value>
-  </data>
-  <data name="AudioSubtitlesTab" xml:space="preserve">
-    <value>Audio / Titulky</value>
-  </data>
-  <data name="LanguageRadioButton" xml:space="preserve">
-    <value>Jazyk:</value>
-  </data>
-  <data name="IncludeAllTracksCheckBox" xml:space="preserve">
-    <value>Zahrnout všechny stopy</value>
-  </data>
-  <data name="AutomaticSubtitleSelection" xml:space="preserve">
-    <value>Automatický výběr titulků</value>
-  </data>
-  <data name="ForeignAudioSearchRadioButton" xml:space="preserve">
-    <value>Hledání cizí audio stopy</value>
-  </data>
-  <data name="BurnInCheckBox" xml:space="preserve">
-    <value>Vypálit</value>
-  </data>
-  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
-    <value>Pouze pokud je jazyk jiný než jazyk audia</value>
   </data>
   <data name="AutoPauseLabel" xml:space="preserve">
     <value>Automaticky pozastavit enkódování pokud jsou některé tyto procesy spuštěny:</value>
@@ -228,18 +159,8 @@
   <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
     <value>Pamatovat dříve použité soubory a složky</value>
   </data>
-  <data name="AllowCustomAudioTrackNamesCheckBox" xml:space="preserve">
-    <value>Povolit nastavení vlastního názvu audio stop (omezená podpora přehrávačů)</value>
-  </data>
-  <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
-    <value>Povolit LibDVDNav (změna vyžaduje restart programu)</value>
-  </data>
-  <data name="KeepScansAfterCompletionCheckBox" xml:space="preserve">
-    <value>Zachovat informace o načtení po úspěšném dokončení (pro editaci již hotových položek)</value>
-  </data>
-  <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
-    <value>Smazat zdrojové soubory po vymazání úspěšně dokončené položky (musí být potvrzeno)</value>
-  </data>
+  
+  
   <data name="LoggingVerbosityLabel" xml:space="preserve">
     <value>Úroveň logování:</value>
   </data>
@@ -255,8 +176,8 @@
   <data name="OptionsDialogTitle" xml:space="preserve">
     <value>Možnosti</value>
   </data>
-  <data name="ProcessesTab" xml:space="preserve">
-    <value>Procesy</value>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Proces</value>
   </data>
   <data name="AdvancedTab" xml:space="preserve">
     <value>Pokročilé</value>
@@ -306,9 +227,6 @@
   <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
     <value>Upozornění: Tato verze může obsahovat chyby vedoucí až k pádu aplikace.</value>
   </data>
-  <data name="LanguagesSection" xml:space="preserve">
-    <value>Jazyky</value>
-  </data>
   <data name="PlayersSection" xml:space="preserve">
     <value>Přehrávače</value>
   </data>
@@ -320,9 +238,6 @@
   </data>
   <data name="OutputFolderSection" xml:space="preserve">
     <value>Výstupní složka</value>
-  </data>
-  <data name="NamingFormatSection" xml:space="preserve">
-    <value>Formát pojmenování</value>
   </data>
   <data name="AdvancedOptionsSection" xml:space="preserve">
     <value>Pokročilé možnosti</value>
@@ -396,29 +311,38 @@
   <data name="UseWorkerProcessCheckBox" xml:space="preserve">
     <value>Použit pracovní proces pro enkódování</value>
   </data>
-  <data name="VideoSection" xml:space="preserve">
-    <value>Video</value>
-  </data>
-  <data name="DxvaDecodingCheckBox" xml:space="preserve">
-    <value>Povolit DXVA dekódování s hardwarovým urychlením</value>
-  </data>
-  <data name="DxvaDecodingToolTip" xml:space="preserve">
-    <value>Tato možnost je vhodná pouze pro pomalejší systémy. Hardwarové dekodéry jsou v současnosti navrženy pro přehrávání a ne pro re-enkódování videa a tak na rychlejších systémech může docházet k chybám.</value>
-  </data>
   <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
     <value>Při převodu souborů zachovat vytvořený a změněný čas</value>
   </data>
-  <data name="DefaultCheckBox" xml:space="preserve">
-    <value>Výchozí</value>
-    <comment>Label for the check box to mark an automatically chosen subtitle as "Default"</comment>
-  </data>
-  <data name="PreserveFolderStructureCheckBox" xml:space="preserve">
-    <value>Zachovat strukturu složky při enkódování v dávce</value>
-  </data>
-  <data name="PreserveFolderStructureToolTip" xml:space="preserve">
-    <value>Jestliže enkódujete složku zaplněnou soubory budou enkódované verze umístěny do podsložek tak aby odpovídaly struktuře zdrojového adresáře.</value>
-  </data>
-	<data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
     <value>Vlastní složka pro náhledy:</value>
   </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Možnosti procesu</value>
+  </data>
+  
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Použít řízení výkonu CPU k omezení počtu procesorových jader který může VidCoder použít při enkódování.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Použít vestavěný přehrávač pro náhledy</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Dostupné možnosti: {0}</value>
+  </data>
+  
+  
+  
 </root>

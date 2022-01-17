@@ -121,13 +121,30 @@
     <value>Personalizado</value>
   </data>
   <data name="Anamorphic_Loose" xml:space="preserve">
-    <value>Perder</value>
+    <value>Livre</value>
   </data>
   <data name="Anamorphic_None" xml:space="preserve">
     <value>Nenhum</value>
   </data>
   <data name="Anamorphic_Strict" xml:space="preserve">
     <value>Preciso</value>
+  </data>
+  <data name="AppThemeChoice_Auto" xml:space="preserve">
+    <value>Usar tema do SO</value>
+    <comment>Windows 10 you can choose Light or Dark for the app theme. This will cause VidCoder to respect that choice.</comment>
+  </data>
+  <data name="AppThemeChoice_Dark" xml:space="preserve">
+    <value>Escuro</value>
+  </data>
+  <data name="AppThemeChoice_Light" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="CombDetect_fast" xml:space="preserve">
+    <value>Rápido</value>
+  </data>
+  <data name="CombDetect_permissive" xml:space="preserve">
+    <value>Menos sensível</value>
+    <comment>This mode allows higher levels of combing before triggering.</comment>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Personalizado</value>
@@ -141,54 +158,66 @@
   <data name="Default" xml:space="preserve">
     <value>Padrão</value>
   </data>
-  <data name="Deinterlace_Bob" xml:space="preserve">
+  <data name="DeinterlacePreset_bob" xml:space="preserve">
     <value>Bob</value>
     <comment>A deinterlace method named "Bob". The original name most likely refers to an object bobbing up and down.</comment>
   </data>
-  <data name="Deinterlace_Fast" xml:space="preserve">
-    <value>Rápido</value>
+  <data name="DeinterlacePreset_eedi2" xml:space="preserve">
+    <value>EEDI2</value>
   </data>
-  <data name="Deinterlace_Slow" xml:space="preserve">
-    <value>Lento</value>
+  <data name="DeinterlacePreset_eedi2bob" xml:space="preserve">
+    <value>EEDI2 Bob</value>
   </data>
-  <data name="Deinterlace_Slower" xml:space="preserve">
-    <value>Mais lento</value>
+  <data name="DeinterlacePreset_skipspatial" xml:space="preserve">
+    <value>Ignorar Verificação Espacial</value>
   </data>
-  <data name="DenoisePreset_Light" xml:space="preserve">
-    <value>Claro</value>
+  <data name="Deinterlace_Decomb" xml:space="preserve">
+    <value>Decomb</value>
   </data>
-  <data name="DenoisePreset_Medium" xml:space="preserve">
+  <data name="Deinterlace_Yadif" xml:space="preserve">
+    <value>Yadif</value>
+  </data>
+  <data name="DenoisePreset_light" xml:space="preserve">
+    <value>Leve</value>
+  </data>
+  <data name="DenoisePreset_medium" xml:space="preserve">
     <value>Médio</value>
   </data>
-  <data name="DenoisePreset_Strong" xml:space="preserve">
+  <data name="DenoisePreset_strong" xml:space="preserve">
     <value>Forte</value>
   </data>
-  <data name="DenoisePreset_Ultralight" xml:space="preserve">
+  <data name="DenoisePreset_ultralight" xml:space="preserve">
     <value>Ultraleve</value>
   </data>
-  <data name="DenoiseTune_Animation" xml:space="preserve">
+  <data name="DenoiseTune_animation" xml:space="preserve">
     <value>Animação</value>
   </data>
-  <data name="DenoiseTune_Film" xml:space="preserve">
+  <data name="DenoiseTune_film" xml:space="preserve">
     <value>Filme</value>
   </data>
-  <data name="DenoiseTune_Grain" xml:space="preserve">
+  <data name="DenoiseTune_grain" xml:space="preserve">
     <value>Granulação</value>
   </data>
-  <data name="DenoiseTune_HighMotion" xml:space="preserve">
-    <value>Alto movimento</value>
+  <data name="DenoiseTune_highmotion" xml:space="preserve">
+    <value>High Motion</value>
   </data>
   <data name="Denoise_HQDN3D" xml:space="preserve">
     <value>hqdn3d</value>
   </data>
   <data name="Denoise_NLMeans" xml:space="preserve">
-    <value>NL-meios</value>
+    <value>NL-Means</value>
+  </data>
+  <data name="EncodeCompleteActionType_CloseProgram" xml:space="preserve">
+    <value>Fechar o VidCoder</value>
   </data>
   <data name="EncodeCompleteActionType_DoNothing" xml:space="preserve">
     <value>Não fazer nada</value>
   </data>
   <data name="EncodeCompleteActionType_EjectDisc" xml:space="preserve">
     <value>Ejetar {0}:</value>
+  </data>
+  <data name="EncodeCompleteActionType_Hibernate" xml:space="preserve">
+    <value>Hibernar</value>
   </data>
   <data name="EncodeCompleteActionType_LogOff" xml:space="preserve">
     <value>Terminar Sessão</value>
@@ -202,13 +231,118 @@
   <data name="Off" xml:space="preserve">
     <value>Desligar</value>
   </data>
+  <data name="Sharpen_LapSharp" xml:space="preserve">
+    <value>LapSharp</value>
+    <comment>The name for the "LapSharp" sharpen filter.</comment>
+  </data>
+  <data name="Sharpen_UnSharp" xml:space="preserve">
+    <value>UnSharp</value>
+    <comment>The name for the "UnSharp" sharpen filter.</comment>
+  </data>
+  <data name="TitleType_Bluray" xml:space="preserve">
+    <value>Blu-ray</value>
+    <comment>What to display when the source is a Blu-ray</comment>
+  </data>
+  <data name="TitleType_Dvd" xml:space="preserve">
+    <value>DVD</value>
+    <comment>What to display when the source is a DVD</comment>
+  </data>
+  <data name="TitleType_Stream" xml:space="preserve">
+    <value>Arquivo</value>
+    <comment>What to display when the source is a file</comment>
+  </data>
   <data name="VideoRangeType_Chapters" xml:space="preserve">
     <value>Capítulos</value>
   </data>
   <data name="VideoRangeType_Frames" xml:space="preserve">
-    <value>Frames</value>
+    <value>Quadros</value>
   </data>
   <data name="VideoRangeType_Seconds" xml:space="preserve">
     <value>Intervalo de tempo</value>
+  </data>
+  <data name="TitleCapitalizationChoice_EveryWord" xml:space="preserve">
+    <value>Toda hora</value>
+    <comment>This will make Blu-ray and DVD titles capitalize every word</comment>
+  </data>
+  <data name="TitleCapitalizationChoice_FirstWord" xml:space="preserve">
+    <value>Primeira palavra</value>
+    <comment>This will make Blu-ray and DVD titles capitalize only the first word</comment>
+  </data>
+  <data name="EncodeCompleteActionType_StopEncoding" xml:space="preserve">
+    <value>Parar codificação</value>
+  </data>
+  <data name="UpdatePromptTiming_OnExit" xml:space="preserve">
+    <value>Ao sair</value>
+  </data>
+  <data name="UpdatePromptTiming_OnLaunch" xml:space="preserve">
+    <value>Ao iniciar</value>
+  </data>
+  <data name="LogOperationType_Encode" xml:space="preserve">
+    <value>Codificar</value>
+  </data>
+  <data name="LogOperationType_Scan" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
+  <data name="PickerTimeRangeMode_Chapters" xml:space="preserve">
+    <value>Capítulos</value>
+  </data>
+  <data name="PickerTimeRangeMode_Time" xml:space="preserve">
+    <value>Intervalo de tempo</value>
+  </data>
+  <data name="DeleteSourceFilesMode_DeleteWithConfirmation" xml:space="preserve">
+    <value>Excluir arquivos (com confirmação)</value>
+  </data>
+  <data name="DeleteSourceFilesMode_Recycle" xml:space="preserve">
+    <value>Enviar para lixeira</value>
+  </data>
+  <data name="WhenFileExists_AutoRename" xml:space="preserve">
+    <value>Renomear automaticamente</value>
+  </data>
+  <data name="WhenFileExists_Overwrite" xml:space="preserve">
+    <value>Substituir</value>
+  </data>
+  <data name="WhenFileExists_Prompt" xml:space="preserve">
+    <value>Perguntar</value>
+  </data>
+  <data name="DenoiseTune_medium" xml:space="preserve">
+    <value>Médio</value>
+  </data>
+  <data name="DenoiseTune_none" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="DenoiseTune_small" xml:space="preserve">
+    <value>Pequeno</value>
+  </data>
+  <data name="DenoiseTune_tiny" xml:space="preserve">
+    <value>Minúsculo</value>
+  </data>
+  <data name="DenoiseTune_verywide" xml:space="preserve">
+    <value>Muito ampla</value>
+  </data>
+  <data name="DenoiseTune_wide" xml:space="preserve">
+    <value>Ampla</value>
+  </data>
+  <data name="Denoise_ChromaSmooth" xml:space="preserve">
+    <value>Croma suave</value>
+  </data>
+  <data name="DragDropOrder_Alphabetical" xml:space="preserve">
+    <value>Ordem alfabética</value>
+    <comment>Label for the option to order dragged files alphabetically</comment>
+  </data>
+  <data name="DragDropOrder_Selected" xml:space="preserve">
+    <value>Selecionado</value>
+    <comment>Label for the option to order dragged files as they had been selected in File explorer</comment>
+  </data>
+  <data name="SubtitleBurnInSelection_First" xml:space="preserve">
+    <value>Primeiro</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrack" xml:space="preserve">
+    <value>Faixa de áudio estrangeira</value>
+  </data>
+  <data name="SubtitleBurnInSelection_ForeignAudioTrackElseFirst" xml:space="preserve">
+    <value>Faixa de áudio estrangeira, senão a Primeira</value>
+  </data>
+  <data name="SubtitleBurnInSelection_None" xml:space="preserve">
+    <value>Nenhum</value>
   </data>
 </root>

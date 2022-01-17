@@ -1,25 +1,25 @@
 ﻿using ReactiveUI;
+using System.Reactive.Concurrency;
 using VidCoder.Extensions;
+using VidCoder.ViewModel.DataModels;
 using VidCoderCommon.Model;
 
 namespace VidCoder.ViewModel
 {
 	public class PresetViewModel : ReactiveObject
 	{
-		private Preset preset;
-
 		public PresetViewModel(Preset preset)
 		{
-			this.preset = preset;
+			this.Preset = preset;
 
-			this.preset.WhenAnyValue(
+			this.Preset.WhenAnyValue(
 				x => x.Name,
 				x => x.IsBuiltIn,
 				(name, isBuiltIn) =>
 				{
 					return PresetExtensions.GetDisplayName(name, isBuiltIn);
 				})
-				.ToProperty(this, x => x.DisplayName, out this.displayName);
+				.ToProperty(this, x => x.DisplayName, out this.displayName, scheduler: Scheduler.Immediate);
 
 			this.WhenAnyValue(
 				x => x.DisplayName,
@@ -32,13 +32,17 @@ namespace VidCoder.ViewModel
 				.ToProperty(this, x => x.DisplayNameWithStar, out this.displayNameWithStar);
 		}
 
-		public Preset Preset
+		public Preset Preset { get; }
+
+		// Used only to help TreeViewModel. The real selected master property is on PresetsService
+		private bool isSelected;
+		public bool IsSelected
 		{
-			get
-			{
-				return this.preset;
-			}
+			get { return this.isSelected; }
+			set { this.RaiseAndSetIfChanged(ref this.isSelected, value); }
 		}
+
+		public PresetFolderViewModel Parent { get; set; }
 
 		public VCProfile OriginalProfile { get; set; }
 
@@ -47,5 +51,10 @@ namespace VidCoder.ViewModel
 
 		private ObservableAsPropertyHelper<string> displayNameWithStar;
 		public string DisplayNameWithStar => this.displayNameWithStar.Value;
+
+		public override string ToString()
+		{
+			return this.DisplayName;
+		}
 	}
 }

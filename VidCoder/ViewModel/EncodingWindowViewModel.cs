@@ -1,51 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
-using HandBrake.ApplicationServices.Interop;
-using HandBrake.ApplicationServices.Interop.Json.Scan;
-using HandBrake.ApplicationServices.Interop.Model.Encoding;
+using System.Windows.Input;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Model;
 using VidCoder.Resources;
 using VidCoder.Services;
 using VidCoder.Services.Windows;
-using VidCoderCommon.Model;
+using VidCoder.ViewModel.DataModels;
+using VidCoder.ViewModel.Panels;
 
 namespace VidCoder.ViewModel
 {
 	public class EncodingWindowViewModel : ProfileViewModelBase
 	{
-		public const int VideoTabIndex = 2;
-		public const int AdvancedVideoTabIndex = 3;
+		public const int VideoEncodingTabIndex = 3;
+		public const int AudioEncodingTabIndex = 4;
 
-		private OutputPathService outputPathService = Ioc.Get<OutputPathService>();
-		private ProcessingService processingService = Ioc.Get<ProcessingService>();
-
-		private List<ComboChoice> containerChoices;
 
 		public EncodingWindowViewModel()
 		{
 			this.AutomaticChange = true;
 
-			this.RegisterProfileProperties();
-
-			this.containerChoices = new List<ComboChoice>();
-			foreach (HBContainer hbContainer in HandBrakeEncoderHelpers.Containers)
-			{
-				this.containerChoices.Add(new ComboChoice(hbContainer.ShortName, hbContainer.DefaultExtension.ToUpperInvariant()));
-			}
-
-			this.WhenAnyValue(
-				x => x.ContainerName,
-				containerName =>
-				{
-					HBContainer container = HandBrakeEncoderHelpers.GetContainer(containerName);
-					return container.DefaultExtension == "mp4";
-				})
-				.ToProperty(this, x => x.ShowMp4Choices, out this.showMp4Choices);
-
-			this.PresetsService.WhenAnyValue(x => x.SelectedPreset.DisplayNameWithStar)
+			this.PresetsService
+				.WhenAnyValue(x => x.SelectedPreset.DisplayNameWithStar)
+				.Select(presetNameWithStar => string.Format(CultureInfo.CurrentCulture, EncodingRes.WindowTitle, presetNameWithStar))
 				.ToProperty(this, x => x.WindowTitle, out this.windowTitle);
 
 			this.PresetsService.WhenAnyValue(
@@ -70,43 +54,11 @@ namespace VidCoder.ViewModel
 			this.PresetsService.WhenAnyValue(x => x.SelectedPreset.Preset.IsBuiltIn)
 				.ToProperty(this, x => x.IsBuiltIn, out this.isBuiltIn);
 
-
-			this.PresetsService.WhenAnyValue(x => x.SelectedPreset.Preset.EncodingProfile)
-				.Subscribe(encodingProfile =>
-				{
-					if (!encodingProfile.UseAdvancedTab && this.SelectedTabIndex == AdvancedVideoTabIndex)
-					{
-						this.SelectedTabIndex = VideoTabIndex;
-					}
-				});
-
-
-			this.TogglePresetPanel = ReactiveCommand.Create();
-			this.TogglePresetPanel.Subscribe(_ => this.TogglePresetPanelImpl());
-
-			this.Save = ReactiveCommand.Create(this.WhenAnyValue(x => x.IsBuiltIn, isBuiltIn => !isBuiltIn));
-			this.Save.Subscribe(_ => this.SaveImpl());
-
-			this.SaveAs = ReactiveCommand.Create();
-			this.SaveAs.Subscribe(_ => this.SaveAsImpl());
-
-			this.Rename = ReactiveCommand.Create(this.WhenAnyValue(x => x.IsBuiltIn, isBuiltIn => !isBuiltIn));
-			this.Rename.Subscribe(_ => this.RenameImpl());
-
-			this.DeletePreset = ReactiveCommand.Create(this.PresetsService.WhenAnyValue(
-				x => x.SelectedPreset.Preset.IsBuiltIn,
-				x => x.SelectedPreset.Preset.IsModified,
-				(isBuiltIn, isModified) =>
-				{
-					return !isBuiltIn || isModified;
-				}));
-			this.DeletePreset.Subscribe(_ => this.DeletePresetImpl());
-
-			this.PicturePanelViewModel = new PicturePanelViewModel(this);
+			this.ContainerPanelViewModel = new ContainerPanelViewModel(this);
+			this.SizingPanelViewModel = new SizingPanelViewModel(this);
 			this.VideoFiltersPanelViewModel = new VideoFiltersPanelViewModel(this);
 			this.VideoPanelViewModel = new VideoPanelViewModel(this);
 			this.AudioPanelViewModel = new AudioPanelViewModel(this);
-			this.AdvancedPanelViewModel = new AdvancedPanelViewModel(this);
 
 			this.presetPanelOpen = Config.EncodingListPaneOpen;
 
@@ -115,42 +67,15 @@ namespace VidCoder.ViewModel
 			this.AutomaticChange = false;
 		}
 
-		private void RegisterProfileProperties()
-		{
-			// These actions fire when the user changes a property.
+		public ProcessingService ProcessingService { get; } = StaticResolver.Resolve<ProcessingService>();
+		public OutputPathService OutputPathService { get; } = StaticResolver.Resolve<OutputPathService>();
+		public PickersService PickersService { get; } = StaticResolver.Resolve<PickersService>();
 
-			this.RegisterProfileProperty(nameof(this.Profile.ContainerName), () =>
-			{
-				this.outputPathService.GenerateOutputFileName();
-			});
-
-			this.RegisterProfileProperty(nameof(this.Profile.PreferredExtension), () =>
-			{
-				this.outputPathService.GenerateOutputFileName();
-			});
-
-			this.RegisterProfileProperty(nameof(this.Profile.LargeFile));
-			this.RegisterProfileProperty(nameof(this.Profile.Optimize));
-			this.RegisterProfileProperty(nameof(this.Profile.IPod5GSupport));
-
-			this.RegisterProfileProperty(nameof(this.IncludeChapterMarkers));
-		}
-
-		public ProcessingService ProcessingService
-		{
-		    get { return this.processingService; }
-		}
-
-		public OutputPathService OutputPathVM
-		{
-		    get { return this.outputPathService; }
-		}
-
-		public PicturePanelViewModel PicturePanelViewModel { get; set; }
+		public ContainerPanelViewModel ContainerPanelViewModel { get; set; }
+		public SizingPanelViewModel SizingPanelViewModel { get; set; }
 		public VideoFiltersPanelViewModel VideoFiltersPanelViewModel { get; set; }
 		public VideoPanelViewModel VideoPanelViewModel { get; set; }
 		public AudioPanelViewModel AudioPanelViewModel { get; set; }
-		public AdvancedPanelViewModel AdvancedPanelViewModel { get; set; }
 
 		private ObservableAsPropertyHelper<string> windowTitle;
 		public string WindowTitle => this.windowTitle.Value;
@@ -178,126 +103,116 @@ namespace VidCoder.ViewModel
 			set { this.RaiseAndSetIfChanged(ref this.presetPanelOpen, value); }
 		}
 
-		public string ContainerName
-		{
-			get { return this.Profile.ContainerName; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.ContainerName), value); }
-		}
-
-		public List<ComboChoice> ContainerChoices
+		private ReactiveCommand<Unit, Unit> togglePresetPanel;
+		public ICommand TogglePresetPanel
 		{
 			get
 			{
-				return this.containerChoices;
-			}
-		}
-
-		public VCOutputExtension PreferredExtension
-		{
-			get { return this.Profile.PreferredExtension; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.PreferredExtension), value); }
-		}
-
-		public bool LargeFile
-		{
-			get { return this.Profile.LargeFile; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.LargeFile), value); }
-		}
-
-		public bool Optimize
-		{
-			get { return this.Profile.Optimize; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.Optimize), value); }
-		}
-
-		public bool IPod5GSupport
-		{
-			get { return this.Profile.IPod5GSupport; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.IPod5GSupport), value); }
-		}
-
-		private ObservableAsPropertyHelper<bool> showMp4Choices;
-		public bool ShowMp4Choices => this.showMp4Choices.Value;
-
-		public bool IncludeChapterMarkers
-		{
-			get { return this.Profile.IncludeChapterMarkers; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.IncludeChapterMarkers), value); }
-		}
-
-		public ReactiveCommand<object> TogglePresetPanel { get; }
-		private void TogglePresetPanelImpl()
-		{
-			this.PresetPanelOpen = !this.PresetPanelOpen;
-			Config.EncodingListPaneOpen = this.PresetPanelOpen;
-		}
-
-		public ReactiveCommand<object> Save { get; }
-		private void SaveImpl()
-		{
-			this.PresetsService.SavePreset();
-		}
-
-		public ReactiveCommand<object> SaveAs { get; }
-
-		private void SaveAsImpl()
-		{
-			var dialogVM = new ChooseNameViewModel(MainRes.PresetWord, this.PresetsService.AllPresets.Where(preset => !preset.Preset.IsBuiltIn).Select(preset => preset.Preset.Name));
-			dialogVM.Name = this.PresetsService.SelectedPreset.DisplayName;
-			Ioc.Get<IWindowManager>().OpenDialog(dialogVM, this);
-
-			if (dialogVM.DialogResult)
-			{
-				string newPresetName = dialogVM.Name;
-
-				this.PresetsService.SavePresetAs(newPresetName);
-			}
-		}
-
-		public ReactiveCommand<object> Rename { get; }
-
-		private void RenameImpl()
-		{
-			var dialogVM = new ChooseNameViewModel(MainRes.PresetWord, this.PresetsService.AllPresets.Where(preset => !preset.Preset.IsBuiltIn).Select(preset => preset.Preset.Name));
-			dialogVM.Name = this.PresetsService.SelectedPreset.DisplayName;
-			Ioc.Get<IWindowManager>().OpenDialog(dialogVM, this);
-
-			if (dialogVM.DialogResult)
-			{
-				string newPresetName = dialogVM.Name;
-				this.PresetsService.SelectedPreset.Preset.Name = newPresetName;
-
-				this.PresetsService.SavePreset();
-			}
-		}
-
-		public ReactiveCommand<object> DeletePreset { get; }
-
-		private void DeletePresetImpl()
-		{
-			if (this.Preset.IsModified)
-			{
-				MessageBoxResult dialogResult = Utilities.MessageBox.Show(
-					this,
-					string.Format(MainRes.RevertConfirmMessage, MainRes.PresetWord),
-					string.Format(MainRes.RevertConfirmTitle, MainRes.PresetWord),
-					MessageBoxButton.YesNo);
-				if (dialogResult == MessageBoxResult.Yes)
+				return this.togglePresetPanel ?? (this.togglePresetPanel = ReactiveCommand.Create(() =>
 				{
-					this.PresetsService.RevertPreset(true);
-				}
+					this.PresetPanelOpen = !this.PresetPanelOpen;
+					Config.EncodingListPaneOpen = this.PresetPanelOpen;
+				}));
 			}
-			else
+		}
+
+		private ReactiveCommand<Unit, Unit> save;
+		public ICommand Save
+		{
+			get
 			{
-				MessageBoxResult dialogResult = Utilities.MessageBox.Show(
-					this,
-					string.Format(MainRes.RemoveConfirmMessage, MainRes.PresetWord),
-					string.Format(MainRes.RemoveConfirmTitle, MainRes.PresetWord),
-					MessageBoxButton.YesNo);
-				if (dialogResult == MessageBoxResult.Yes)
+				return this.save ?? (this.save = ReactiveCommand.Create(
+					() =>
+					{
+						this.PresetsService.SavePreset();
+					},
+					this.WhenAnyValue(x => x.IsBuiltIn, isBuiltIn => !isBuiltIn)));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> saveAs;
+		public ICommand SaveAs
+		{
+			get
+			{
+				return this.saveAs ?? (this.saveAs = ReactiveCommand.Create(() =>
 				{
-					this.PresetsService.DeletePreset();
-				}
+					var dialogVM = new ChooseNameViewModel(MiscRes.ChooseNamePreset, this.PresetsService.AllPresets.Where(preset => !preset.Preset.IsBuiltIn).Select(preset => preset.Preset.Name));
+					dialogVM.Name = this.PresetsService.SelectedPreset.DisplayName;
+					StaticResolver.Resolve<IWindowManager>().OpenDialog(dialogVM, this);
+
+					if (dialogVM.DialogResult)
+					{
+						string newPresetName = dialogVM.Name;
+
+						this.PresetsService.SavePresetAs(newPresetName);
+					}
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> rename;
+		public ICommand Rename
+		{
+			get
+			{
+				return this.rename ?? (this.rename = ReactiveCommand.Create(
+					() =>
+					{
+						var dialogVM = new ChooseNameViewModel(MiscRes.ChooseNamePreset, this.PresetsService.AllPresets.Where(preset => !preset.Preset.IsBuiltIn).Select(preset => preset.Preset.Name));
+						dialogVM.Name = this.PresetsService.SelectedPreset.DisplayName;
+						StaticResolver.Resolve<IWindowManager>().OpenDialog(dialogVM, this);
+
+						if (dialogVM.DialogResult)
+						{
+							string newPresetName = dialogVM.Name;
+							this.PresetsService.RenamePreset(newPresetName);
+						}
+					},
+					this.WhenAnyValue(x => x.IsBuiltIn, isBuiltIn => !isBuiltIn)));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> deletePreset;
+		public ICommand DeletePreset
+		{
+			get
+			{
+				return this.deletePreset ?? (this.deletePreset = ReactiveCommand.Create(
+					() =>
+					{
+						if (this.Preset.IsModified)
+						{
+							MessageBoxResult dialogResult = Utilities.MessageBox.Show(
+								this,
+								MainRes.RevertConfirmMessage,
+								MainRes.RevertConfirmTitle,
+								MessageBoxButton.YesNo);
+							if (dialogResult == MessageBoxResult.Yes)
+							{
+								this.PresetsService.RevertPreset(true);
+							}
+						}
+						else
+						{
+							MessageBoxResult dialogResult = Utilities.MessageBox.Show(
+								this,
+								MainRes.RemoveConfirmMessage,
+								MainRes.RemoveConfirmTitle,
+								MessageBoxButton.YesNo);
+							if (dialogResult == MessageBoxResult.Yes)
+							{
+								this.PresetsService.DeletePreset();
+							}
+						}
+					},
+					this.PresetsService.WhenAnyValue(
+						x => x.SelectedPreset.Preset.IsBuiltIn,
+						x => x.SelectedPreset.Preset.IsModified,
+						(isBuiltIn, isModified) =>
+						{
+							return !isBuiltIn || isModified;
+						})));
 			}
 		}
 

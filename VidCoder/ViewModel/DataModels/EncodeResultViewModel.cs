@@ -2,17 +2,23 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reactive;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Model;
 using VidCoder.Resources;
 using VidCoder.Services;
+using VidCoder.Services.Windows;
+using VidCoderCommon.Model;
 
 namespace VidCoder.ViewModel
 {
 	public class EncodeResultViewModel : ReactiveObject
 	{
-		private MainViewModel main = Ioc.Get<MainViewModel>();
-		private ProcessingService processingService = Ioc.Get<ProcessingService>();
+		private MainViewModel main = StaticResolver.Resolve<MainViewModel>();
+		private ProcessingService processingService = StaticResolver.Resolve<ProcessingService>();
 
 		private EncodeResult encodeResult;
 		private EncodeJobViewModel job;
@@ -21,57 +27,17 @@ namespace VidCoder.ViewModel
 		{
 			this.encodeResult = result;
 			this.job = job;
-
-			this.Play = ReactiveCommand.Create();
-			this.Play.Subscribe(_ => this.PlayImpl());
-
-			this.OpenContainingFolder = ReactiveCommand.Create();
-			this.OpenContainingFolder.Subscribe(_ => this.OpenContainingFolderImpl());
-
-			this.Edit = ReactiveCommand.Create(this.WhenAnyValue(x => x.MainViewModel.VideoSourceState, videoSourceState =>
-			{
-				return videoSourceState != VideoSourceState.Scanning;
-			}));
-			this.Edit.Subscribe(_ => this.EditImpl());
-
-			this.OpenLog = ReactiveCommand.Create();
-			this.OpenLog.Subscribe(_ => this.OpenLogImpl());
-
-			this.CopyLog = ReactiveCommand.Create();
-			this.CopyLog.Subscribe(_ => this.CopyLogImpl());
 		}
 
-		public MainViewModel MainViewModel
-		{
-			get
-			{
-				return this.main;
-			}
-		}
+		public MainViewModel MainViewModel => this.main;
 
-		public EncodeJobViewModel Job
-		{
-			get
-			{
-				return this.job;
-			}
-		}
+		public EncodeJobViewModel Job => this.job;
 
-		public ProcessingService ProcessingService
-		{
-			get
-			{
-				return this.processingService;
-			}
-		}
+		public ProcessingService ProcessingService => this.processingService;
 
-		public EncodeResult EncodeResult
-		{
-			get
-			{
-				return this.encodeResult;
-			}
-		}
+		public EncodeResult EncodeResult => this.encodeResult;
+
+		public bool SourceFileExists { get; set; } = true;
 
 		public string StatusText
 		{
@@ -89,13 +55,7 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public string TimeDisplay
-		{
-			get
-			{
-				return this.encodeResult.EncodeTime.ToString(@"h\:mm\:ss", CultureInfo.InvariantCulture);
-			}
-		}
+		public string TimeDisplay => this.encodeResult.EncodeTime.ToString(@"h\:mm\:ss", CultureInfo.InvariantCulture);
 
 		public string StatusImage
 		{
@@ -113,36 +73,152 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public ReactiveCommand<object> Play { get; }
-		private void PlayImpl()
-		{
-			Ioc.Get<StatusService>().Show(MainRes.PlayingVideoStatus);
-			FileService.Instance.PlayVideo(this.encodeResult.Destination);
-		}
+		public string OutputFileSize => Utilities.FormatFileSize(this.encodeResult.SizeBytes);
 
-		public ReactiveCommand<object> OpenContainingFolder { get; }
-		private void OpenContainingFolderImpl()
+		private ReactiveCommand<Unit, Unit> play;
+		public ICommand Play
 		{
-			Ioc.Get<StatusService>().Show(MainRes.OpeningFolderStatus);
-			Process.Start("explorer.exe", "/select," + this.encodeResult.Destination);
-		}
-
-		public ReactiveCommand<object> Edit { get; }
-		private void EditImpl()
-		{
-			this.main.EditJob(this.job, isQueueItem: false);
-		}
-
-		public ReactiveCommand<object> OpenLog { get; }
-		private void OpenLogImpl()
-		{
-			if (this.encodeResult.LogPath != null)
+			get
 			{
-				FileService.Instance.LaunchFile(this.encodeResult.LogPath);
+				return this.play ?? (this.play = ReactiveCommand.Create(
+					() =>
+					{
+						StaticResolver.Resolve<StatusService>().Show(MainRes.PlayingVideoStatus);
+						FileService.Instance.PlayVideo(this.encodeResult.Destination);
+					},
+					this.WhenAnyValue(x => x.EncodeResult.Succeeded)));
 			}
 		}
 
-		public ReactiveCommand<object> CopyLog { get; }
+		private ReactiveCommand<Unit, Unit> openContainingFolder;
+		public ICommand OpenContainingFolder
+		{
+			get
+			{
+				return this.openContainingFolder ?? (this.openContainingFolder = ReactiveCommand.Create(
+					() =>
+					{
+						StaticResolver.Resolve<StatusService>().Show(MainRes.OpeningFolderStatus);
+						FileUtilities.OpenFolderAndSelectItem(this.encodeResult.FailedFilePath ?? this.encodeResult.Destination);
+					},
+					this.WhenAnyValue(x => x.EncodeResult.Succeeded, x => x.EncodeResult.FailedFilePath, (succeeded, failedFilePath) =>
+					{
+						return succeeded || failedFilePath != null;
+					})));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> edit;
+		public ICommand Edit
+		{
+			get
+			{
+				return this.edit ?? (this.edit = ReactiveCommand.Create(
+					() =>
+					{
+						this.main.EditJob(this.job, isQueueItem: false);
+					},
+					this.WhenAnyValue(x => x.MainViewModel.VideoSourceState, videoSourceState =>
+					{
+						return videoSourceState != VideoSourceState.Scanning && this.SourceFileExists;
+					})));
+			}
+		}
+
+		public bool ShowCompare
+		{
+			get
+			{
+				VCJob vcJob = this.Job.Job;
+				return this.encodeResult.Succeeded
+					&& vcJob.SourceType == SourceType.File
+					&& (vcJob.RangeType == VideoRangeType.All
+						|| vcJob.RangeType == VideoRangeType.Chapters && vcJob.ChapterStart == 1
+						|| vcJob.RangeType == VideoRangeType.Seconds && vcJob.SecondsStart == 0
+						|| vcJob.RangeType == VideoRangeType.Frames && vcJob.FramesStart == 0);
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> compare;
+		public ICommand Compare
+		{
+			get
+			{
+				return this.compare ?? (this.compare = ReactiveCommand.Create(
+					() =>
+					{
+						long inputFileSizeBytes = 0;
+						try
+						{
+							FileInfo inputFileInfo = new FileInfo(this.Job.Job.SourcePath);
+							if (!inputFileInfo.Exists)
+							{
+								StaticResolver.Resolve<IMessageBoxService>().Show(this.main, CommonRes.FileNoLongerExists);
+								return;
+							}
+
+							inputFileSizeBytes = inputFileInfo.Length;
+						}
+						catch
+						{
+							// It's OK if we don't get the file size.
+						}
+
+						OutputSizeInfo outputSize = JsonEncodeFactory.GetOutputSize(this.Job.Profile, this.Job.SourceTitle);
+						CompareWindowViewModel compareViewModel = StaticResolver.Resolve<IWindowManager>().OpenOrFocusWindow<CompareWindowViewModel>(this.main);
+						compareViewModel.OpenVideos(this.Job.Job.SourcePath, this.Job.Job.FinalOutputPath, inputFileSizeBytes, this.encodeResult.SizeBytes);
+					},
+					MvvmUtilities.CreateConstantObservable(this.SourceFileExists)));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> openLog;
+		public ICommand OpenLog
+		{
+			get
+			{
+				return this.openLog ?? (this.openLog = ReactiveCommand.Create(() =>
+				{
+					if (this.encodeResult.LogPath != null)
+					{
+						try
+						{
+							FileService.Instance.LaunchFile(this.encodeResult.LogPath);
+						}
+						catch (Exception exception)
+						{
+							StaticResolver.Resolve<IAppLogger>().LogError("Could not open log file " + this.encodeResult.LogPath + Environment.NewLine + exception);
+						}
+					}
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> copyLog;
+		public ICommand CopyLog
+		{
+			get
+			{
+				return this.copyLog ?? (this.copyLog = ReactiveCommand.Create(() =>
+				{
+					this.CopyLogImpl();
+				}));
+			}
+		}
+
+		private ReactiveCommand<Unit, Unit> copyLogAndReportProblem;
+		public ICommand CopyLogAndReportProblem
+		{
+			get
+			{
+				return this.copyLogAndReportProblem ?? (this.copyLogAndReportProblem = ReactiveCommand.Create(() =>
+				{
+					this.CopyLogImpl();
+					FileService.Instance.ReportBug();
+				}));
+			}
+		}
+
 		private void CopyLogImpl()
 		{
 			if (this.encodeResult.LogPath == null)
@@ -154,16 +230,17 @@ namespace VidCoder.ViewModel
 			{
 				string logText = File.ReadAllText(this.encodeResult.LogPath);
 
-				Ioc.Get<ClipboardService>().SetText(logText);
+				StaticResolver.Resolve<ClipboardService>().SetText(logText);
 			}
-			catch (IOException exception)
+			catch (Exception exception)
 			{
-				Ioc.Get<IMessageBoxService>().Show(this.main, string.Format(MainRes.CouldNotCopyLogError, Environment.NewLine, exception.ToString()));
+				StaticResolver.Resolve<IMessageBoxService>().Show(this.main, string.Format(MainRes.CouldNotCopyLogError, Environment.NewLine, exception));
 			}
-			catch (UnauthorizedAccessException exception)
-			{
-				Ioc.Get<IMessageBoxService>().Show(this.main, string.Format(MainRes.CouldNotCopyLogError, Environment.NewLine, exception.ToString()));
-			}
+		}
+
+		public override string ToString()
+		{
+			return this.Job.Job.FinalOutputPath + " " + this.StatusText;
 		}
 	}
 }

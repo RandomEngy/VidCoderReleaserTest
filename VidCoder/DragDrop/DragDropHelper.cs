@@ -10,6 +10,10 @@ using System.Collections;
 using System.Windows.Documents;
 using System.Reflection;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Microsoft.AnyContainer;
+using VidCoder.Services;
+using VidCoder.Services.Windows;
 
 namespace VidCoder.DragDropUtils
 {
@@ -85,25 +89,38 @@ namespace VidCoder.DragDropUtils
 		public static readonly DependencyProperty DragDropTemplateProperty =
 			DependencyProperty.RegisterAttached("DragDropTemplate", typeof(DataTemplate), typeof(DragDropHelper), new UIPropertyMetadata(null));
 
-		public static bool GetAllowDropAtTop(DependencyObject obj)
+		public static int GetBlockedTopSpaces(DependencyObject obj)
 		{
-			return (bool)obj.GetValue(AllowDropAtTopProperty);
+			return (int)obj.GetValue(BlockedTopSpacesProperty);
 		}
 
-		public static void SetAllowDropAtTop(DependencyObject obj, DataTemplate value)
+		public static void SetBlockedTopSpaces(DependencyObject obj, DataTemplate value)
 		{
-			obj.SetValue(AllowDropAtTopProperty, value);
+			obj.SetValue(BlockedTopSpacesProperty, value);
 		}
 
-		public static readonly DependencyProperty AllowDropAtTopProperty =
-			DependencyProperty.RegisterAttached("AllowDropAtTop", typeof(bool), typeof(DragDropHelper), new UIPropertyMetadata(true));
+		public static readonly DependencyProperty BlockedTopSpacesProperty =
+			DependencyProperty.RegisterAttached("BlockedTopSpaces", typeof(int), typeof(DragDropHelper), new UIPropertyMetadata(0));
+
+		public static object GetSourceList(DependencyObject obj)
+		{
+			return obj.GetValue(SourceListProperty);
+		}
+
+		public static void SetSourceList(DependencyObject obj, DataTemplate value)
+		{
+			obj.SetValue(SourceListProperty, value);
+		}
+
+		public static readonly DependencyProperty SourceListProperty =
+			DependencyProperty.RegisterAttached("SourceList", typeof(object), typeof(DragDropHelper), new UIPropertyMetadata(null));
 
 		private static void IsDragSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
 		{
 			var dragSource = obj as ItemsControl;
 			if (dragSource != null)
 			{
-				if (Object.Equals(e.NewValue, true))
+				if (Equals(e.NewValue, true))
 				{
 					dragSource.PreviewMouseLeftButtonDown += Instance.DragSource_PreviewMouseLeftButtonDown;
 					dragSource.PreviewMouseLeftButtonUp += Instance.DragSource_PreviewMouseLeftButtonUp;
@@ -123,7 +140,7 @@ namespace VidCoder.DragDropUtils
 			var dropTarget = obj as ItemsControl;
 			if (dropTarget != null)
 			{
-				if (Object.Equals(e.NewValue, true))
+				if (Equals(e.NewValue, true))
 				{
 					dropTarget.AllowDrop = true;
 					dropTarget.PreviewDrop += Instance.DropTarget_PreviewDrop;
@@ -146,6 +163,11 @@ namespace VidCoder.DragDropUtils
 
 		private void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			if (e.OriginalSource.GetType().Name == "TextBoxView")
+			{
+				return;
+			}
+
 			this.sourceItemsControl = (ItemsControl)sender;
 			var visual = e.OriginalSource as Visual;
 
@@ -214,29 +236,44 @@ namespace VidCoder.DragDropUtils
 						}
 					}
 
-					DataObject data = new DataObject(this.format.Name, this.draggedData);
+					DataObject data;
+					try
+					{
+						data = new DataObject(this.format.Name, this.draggedData);
+					}
+					catch (COMException exception)
+					{
+						// Not sure what's going on here, can't reproduce. Hopefully this will allow the next drag operation to succeed.
+						StaticResolver.Resolve<IAppLogger>().LogError("Error during drag operation:" + Environment.NewLine + Environment.NewLine + exception);
+						this.draggedData = null;
+
+						return;
+					}
+
+					var windowManager = StaticResolver.Resolve<IWindowManager>();
+					windowManager.SuspendDropOnWindows();
 
 					// Adding events to the window to make sure dragged adorner comes up when mouse is not over a drop target.
-					bool previousAllowDrop = this.topWindow.AllowDrop;
 					this.topWindow.AllowDrop = true;
-					this.topWindow.DragEnter += TopWindow_DragEnter;
-					this.topWindow.DragOver += TopWindow_DragOver;
-					this.topWindow.DragLeave += TopWindow_DragLeave;
+					this.topWindow.DragEnter += this.TopWindow_DragEnter;
+					this.topWindow.DragOver += this.TopWindow_DragOver;
+					this.topWindow.DragLeave += this.TopWindow_DragLeave;
 					
-					DragDropEffects effects = DragDrop.DoDragDrop((DependencyObject)sender, data, DragDropEffects.Move);
+					DragDrop.DoDragDrop((DependencyObject)sender, data, DragDropEffects.Move);
 
 					// Without this call, there would be a bug in the following scenario: Click on a data item, and drag
 					// the mouse very fast outside of the window. When doing this really fast, for some reason I don't get 
 					// the Window leave event, and the dragged adorner is left behind.
 					// With this call, the dragged adorner will disappear when we release the mouse outside of the window,
 					// which is when the DoDragDrop synchronous method returns.
-					RemoveDraggedAdorner();
+					this.RemoveDraggedAdorner();
 
-					this.topWindow.AllowDrop = previousAllowDrop;
-					this.topWindow.DragEnter -= TopWindow_DragEnter;
-					this.topWindow.DragOver -= TopWindow_DragOver;
-					this.topWindow.DragLeave -= TopWindow_DragLeave;
-					
+					this.topWindow.DragEnter -= this.TopWindow_DragEnter;
+					this.topWindow.DragOver -= this.TopWindow_DragOver;
+					this.topWindow.DragLeave -= this.TopWindow_DragLeave;
+
+					windowManager.ResumeDropOnWindows();
+
 					this.draggedData = null;
 				}
 			}
@@ -254,13 +291,14 @@ namespace VidCoder.DragDropUtils
 			this.targetItemsControl = (ItemsControl)sender;
 			object draggedItem = e.Data.GetData(this.format.Name);
 
-			DecideDropTarget(e);
+			this.DecideDropTarget(e);
 			if (draggedItem != null)
 			{
 				// Dragged Adorner is created on the first enter only.
-				ShowDraggedAdorner(e.GetPosition(this.topWindow));
-				CreateInsertionAdorner();
+				this.ShowDraggedAdorner(e.GetPosition(this.topWindow));
+				this.CreateInsertionAdorner();
 			}
+
 			e.Handled = true;
 		}
 
@@ -268,13 +306,14 @@ namespace VidCoder.DragDropUtils
 		{
 			object draggedItem = e.Data.GetData(this.format.Name);
 
-			DecideDropTarget(e);
+			this.DecideDropTarget(e);
 			if (draggedItem != null)
 			{
 				// Dragged Adorner is only updated here - it has already been created in DragEnter.
-				ShowDraggedAdorner(e.GetPosition(this.topWindow));
-				UpdateInsertionAdornerPosition();
+				this.ShowDraggedAdorner(e.GetPosition(this.topWindow));
+				this.UpdateInsertionAdornerPosition();
 			}
+
 			e.Handled = true;
 		}
 
@@ -287,7 +326,7 @@ namespace VidCoder.DragDropUtils
 			{
 				if ((e.Effects & DragDropEffects.Move) != 0)
 				{
-					indiciesRemoved = DragDropUtilities.RemoveItemsFromItemsControl(this.sourceItemsControl, draggedItems);
+					indiciesRemoved = DragDropUtilities.RemoveItemsFromItemsControl(this.sourceItemsControl, GetSourceList(this.sourceItemsControl), draggedItems);
 				}
 
 				// If we're dragging to the same list, adjust the insertion point to account for removed items.
@@ -297,11 +336,12 @@ namespace VidCoder.DragDropUtils
 					this.insertionIndex -= itemCountBeforeInsertionPoint;
 				}
 
-				DragDropUtilities.InsertItemsInItemsControl(this.targetItemsControl, draggedItems, this.insertionIndex);
+				DragDropUtilities.InsertItemsInItemsControl(this.targetItemsControl, GetSourceList(this.targetItemsControl), draggedItems, this.insertionIndex);
 
-				RemoveDraggedAdorner();
-				RemoveInsertionAdorner();
+				this.RemoveDraggedAdorner();
+				this.RemoveInsertionAdorner();
 			}
+
 			e.Handled = true;
 		}
 
@@ -313,8 +353,9 @@ namespace VidCoder.DragDropUtils
 
 			if (draggedItem != null)
 			{
-				RemoveInsertionAdorner();
+				this.RemoveInsertionAdorner();
 			}
+
 			e.Handled = true;
 		}
 
@@ -331,7 +372,7 @@ namespace VidCoder.DragDropUtils
 			var draggedItems = e.Data.GetData(this.format.Name) as List<object>;
 			this.targetItemContainer = null;
 
-			if (draggedItems != null && IsDropDataTypeAllowed(draggedItems[0]))
+			if (draggedItems != null && this.IsDropDataTypeAllowed(draggedItems[0]))
 			{
 				if (targetItemsControlCount > 0)
 				{
@@ -379,7 +420,7 @@ namespace VidCoder.DragDropUtils
 						this.insertionIndex = targetItemsControlCount;
 					}
 
-					if (this.insertionIndex == 0 && !GetAllowDropAtTop(this.sourceItemsControl))
+					if (this.insertionIndex < GetBlockedTopSpaces(this.sourceItemsControl))
 					{
 						this.targetItemContainer = null;
 						this.insertionIndex = -1;
@@ -435,6 +476,7 @@ namespace VidCoder.DragDropUtils
 			{
 				isDropDataTypeAllowed = false;			
 			}
+
 			return isDropDataTypeAllowed;
 		}
 
@@ -442,21 +484,21 @@ namespace VidCoder.DragDropUtils
 
 		private void TopWindow_DragEnter(object sender, DragEventArgs e)
 		{
-			ShowDraggedAdorner(e.GetPosition(this.topWindow));
+			this.ShowDraggedAdorner(e.GetPosition(this.topWindow));
 			e.Effects = DragDropEffects.None;
 			e.Handled = true;
 		}
 
 		private void TopWindow_DragOver(object sender, DragEventArgs e)
 		{
-			ShowDraggedAdorner(e.GetPosition(this.topWindow));
+			this.ShowDraggedAdorner(e.GetPosition(this.topWindow));
 			e.Effects = DragDropEffects.None;
 			e.Handled = true;
 		}
 
 		private void TopWindow_DragLeave(object sender, DragEventArgs e)
 		{
-			RemoveDraggedAdorner();
+			this.RemoveDraggedAdorner();
 			e.Handled = true;
 		}
 
@@ -470,6 +512,7 @@ namespace VidCoder.DragDropUtils
 				var adornerLayer = AdornerLayer.GetAdornerLayer(this.sourceItemsControl);
 				this.draggedAdorner = new DraggedAdorner(this.draggedData, GetDragDropTemplate(this.sourceItemsControl), this.sourceItemContainer, adornerLayer);
 			}
+
 			this.draggedAdorner.SetPosition(currentPosition.X - this.initialMousePosition.X, currentPosition.Y - this.initialMousePosition.Y);
 		}
 

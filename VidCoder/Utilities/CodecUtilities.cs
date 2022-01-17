@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HandBrake.ApplicationServices.Interop.Model;
-using HandBrake.ApplicationServices.Interop.Model.Encoding;
+using HandBrake.Interop.Interop.Interfaces.Model.Encoders;
 
 namespace VidCoder
 {

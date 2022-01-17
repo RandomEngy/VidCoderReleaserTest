@@ -8,12 +8,11 @@ namespace VidCoder.ViewModel.DataModels
 		public string Image { get; set; }
 		public string Display { get; set; }
 
-		public bool ShowImage
+		public bool ShowImage { get; set; } = true;
+
+		public override string ToString()
 		{
-			get
-			{
-				return this.Image != null;
-			}
+			return this.Display;
 		}
 	}
 }

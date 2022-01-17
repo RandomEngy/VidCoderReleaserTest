@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GeneralTab" xml:space="preserve">
+    <value>Umum</value>
+  </data>
+  <data name="MinimizeToTaskBarRadioButton" xml:space="preserve">
+    <value>Minimalkan ke taskbar</value>
+  </data>
+  <data name="MinimizeToSystemTrayRadioButton" xml:space="preserve">
+    <value>Minimalkan ke system tray</value>
+  </data>
+  <data name="PlaySoundOnQueueCompletionCheckBox" xml:space="preserve">
+    <value>Putar suara jika selesai</value>
+  </data>
+  <data name="PreferredDvdPlayerLabel" xml:space="preserve">
+    <value>Pilih Pemutar DVD:</value>
+  </data>
+  <data name="PreferredDvdPlayerToolTip" xml:space="preserve">
+    <value>Pilih pemutar yang ingin anda gunakan sebagai Sumber DVD.</value>
+  </data>
+  <data name="AutomaticUpdatesCheckBox" xml:space="preserve">
+    <value>Pembaruan otomatis</value>
+  </data>
+  <data name="WhenFileAlreadyExists" xml:space="preserve">
+    <value>Jika file sudah ada...</value>
+  </data>
+  <data name="EncodingSingleFile" xml:space="preserve">
+    <value>Pengkodean file tunggal:</value>
+  </data>
+  <data name="EncodingBatchOfFiles" xml:space="preserve">
+    <value>Pengkodean batch file:</value>
+  </data>
+  <data name="AutoPauseLabel" xml:space="preserve">
+    <value>Otomatis tunda encoding saat salah satu proses ini berjalan:</value>
+  </data>
+  <data name="AddEllipsesButton" xml:space="preserve">
+    <value>Tambah...</value>
+  </data>
+  <data name="PreviewCountLabel" xml:space="preserve">
+    <value>Jumlah gambar preview untuk dipindai:</value>
+  </data>
+  <data name="RememberPreviousFilesCheckBox" xml:space="preserve">
+    <value>Ingat Berkas dan Folder yang sebelumnya digunakan</value>
+  </data>
+  <data name="EnableLibDvdNavCheckBox" xml:space="preserve">
+    <value>Enable LibDVDNav (Perubahan membutuhkan program restart. Diperlukan untuk mendukung multiple angles)</value>
+  </data>
+  <data name="DeleteSourceAfterCompletionCheckBox" xml:space="preserve">
+    <value>Hapus berkas sumber setelah membersihkan item yang berhasil diselesaikan </value>
+  </data>
+  <data name="LoggingVerbosityLabel" xml:space="preserve">
+    <value>Pencatat Penuh:</value>
+  </data>
+  <data name="MinScanLengthLabel" xml:space="preserve">
+    <value>Panjang minimum dari judul untuk memindai (detik):</value>
+  </data>
+  <data name="RecognizedExtensionsLabel" xml:space="preserve">
+    <value>Ekstensi yang dikenali:</value>
+  </data>
+  <data name="RecognizedExtensionsToolTip" xml:space="preserve">
+    <value>Ketika memindai folder untuk file video, tambahkan file dengan ekstensi ini. (Dipisahkan koma)</value>
+  </data>
+  <data name="OptionsDialogTitle" xml:space="preserve">
+    <value>Pilihan</value>
+  </data>
+  <data name="ProcessTab" xml:space="preserve">
+    <value>Proses</value>
+  </data>
+  <data name="AdvancedTab" xml:space="preserve">
+    <value>Mahir</value>
+  </data>
+  <data name="BetaUpdatesInBeta" xml:space="preserve">
+    <value>Anda menjalankan versi Beta. bisa berjalan bersama dengan versi Stabil.</value>
+  </data>
+  <data name="BetaUpdatesNonBeta" xml:space="preserve">
+    <value>Gabung penguji Beta agar mendapat pembaruan berkala</value>
+  </data>
+  <data name="UpdateReadyStatus" xml:space="preserve">
+    <value>Memperbarui {0} siap. Ini akan menginstal ketika Anda keluar program.</value>
+  </data>
+  <data name="DownloadingStatus" xml:space="preserve">
+    <value>Mengunduh pembaruan {0}:</value>
+  </data>
+  <data name="UpToDateStatus" xml:space="preserve">
+    <value>VoipRaider sudah terbarukan.</value>
+  </data>
+  <data name="ChooseDefaultOutputFolder" xml:space="preserve">
+    <value>Pilih direktori output default untuk file video yang disandikan.</value>
+  </data>
+  <data name="InterfaceLanguageLabel" xml:space="preserve">
+    <value>Bahasa antarmuka:</value>
+  </data>
+  <data name="NewLanguageRestartDialogMessage" xml:space="preserve">
+    <value>Bahasa baru akan diterapkan setelah Anda keluar dan restart VidCoder.</value>
+  </data>
+  <data name="UseOSLanguage" xml:space="preserve">
+    <value>Gunakan bahasa sistem</value>
+  </data>
+  <data name="UpdatesTab" xml:space="preserve">
+    <value>Pemutakhiran</value>
+  </data>
+  <data name="DownloadingInfoStatus" xml:space="preserve">
+    <value>Mencari versi terbaru...</value>
+  </data>
+  <data name="UpdateFailedStatus" xml:space="preserve">
+    <value>Pemeriksaan pemutakhiran gagal.</value>
+  </data>
+  <data name="CompletionWavFilePickTitle" xml:space="preserve">
+    <value>Pilih file .wav yang ingin Anda gunakan untuk suara selesai.</value>
+  </data>
+  <data name="CurrentVersionLabel" xml:space="preserve">
+    <value>Versi Sekarang: {0}</value>
+  </data>
+  <data name="BetaUpdatesNonBetaWarning" xml:space="preserve">
+    <value>Berhati-hatilah: versi ini sangat mungkin masih memiliki bug dan crash.</value>
+  </data>
+  <data name="PlayersSection" xml:space="preserve">
+    <value>Pemutar</value>
+  </data>
+  <data name="SoundSection" xml:space="preserve">
+    <value>Suara</value>
+  </data>
+  <data name="SystemTraySection" xml:space="preserve">
+    <value>Baki sistem</value>
+  </data>
+  <data name="OutputFolderSection" xml:space="preserve">
+    <value>Output folder</value>
+  </data>
+  <data name="AdvancedOptionsSection" xml:space="preserve">
+    <value>Pilihan lanjutan</value>
+  </data>
+  <data name="ScanningSection" xml:space="preserve">
+    <value>Memindai</value>
+  </data>
+  <data name="LoggingSection" xml:space="preserve">
+    <value>Pencatatan</value>
+  </data>
+  <data name="DvdReadingSection" xml:space="preserve">
+    <value>Pembacaan DVD</value>
+  </data>
+  <data name="UpdatesSection" xml:space="preserve">
+    <value>Pemutakhiran</value>
+  </data>
+  <data name="UpdateStatusSection" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="BetaSection" xml:space="preserve">
+    <value>Beta</value>
+  </data>
+  <data name="UseCustomWavLabel" xml:space="preserve">
+    <value>Gunakan file .wav custom:</value>
+  </data>
+  <data name="CheckNowButton" xml:space="preserve">
+    <value>Periksa Sekarang</value>
+  </data>
+  <data name="UseSystemPlayer" xml:space="preserve">
+    <value>Penggunaan pemutar sistem</value>
+  </data>
+  <data name="VideoFilesLabel" xml:space="preserve">
+    <value>File video:</value>
+  </data>
+  <data name="CustomVideoPlayerToolTip" xml:space="preserve">
+    <value>Tentukan path ke pemutar video yang ingin Anda gunakan untuk file.</value>
+  </data>
+  <data name="VideoPlayerFilePickTitle" xml:space="preserve">
+    <value>Pilih pemutar untuk digunakan untuk file video.</value>
+  </data>
+  <data name="CustomPlayerLabel" xml:space="preserve">
+    <value>Pemutar custom:</value>
+  </data>
+  <data name="Priority_High" xml:space="preserve">
+    <value>Tinggi</value>
+  </data>
+  <data name="Priority_AboveNormal" xml:space="preserve">
+    <value>Di atas Normal</value>
+  </data>
+  <data name="Priority_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Priority_BelowNormal" xml:space="preserve">
+    <value>Di bawah Normal</value>
+  </data>
+  <data name="WorkerProcessPriorityLabel" xml:space="preserve">
+    <value>Prioritas proses pengerjaan:</value>
+  </data>
+  <data name="Priority_Idle" xml:space="preserve">
+    <value>Rendah</value>
+  </data>
+  <data name="CopyLogToOutputFolderLabel" xml:space="preserve">
+    <value>Salin catatan penyandian ke direktori yang sama dengan hasil video yang dikodekan</value>
+  </data>
+  <data name="OpenLogFolderButton" xml:space="preserve">
+    <value>Buka Folder Catatan</value>
+  </data>
+  <data name="ResumeEncodingOnRestartCheckBox" xml:space="preserve">
+    <value>Otomatis lanjutkan penyandian saat mulai ulang</value>
+  </data>
+  <data name="UseWorkerProcessCheckBox" xml:space="preserve">
+    <value>Gunakan proses pekerja untuk penyandian</value>
+  </data>
+  <data name="PreserveModifyTimeFilesCheckBox" xml:space="preserve">
+    <value>Simpan waktu Pembuatan dan Perubahan saat mengkonversi berkas</value>
+  </data>
+  <data name="CustomPreviewFolderCheckBox" xml:space="preserve">
+    <value>Folder lain untuk Preview:</value>
+  </data>
+  <data name="ProcessOptionsLabel" xml:space="preserve">
+    <value>Pilihan Proses</value>
+  </data>
+  <data name="CpuThrottlingLabel" xml:space="preserve">
+    <value>Pengaturan CPU - Inti yang dibolehkan:</value>
+    <comment>The label for the CPU throttling feature. This is where you limit the amount of CPU the encoder can use. It labels a slider that controls the percentage of allowed cores, where the max is 100%.</comment>
+  </data>
+  <data name="CpuThrottlingToolTip" xml:space="preserve">
+    <value>Gunakan CPU throttling untuk membatasi jumlah Core prosesor yang dapat digunakan oleh VidCoder ketika melakukan pengkodean.</value>
+  </data>
+  <data name="UseBuiltInPlayerForPreviewsCheckBox" xml:space="preserve">
+    <value>Gunakan pemutar built-in untuk preview</value>
+  </data>
+  <data name="MaxSimultaneousEncodesLabel" xml:space="preserve">
+    <value>Maksimum jumlah pekerjaan menyandi bersamaan:</value>
+  </data>
+  <data name="MaxSimultaneousEncodesToolTip" xml:space="preserve">
+    <value>Ini adalah jumlah proses menyandi secara bersamaan yang diperbolehkan. Berguna untuk mesin dengan banyak inti CPU.</value>
+  </data>
+  <data name="GeneralSection" xml:space="preserve">
+    <value>Umum</value>
+  </data>
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Label for the app theme (auto, light, dark)</comment>
+  </data>
+  <data name="PromptForUpdatesLabel" xml:space="preserve">
+    <value>Tanyakan Pembaharuan:</value>
+  </data>
+  <data name="WorkerProcessRestartDialogMessage" xml:space="preserve">
+    <value>Pilihan proses pengerjaan akan berlaku setelah Anda keluar dan restart VidCoder.</value>
+  </data>
+  <data name="CopyLogToCustomFolderLabel" xml:space="preserve">
+    <value>Salin catatan pengkodean ke folder lain</value>
+  </data>
+  <data name="KeepFailedFilesCheckBox" xml:space="preserve">
+    <value>Simpan berkas - berkas yang gagal dikodekan atau dihentikan</value>
+  </data>
+  <data name="TriggerWhenDoneWithFailedJobsCheckBox" xml:space="preserve">
+    <value>Memicu tindakan "Ketika Selesai" saat tidak ada pekerjaan yang gagal</value>
+  </data>
+  <data name="AutoPauseLowBatteryCheckbox" xml:space="preserve">
+    <value>Pause jika battery lemah</value>
+  </data>
+  <data name="AutoPauseLowDiskSpaceCheckbox" xml:space="preserve">
+    <value>Pause jika ruang disk kurang dari:</value>
+  </data>
+  <data name="AutoPauseSectionLabel" xml:space="preserve">
+    <value>Pause otomatis</value>
+  </data>
+  <data name="FileNameFormatOptions" xml:space="preserve">
+    <value>Pilihan yang tersedia: {0}</value>
+  </data>
+  <data name="LowDiskSpaceThresholdAutomationName" xml:space="preserve">
+    <value>Batas bawah ruang disk dalam gigabytes</value>
+    <comment>Screen reader name for the low disk space threshold number box</comment>
+  </data>
+  <data name="DragDropScanOrderLabel" xml:space="preserve">
+    <value>Urutan pemindahan drag-and-drop</value>
+  </data>
+  <data name="EncodeRetriesLabel" xml:space="preserve">
+    <value>Jumlah percobaan enkoding:</value>
+  </data>
+</root>

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PlaySourceButton" xml:space="preserve">
     <value>ソースを再生</value>
@@ -180,7 +180,26 @@
   <data name="BottomMargin" xml:space="preserve">
     <value>下余白</value>
   </data>
-	<data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
+  <data name="PlaySourceDisabledNotFoundToolTip" xml:space="preserve">
     <value>ソース ファイルが見つかりませんでした。</value>
+  </data>
+  <data name="CloseVideoButton" xml:space="preserve">
+    <value>ビデオを閉じる</value>
+    <comment>Button to close the preview video clip.</comment>
+  </data>
+  <data name="OpenInSystemPlayerButton" xml:space="preserve">
+    <value>システム既定のプレーヤーで開く</value>
+  </data>
+  <data name="VolumeSliderLabel" xml:space="preserve">
+    <value>音量</value>
+  </data>
+  <data name="ReplayPreviewButton" xml:space="preserve">
+    <value>プレビューを再生</value>
+  </data>
+  <data name="VideoErrorMessage" xml:space="preserve">
+    <value>内蔵のプレーヤーで動画再生できませんでした。システム既定のプレーヤで開きますか？</value>
+  </data>
+  <data name="VideoErrorTitle" xml:space="preserve">
+    <value>ビデオエラー</value>
   </data>
 </root>

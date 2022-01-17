@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddButton" xml:space="preserve">
     <value>Gehitu</value>
@@ -154,7 +154,7 @@
     <value>Agiria jadanik badago hemen: {0}. Agiria gainidaztea, kodeaketa lanarentzat irteera helburu berri bat berezgaitasunez bilatu edo eragiketa hau ezeztatzea nahi duzu?</value>
   </data>
   <data name="QueueFileConflictWarning" xml:space="preserve">
-    <value>Lerroko lan bat jadanik badago irteera helburuan hemen: {0}. Agiria gainidaztea, kodeaketa lanarentzat irteera helburu berri bat berezgaitasunez bilatu edo eragiketa hau ezeztatzea nahi duzu?</value>
+    <value>Lerroko lan bat jadanik badago irteera helburuan hemen: {0}. Lerrokatutako agiria ordeztea, kodeaketa lanarentzat irteera helburu berri bat berezgaitasunez bilatu edo eragiketa hau ezeztatzea nahi duzu?</value>
   </data>
   <data name="QueueColumnsDialogTitle" xml:space="preserve">
     <value>Lerro Zutabeak</value>
@@ -171,12 +171,6 @@
   <data name="ScanMultipleWindowTitle" xml:space="preserve">
     <value>Mihatzen...</value>
   </data>
-  <data name="UpdateSuccessDialogTitle" xml:space="preserve">
-    <value>Ongi</value>
-  </data>
-  <data name="UpdateSuccessDialogMessage" xml:space="preserve">
-    <value>VidCoder ongi eguneratu da.</value>
-  </data>
   <data name="AboutVidCoderDialogTitle" xml:space="preserve">
     <value>VidCoder Buruz</value>
   </data>
@@ -192,18 +186,15 @@
   <data name="Copyright" xml:space="preserve">
     <value>© {0} VidCoder Garatzaileak</value>
   </data>
-  <data name="VersionFormat" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 (x64)</comment>
+  <data name="BetaVersionFormat2" xml:space="preserve">
+    <value>{0} Beta</value>
+    <comment>{0} is a placeholder for version. For example: 1.4.2 Beta</comment>
   </data>
-  <data name="BetaVersionFormat" xml:space="preserve">
-    <value>{0} Beta ({1})</value>
-    <comment>First is version, second is architecture. For example: 1.4.2 Beta (x64)</comment>
+  <data name="NameDialogTitle" xml:space="preserve">
+    <value>Izena</value>
+    <comment>Title for dialog when  naming a preset or  picker</comment>
   </data>
-  <data name="PresetNameDialogTitle" xml:space="preserve">
-    <value>Aurrezarpen Izena</value>
-  </data>
-  <data name="ChoosePresetName" xml:space="preserve">
+  <data name="ChooseNamePreset" xml:space="preserve">
     <value>Hautatu izen bat aurrezarpenarentzat:</value>
   </data>
   <data name="ApplyUpdateDialogTitle" xml:space="preserve">
@@ -245,10 +236,28 @@
   <data name="EncodeCompleteWarning_Title" xml:space="preserve">
     <value>Kodeaketa osatu da.</value>
   </data>
-	<data name="CouldNotFindVideoPlayerError" xml:space="preserve">
+  <data name="CouldNotFindVideoPlayerError" xml:space="preserve">
     <value>Ezin da bideo irakurgailurik aurkitu {0}-rako.</value>
   </data>
-	<data name="ErrorPlayingSource" xml:space="preserve">
+  <data name="ErrorPlayingSource" xml:space="preserve">
     <value>Akatsa iturburua irakurtzerakoan.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateMessage" xml:space="preserve">
+    <value>Sistema neguratu egingo da {0} segundu barru.</value>
+  </data>
+  <data name="EncodeCompleteWarning_HibernateTitle" xml:space="preserve">
+    <value>Neguratzea berehala</value>
+  </data>
+  <data name="ChooseNamePicker" xml:space="preserve">
+    <value>Hautatu izen bat hautatzailearentzat:</value>
+  </data>
+  <data name="ExceptionDialogSubTextReported" xml:space="preserve">
+    <value>Programak itxi beharra du, baina akatsa berezgaitasunez jakinaraziko da.</value>
+  </data>
+  <data name="DownloadInstallerButton" xml:space="preserve">
+    <value>Jeitsi ezartzailea</value>
+  </data>
+  <data name="ReplaceJobButton" xml:space="preserve">
+    <value>Ordeztu lana</value>
   </data>
 </root>

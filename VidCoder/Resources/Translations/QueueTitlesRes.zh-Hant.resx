@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OverrideTitleNumberToolTip" xml:space="preserve">
     <value>選擇此選項時，將覆寫輸出檔名的編號順序。比方說原本的標題為 2、3、4，當以 7 覆寫時輸出檔將命名為 7、8、9，此功能在轉錄電視影集時很有幫助。</value>
@@ -141,19 +141,13 @@
     <value>分鐘</value>
     <comment>Goes after the second number box in the length range specification.</comment>
   </data>
-  <data name="OverrideTitleCheckBox">
-    <value xml:space="preserve">覆寫標題 #: 起始於</value>
+  <data name="OverrideTitleCheckBox" xml:space="preserve">
+    <value>覆寫標題 #: 起始於</value>
   </data>
-  <data name="OverrideNameFormatCheckBox">
-    <value xml:space="preserve">覆寫命名格式:</value>
+  <data name="QueueTitlesDialogTitle" xml:space="preserve">
+    <value>新增多個章節標題至工作佇列</value>
   </data>
-  <data name="QueueTitlesDialogTitle">
-    <value xml:space="preserve">新增多個章節標題至工作佇列</value>
-  </data>
-  <data name="TitleFormat">
-    <value xml:space="preserve">標題 {0}</value>
-  </data>
-	<data name="OverrideDirectoryCheckBox" xml:space="preserve">
-    <value>覆寫資料夾:</value>
+  <data name="TitleFormat" xml:space="preserve">
+    <value>標題 {0}</value>
   </data>
 </root>

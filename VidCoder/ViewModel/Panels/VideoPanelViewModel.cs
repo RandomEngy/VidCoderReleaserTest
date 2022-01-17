@@ -4,8 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Resources;
-using HandBrake.ApplicationServices.Interop;
-using HandBrake.ApplicationServices.Interop.Model.Encoding;
+using DynamicData;
+using HandBrake.Interop.Interop;
+using HandBrake.Interop.Interop.Interfaces.Model;
+using HandBrake.Interop.Interop.Interfaces.Model.Encoders;
+using HandBrake.Interop.Utilities;
+using Microsoft.AnyContainer;
 using ReactiveUI;
 using VidCoder.Extensions;
 using VidCoder.Model;
@@ -25,17 +29,15 @@ namespace VidCoder.ViewModel
 
 		private ResourceManager resourceManager = new ResourceManager(typeof(EncodingRes));
 
-		private OutputPathService outputPathService = Ioc.Get<OutputPathService>();
-		private MainViewModel main = Ioc.Get<MainViewModel>();
+		private OutputPathService outputPathService = StaticResolver.Resolve<OutputPathService>();
+		private MainViewModel main = StaticResolver.Resolve<MainViewModel>();
 
-		private List<VideoEncoderViewModel> encoderChoices;
 
 		private VideoEncoderViewModel selectedEncoder;
 		private List<double> framerateChoices;
-		private int displayTargetSize;
+		private double displayTargetSize;
 		private int displayVideoBitrate;
 
-		private List<string> presets;
 		private List<ComboChoice> profileChoices;
 		private List<LevelChoiceViewModel> levelChoices;
 		private List<ComboChoice> tuneChoices;
@@ -57,7 +59,7 @@ namespace VidCoder.ViewModel
 			}
 
 			// InputType
-			this.WhenAnyValue(x => x.HasSourceData, x => x.MainViewModel.SelectedTitle.Type, (hasSourceData, titleType) =>
+			this.WhenAnyValue(x => x.HasSourceData, x => x.MainViewModel.SelectedTitle.Title.Type, (hasSourceData, titleType) =>
 			{
 				if (hasSourceData)
 				{
@@ -102,55 +104,6 @@ namespace VidCoder.ViewModel
 				return videoEncoder == "x264";
 			}).ToProperty(this, x => x.X264SettingsVisible, out this.x264SettingsVisible);
 
-			// QsvSettingsVisible
-			this.WhenAnyValue(x => x.SelectedEncoder, selectedEncoder =>
-			{
-				if (selectedEncoder == null)
-				{
-					return false;
-				}
-
-				string videoEncoder = selectedEncoder.Encoder.ShortName;
-
-				return videoEncoder == "qsv_h264";
-			}).ToProperty(this, x => x.QsvSettingsVisible, out this.qsvSettingsVisible);
-
-			// EncoderSettingsVisible
-			this.WhenAnyValue(x => x.SelectedEncoder, selectedEncoder =>
-			{
-				if (selectedEncoder == null)
-				{
-					return false;
-				}
-
-				string videoEncoder = selectedEncoder.Encoder.ShortName;
-
-				return videoEncoder == "x264" || videoEncoder == "x265" || videoEncoder == "qsv_h264";
-			}).ToProperty(this, x => x.EncoderSettingsVisible, out this.encoderSettingsVisible);
-
-			// BasicEncoderSettingsVisible
-			this.WhenAnyValue(x => x.SelectedEncoder, x => x.UseAdvancedTab, (selectedEncoder, useAdvancedTab) =>
-			{
-				if (this.selectedEncoder == null)
-				{
-					return false;
-				}
-
-				string videoEncoder = selectedEncoder.Encoder.ShortName;
-
-				if (videoEncoder == "qsv_h264")
-				{
-					return true;
-				}
-
-				if (videoEncoder != "x264")
-				{
-					return true;
-				}
-
-				return !useAdvancedTab;
-			}).ToProperty(this, x => x.BasicEncoderSettingsVisible, out this.basicEncoderSettingsVisible);
-
 			// ConstantFramerateToolTip
 			this.WhenAnyValue(x => x.Framerate, framerate =>
 			{
@@ -190,11 +143,19 @@ namespace VidCoder.ViewModel
 				}
 			}).ToProperty(this, x => x.VfrChoiceText, out this.vfrChoiceText);
 
-			// TwoPassEnabled
-			this.WhenAnyValue(x => x.VideoEncodeRateType, videoEncodeRateType =>
+			// TwoPassVisible
+			this.WhenAnyValue(x => x.VideoEncodeRateType, x => x.SelectedEncoder, (videoEncodeRateType, selectedEncoder) =>
 			{
+				if (selectedEncoder != null)
+				{
+					if (!HandBrakeEncoderHelpers.VideoEncoderSupportsTwoPass(selectedEncoder.Encoder.Id))
+					{
+						return false;
+					}
+				}
+
 				return videoEncodeRateType != VCVideoEncodeRateType.ConstantQuality;
-			}).ToProperty(this, x => x.TwoPassEnabled, out this.twoPassEnabled);
+			}).ToProperty(this, x => x.TwoPassVisible, out this.twoPassVisible);
 
 			// TurboFirstPassEnabled
 			this.WhenAnyValue(x => x.VideoEncodeRateType, x => x.TwoPass, (videoEncodeRateType, twoPass) =>
@@ -212,7 +173,7 @@ namespace VidCoder.ViewModel
 
 				string videoEncoderShortName = selectedEncoder.Encoder.ShortName;
 
-				return videoEncodeRateType != VCVideoEncodeRateType.ConstantQuality && (videoEncoderShortName == "x265" || videoEncoderShortName == "x264");
+				return videoEncodeRateType != VCVideoEncodeRateType.ConstantQuality && videoEncoderShortName.StartsWith("x26", StringComparison.Ordinal);
 			}).ToProperty(this, x => x.TurboFirstPassVisible, out this.turboFirstPassVisible);
 
 			// QualityModulus
@@ -287,7 +248,7 @@ namespace VidCoder.ViewModel
 			}).ToProperty(this, x => x.QualitySliderRightText, out this.qualitySliderRightText);
 
 			// PresetName
-			this.WhenAnyValue(x => x.SelectedEncoder, x => x.PresetIndex, (selectedEncoder, presetIndex) =>
+			this.WhenAnyValue(x => x.SelectedEncoder, x => x.Presets, x => x.PresetIndex, (selectedEncoder, localPresets, presetIndex) =>
 			{
 				if (selectedEncoder == null)
 				{
@@ -295,9 +256,9 @@ namespace VidCoder.ViewModel
 				}
 
 				string currentPresetName = null;
-				if (this.presets != null && presetIndex >= 0 && presetIndex < this.presets.Count)
+				if (localPresets != null && presetIndex >= 0 && presetIndex < localPresets.Count)
 				{
-					currentPresetName = this.presets[presetIndex];
+					currentPresetName = localPresets[presetIndex];
 				}
 
 				if (string.IsNullOrEmpty(currentPresetName))
@@ -334,10 +295,68 @@ namespace VidCoder.ViewModel
 						return EncodingRes.QsvPreset_Balanced;
 					case "quality":
 						return EncodingRes.QsvPreset_Quality;
+
+					case "ll":
+						return EncodingRes.NVEncPreset_ll;
+					case "hq":
+						return EncodingRes.NVEncPreset_hq;
+					case "hp":
+						return EncodingRes.NVEncPreset_hp;
+
 					default:
-						return string.Empty;
+						return currentPresetName;
 				}
 			}).ToProperty(this, x => x.PresetName, out this.presetName);
+
+			// FullParameterList
+			this.WhenAnyValue(
+				x => x.SelectedEncoder,
+				x => x.PresetsService.SelectedPreset.Preset.EncodingProfile.VideoPreset,
+				x => x.PresetsService.SelectedPreset.Preset.EncodingProfile.VideoTunes,
+				x => x.VideoOptions,
+				x => x.VideoProfile, 
+				x => x.VideoLevel,
+				x => x.OutputSizeService.Size,
+				(selectedEncoder, videoPreset, videoTunes, videoOptions, videoProfile, videoLevel, outputSize) =>
+				{
+					if (selectedEncoder == null)
+					{
+						return string.Empty;
+					}
+
+					int width, height;
+					if (outputSize != null)
+					{
+						width = outputSize.OutputWidth;
+						height = outputSize.OutputHeight;
+					}
+					else
+					{
+						width = 640;
+						height = 480;
+					}
+
+					if (width <= 0)
+					{
+						width = 640;
+					}
+
+					if (height <= 0)
+					{
+						height = 480;
+					}
+
+					string parameterList = HandBrakeUtils.CreateX264OptionsString(
+						videoPreset,
+						videoTunes,
+						videoOptions?.Trim(),
+						videoProfile,
+						videoLevel,
+						width,
+						height);
+
+					return parameterList;
+				}).ToProperty(this, x => x.FullParameterList, out this.fullParameterList);
 
 			this.PresetsService.WhenAnyValue(x => x.SelectedPreset.Preset.EncodingProfile)
 				.Subscribe(_ =>
@@ -371,6 +390,23 @@ namespace VidCoder.ViewModel
 				.Subscribe(containerName =>
 				{
 					this.RefreshEncoderChoices(containerName, EncoderChoicesRefreshSource.ContainerChange);
+
+					// Refresh preset/profile/tune/level choices and values
+					this.RefreshEncoderSettings(applyDefaults: false);
+				});
+
+		    this.PresetsService.WhenAnyValue(x => x.SelectedPreset.Preset.EncodingProfile.AudioCopyMask)
+		        .Skip(1)
+		        .Subscribe(copyMask =>
+		        {
+                    this.NotifyAudioChanged();
+		        });
+
+			this.PresetsService.WhenAnyValue(x => x.SelectedPreset.Preset.EncodingProfile.AudioEncodings)
+				.Skip(1)
+				.Subscribe(copyMask =>
+				{
+					this.NotifyAudioChanged();
 				});
 
 			this.WhenAnyValue(x => x.SelectedEncoder.Encoder.ShortName)
@@ -379,24 +415,36 @@ namespace VidCoder.ViewModel
 					this.RefreshEncoderSettings(applyDefaults: false);
 				});
 
-			this.main.AudioChoiceChanged += (o, e) =>
-			{
-				this.NotifyAudioInputChanged();
-			};
+			this.main.AudioTracks
+				.Connect()
+				.WhenAnyPropertyChanged()
+				.Subscribe(_ =>
+				{
+					this.NotifyAudioChanged();
+				});
 
 			this.main.WhenAnyValue(x => x.SelectedTitle)
 				.Skip(1)
 				.Subscribe(_ =>
 				{
-					this.NotifyAudioInputChanged();
+					this.NotifyAudioChanged();
 				});
 
 			this.AutomaticChange = false;
 		}
 
+		public OutputSizeService OutputSizeService { get; } = StaticResolver.Resolve<OutputSizeService>();
+
 		private void RegisterProfileProperties()
 		{
-			this.RegisterProfileProperty(nameof(this.Profile.VideoEncoder));
+			this.RegisterProfileProperty(nameof(this.Profile.VideoEncoder), () =>
+			{
+				if (!HandBrakeEncoderHelpers.VideoEncoderSupportsTwoPass(HandBrakeEncoderHelpers.GetVideoEncoder(this.Profile.VideoEncoder).Id))
+				{
+					this.TwoPass = false;
+					this.TurboFirstPass = false;
+				}
+			});
 
 			this.RegisterProfileProperty(nameof(this.Profile.Framerate));
 			this.RegisterProfileProperty(nameof(this.Profile.ConstantFramerate));
@@ -429,6 +477,11 @@ namespace VidCoder.ViewModel
 						if (this.Profile.VideoBitrate == 0)
 						{
 							this.VideoBitrate = DefaultVideoBitrateKbps;
+						}
+						else
+						{
+							// If we already have a bitrate, update the UI
+							this.RaisePropertyChanged(nameof(this.VideoBitrate));
 						}
 					}
 					else if (oldRateType == VCVideoEncodeRateType.TargetSize)
@@ -474,39 +527,6 @@ namespace VidCoder.ViewModel
 				this.outputPathService.GenerateOutputFileName();
 			});
 
-			this.RegisterProfileProperty(nameof(this.Profile.UseAdvancedTab), () =>
-			{
-				if (this.UseAdvancedTab)
-				{
-					int width, height;
-					if (this.MainViewModel.HasVideoSource && this.MainViewModel.SelectedTitle != null)
-					{
-						width = this.MainViewModel.SelectedTitle.Geometry.Width;
-						height = this.MainViewModel.SelectedTitle.Geometry.Height;
-					}
-					else
-					{
-						width = 640;
-						height = 480;
-					}
-
-					this.Profile.VideoOptions = HandBrakeUtils.CreateX264OptionsString(
-						this.Profile.VideoPreset,
-						this.Profile.VideoTunes,
-						this.Profile.VideoOptions,
-						this.Profile.VideoProfile,
-						this.Profile.VideoLevel,
-						width,
-						height);
-
-					this.EncodingWindowViewModel.SelectedTabIndex = EncodingWindowViewModel.AdvancedVideoTabIndex;
-				}
-				else
-				{
-					this.Profile.VideoOptions = string.Empty;
-				}
-			});
-
 			this.RegisterProfileProperty(nameof(this.Profile.VideoProfile));
 			this.RegisterProfileProperty(nameof(this.Profile.VideoLevel));
 			this.RegisterProfileProperty(nameof(this.Profile.VideoPreset));
@@ -536,13 +556,8 @@ namespace VidCoder.ViewModel
 		private ObservableAsPropertyHelper<string> inputFramerate;
 		public string InputFramerate => this.inputFramerate.Value;
 
-		public List<VideoEncoderViewModel> EncoderChoices
-		{
-			get
-			{
-				return this.encoderChoices;
-			}
-		}
+		private List<VideoEncoderViewModel> encoderChoices;
+		public List<VideoEncoderViewModel> EncoderChoices => this.encoderChoices;
 
 		// True if a VideoEncoder change was done by a user explicitly on the combobox.
 		private bool userVideoEncoderChange;
@@ -558,8 +573,6 @@ namespace VidCoder.ViewModel
 			{
 				if (value != null && value != this.selectedEncoder)
 				{
-					bool wasAdvancedTab = this.UseAdvancedTab;
-
 					this.selectedEncoder = value;
 
 					this.userVideoEncoderChange = true;
@@ -568,14 +581,6 @@ namespace VidCoder.ViewModel
 
 					// Refresh preset/profile/tune/level choices and values
 					this.RefreshEncoderSettings(applyDefaults: false);
-
-					// There might be some auto-generated stuff on the additional options
-					if (wasAdvancedTab && this.selectedEncoder.Encoder.ShortName == "x265")
-					{
-						this.Profile.VideoOptions = string.Empty;
-
-						this.UseAdvancedTab = false;
-					}
 
 					this.RaisePropertyChanged();
 
@@ -587,14 +592,7 @@ namespace VidCoder.ViewModel
 		private ObservableAsPropertyHelper<bool> x264SettingsVisible;
 		public bool X264SettingsVisible => this.x264SettingsVisible.Value;
 
-		private ObservableAsPropertyHelper<bool> qsvSettingsVisible;
-		public bool QsvSettingsVisible => this.qsvSettingsVisible.Value;
-
-		private ObservableAsPropertyHelper<bool> encoderSettingsVisible;
-		public bool EncoderSettingsVisible => this.encoderSettingsVisible.Value;
-
-		private ObservableAsPropertyHelper<bool> basicEncoderSettingsVisible;
-		public bool BasicEncoderSettingsVisible => this.basicEncoderSettingsVisible.Value;
+		public bool QsvSettingsVisible => HandBrakeHardwareEncoderHelper.IsQsvAvailable;
 
 		public List<double> FramerateChoices
 		{
@@ -631,8 +629,8 @@ namespace VidCoder.ViewModel
 			set { this.UpdateProfileProperty(nameof(this.Profile.TwoPass), value); }
 		}
 
-		private ObservableAsPropertyHelper<bool> twoPassEnabled;
-		public bool TwoPassEnabled => this.twoPassEnabled.Value;
+		private ObservableAsPropertyHelper<bool> twoPassVisible;
+		public bool TwoPassVisible => this.twoPassVisible.Value;
 
 		public bool TurboFirstPass
 		{
@@ -652,7 +650,7 @@ namespace VidCoder.ViewModel
 			set { this.UpdateProfileProperty(nameof(this.Profile.VideoEncodeRateType), value); }
 		}
 
-		public int TargetSize
+		public double TargetSize
 		{
 			get
 			{
@@ -660,8 +658,10 @@ namespace VidCoder.ViewModel
 				{
 					if (this.MainViewModel.HasVideoSource && this.MainViewModel.JobCreationAvailable && this.VideoBitrate > 0)
 					{
-						double estimatedSizeBytes = JsonEncodeFactory.CalculateFileSize(this.MainViewModel.EncodeJob, this.MainViewModel.SelectedTitle, this.VideoBitrate);
-						this.displayTargetSize = (int)Math.Round(estimatedSizeBytes);
+						JsonEncodeFactory factory = new JsonEncodeFactory(new StubLogger());
+
+						double estimatedSizeBytes = factory.CalculateFileSize(this.MainViewModel.EncodeJob, this.MainViewModel.SelectedTitle.Title, this.VideoBitrate);
+						this.displayTargetSize = Math.Round(estimatedSizeBytes, 1);
 					}
 					else
 					{
@@ -693,7 +693,8 @@ namespace VidCoder.ViewModel
 				{
 					if (this.MainViewModel.HasVideoSource && this.MainViewModel.JobCreationAvailable && this.TargetSize > 0)
 					{
-						this.displayVideoBitrate = JsonEncodeFactory.CalculateBitrate(this.MainViewModel.EncodeJob, this.MainViewModel.SelectedTitle, this.TargetSize);
+						JsonEncodeFactory factory = new JsonEncodeFactory(new StubLogger());
+						this.displayVideoBitrate = factory.CalculateBitrate(this.MainViewModel.EncodeJob, this.MainViewModel.SelectedTitle.Title, this.TargetSize);
 					}
 					else
 					{
@@ -712,7 +713,7 @@ namespace VidCoder.ViewModel
 			}
 		}
 
-		public double Quality
+		public decimal Quality
 		{
 			get { return this.Profile.Quality; }
 			set { this.UpdateProfileProperty(nameof(this.Profile.Quality), value); }
@@ -733,11 +734,6 @@ namespace VidCoder.ViewModel
 		private ObservableAsPropertyHelper<string> qualitySliderRightText;
 		public string QualitySliderRightText => this.qualitySliderRightText.Value;
 
-		public bool UseAdvancedTab
-		{
-			get { return this.Profile.UseAdvancedTab; }
-			set { this.UpdateProfileProperty(nameof(this.Profile.UseAdvancedTab), value); }
-		}
 
 		public List<ComboChoice> ProfileChoices
 		{
@@ -787,24 +783,48 @@ namespace VidCoder.ViewModel
 			}
 		}
 
+		private string videoProfileTempOverride;
 		public string VideoProfile
 		{
-			get { return this.Profile.VideoProfile; }
+			get
+			{
+				if (this.videoProfileTempOverride != null)
+				{
+					return this.videoProfileTempOverride;
+				}
+
+				return this.Profile.VideoProfile;
+			}
 			set { this.UpdateProfileProperty(nameof(this.Profile.VideoProfile), value); }
 		}
 
+		private string videoLevelTempOverride;
 		public string VideoLevel
 		{
-			get { return this.Profile.VideoLevel; }
+			get
+			{
+				if (this.videoLevelTempOverride != null)
+				{
+					return this.videoLevelTempOverride;
+				}
+
+				return this.Profile.VideoLevel;
+			}
 			set { this.UpdateProfileProperty(nameof(this.Profile.VideoLevel), value); }
 		}
 
+		private string tuneTempOverride;
 		private string tune;
 		public string Tune
 		{
 			get
 			{
-				return tune;
+				if (this.tuneTempOverride != null)
+				{
+					return this.tuneTempOverride;
+				}
+
+				return this.tune;
 			}
 
 			set
@@ -835,6 +855,13 @@ namespace VidCoder.ViewModel
 		{
 			get { return this.Profile.QsvDecode; }
 			set { this.UpdateProfileProperty(nameof(this.Profile.QsvDecode), value); }
+		}
+
+		private List<string> presets;
+		public List<string> Presets
+		{
+			get { return this.presets; }
+			set { this.RaiseAndSetIfChanged(ref this.presets, value); }
 		}
 
 		public int PresetIndex
@@ -886,6 +913,9 @@ namespace VidCoder.ViewModel
 
 		private ObservableAsPropertyHelper<string> presetName;
 		public string PresetName => this.presetName.Value;
+
+		private ObservableAsPropertyHelper<string> fullParameterList;
+		public string FullParameterList => this.fullParameterList.Value;
 
 		private bool updatingLocalVideoOptions;
 
@@ -950,6 +980,13 @@ namespace VidCoder.ViewModel
 			if (this.selectedEncoder == null)
 			{
 				this.selectedEncoder = this.EncoderChoices[0];
+			}
+
+			// If it's a container change we need to commit the new encoder change.
+			if (refreshSource == EncoderChoicesRefreshSource.ContainerChange && this.selectedEncoder.Encoder != oldEncoder)
+			{
+				this.UpdateProfileProperty(nameof(this.Profile.VideoEncoder), this.selectedEncoder.Encoder.ShortName, raisePropertyChanged: false);
+				this.SetDefaultQuality();
 			}
 
 			this.RaisePropertyChanged(nameof(this.SelectedEncoder));
@@ -1046,11 +1083,55 @@ namespace VidCoder.ViewModel
 			// Notify of the new values
 			this.RaisePropertyChanged(nameof(this.PresetIndex));
 
-			this.RaisePropertyChanged(nameof(this.VideoProfile));
+			// Temporary workaround for ReactiveUI8 issue: we have to change it to another valid choice, then change back to get it to pick the correct option.
+			if (this.profileChoices != null && this.profileChoices.Count > 1)
+			{
+				if (this.profileChoices[this.profileChoices.Count - 1].Value != this.VideoProfile)
+				{
+					this.videoProfileTempOverride = this.profileChoices[this.profileChoices.Count - 1].Value;
+				}
+				else
+				{
+					this.videoProfileTempOverride = this.profileChoices[this.profileChoices.Count - 2].Value;
+				}
 
-			this.RaisePropertyChanged(nameof(this.Tune));
+				this.RaisePropertyChanged(nameof(this.VideoProfile));
+				this.videoProfileTempOverride = null;
+				this.RaisePropertyChanged(nameof(this.VideoProfile));
+			}
 
-			this.RaisePropertyChanged(nameof(this.VideoLevel));
+			if (this.tuneChoices != null && this.tuneChoices.Count > 1)
+			{
+				if (this.tuneChoices[this.tuneChoices.Count - 1].Value != this.Tune)
+				{
+					this.tuneTempOverride = this.tuneChoices[this.tuneChoices.Count - 1].Value;
+				}
+				else
+				{
+					this.tuneTempOverride = this.tuneChoices[this.tuneChoices.Count - 2].Value;
+				}
+
+				this.RaisePropertyChanged(nameof(this.Tune));
+				this.tuneTempOverride = null;
+				this.ReadTuneListFromProfile();
+				this.RaisePropertyChanged(nameof(this.Tune));
+			}
+
+			if (this.levelChoices != null && this.levelChoices.Count > 1)
+			{
+				if (this.levelChoices[this.levelChoices.Count - 1].Value != this.VideoLevel)
+				{
+					this.videoLevelTempOverride = this.levelChoices[this.levelChoices.Count - 1].Value;
+				}
+				else
+				{
+					this.videoLevelTempOverride = this.levelChoices[this.levelChoices.Count - 2].Value;
+				}
+
+				this.RaisePropertyChanged(nameof(this.VideoLevel));
+				this.videoLevelTempOverride = null;
+				this.RaisePropertyChanged(nameof(this.VideoLevel));
+			}
 
 			this.EncodingWindowViewModel.AutomaticChange = false;
 		}
@@ -1079,18 +1160,25 @@ namespace VidCoder.ViewModel
 
 		private static string GetDefaultPreset(string encoderName)
 		{
-			switch (encoderName)
+			if (encoderName.StartsWith("qsv", StringComparison.Ordinal))
 			{
-				case "x264":
-					return "medium";
-				case "qsv_h264":
-					return "balanced";
-				default:
-					return null;
+				return "balanced";
 			}
+
+			if (encoderName.StartsWith("x26", StringComparison.Ordinal) || encoderName.StartsWith("VP", StringComparison.Ordinal) || encoderName.StartsWith("nvenc", StringComparison.Ordinal))
+			{
+				return "medium";
+			}
+
+			if (encoderName.StartsWith("vce", StringComparison.Ordinal))
+			{
+				return "main";
+			}
+
+			return null;
 		}
 
-		private void NotifyAudioInputChanged()
+		private void NotifyAudioChanged()
 		{
 			this.UpdateVideoBitrate();
 			this.UpdateTargetSize();
@@ -1103,7 +1191,7 @@ namespace VidCoder.ViewModel
 				return;
 			}
 
-			this.presets = this.SelectedEncoder.Encoder.Presets;
+			this.Presets = this.SelectedEncoder.Encoder.Presets;
 		}
 
 		private void RefreshProfileChoices()
@@ -1207,21 +1295,31 @@ namespace VidCoder.ViewModel
 
 		private void SetDefaultQuality()
 		{
-			switch (this.SelectedEncoder.Encoder.ShortName)
+			string encoderName = this.SelectedEncoder.Encoder.ShortName;
+
+			int quality = 22;
+			if (encoderName.StartsWith("x26", StringComparison.Ordinal) || encoderName.StartsWith("qsv_h26", StringComparison.Ordinal))
 			{
-				case "x264":
-					this.Quality = 20;
-					break;
-				case "mpeg4":
-				case "mpeg2":
-					this.Quality = 12;
-					break;
-				case "theora":
-					this.Quality = 38;
-					break;
-				default:
-					throw new InvalidOperationException("Unrecognized encoder.");
+				quality = 22;
 			}
+			else if (encoderName.StartsWith("mpeg", StringComparison.Ordinal))
+			{
+				quality = 12;
+			}
+			else if (encoderName == "VP8")
+			{
+				quality = 10;
+			}
+			else if (encoderName == "VP9")
+			{
+				quality = 33;
+			}
+			else if (encoderName == "theora")
+			{
+				quality = 38;
+			}
+
+			this.Quality = quality;
 		}
 
 		private void ReadTuneListFromProfile()

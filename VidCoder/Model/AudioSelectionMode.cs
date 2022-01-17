@@ -7,8 +7,11 @@ namespace VidCoder.Model
 {
 	public enum AudioSelectionMode
 	{
-		Disabled,
-		Language,
-		All
+		// Now called "Default", picks last selected track if match is found, otherwise first.
+		Disabled = 0,
+		First = 3,
+		ByIndex = 4,
+		Language = 1,
+		All = 2,
 	}
 }

@@ -1,0 +1,11 @@
+name: Feature request
+description: Suggest an idea for this project.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: Feature details
+      description: Describe the feature you want in VidCoder. What will it help you do?
+    validations:
+      required: true

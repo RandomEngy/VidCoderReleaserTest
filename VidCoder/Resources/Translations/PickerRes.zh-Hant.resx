@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DefaultCheckBox" xml:space="preserve">
+    <value>預設</value>
+  </data>
+  <data name="LanguagesRadioButton" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="OnlyIfDifferentFromAudioCheckBox" xml:space="preserve">
+    <value>僅於與音訊語言不同時</value>
+    <comment>Label for checkbox on subtitle picker. When checked, it will only include the subtitle if it's a different language from the chosen audio track.</comment>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>選取器: {0}</value>
+  </data>
+  <data name="PickerButtonFormat" xml:space="preserve">
+    <value>選取器: {0}</value>
+    <comment>{0} is the name of the picker. This string shows up on the picker split button.</comment>
+  </data>
+  <data name="OutputLocation" xml:space="preserve">
+    <value>輸出位置</value>
+  </data>
+  <data name="OverrideDirectoryCheckBox" xml:space="preserve">
+    <value>覆寫資料夾:</value>
+  </data>
+  <data name="PickerHelpText" xml:space="preserve">
+    <value>自動選擇標題、音訊、字幕及目標資料夾</value>
+  </data>
+  <data name="AutoQueueOnScanCheckBox" xml:space="preserve">
+    <value>掃描後自動排入佇列</value>
+  </data>
+  <data name="AutoEncodeOnScanCheckBox" xml:space="preserve">
+    <value>掃描後開始編碼</value>
+  </data>
+  <data name="UseGlobalSettingToolTip" xml:space="preserve">
+    <value>使用全域設定</value>
+    <comment>Label for the "indeterminate" checkbox state that lets the user know that this will fall back to the global setting</comment>
+  </data>
+  <data name="PresetOverrideToolTip" xml:space="preserve">
+    <value>此將覆寫主視窗已選取的任何設定。</value>
+  </data>
+  <data name="EncodingSection" xml:space="preserve">
+    <value>編碼</value>
+    <comment>The header for the Encoding section in the Picker window.</comment>
+  </data>
+  <data name="PostEncodingSection" xml:space="preserve">
+    <value>後編碼</value>
+    <comment>Header for the post-encoding section in the picker window.</comment>
+  </data>
+  <data name="SendFileToLabel" xml:space="preserve">
+    <value>傳送檔案至:</value>
+    <comment>Label for the option to run a program after encoding each file.</comment>
+  </data>
+  <data name="PostEncodeArgumentsLabel" xml:space="preserve">
+    <value>參數:</value>
+    <comment>The label for the arguments to pass to the post-encode executable.</comment>
+  </data>
+  <data name="PostEncodeArgumentsToolTip" xml:space="preserve">
+    <value>要傳遞給程式的參數，使用 {file} 作為檔輸出路徑，{folder} 作為資料夾路徑，或其他路徑選項如 {title} 及 {date} (請參見命名格式)。</value>
+    <comment>Tool tip for the post-encode arguments UI. Do not translate {file} .</comment>
+  </data>
+  <data name="PresetDisabledForPickerToolTip" xml:space="preserve">
+    <value>選取器已指定預設編碼。</value>
+  </data>
+  <data name="AddLanguageButton" xml:space="preserve">
+    <value>新增語言</value>
+  </data>
+  <data name="AllTracksForTheseLanguagesRadioButton" xml:space="preserve">
+    <value>這些語言的所有音軌</value>
+  </data>
+  <data name="AllTracksForThisLanguageRadioButton" xml:space="preserve">
+    <value>此語言的所有音軌</value>
+  </data>
+  <data name="FirstTrackOfEachLanguageRadioButton" xml:space="preserve">
+    <value>每種語言的第一音軌</value>
+  </data>
+  <data name="FirstTrackRadioButton" xml:space="preserve">
+    <value>第一音軌</value>
+  </data>
+  <data name="SingleSubtitleDefaultToolTip" xml:space="preserve">
+    <value>標記字幕軌為預設，播放時字幕將自動顯示。</value>
+  </data>
+  <data name="MultipleSubtitleDefaultToolTip" xml:space="preserve">
+    <value>標記首個字幕軌為預設，播放時字幕將自動顯示。</value>
+  </data>
+  <data name="FirstAsDefaultCheckBox" xml:space="preserve">
+    <value>將第一項標為預設</value>
+    <comment>Label for checkbox to mark the first subtitle as default.</comment>
+  </data>
+  <data name="PresetLabel" xml:space="preserve">
+    <value>使用預設值:</value>
+  </data>
+  <data name="RemoveLanguageToolTip" xml:space="preserve">
+    <value>移除此語言。</value>
+  </data>
+  <data name="SortLanguagesLabel" xml:space="preserve">
+    <value>排序語言至頂端:</value>
+  </data>
+  <data name="ForcedOnlyCheckBox" xml:space="preserve">
+    <value>僅強制</value>
+    <comment>Label for checkbox in Picker window to choose only Forced subtitles of the chosen subtitle track.</comment>
+  </data>
+  <data name="LastSelectedRadioButton" xml:space="preserve">
+    <value>最後選取</value>
+  </data>
+  <data name="OverrideNameFormatLabel" xml:space="preserve">
+    <value>可用選項: {0}</value>
+  </data>
+  <data name="DurationFilterStartAutomationName" xml:space="preserve">
+    <value>經過時間過濾器起始分鐘數</value>
+    <comment>Screen reader text for number box that represents the start of the filter range in minutes. The number chosen in this box represents the minimum title length in minutes that will be chosen.
+</comment>
+  </data>
+  <data name="DurationFilterEndAutomationName" xml:space="preserve">
+    <value>經過時間過濾器結束分鐘數</value>
+    <comment>Screen reader text for number box that represents the end of the filter range in minutes. The number chosen in this box represents the maximum title length in minutes that will be chosen.
+</comment>
+  </data>
+  <data name="DurationFilterCheckBoxAutomationName" xml:space="preserve">
+    <value>依經過時間過濾標題</value>
+    <comment>Name for screen readers for the checkbox to filter titles by a given duration range.</comment>
+  </data>
+  <data name="ChangeCaptializationLabel" xml:space="preserve">
+    <value>變更大寫設定為</value>
+  </data>
+  <data name="TimeRangeStartAutomationName" xml:space="preserve">
+    <value>時間範圍起始</value>
+  </data>
+  <data name="TimeRangeEndAutomationName" xml:space="preserve">
+    <value>時間範圍結束</value>
+  </data>
+  <data name="ByIndexRadioButton" xml:space="preserve">
+    <value>依索引號</value>
+    <comment>Label for the choice to choose audio or subtitle tracks by index</comment>
+  </data>
+  <data name="SelectTracksLabel" xml:space="preserve">
+    <value>選擇軌道:</value>
+  </data>
+  <data name="SelectTracksHelpText" xml:space="preserve">
+    <value>逗點分隔 - 如 2,5</value>
+  </data>
+  <data name="ChapterRangeEndAutomationName" xml:space="preserve">
+    <value>章節範圍結束處</value>
+  </data>
+  <data name="ChapterRangeStartAutomationName" xml:space="preserve">
+    <value>章節範圍起始處</value>
+  </data>
+  <data name="DestinationSection" xml:space="preserve">
+    <value>輸出位置</value>
+  </data>
+  <data name="OutputFolder" xml:space="preserve">
+    <value>輸出資料夾:</value>
+    <comment>Label for the output folder.</comment>
+  </data>
+  <data name="UseCustomFileNameFormatCheckBox" xml:space="preserve">
+    <value>使用自訂檔名格式:</value>
+  </data>
+  <data name="WhenFileExistsBatch" xml:space="preserve">
+    <value>若檔案存在 (批次):</value>
+  </data>
+  <data name="WhenFileExistsSingle" xml:space="preserve">
+    <value>若檔案存在 (單檔)</value>
+  </data>
+  <data name="CustomPickerNameTemplate" xml:space="preserve">
+    <value>自訂 {0}</value>
+    <comment>The name for a custom auto-created picker. {0} is a number like 2, or 3 or 4 to differentiate it</comment>
+  </data>
+  <data name="OutputFileNameFormatAutomationName" xml:space="preserve">
+    <value>檔名格式</value>
+    <comment>Name for screen readers for the output file name format text box</comment>
+  </data>
+  <data name="OnlyChangeCapitalizationIfAllSameLabel" xml:space="preserve">
+    <value>僅於全小寫或全大寫字母時變更大寫設定</value>
+  </data>
+  <data name="WordBreakCharacterAutomationNameFormat" xml:space="preserve">
+    <value>斷字字元 - {0}</value>
+    <comment>Screen reader format for word break checkboxes. These will determine if a character will be used to separate words.</comment>
+  </data>
+  <data name="WordBreakCharactersLabel" xml:space="preserve">
+    <value>認可的斷字字元:</value>
+  </data>
+  <data name="WordBreakCharacter_Dot" xml:space="preserve">
+    <value>點</value>
+  </data>
+  <data name="WordBreakCharacter_Space" xml:space="preserve">
+    <value>空白</value>
+  </data>
+  <data name="WordBreakCharacter_Underscore" xml:space="preserve">
+    <value>底線</value>
+  </data>
+  <data name="ChangeWordSeparatorLabel" xml:space="preserve">
+    <value>變更分隔字元為</value>
+  </data>
+  <data name="SourceCleanupPreviewLabel" xml:space="preserve">
+    <value>預覽:</value>
+  </data>
+  <data name="SourceNameCleanupSection" xml:space="preserve">
+    <value>來源檔名清除</value>
+  </data>
+  <data name="AddAudioTrackNameButton" xml:space="preserve">
+    <value>新增音軌名稱</value>
+    <comment>Button to add another name to the list of audio track names in the Picker.</comment>
+  </data>
+  <data name="AddSubtitleTrackNameButton" xml:space="preserve">
+    <value>新增字幕軌名稱</value>
+    <comment>Button to add another name to the list of subtitle track names in the Picker.</comment>
+  </data>
+  <data name="CustomTrackNamesCheckBox" xml:space="preserve">
+    <value>自訂軌道名稱</value>
+    <comment>Checkbox label to use custom audio or subtitle track names</comment>
+  </data>
+  <data name="TrackAutomationFormat" xml:space="preserve">
+    <value>軌 {0}</value>
+    <comment>Screen reader format for track names in the Picker.</comment>
+  </data>
+  <data name="BurnInLabel" xml:space="preserve">
+    <value>內嵌:</value>
+  </data>
+  <data name="PickerAudioSectionName" xml:space="preserve">
+    <value>音訊</value>
+  </data>
+  <data name="PickerForeignAudioCheckBox" xml:space="preserve">
+    <value>新增「外語音訊掃描」軌</value>
+  </data>
+  <data name="PickerSubtitleSectionName" xml:space="preserve">
+    <value>字幕</value>
+  </data>
+  <data name="SubtitleSelectionMode_ForeignAudioSearch" xml:space="preserve">
+    <value>外語音訊掃描</value>
+  </data>
+  <data name="TrackSelectionLabel" xml:space="preserve">
+    <value>軌道選擇模式:</value>
+    <comment>Label for track selection mode for audio or subtitle tracks.</comment>
+  </data>
+  <data name="AudioSelectionModeToolTip" xml:space="preserve">
+    <value>上次選擇 - 若存在上次選擇過的音軌則選擇之，否則選取首軌。
+首軌 - 僅放入首個音軌。
+索引 - 依索引選取軌道 (起始為 1)
+語言 - 依語言選取。
+全部 - 放入所有音軌。</value>
+  </data>
+  <data name="SubtitleSelectionModeToolTip" xml:space="preserve">
+    <value>上次選擇 - 若存在上次選擇過的字幕軌則選擇之，否則不選取任何軌。
+無 - 不放入任何字幕軌。
+首軌 - 僅放入首個字幕軌。
+索引 - 依索引選取軌道 (起始為 1)
+語言 - 依語言選取。
+全部 - 放入所有字幕軌。</value>
+  </data>
+  <data name="IgnoreFilesBelowCheckBox" xml:space="preserve">
+    <value>忽略以下檔案</value>
+    <comment>A number box follows this string: Ignore files below [ 10 ] MB</comment>
+  </data>
+  <data name="TimeRangeLabel" xml:space="preserve">
+    <value>時間範圍:</value>
+  </data>
+  <data name="VideoSelectionSection" xml:space="preserve">
+    <value>視訊選擇</value>
+  </data>
+  <data name="MetadataSection" xml:space="preserve">
+    <value>元資料</value>
+  </data>
+  <data name="PassThroughMetadataCheckBox" xml:space="preserve">
+    <value>直接傳送視訊元資料 (導演、出版日期、演員等)</value>
+  </data>
+  <data name="BurnInCheckBox" xml:space="preserve">
+    <value>內嵌</value>
+  </data>
+  <data name="ExternalSubtitleImportCheckBox" xml:space="preserve">
+    <value>新增與輸入視訊檔同檔名的外部字幕檔 ({0})</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>語言:</value>
+  </data>
+</root>

@@ -19,7 +19,7 @@ namespace VidCoder.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EncodingRes {
@@ -61,60 +61,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fast.
-        /// </summary>
-        public static string AdaptiveBFrames_Fast {
-            get {
-                return ResourceManager.GetString("AdaptiveBFrames_Fast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Off.
-        /// </summary>
-        public static string AdaptiveBFrames_Off {
-            get {
-                return ResourceManager.GetString("AdaptiveBFrames_Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Optimal.
-        /// </summary>
-        public static string AdaptiveBFrames_Optimal {
-            get {
-                return ResourceManager.GetString("AdaptiveBFrames_Optimal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adaptive B-Frames:.
-        /// </summary>
-        public static string AdaptiveBFramesLabel {
-            get {
-                return ResourceManager.GetString("AdaptiveBFramesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adaptive Direct Mode:.
-        /// </summary>
-        public static string AdaptiveDirectModeLabel {
-            get {
-                return ResourceManager.GetString("AdaptiveDirectModeLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adaptive Quantization Strength:.
-        /// </summary>
-        public static string AdaptiveQuantizationStrengthLabel {
-            get {
-                return ResourceManager.GetString("AdaptiveQuantizationStrengthLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add audio encoding.
         /// </summary>
         public static string AddAudioEncodingButton {
@@ -124,304 +70,47 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to x264 has a variety of algorithms to decide when to use B-frames and how many to use.
-        ///
-        ///Fast mode takes roughly the same amount of time no matter how many B-frames you specify.  However, while fast, its decisions are often suboptimal.
-        ///
-        ///Optimal mode gets slower as the maximum number of B-Frames increases, but makes much more accurate decisions, especially when used with B-pyramid..
+        ///   Looks up a localized string similar to Align A/V Start.
         /// </summary>
-        public static string Advanced_AdaptiveBFramesToolTip {
+        public static string AlignAVStartCheckBox {
             get {
-                return ResourceManager.GetString("Advanced_AdaptiveBFramesToolTip", resourceCulture);
+                return ResourceManager.GetString("AlignAVStartCheckBox", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to H.264 allows for two different prediction modes, spatial and temporal, in B-frames.
-        ///
-        ///Spatial, the default, is almost always better, but temporal is sometimes useful too.
-        ///
-        ///x264 can, at the cost of a small amount of speed (and accordingly for a small compression gain), adaptively select which is better for each particular frame..
+        ///   Looks up a localized string similar to Aligns the initial timestamps of all audio and video streams by inserting blank frames or dropping frames. May improve audio/video sync for broken players that do not honor MP4 edit lists..
         /// </summary>
-        public static string Advanced_AdaptiveDirectModeToolTip {
+        public static string AlignAVStartCheckBoxToolTip {
             get {
-                return ResourceManager.GetString("Advanced_AdaptiveDirectModeToolTip", resourceCulture);
+                return ResourceManager.GetString("AlignAVStartCheckBoxToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adaptive quantization controls how the encoder distributes bits across the frame.
-        ///Higher values take more bits away from edges and complex areas to improve areas with finer detail..
+        ///   Looks up a localized string similar to Use Anamorphic.
         /// </summary>
-        public static string Advanced_AdaptiveQuantizationStrengthToolTip {
+        public static string AnamorphicCheckbox {
             get {
-                return ResourceManager.GetString("Advanced_AdaptiveQuantizationStrengthToolTip", resourceCulture);
+                return ResourceManager.GetString("AnamorphicCheckbox", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mode decision picks from a variety of options to make its decision: this option chooses what options those are.  
-        ///Fewer partitions to check means faster encoding, at the cost of worse decisions, since the best option might have been one that was turned off..
+        ///   Looks up a localized string similar to With Anamorphic enabled, non-square pixels are allowed. This can result in more efficient storage, but not all players support this..
         /// </summary>
-        public static string Advanced_AnalysisToolTip {
+        public static string AnamorphicToolTip {
             get {
-                return ResourceManager.GetString("Advanced_AnalysisToolTip", resourceCulture);
+                return ResourceManager.GetString("AnamorphicToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sane values are ~2-5.  
-        ///This specifies the maximum number of sequential B-frames that the encoder can use. 
-        /// Large numbers generally won&apos;t help significantly unless Adaptive B-frames is set to Optimal.  
-        ///Cel-animated source material and B-pyramid also significantly increase the usefulness of larger values. 
-        ///Baseline profile, as required for iPods and similar devices, requires B-frames to be set to 0 (off)..
+        ///   Looks up a localized string similar to Apply to queue.
         /// </summary>
-        public static string Advanced_BFramesToolTip {
+        public static string ApplyToQueueButton {
             get {
-                return ResourceManager.GetString("Advanced_BFramesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to After the encoder has done its work, it has a bunch of data that needs to be compressed losslessly, similar to ZIP or RAR. H.264 provides two options for this: CAVLC and CABAC.  CABAC decodes a lot slower but compresses significantly better (10-30%), especially at lower bitrates. If you&apos;re looking to minimize CPU requirements for video playback, disable this option. Baseline profile, as required for iPods and similar devices, requires CABAC to be disabled..
-        /// </summary>
-        public static string Advanced_CabacToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_CabacToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to H.264 has a built-in deblocking filter that smooths out blocking artifacts after decoding each frame.  This not only improves visual quality, but also helps compression significantly. 
-        ///The deblocking filter takes a lot of CPU power, so if you&apos;re looking to minimize CPU requirements for video playback, disable it.
-        ///
-        ///The deblocking filter has two adjustable parameters, &quot;strength&quot; and &quot;threshold&quot;. 
-        ///The former controls how strong (or weak) the deblocker is, while the latter controls how many (or few)  edges  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Advanced_DeblockingToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_DeblockingToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The 8x8 transform is the single most useful feature of x264 in terms of compression-per-speed.  
-        ///It improves compression by at least 5% at a very small speed cost and may provide an unusually high visual quality benefit compared to its compression gain.  
-        ///However, it requires High Profile, which many devices may not support..
-        /// </summary>
-        public static string Advanced_EightByEightDctToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_EightByEightDctToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Controls the motion estimation method. Motion estimation is how the encoder estimates how each block of pixels in a frame has moved.  
-        ///A better motion search method improves compression at the cost of speed.
-        ///
-        ///Diamond: performs an extremely fast and simple search using a diamond pattern.
-        ///
-        ///Hexagon: performs a somewhat more effective but slightly slower search using a hexagon pattern.
-        ///
-        ///Uneven Multi-Hex: performs a very wide search using a variety of patterns, more accurately capturing complex motion.
-        ///        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Advanced_MotionEstimationMethodToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_MotionEstimationMethodToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is the distance x264 searches from its best guess at the motion of a block in order to try to find its actual motion.  
-        ///
-        ///The default is fine for most content, but extremely high motion video, especially at HD resolutions, may benefit from higher ranges, albeit at a high speed cost.
-        ///
-        ///Valid values are 4-16 for Diamond and Hexagon methods and 4-64 for other methods..
-        /// </summary>
-        public static string Advanced_MotionEstimationRangeToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_MotionEstimationRangeToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to x264 normally zeroes out nearly-empty data blocks to save bits to be better used for some other purpose in the video.  
-        ///However, this can sometimes have slight negative effects on retention of subtle grain and dither.  
-        ///Don&apos;t touch this unless you&apos;re having banding issues or other such cases where you are having trouble keeping fine noise..
-        /// </summary>
-        public static string Advanced_NoDctDecimateToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_NoDctDecimateToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Psychovisual.
-        /// </summary>
-        public static string Advanced_PsychovisualLabel {
-            get {
-                return ResourceManager.GetString("Advanced_PsychovisualLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Psychovisual Rate Distortion means x264 tries to retain detail, for better quality to the human eye, 
-        ///as opposed to trying to maximize quality the way a computer understands it, through signal-to-noise ratios that have trouble telling apart fine detail and noise..
-        /// </summary>
-        public static string Advanced_PsychovisualRateDistortionToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_PsychovisualRateDistortionToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Psychovisual Trellis tries to retain more sharpness and detail, but can cause artifacting.
-        ///It is considered experimental, which is why it&apos;s off by default. Good values are 0.1 to 0.2..
-        /// </summary>
-        public static string Advanced_PsychovisualTrellisToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_PsychovisualTrellisToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to B-pyramid creates a pyramidal structure (hence the name) of B-frames, allowing B-frames to 
-        ///reference each other to improve compression.  
-        ///
-        ///Requires Max B-frames greater than 1; optimal adaptive B-frames is strongly recommended for full compression benefit..
-        /// </summary>
-        public static string Advanced_PyramidalBFramesToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_PyramidalBFramesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sane values are ~1-6.
-        ///
-        ///The more you add, the better the compression, but the slower the encode.
-        ///
-        ///Cel animation tends to benefit from more reference frames a lot more than film content.
-        ///
-        ///Note that many hardware devices have limitations on the number of supported reference frames, so if you&apos;re encoding for a handheld or standalone player, don&apos;t touch this unless you&apos;re absolutely sure you know what you&apos;re doing!.
-        /// </summary>
-        public static string Advanced_ReferenceFramesToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_ReferenceFramesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This setting controls both subpixel-precision motion estimation and mode decision methods.
-        ///
-        ///Subpixel motion estimation is used for refining motion estimates beyond mere pixel accuracy, improving compression.
-        ///
-        ///Mode decision is the method used to choose how to encode each block of the frame: a very important decision.
-        ///
-        ///SAD is the fastest method, followed by SATD, RD, RD refinement, and the slowest, QPRD.
-        ///6 or higher is strongly recommended: Psy-RD, a very powerful psy optimization that helps retain det [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Advanced_SubpixelMotionEstimationToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_SubpixelMotionEstimationToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trellis fine-tunes the rounding of transform coefficients to squeeze out 3-5% more compression at the cost of some speed. 
-        ///&quot;Always&quot; uses trellis not only during the main encoding process, but also during analysis, which improves compression even more, albeit at great speed cost. 
-        ///
-        ///Trellis costs more speed at higher bitrates..
-        /// </summary>
-        public static string Advanced_TrellisToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_TrellisToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Performs extra analysis to decide upon weighting parameters for each frame.  
-        ///This improves overall compression slightly and improves the quality of fades greatly. 
-        ///Baseline profile, as required for iPods and similar devices, requires weighted P-frame prediction to be disabled.  
-        ///Note that some devices and players, even those that support Main Profile, 
-        ///may have problems with Weighted P-frame prediction: the Apple TV is completely incompatible with it, for example..
-        /// </summary>
-        public static string Advanced_WeightPToolTip {
-            get {
-                return ResourceManager.GetString("Advanced_WeightPToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Additional advanced x264 options:.
-        /// </summary>
-        public static string AdvancedOptionsStringLabel {
-            get {
-                return ResourceManager.GetString("AdvancedOptionsStringLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Advanced Query.
-        /// </summary>
-        public static string AdvancedQuery {
-            get {
-                return ResourceManager.GetString("AdvancedQuery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Analysis.
-        /// </summary>
-        public static string Analysis {
-            get {
-                return ResourceManager.GetString("Analysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        public static string Analysis_All {
-            get {
-                return ResourceManager.GetString("Analysis_All", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Most.
-        /// </summary>
-        public static string Analysis_Most {
-            get {
-                return ResourceManager.GetString("Analysis_Most", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        public static string Analysis_None {
-            get {
-                return ResourceManager.GetString("Analysis_None", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Some.
-        /// </summary>
-        public static string Analysis_Some {
-            get {
-                return ResourceManager.GetString("Analysis_Some", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Anamorphic:.
-        /// </summary>
-        public static string AnamorphicLabel {
-            get {
-                return ResourceManager.GetString("AnamorphicLabel", resourceCulture);
+                return ResourceManager.GetString("ApplyToQueueButton", resourceCulture);
             }
         }
         
@@ -502,24 +191,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AAC (FDK).
-        /// </summary>
-        public static string AudioEncoder_fdk_aac {
-            get {
-                return ResourceManager.GetString("AudioEncoder_fdk_aac", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HE-AAC (FDK).
-        /// </summary>
-        public static string AudioEncoder_fdk_haac {
-            get {
-                return ResourceManager.GetString("AudioEncoder_fdk_haac", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to FLAC 16-bit.
         /// </summary>
         public static string AudioEncoder_flac16 {
@@ -543,6 +214,15 @@ namespace VidCoder.Resources {
         public static string AudioEncoder_mp3 {
             get {
                 return ResourceManager.GetString("AudioEncoder_mp3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string AudioEncoder_none {
+            get {
+                return ResourceManager.GetString("AudioEncoder_none", resourceCulture);
             }
         }
         
@@ -601,7 +281,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avg Bitrate (kbps).
+        ///   Looks up a localized string similar to Avg bitrate (kbps).
         /// </summary>
         public static string AverageBitrateRadioButton {
             get {
@@ -637,11 +317,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CABAC:.
+        ///   Looks up a localized string similar to Cannot switch encoding preset, it has been locked in the Picker window..
         /// </summary>
-        public static string CabacLabel {
+        public static string CannotSwitchEncodingPresetDueToPicker {
             get {
-                return ResourceManager.GetString("CabacLabel", resourceCulture);
+                return ResourceManager.GetString("CannotSwitchEncodingPresetDueToPicker", resourceCulture);
             }
         }
         
@@ -673,6 +353,42 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose a name for the subfolder:.
+        /// </summary>
+        public static string ChooseNameSubfolder {
+            get {
+                return ResourceManager.GetString("ChooseNameSubfolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a new name for the folder:.
+        /// </summary>
+        public static string ChooseNewFolderName {
+            get {
+                return ResourceManager.GetString("ChooseNewFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chroma smooth:.
+        /// </summary>
+        public static string ChromaSmoothLabel {
+            get {
+                return ResourceManager.GetString("ChromaSmoothLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reduces chroma noise, rainbows, and other prominent visual artifacts. Useful for resolving various color-related issues, especially with lower resolution content from analog sources, e.g. poor quality DVD and VHS sources. The blurring/smoothing algorithm is the same as used by the unsharp filter..
+        /// </summary>
+        public static string ChromaSmoothToolTip {
+            get {
+                return ResourceManager.GetString("ChromaSmoothToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close the presets list.
         /// </summary>
         public static string ClosePresetsListToolTip {
@@ -691,6 +407,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Colorspace:.
+        /// </summary>
+        public static string ColorspaceLabel {
+            get {
+                return ResourceManager.GetString("ColorspaceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compression:.
         /// </summary>
         public static string CompressionLabel {
@@ -700,7 +425,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constant Framerate.
+        ///   Looks up a localized string similar to Constant framerate.
         /// </summary>
         public static string ConstantFramerateRadioButton {
             get {
@@ -709,7 +434,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constant Quality.
+        ///   Looks up a localized string similar to Constant quality.
         /// </summary>
         public static string ConstantQualityRadioButton {
             get {
@@ -718,7 +443,25 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Container:.
+        ///   Looks up a localized string similar to Constrain to one axis.
+        /// </summary>
+        public static string ConstrainToOneAxisCheckBox {
+            get {
+                return ResourceManager.GetString("ConstrainToOneAxisCheckBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled, only the axis with the most total detected cropping will be cropped. For example if Top+Bottom = 32 and Left+Right = 6, then cropping on Left and Right will be set to 0..
+        /// </summary>
+        public static string ConstrainToOneAxisToolTip {
+            get {
+                return ResourceManager.GetString("ConstrainToOneAxisToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container format:.
         /// </summary>
         public static string ContainerLabel {
             get {
@@ -736,11 +479,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deblocking:.
+        ///   Looks up a localized string similar to Format: key1=value1:key2=value2:....
         /// </summary>
-        public static string DeblockingLabel {
+        public static string CustomFilterToolTipFormatPart {
             get {
-                return ResourceManager.GetString("DeblockingLabel", resourceCulture);
+                return ResourceManager.GetString("CustomFilterToolTipFormatPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keys:.
+        /// </summary>
+        public static string CustomFilterToolTipKeysLabel {
+            get {
+                return ResourceManager.GetString("CustomFilterToolTipKeysLabel", resourceCulture);
             }
         }
         
@@ -754,11 +506,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decomb:.
+        ///   Looks up a localized string similar to Deblock reduces blocky artifacts caused by low quality video compression..
         /// </summary>
-        public static string DecombLabel {
+        public static string DeblockToolTip {
             get {
-                return ResourceManager.GetString("DecombLabel", resourceCulture);
+                return ResourceManager.GetString("DeblockToolTip", resourceCulture);
             }
         }
         
@@ -781,6 +533,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Folder.
+        /// </summary>
+        public static string DefaultPresetFolderName {
+            get {
+                return ResourceManager.GetString("DefaultPresetFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deinterlace:.
         /// </summary>
         public static string DeinterlaceLabel {
@@ -790,11 +551,38 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deinterlace removes comb artifacts from the picture.
+        ///
+        ///Yadif is a popular and fast deinterlacer.
+        ///
+        ///Decomb switches between multiple interpolation algorithms for speed and quality..
+        /// </summary>
+        public static string DeinterlaceToolTip {
+            get {
+                return ResourceManager.GetString("DeinterlaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Denoise:.
         /// </summary>
         public static string DenoiseLabel {
             get {
                 return ResourceManager.GetString("DenoiseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denoise reduces or removes the appearance of noise and grain. This can improve compression efficiency and create higher quality video at smaller file sizes. 
+        ///Overly strong Denoise settings may damage picture quality by discarding detail.
+        ///         
+        ///NLMeans is a high quality denoise filter with a cost to speed. Use where quality is more important than speed.
+        ///         
+        ///HQDN3D is an adaptive low-pass filter, faster than NLMeans but less effective at preserving fine detail..
+        /// </summary>
+        public static string DenoiseToolTip {
+            get {
+                return ResourceManager.GetString("DenoiseToolTip", resourceCulture);
             }
         }
         
@@ -826,65 +614,22 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatic.
+        ///   Looks up a localized string similar to This filter removes &apos;combing&apos; artifacts that are the result of telecining.
+        ///
+        ///Telecining is a process that adjusts film framerates that are 24fps to NTSC video frame rates which are 30fps..
         /// </summary>
-        public static string DirectPrediction_Automatic {
+        public static string DetelecineToolTip {
             get {
-                return ResourceManager.GetString("DirectPrediction_Automatic", resourceCulture);
+                return ResourceManager.GetString("DetelecineToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        public static string DirectPrediction_None {
-            get {
-                return ResourceManager.GetString("DirectPrediction_None", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Spatial.
-        /// </summary>
-        public static string DirectPrediction_Spatial {
-            get {
-                return ResourceManager.GetString("DirectPrediction_Spatial", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Temporal.
-        /// </summary>
-        public static string DirectPrediction_Temporal {
-            get {
-                return ResourceManager.GetString("DirectPrediction_Temporal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display Resolution:.
+        ///   Looks up a localized string similar to Display resolution:.
         /// </summary>
         public static string DisplayResolutionLabel {
             get {
                 return ResourceManager.GetString("DisplayResolutionLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Display Width:.
-        /// </summary>
-        public static string DisplayWidthRadioButton {
-            get {
-                return ResourceManager.GetString("DisplayWidthRadioButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The desired display width of the video. Other parameters such as the Pixel Aspect Ratio will be changed to achieve this..
-        /// </summary>
-        public static string DisplayWidthToolTip {
-            get {
-                return ResourceManager.GetString("DisplayWidthToolTip", resourceCulture);
             }
         }
         
@@ -898,24 +643,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Few players support playback of DTS audio in MP4 containers. MKV is recommended for DTS audio..
-        /// </summary>
-        public static string DtsMp4Warning {
-            get {
-                return ResourceManager.GetString("DtsMp4Warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 8x8 Transform:.
-        /// </summary>
-        public static string EightByEightTransformLabel {
-            get {
-                return ResourceManager.GetString("EightByEightTransformLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Encoder.
         /// </summary>
         public static string Encoder {
@@ -925,29 +652,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Encoder Settings.
+        ///   Looks up a localized string similar to Encoder settings.
         /// </summary>
         public static string EncoderSettings {
             get {
                 return ResourceManager.GetString("EncoderSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Encoding.
-        /// </summary>
-        public static string Encoding {
-            get {
-                return ResourceManager.GetString("Encoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Encoding preset: {0}.
-        /// </summary>
-        public static string EncodingWindowTitle {
-            get {
-                return ResourceManager.GetString("EncodingWindowTitle", resourceCulture);
             }
         }
         
@@ -1015,6 +724,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full parameter list:.
+        /// </summary>
+        public static string FullEncoderParameterLabel {
+            get {
+                return ResourceManager.GetString("FullEncoderParameterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gain (dB):.
         /// </summary>
         public static string GainLabel {
@@ -1078,6 +796,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interlace Detection:.
+        /// </summary>
+        public static string InterlaceDetectionLabel {
+            get {
+                return ResourceManager.GetString("InterlaceDetectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to iPod 5G support.
         /// </summary>
         public static string Ipod5GSupportCheckBox {
@@ -1092,33 +819,6 @@ namespace VidCoder.Resources {
         public static string IPod5GSupportToolTip {
             get {
                 return ResourceManager.GetString("IPod5GSupportToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep Aspect Ratio.
-        /// </summary>
-        public static string KeepAspectRatioCheckBox {
-            get {
-                return ResourceManager.GetString("KeepAspectRatioCheckBox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Large file size.
-        /// </summary>
-        public static string LargeFileSizeCheckBox {
-            get {
-                return ResourceManager.GetString("LargeFileSizeCheckBox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Allows files over 4GB. When enabled, uses 64-bit numbers in encoding. Some devices such as the iPod and PS3 are incompatible with this option..
-        /// </summary>
-        public static string LargeFileSizeToolTip {
-            get {
-                return ResourceManager.GetString("LargeFileSizeToolTip", resourceCulture);
             }
         }
         
@@ -1161,16 +861,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum B-Frames:.
-        /// </summary>
-        public static string MaxBFramesLabel {
-            get {
-                return ResourceManager.GetString("MaxBFramesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max Height:.
+        ///   Looks up a localized string similar to Max height:.
         /// </summary>
         public static string MaxHeightLabel {
             get {
@@ -1179,11 +870,29 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Width:.
+        ///   Looks up a localized string similar to Max width:.
         /// </summary>
         public static string MaxWidthLabel {
             get {
                 return ResourceManager.GetString("MaxWidthLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum:.
+        /// </summary>
+        public static string MinimumCroppingLabel {
+            get {
+                return ResourceManager.GetString("MinimumCroppingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the automatic cropping is below this amount for a side, disable the cropping for that side. Useful for preventing resampling on small cropping amounts..
+        /// </summary>
+        public static string MinimumCroppingToolTip {
+            get {
+                return ResourceManager.GetString("MinimumCroppingToolTip", resourceCulture);
             }
         }
         
@@ -1269,6 +978,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mode:.
+        /// </summary>
+        public static string ModeLabel {
+            get {
+                return ResourceManager.GetString("ModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Modifiers.
         /// </summary>
         public static string Modifiers {
@@ -1278,83 +996,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modulus:.
+        ///   Looks up a localized string similar to Additional advanced arguments to pass to the video encoder..
         /// </summary>
-        public static string ModulusLabel {
+        public static string MoreOptionsToolTip {
             get {
-                return ResourceManager.GetString("ModulusLabel", resourceCulture);
+                return ResourceManager.GetString("MoreOptionsToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to More Settings:.
+        ///   Looks up a localized string similar to More settings:.
         /// </summary>
         public static string MoreSettingsLabel {
             get {
                 return ResourceManager.GetString("MoreSettingsLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diamond.
-        /// </summary>
-        public static string MotionEstimationMethod_Diamond {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethod_Diamond", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exhaustive.
-        /// </summary>
-        public static string MotionEstimationMethod_Exhaustive {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethod_Exhaustive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hexagon.
-        /// </summary>
-        public static string MotionEstimationMethod_Hexagon {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethod_Hexagon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transformed Exhaustive.
-        /// </summary>
-        public static string MotionEstimationMethod_TransformedExhaustive {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethod_TransformedExhaustive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uneven Multi-Hexagon.
-        /// </summary>
-        public static string MotionEstimationMethod_UnevenMultiHexagon {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethod_UnevenMultiHexagon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motion Estimation Method:.
-        /// </summary>
-        public static string MotionEstimationMethodLabel {
-            get {
-                return ResourceManager.GetString("MotionEstimationMethodLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motion Estimation Range:.
-        /// </summary>
-        public static string MotionEstimationRangeLabel {
-            get {
-                return ResourceManager.GetString("MotionEstimationRangeLabel", resourceCulture);
             }
         }
         
@@ -1364,15 +1019,6 @@ namespace VidCoder.Resources {
         public static string NameLabel {
             get {
                 return ResourceManager.GetString("NameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No DCT-Decimate:.
-        /// </summary>
-        public static string NoDctDecimateLabel {
-            get {
-                return ResourceManager.GetString("NoDctDecimateLabel", resourceCulture);
             }
         }
         
@@ -1395,20 +1041,38 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High Performance.
+        /// </summary>
+        public static string NVEncPreset_hp {
+            get {
+                return ResourceManager.GetString("NVEncPreset_hp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Quality.
+        /// </summary>
+        public static string NVEncPreset_hq {
+            get {
+                return ResourceManager.GetString("NVEncPreset_hq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low Latency.
+        /// </summary>
+        public static string NVEncPreset_ll {
+            get {
+                return ResourceManager.GetString("NVEncPreset_ll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open the presets list.
         /// </summary>
         public static string OpenPresetsListToolTip {
             get {
                 return ResourceManager.GetString("OpenPresetsListToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Options String.
-        /// </summary>
-        public static string OptionsString {
-            get {
-                return ResourceManager.GetString("OptionsString", resourceCulture);
             }
         }
         
@@ -1422,11 +1086,56 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Partition Type:.
+        ///   Looks up a localized string similar to Color:.
         /// </summary>
-        public static string PartitionTypeLabel {
+        public static string PadColorLabel {
             get {
-                return ResourceManager.GetString("PartitionTypeLabel", resourceCulture);
+                return ResourceManager.GetString("PadColorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Format: FFFFFF.
+        /// </summary>
+        public static string PadColorTextToolTip {
+            get {
+                return ResourceManager.GetString("PadColorTextToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Padding.
+        /// </summary>
+        public static string PaddingLabel {
+            get {
+                return ResourceManager.GetString("PaddingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill.
+        /// </summary>
+        public static string PaddingMode_Fill {
+            get {
+                return ResourceManager.GetString("PaddingMode_Fill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string PaddingMode_Height {
+            get {
+                return ResourceManager.GetString("PaddingMode_Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string PaddingMode_Width {
+            get {
+                return ResourceManager.GetString("PaddingMode_Width", resourceCulture);
             }
         }
         
@@ -1449,11 +1158,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any.
+        ///   Looks up a localized string similar to Auto.
         /// </summary>
-        public static string Passthrough_any {
+        public static string Passthrough_auto {
             get {
-                return ResourceManager.GetString("Passthrough_any", resourceCulture);
+                return ResourceManager.GetString("Passthrough_auto", resourceCulture);
             }
         }
         
@@ -1530,6 +1239,15 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow passthrough for:.
+        /// </summary>
+        public static string PassthroughMaskLabel {
+            get {
+                return ResourceManager.GetString("PassthroughMaskLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specifies which input codecs the passthrough will apply to..
         /// </summary>
         public static string PassthroughScopeToolTip {
@@ -1539,11 +1257,38 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pixel Aspect Ratio:.
+        ///   Looks up a localized string similar to Passthrough settings.
+        /// </summary>
+        public static string PassthroughSettingsLabel {
+            get {
+                return ResourceManager.GetString("PassthroughSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pixel aspect ratio denominator.
+        /// </summary>
+        public static string PixelAspectRatioDenominatorAutomationName {
+            get {
+                return ResourceManager.GetString("PixelAspectRatioDenominatorAutomationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pixel aspect ratio:.
         /// </summary>
         public static string PixelAspectRatioLabel {
             get {
                 return ResourceManager.GetString("PixelAspectRatioLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pixel aspect ratio numerator.
+        /// </summary>
+        public static string PixelAspectRatioNumeratorAutomationName {
+            get {
+                return ResourceManager.GetString("PixelAspectRatioNumeratorAutomationName", resourceCulture);
             }
         }
         
@@ -1575,7 +1320,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medium (Default).
+        ///   Looks up a localized string similar to Medium.
         /// </summary>
         public static string Preset_Medium {
             get {
@@ -1611,7 +1356,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Super Fast.
+        ///   Looks up a localized string similar to Super fast.
         /// </summary>
         public static string Preset_SuperFast {
             get {
@@ -1620,7 +1365,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ultra Fast.
+        ///   Looks up a localized string similar to Ultra fast.
         /// </summary>
         public static string Preset_UltraFast {
             get {
@@ -1629,7 +1374,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Very Fast.
+        ///   Looks up a localized string similar to Very fast.
         /// </summary>
         public static string Preset_VeryFast {
             get {
@@ -1638,11 +1383,47 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Very Slow.
+        ///   Looks up a localized string similar to Very slow.
         /// </summary>
         public static string Preset_VerySlow {
             get {
                 return ResourceManager.GetString("Preset_VerySlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in.
+        /// </summary>
+        public static string PresetFolder_BuiltIn {
+            get {
+                return ResourceManager.GetString("PresetFolder_BuiltIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        public static string PresetFolder_Custom {
+            get {
+                return ResourceManager.GetString("PresetFolder_Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create subfolder.
+        /// </summary>
+        public static string PresetFolderCreateSubfolderMenuItem {
+            get {
+                return ResourceManager.GetString("PresetFolderCreateSubfolderMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove folder.
+        /// </summary>
+        public static string PresetFolderRemoveFolderMenuItem {
+            get {
+                return ResourceManager.GetString("PresetFolderRemoveFolderMenuItem", resourceCulture);
             }
         }
         
@@ -1661,6 +1442,15 @@ namespace VidCoder.Resources {
         public static string PresetToolTip {
             get {
                 return ResourceManager.GetString("PresetToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename folder.
+        /// </summary>
+        public static string PrestFolderRenameFolderMenuItem {
+            get {
+                return ResourceManager.GetString("PrestFolderRenameFolderMenuItem", resourceCulture);
             }
         }
         
@@ -1721,60 +1511,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Psychovisual Rate Distortion:.
-        /// </summary>
-        public static string PsychoVisualRateDistortionLabel {
-            get {
-                return ResourceManager.GetString("PsychoVisualRateDistortionLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Psychovisual Trellis:.
-        /// </summary>
-        public static string PsychovisualTrellisLabel {
-            get {
-                return ResourceManager.GetString("PsychovisualTrellisLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Normal.
-        /// </summary>
-        public static string PyramidalBFrames_Normal {
-            get {
-                return ResourceManager.GetString("PyramidalBFrames_Normal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Off.
-        /// </summary>
-        public static string PyramidalBFrames_Off {
-            get {
-                return ResourceManager.GetString("PyramidalBFrames_Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Strict.
-        /// </summary>
-        public static string PyramidalBFrames_Strict {
-            get {
-                return ResourceManager.GetString("PyramidalBFrames_Strict", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pyramidal B-Frames:.
-        /// </summary>
-        public static string PyramidalBFramesLabel {
-            get {
-                return ResourceManager.GetString("PyramidalBFramesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to QSV Decoding.
         /// </summary>
         public static string QsvDecodingLabel {
@@ -1820,15 +1556,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reference Frames:.
-        /// </summary>
-        public static string ReferenceFramesLabel {
-            get {
-                return ResourceManager.GetString("ReferenceFramesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove audio encoding.
         /// </summary>
         public static string RemoveAudioEncodingToolTip {
@@ -1843,6 +1570,15 @@ namespace VidCoder.Resources {
         public static string Rename {
             get {
                 return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution:.
+        /// </summary>
+        public static string ResolutionLabel {
+            get {
+                return ResourceManager.GetString("ResolutionLabel", resourceCulture);
             }
         }
         
@@ -1892,7 +1628,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rotation:.
+        ///   Looks up a localized string similar to Rotation.
         /// </summary>
         public static string RotationLabel {
             get {
@@ -1919,7 +1655,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sample Rate.
+        ///   Looks up a localized string similar to Sample rate.
         /// </summary>
         public static string SampleRate {
             get {
@@ -1928,7 +1664,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sample Rate:.
+        ///   Looks up a localized string similar to Sample rate:.
         /// </summary>
         public static string SampleRateLabel {
             get {
@@ -1973,30 +1709,51 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lanczos: This is the default scaler with the best quality.
-        ///Bicubic: This is an OpenCL hardware accelerated scaling algorithm..
+        ///   Looks up a localized string similar to Downscale only.
         /// </summary>
-        public static string ScaleMethodToolTip {
+        public static string ScalingMode_DownscaleOnly {
             get {
-                return ResourceManager.GetString("ScaleMethodToolTip", resourceCulture);
+                return ResourceManager.GetString("ScalingMode_DownscaleOnly", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scaling Algorithm:.
+        ///   Looks up a localized string similar to Scale up/down to target.
         /// </summary>
-        public static string ScalingAlgorithmLabel {
+        public static string ScalingMode_Fill {
             get {
-                return ResourceManager.GetString("ScalingAlgorithmLabel", resourceCulture);
+                return ResourceManager.GetString("ScalingMode_Fill", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scope:.
+        ///   Looks up a localized string similar to Scaling mode:.
         /// </summary>
-        public static string ScopeLabel {
+        public static string ScalingModeLabel {
             get {
-                return ResourceManager.GetString("ScopeLabel", resourceCulture);
+                return ResourceManager.GetString("ScalingModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sharpen.
+        /// </summary>
+        public static string SharpenLabel {
+            get {
+                return ResourceManager.GetString("SharpenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sharpening enhances the appearance of detail, especially edges. Overly strong Sharpen settings may damage picture quality by creating ringing artifacts and enhancing noise, which can reduce compression efficiency.
+        ///
+        ///Unsharp is a general purpose unsharp masking filter. It sharpens by blurring, then calculating the difference between the blurred picture and the original.
+        ///
+        ///Lapsharp sharpens using convolution kernels approximating Laplacian edge filters, sometimes producing higher quality results than unshar [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SharpenToolTip {
+            get {
+                return ResourceManager.GetString("SharpenToolTip", resourceCulture);
             }
         }
         
@@ -2019,6 +1776,24 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string SizingModeManual {
+            get {
+                return ResourceManager.GetString("SizingModeManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic will pick the size for you based on provided constraints. Manual will let you enter a specific size and pixel aspect ratio..
+        /// </summary>
+        public static string SizingModeToolTip {
+            get {
+                return ResourceManager.GetString("SizingModeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source.
         /// </summary>
         public static string Source {
@@ -2028,7 +1803,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Storage Resolution:.
+        ///   Looks up a localized string similar to Storage resolution:.
         /// </summary>
         public static string StorageResolutionLabel {
             get {
@@ -2037,155 +1812,38 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0: SAD, no subpel (super fast!).
+        ///   Looks up a localized string similar to Audio Encoding.
         /// </summary>
-        public static string SubpixelMotionEstimation_0 {
+        public static string TabHeader_AudioEncoding {
             get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_0", resourceCulture);
+                return ResourceManager.GetString("TabHeader_AudioEncoding", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1: SAD, qpel.
+        ///   Looks up a localized string similar to Container.
         /// </summary>
-        public static string SubpixelMotionEstimation_1 {
+        public static string TabHeader_Container {
             get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_1", resourceCulture);
+                return ResourceManager.GetString("TabHeader_Container", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 10: QPRD in all frames.
+        ///   Looks up a localized string similar to Sizing.
         /// </summary>
-        public static string SubpixelMotionEstimation_10 {
+        public static string TabHeader_Sizing {
             get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_10", resourceCulture);
+                return ResourceManager.GetString("TabHeader_Sizing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 11: No early terminations in analysis.
+        ///   Looks up a localized string similar to Video Encoding.
         /// </summary>
-        public static string SubpixelMotionEstimation_11 {
+        public static string TabHeader_VideoEncoding {
             get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 2: SATD, qpel.
-        /// </summary>
-        public static string SubpixelMotionEstimation_2 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3: SATD, multi-qpel.
-        /// </summary>
-        public static string SubpixelMotionEstimation_3 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 4: SATD, qpel on all.
-        /// </summary>
-        public static string SubpixelMotionEstimation_4 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 5: SATD, multi-qpel on all.
-        /// </summary>
-        public static string SubpixelMotionEstimation_5 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 6: RD in I/P-frames.
-        /// </summary>
-        public static string SubpixelMotionEstimation_6 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_6", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 7: RD in all frames.
-        /// </summary>
-        public static string SubpixelMotionEstimation_7 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_7", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 8: RD refine in I/P-frames.
-        /// </summary>
-        public static string SubpixelMotionEstimation_8 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_8", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 9: RD refine in all frames.
-        /// </summary>
-        public static string SubpixelMotionEstimation_9 {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimation_9", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subpixel Motion Estimation:.
-        /// </summary>
-        public static string SubpixelMotionEstimationLabel {
-            get {
-                return ResourceManager.GetString("SubpixelMotionEstimationLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Advanced Video.
-        /// </summary>
-        public static string TabHeader_Advanced {
-            get {
-                return ResourceManager.GetString("TabHeader_Advanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Audio.
-        /// </summary>
-        public static string TabHeader_Audio {
-            get {
-                return ResourceManager.GetString("TabHeader_Audio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Picture.
-        /// </summary>
-        public static string TabHeader_Picture {
-            get {
-                return ResourceManager.GetString("TabHeader_Picture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Video.
-        /// </summary>
-        public static string TabHeader_Video {
-            get {
-                return ResourceManager.GetString("TabHeader_Video", resourceCulture);
+                return ResourceManager.GetString("TabHeader_VideoEncoding", resourceCulture);
             }
         }
         
@@ -2199,7 +1857,16 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target Size (MB).
+        ///   Looks up a localized string similar to Target height:.
+        /// </summary>
+        public static string TargetHeightLabel {
+            get {
+                return ResourceManager.GetString("TargetHeightLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target size (MB).
         /// </summary>
         public static string TargetSizeRadioButton {
             get {
@@ -2208,11 +1875,20 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target Stream.
+        ///   Looks up a localized string similar to Target stream.
         /// </summary>
         public static string TargetStream {
             get {
                 return ResourceManager.GetString("TargetStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target width:.
+        /// </summary>
+        public static string TargetWidthLabel {
+            get {
+                return ResourceManager.GetString("TargetWidthLabel", resourceCulture);
             }
         }
         
@@ -2235,42 +1911,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Always.
-        /// </summary>
-        public static string Trellis_Always {
-            get {
-                return ResourceManager.GetString("Trellis_Always", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Encode Only.
-        /// </summary>
-        public static string Trellis_EncodeOnly {
-            get {
-                return ResourceManager.GetString("Trellis_EncodeOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Off.
-        /// </summary>
-        public static string Trellis_Off {
-            get {
-                return ResourceManager.GetString("Trellis_Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trellis:.
-        /// </summary>
-        public static string TrellisLabel {
-            get {
-                return ResourceManager.GetString("TrellisLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Animation.
         /// </summary>
         public static string Tune_animation {
@@ -2280,7 +1920,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fast Decode.
+        ///   Looks up a localized string similar to Fast decode.
         /// </summary>
         public static string Tune_fastdecode {
             get {
@@ -2325,7 +1965,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Still Image.
+        ///   Looks up a localized string similar to Still image.
         /// </summary>
         public static string Tune_stillimage {
             get {
@@ -2334,7 +1974,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zero Latency.
+        ///   Looks up a localized string similar to Zero latency.
         /// </summary>
         public static string Tune_zerolatency {
             get {
@@ -2352,7 +1992,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Turbo first Pass.
+        ///   Looks up a localized string similar to Turbo first pass.
         /// </summary>
         public static string TurboFirstPassCheckBox {
             get {
@@ -2361,7 +2001,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2-pass Encoding.
+        ///   Looks up a localized string similar to 2-pass encoding.
         /// </summary>
         public static string TwoPassEncodingCheckBox {
             get {
@@ -2379,7 +2019,16 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable Framerate.
+        ///   Looks up a localized string similar to Upscale {0}x max.
+        /// </summary>
+        public static string UpscaleMaxFormat {
+            get {
+                return ResourceManager.GetString("UpscaleMaxFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable framerate.
         /// </summary>
         public static string VfrChoice {
             get {
@@ -2388,7 +2037,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peak Framerate (VFR).
+        ///   Looks up a localized string similar to Peak framerate (VFR).
         /// </summary>
         public static string VfrPeakChoice {
             get {
@@ -2433,7 +2082,7 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Codec:.
+        ///   Looks up a localized string similar to Video codec:.
         /// </summary>
         public static string VideoCodecLabel {
             get {
@@ -2514,15 +2163,6 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weighted P-Frames:.
-        /// </summary>
-        public static string WeightedPFramesLabel {
-            get {
-                return ResourceManager.GetString("WeightedPFramesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Width:.
         /// </summary>
         public static string WidthLabel {
@@ -2532,38 +2172,11 @@ namespace VidCoder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to x264 Basic Settings.
+        ///   Looks up a localized string similar to Encoding preset: {0}.
         /// </summary>
-        public static string X264BasicSettings {
+        public static string WindowTitle {
             get {
-                return ResourceManager.GetString("X264BasicSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to x264 Settings.
-        /// </summary>
-        public static string X264Settings {
-            get {
-                return ResourceManager.GetString("X264Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Advanced Tab.
-        /// </summary>
-        public static string X264SettingsRadioButtonAdvanced {
-            get {
-                return ResourceManager.GetString("X264SettingsRadioButtonAdvanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Basic.
-        /// </summary>
-        public static string X264SettingsRadioButtonBasic {
-            get {
-                return ResourceManager.GetString("X264SettingsRadioButtonBasic", resourceCulture);
+                return ResourceManager.GetString("WindowTitle", resourceCulture);
             }
         }
         

@@ -9,6 +9,12 @@ namespace VidCoder
 {
 	public static class CustomConfig
 	{
+		public static UpdateMode UpdateMode
+		{
+			get => (UpdateMode)Enum.Parse(typeof(UpdateMode), Config.UpdateMode);
+			set => Config.UpdateMode = value.ToString();
+		}
+
 		public static List<string> AutoPauseProcesses
 		{
 			get
@@ -22,69 +28,54 @@ namespace VidCoder
 			}
 		}
 
-		public static WhenFileExists WhenFileExists
+		public static HashSet<string> CollapsedBuiltInFolders
 		{
 			get
 			{
-				return (WhenFileExists)Enum.Parse(typeof(WhenFileExists), Config.WhenFileExists);
+				return new HashSet<string>(Config.CollapsedBuiltInFolders.Split(new char[] { '☃' }, StringSplitOptions.RemoveEmptyEntries));
 			}
 
 			set
 			{
-				Config.WhenFileExists = value.ToString();
+				Config.CollapsedBuiltInFolders = string.Join("☃", value);
 			}
 		}
 
-		public static WhenFileExists WhenFileExistsBatch
+		private static bool? useWorkerProcessOverride;
+		public static bool UseWorkerProcess
 		{
 			get
 			{
-				return (WhenFileExists)Enum.Parse(typeof(WhenFileExists), Config.WhenFileExistsBatch);
-			}
+				if (useWorkerProcessOverride != null)
+				{
+					return useWorkerProcessOverride.Value;
+				}
 
-			set
-			{
-				Config.WhenFileExistsBatch = value.ToString();
+				return Config.UseWorkerProcess;
 			}
 		}
 
-		public static AudioSelectionMode AutoAudio
+		public static void SetWorkerProcessOverride(bool value)
 		{
-			get
-			{
-				return (AudioSelectionMode)Enum.Parse(typeof(AudioSelectionMode), Config.AutoAudio);
-			}
-
-			set
-			{
-				Config.AutoAudio = value.ToString();
-			}
-		}
-
-		public static SubtitleSelectionMode AutoSubtitle
-		{
-			get
-			{
-				return (SubtitleSelectionMode)Enum.Parse(typeof(SubtitleSelectionMode), Config.AutoSubtitle);
-			}
-
-			set
-			{
-				Config.AutoSubtitle = value.ToString();
-			}
+			useWorkerProcessOverride = value;
 		}
 
 		public static PreviewDisplay PreviewDisplay
 		{
-			get
-			{
-				return (PreviewDisplay) Enum.Parse(typeof (PreviewDisplay), Config.PreviewDisplay);
-			}
+			get => (PreviewDisplay) Enum.Parse(typeof (PreviewDisplay), Config.PreviewDisplay);
+			set => Config.PreviewDisplay = value.ToString();
+		}
 
-			set
-			{
-				Config.PreviewDisplay = value.ToString();
-			}
+		public static AppThemeChoice AppTheme
+		{
+			get => (AppThemeChoice)Enum.Parse(typeof(AppThemeChoice), Config.AppTheme);
+			set => Config.AppTheme = value.ToString();
+		}
+
+		public static DragDropOrder DragDropOrder
+		{
+			get => (DragDropOrder)Enum.Parse(typeof(DragDropOrder), Config.DragDropOrder);
+			set => Config.DragDropOrder = value.ToString();
 		}
 
 		public static ProcessPriorityClass WorkerProcessPriority
