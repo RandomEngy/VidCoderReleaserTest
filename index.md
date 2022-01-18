@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Home
-version: 31
+version: 32
 ---
 
 More stuff
